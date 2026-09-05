@@ -80,6 +80,12 @@ class CommitRecord:
     is_merge: bool
 
 
+def _days(as_of: datetime, t: datetime) -> float:
+    """Fractional days from ``t`` to ``as_of``, floored at zero (clock skew, rebase) and
+    rounded to a millisecond of a day so the JSON is stable across platforms."""
+    return round(max(0.0, (as_of - t).total_seconds() / 86400.0), 5)
+
+
 @dataclass
 class FileHistory:
     """Accumulates under a file's *canonical* (rename-followed) path."""
@@ -100,16 +106,21 @@ class FileHistory:
     def churn_lines(self) -> int:
         return self.churn_added + self.churn_deleted
 
-    def raw_metrics(self, as_of: datetime) -> dict[str, int]:
-        """Day counts relative to ``as_of`` (the tip), never wall-clock."""
+    def raw_metrics(self, as_of: datetime) -> dict[str, int | float]:
+        """Day counts relative to ``as_of`` (the tip), never wall-clock. Age and recency are
+        **fractional** days (D-022): with integer truncation two files born hours apart tie
+        or untie depending on where the reference clock falls, and under average-rank
+        percentiles a whole birth cohort's rank then jumps when the clock crosses a day
+        boundary — movement with no edit behind it. Fractional days tie only files with the
+        same author_date (born in one commit), and those never untie."""
         return {
             "commit_count": self.commit_count,
             "churn_lines": self.churn_lines,
             "fix_count": self.fix_count,
             "revert_count": self.revert_count,
             "author_count": len(self.authors),
-            "age_days": (as_of - self.first_seen).days,
-            "last_touched_days": (as_of - self.last_seen).days,
+            "age_days": _days(as_of, self.first_seen),
+            "last_touched_days": _days(as_of, self.last_seen),
             "introduced_idx": self.introduced_idx,
         }
 

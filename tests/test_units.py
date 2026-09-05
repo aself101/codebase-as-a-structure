@@ -271,3 +271,31 @@ def test_fingerprint_moves_with_weights_and_toolchain():
         load_index={"fan_in_nonzero": 0.6, "centrality": 0.2, "inv_fan_out": 0.1, "size_loc": 0.1}
     )
     assert replace(cfg, weights=w).fingerprint(tv) != f1
+
+
+def test_age_ranks_do_not_move_when_the_clock_crosses_a_day_boundary():
+    """D-022: integer-day ages let a birth cohort tie or untie with the reference clock;
+    fractional days keep the rank order fixed under any advance of as_of."""
+    from datetime import UTC, datetime, timedelta
+
+    from repo_substrate.derived import ecdf_percentiles
+    from repo_substrate.history import _days
+
+    tz = UTC
+    births = {
+        "a": datetime(2026, 1, 1, 1, 0, tzinfo=tz),
+        "b": datetime(2026, 1, 1, 22, 0, tzinfo=tz),  # same calendar day as a, 21h later
+        "c": datetime(2026, 1, 1, 22, 0, tzinfo=tz),  # born with b: a genuine tie
+        "d": datetime(2026, 1, 3, 12, 0, tzinfo=tz),
+    }
+    as_of_1 = datetime(2026, 1, 10, 0, 30, tzinfo=tz)  # a: 8.98d, b: 8.10d — both 8 as integers
+    as_of_2 = as_of_1 + timedelta(hours=14)  # crosses a day boundary for a but not for b/c
+    # integer days: a and b tie at as_of_1 (both 8 days) and untie at as_of_2 (9 vs 8)
+    assert (as_of_1 - births["a"]).days == (as_of_1 - births["b"]).days
+    assert (as_of_2 - births["a"]).days != (as_of_2 - births["b"]).days
+    # fractional days: the percentiles are identical at both clocks
+    p1 = ecdf_percentiles({k: _days(as_of_1, v) for k, v in births.items()})
+    p2 = ecdf_percentiles({k: _days(as_of_2, v) for k, v in births.items()})
+    assert p1 == p2
+    assert p1["b"] == p1["c"] and p1["a"] > p1["b"] > p1["d"]
+    assert _days(as_of_1, as_of_2) == 0.0  # never negative

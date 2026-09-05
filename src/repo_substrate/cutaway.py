@@ -231,7 +231,7 @@ def render_cutaway(skeleton: dict[str, Any], substrate: dict[str, Any]) -> str:
                     sty = ";".join(f"{k}:{v}" for k, v in style.items())
                     title = (
                         f"{nid}\nlines {m['size_loc']} · fan_in {m.get('fan_in')} · fan_out {m.get('fan_out')} · "
-                        f"age {m.get('age_days')}d · last touched {m.get('last_touched_days')}d\n"
+                        f"age {(m.get('age_days') or 0):.1f}d · last touched {(m.get('last_touched_days') or 0):.1f}d\n"
                         + ("\n".join(labels) if labels else "no named feature")
                     )
                     rooms.append(
