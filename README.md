@@ -19,13 +19,14 @@ That claim is defensible only insofar as the gate can fail and the report shows 
 | `codebase-as-structure-system-spec.md` | Parent spec: thesis, six components, cross-cutting contracts (determinism, provenance, the anti-horoscope gate) |
 | `repo-substrate-spec.md` | C1: the substrate — per-file metrics, percentiles, composite indices, dependency edges, timeline |
 | `validation-spec.md` | The gate: temporal holdout, the asserted bar (stability + grounding classes G1–G4), `validation.json` |
-| `structural-mapper-spec.md` | C3 (draft skeleton): the ruleset that names features, under the gate |
+| `structural-mapper-spec.md` | C3: the ruleset that names features, under the gate; overlays, geometries, the skeleton diff and its budget |
+| `time-lapse-spec.md` | Phase 1: a skeleton per trunk checkpoint under HEAD's gate, the budget between frames, a scrubber page |
 | `DECISIONS.md` | Append-only decision log, D-001 onward. Why the artifact is shaped this way |
 | `checklists/` | Testable contracts per spec, each pointing at the test that covers it |
 | `blind/` | Sealed recognition rankings per reference repo (n = 1, non-gating, provenance stated in-file) |
 | `src/repo_substrate/` | The package: `substrate extract \| map \| render` and `substrate-validate run \| tune` |
 | `rulesets/` | C3 rulesets (TOML): maintainability v0.1.0 (base) and onboarding v0.1.0 (overlay) |
-| `tests/` | 86 tests incl. a scripted synthetic repository, verdict-path tests, and integrity checks |
+| `tests/` | 90 tests incl. a scripted synthetic repository, verdict-path tests, and integrity checks |
 | `docs/` | Review history: the June tribunal, the archived prototype, notes |
 
 ## Running it
@@ -41,6 +42,8 @@ uv run substrate map out/x.substrate.json --validation out/validation/validation
     --geometry layer -o out/x.skeleton.json          # geometry: age | layer
 uv run substrate render out/x.skeleton.json out/x.substrate.json -o out/x.cutaway.svg --html out/x.cutaway.html
 uv run substrate skeleton-diff out/x.before.skeleton.json out/x.skeleton.json --renames out/x.substrate.json   # budget verdict over untouched nodes
+uv run substrate timelapse <repo> --validation out/validation/validation.json --ruleset rulesets/maintainability.toml \
+    --overlay rulesets/onboarding.toml --geometry age --frames 12 --config config/tuned.toml -o out/timelapse/x
 uv run pytest -q
 ```
 

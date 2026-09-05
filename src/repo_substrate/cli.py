@@ -85,7 +85,73 @@ def main(argv: list[str] | None = None) -> int:
         "for the set of nodes the intervening commits touched (the budget population)",
     )
     sd.add_argument("-o", "--output", type=Path, default=None)
+    tl = sub.add_parser(
+        "timelapse",
+        help="Phase 1: skeleton per trunk checkpoint under HEAD's gate, budget between frames, scrubber page",
+    )
+    tl.add_argument("repo", type=Path)
+    tl.add_argument("--validation", type=Path, required=True)
+    tl.add_argument("--ruleset", type=Path, required=True)
+    tl.add_argument("--overlay", type=Path, action="append", default=[])
+    tl.add_argument("--geometry", choices=["age", "layer"], default="age")
+    sched = tl.add_mutually_exclusive_group(required=True)
+    sched.add_argument(
+        "--frames", type=int, help="N evenly spaced trunk checkpoints, first and HEAD inclusive"
+    )
+    sched.add_argument(
+        "--every", type=int, help="a checkpoint every K trunk commits, walking back from HEAD"
+    )
+    tl.add_argument(
+        "--config",
+        type=Path,
+        default=None,
+        help="substrate config; must reproduce the gate's fingerprint",
+    )
+    tl.add_argument("--cache", type=Path, default=Path("out/cache"))
+    tl.add_argument("--scratch", type=Path, default=None)
+    tl.add_argument("--no-deps", action="store_true")
+    tl.add_argument("--blame-workers", type=int, default=8)
+    tl.add_argument("-o", "--output", type=Path, required=True, help="output directory")
     args = ap.parse_args(argv)
+
+    if args.cmd == "timelapse":
+        from .mapper import load_ruleset
+        from .timelapse import choose_checkpoints, run_timelapse, trunk
+        from .validation.substrates import SubstrateCache
+
+        cfg = SubstrateConfig.load(args.config)
+        extractor = (
+            None
+            if args.no_deps
+            else DependencyCruiserExtractor(TOOLS_DIR, cfg.dep_ts_pre_compilation_deps)
+        )
+        cache = SubstrateCache(args.cache, cfg, extractor, args.scratch, args.blame_workers)
+        val_doc = json.loads(args.validation.read_text(encoding="utf-8"))
+        rs = load_ruleset(args.ruleset)
+        ovs = tuple(load_ruleset(p) for p in args.overlay)
+        n = len(trunk(args.repo.resolve()))
+        cps = choose_checkpoints(n, args.frames, args.every)
+        schedule = {"frames": args.frames, "every": args.every, "checkpoints": cps}
+        m = run_timelapse(
+            args.repo,
+            cache,
+            val_doc,
+            rs,
+            ovs,
+            args.geometry,
+            cps,
+            args.output,
+            schedule,
+            log=lambda s: print(s, file=sys.stderr),
+        )
+        t = m["totals"]
+        print(
+            f"{m['repo']['name']}: {t['mapped']} mapped / {t['skipped']} skipped; movement={t['movement']} "
+            f"edit={t['edit_share']:.2f} ripple={t['ripple_share']:.2f} structural={t['structural_share']:.2f}; "
+            f"budget {t['budget_tally']} → {args.output}/timelapse.html",
+            file=sys.stderr,
+        )
+        return 0
 
     if args.cmd == "skeleton-diff":
         from .mapper.diff import skeleton_diff, touched_since

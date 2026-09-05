@@ -70,6 +70,30 @@ def _feature_sets(skeleton: dict[str, Any]) -> dict[tuple[str, str], set[str]]:
     return sets
 
 
+def touched_between(
+    before_sub: dict[str, Any], after_sub: dict[str, Any], renames: dict[str, str] | None = None
+) -> tuple[set[str], int]:
+    """Exact form of `touched_since` when both substrates are at hand (time-lapse §4): the
+    nodes touched by commits present in the AFTER timeline and absent from the BEFORE
+    timeline, in after-revision names, plus the number of those commits. Reachability,
+    not timestamp order — a commit merged late but authored early is counted."""
+    renames = renames or {}
+    before = {e.get("sha") for e in before_sub.get("timeline") or []}
+    touched: set[str] = set()
+    n = 0
+    for e in after_sub.get("timeline") or []:
+        if e.get("sha") in before:
+            continue
+        n += 1
+        for node in e.get("nodes_touched") or []:
+            seen: set[str] = set()
+            while node in renames and node not in seen:
+                seen.add(node)
+                node = renames[node]
+            touched.add(node)
+    return touched, n
+
+
 def skeleton_diff(
     a: dict[str, Any],
     b: dict[str, Any],
