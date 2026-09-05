@@ -79,22 +79,28 @@ A `kind: descriptive` signal earns `asserted` only by passing **both** gates bel
 
 Recompute the substrate at HEAD with the last **K** commits removed (config `stability_perturbation_k`, default `5`) and measure, per node, each signal's percentile movement against the unperturbed run.
 
-Pass iff `median(|Δpercentile|) ≤ stability_eps` (default `0.05`) **and** `max(|Δpercentile|) ≤ stability_delta` (default `0.15`) over the eligible population. Nodes born inside the removed window are excluded from the comparison (they have no unperturbed value). A signal that swings past budget on a small edit is `untested` with reason `unstable` — never `asserted`.
+Pass iff `median(|Δpercentile|) ≤ stability_eps` (default `0.05`) **and** `max(|Δpercentile|) ≤ stability_delta` (default `0.15`) over the **untouched** population: nodes present in both runs and **not edited by any of the K removed commits** (D-008). A file those commits edited has its recency, churn, and co-change legitimately move — that is the signal reporting the edit, not instability. The budget measures whether editing *other* files moves *this* file's value. Nodes born inside the removed window are absent from the perturbed run and so excluded by construction. `p95(|Δ|)` is reported beside `max`. A signal that swings past budget on a small edit is `untested` with reason `unstable` — never `asserted`.
 
 This proves the description is *stable*, not *correct*. That is why 2.4.2 is mandatory.
 
-#### 2.4.2 Cross-modal corroboration (correctness)
+#### 2.4.2 Corroboration (correctness) — by grounding class
 
-The signal must rank-correlate with a measurement of the **same present-tense property** taken from a **different modality that does not appear in the signal's formula**. Pass iff Kendall τ-b between the signal and its counterpart has a **bootstrap lower CI bound** ≥ `tau_asserted` (default `0.30`) on that repo. The pairing is fixed per signal, recorded in the validation config, and feeds the fingerprint:
+*Revised 2026-09-04 (D-008) after the first gate run. The June draft of this section paired every descriptive signal with a "different modality"; the run showed that for topological signals no such modality exists in v0, and that the one chosen (co-change for load) measured a different property. The bar is now set per class, recorded in `validation.json` as `grounding_class`.*
 
-| Descriptive signal(s) | Modality of the signal | Cross-modal counterpart (not in the formula) |
-|---|---|---|
-| `load_index`, `fan_in`, `fan_in_nonzero`, `centrality` | static import topology | `cochange_degree` — history-derived coupling (`repo-substrate-spec.md` §5, promoted to Tier 1) |
-| `neglect_index`, `age_days`, `last_touched_days` | commit timestamps | `blame_age_median` — median age of the file's surviving lines at HEAD, from `git blame` (`repo-substrate-spec.md` §5, Tier 1) |
-| `reinforcement_index`, `has_sibling_test` | path convention | line coverage from a coverage report when one is present in the repo; else `untested` with reason `no_counterpart` |
-| `complexity_proxy_index`, `nesting_proxy`, `size_loc` | indentation / line count | cyclomatic complexity from a real parser on languages where one is cheap (JS/TS via a pinned tool); else `untested` with reason `no_counterpart` |
+Every descriptive signal is placed in exactly one class. The pairing is fixed in the validation config and feeds the fingerprint.
 
-**Why this and not a human panel.** The June 19 proposal specified blind, pre-registered rankings from three or more developers who know the repo. That removes confirmation bias but is unavailable to a single-developer project, and a gate that cannot run leaves the whole tier unreachable. A second modality absent from the formula removes the bias mechanically and is reproducible. It is weaker than a panel in one way (both modalities are machine-derived from the same repository) and stronger in another (it cannot be flattered). It can return negative — co-change coupling and import topology can disagree — and when it does the signal is `untested` with reason `cross_modal_fail`, and that is a finding for the report.
+| Class | What it covers | Correctness bar (beyond stability) | v0 members |
+|---|---|---|---|
+| **G1 measurement** | direct git or file facts whose instrument is git or the file itself and whose name is literal | none — the instrument is trusted; Popper's constant objection targets models, not measurements | `commit_count`, `churn_lines`, `fix_count`, `revert_count`, `author_count`, `last_touched_days`, `size_loc`, `nesting_proxy`, `cochange_degree`, `blame_age_median` |
+| **G2 instrument-checked** | resolver-dependent facts, where the instrument can be wrong | τ-b vs an **independent second instrument measuring the same property**, bootstrap lower CI ≥ `tau_instrument` (default `0.60` — same property twice should agree strongly) | `fan_in`, `fan_in_nonzero`, `fan_out` ↔ `fan_in_alt` / `fan_out_alt` (a regex scanner with its own resolver, `repo-substrate-spec.md` §5); `has_sibling_test` ↔ `test_fan_in` (importers that are test files) |
+| **G3 cross-modal** | a signal for which a **different modality** measures the same present-tense property | τ-b vs the counterpart, lower CI ≥ `tau_asserted` (default `0.30`) | `age_days`, `neglect_index` ↔ `blame_age_median` (median age of surviving lines) |
+| **G4 derived** | fixed-weight blends and graph functions of asserted inputs | every input `asserted`; the composite's **name carries no claim beyond its inputs** (D-004 Q3) | `centrality` (from `fan_in`); `load_index`; `complexity_proxy_index`; `reinforcement_index` |
+
+**Reported correlates.** A signal may declare correlates that are computed and printed but never gate: `load_index` ~ `cochange_degree` and `test_fan_in`; `neglect_index` ~ `cochange_degree`. On the first run `load_index` ~ co-change was τ 0.24 / 0.44 — informative (a foundation is imported by many and changed by few), not a correctness test.
+
+**Why a second instrument for the load family, not a second modality.** The June 19 proposal specified blind, pre-registered rankings from three or more developers who know the repo. That removes confirmation bias but is unavailable to a single-developer project, and a gate that cannot run leaves the whole tier unreachable. D-004 then paired load with co-change; the run showed co-change is *change* coupling, which is conceptually a different property from import reach. There is no independent measurement of "load-bearing" in v0. So the substrate stops claiming one: `fan_in` is checked as a *measurement* (two instruments, one property — this can fail on alias-heavy and dynamic-import code, which is substrate open question #8 made measurable), and `load_index` is a named blend of checked measurements whose name is bounded by §2.1.1 and the C5 register lint. Lowering the τ floor until co-change passed was not considered.
+
+**What each class can and cannot certify.** G1 certifies that git said so. G2 certifies that two independent readers of the source agree. G3 certifies that two different kinds of evidence agree. G4 certifies only that its parts are certified and its weights are fixed. None of them certifies that a *name* is apt; that is the register boundary's job.
 
 #### 2.4.3 Recorded recognition (not gating)
 
@@ -102,7 +108,7 @@ The developer's sealed blind ranking (`blind/<repo>.md`, committed by hash befor
 
 #### 2.4.4 The gate
 
-`asserted` ≝ passed 2.4.1 ∧ 2.4.2 on ≥ `M_asserted` repos. The `validation.json` `grounding` block records both results plus the recognition comparison (§6.1). Failing either gate yields `untested` with the specific reason (`unstable`, `cross_modal_fail`, `no_counterpart`), never a silent `asserted`.
+`asserted` ≝ passed 2.4.1 ∧ the 2.4.2 bar for the signal's class, on ≥ `M_asserted` repos; for G4, additionally every input is `asserted` overall (inputs are resolved first, in dependency order). The `validation.json` `grounding` block records the stability result, the corroboration result, the reported correlates, and the recognition comparison (§6.1). Failing yields `untested` with the specific reason (`unstable`, `corroboration_fail`, `input_not_asserted:<name>`, `too_few_pairs`), never a silent `asserted`.
 
 **Known limit (on the page).** If on every reference repo the counterpart correlates with the signal so strongly that 2.4.2 cannot fail, it is not a falsifier and a third modality is needed. The holdout report (§6.2 section 4) prints the τ distribution across repos so this is checked, not assumed.
 

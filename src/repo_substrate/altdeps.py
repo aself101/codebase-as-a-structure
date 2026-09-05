@@ -21,14 +21,14 @@ _SPECIFIER = re.compile(
     r"""(?:^|[^\w$.])(?:import|export)\s*(?:[\w*{}\s,$]+?\s*from\s*)?['"]([^'"\n]+)['"]"""
     r"""|(?:^|[^\w$.])require\s*\(\s*['"]([^'"\n]+)['"]\s*\)"""
     r"""|(?:^|[^\w$.])import\s*\(\s*['"]([^'"\n]+)['"]\s*\)""",
-    re.M,
+    re.MULTILINE,
 )
 _EXTS = (".ts", ".tsx", ".mts", ".cts", ".js", ".jsx", ".mjs", ".cjs")
 _STRIP_EXT = re.compile(r"\.(js|mjs|cjs|jsx|ts|tsx|mts|cts)$")
 
 
 def _strip_comments(src: str) -> str:
-    src = re.sub(r"/\*.*?\*/", "", src, flags=re.S)
+    src = re.sub(r"/\*.*?\*/", "", src, flags=re.DOTALL)
     return re.sub(r"(^|[^:\\\"'])//[^\n]*", r"\1", src)
 
 

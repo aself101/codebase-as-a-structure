@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from . import __version__
+from .altdeps import scan_fan_in_alt
 from .config import SubstrateConfig
 from .deps import DependencyExtractor, DependencyResult
 from .derived import compute_indices, compute_percentiles
@@ -30,7 +31,6 @@ from .gitutil import (
 )
 from .graph import fan_counts, pagerank
 from .history import HistoryMiner, PydrillerHistoryMiner, blame_age_median, cochange_degree
-from .altdeps import scan_fan_in_alt
 from .inventory import build_inventory
 
 SCHEMA_VERSION = "0.2"

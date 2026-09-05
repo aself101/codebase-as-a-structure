@@ -151,10 +151,15 @@ def compute_indices(
         "recency": inv(pct.get("last_touched_days")),
     }, w.change_pressure_index)
 
+    # The candidate input set is wider than the pinned formula so the D-009 tuning grid can
+    # reach recency/busyness terms; config.validate() confines weight keys to this set.
     bug, _ = _weighted({
         "fix_count_nonzero": fix_input,
+        "fix_count": pct.get("fix_count"),
         "revert_count": pct.get("revert_count"),
         "fix_ratio": fix_ratio,
+        "recency": inv(pct.get("last_touched_days")),
+        "commit_count": pct.get("commit_count"),
     }, w.bug_pressure_index)
 
     neglect, _ = _weighted({

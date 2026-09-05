@@ -63,7 +63,7 @@ def load_tsconfig(worktree: Path) -> dict | None:
     if not p.exists():
         return None
     text = p.read_text(errors="replace")
-    text = re.sub(r"/\*.*?\*/", "", text, flags=re.S)
+    text = re.sub(r"/\*.*?\*/", "", text, flags=re.DOTALL)
     text = re.sub(r"(^|[^:\"'])//[^\n]*", r"\1", text)
     text = re.sub(r",(\s*[}\]])", r"\1", text)
     try:

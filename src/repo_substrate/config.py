@@ -62,6 +62,18 @@ class IndexWeights:
         "size_loc": 0.4, "nesting_proxy": 0.4, "fan_out": 0.2})
 
 
+# The inputs each index may draw on (derived.compute_indices builds exactly these). Wider than
+# the pinned formulas so the pre-registered tuning grid (D-009) has room; a weight key outside
+# this set is a config error, not a silent zero.
+ALLOWED_INPUTS: dict[str, set[str]] = {
+    "load_index": {"fan_in_nonzero", "centrality", "inv_fan_out", "size_loc"},
+    "change_pressure_index": {"churn_lines", "commit_count", "recency"},
+    "bug_pressure_index": {"fix_count_nonzero", "fix_count", "revert_count", "fix_ratio", "recency", "commit_count"},
+    "neglect_index": {"age_days", "last_touched_days", "inv_recent_commit_share"},
+    "complexity_proxy_index": {"size_loc", "nesting_proxy", "fan_out"},
+}
+
+
 @dataclass(frozen=True)
 class SubstrateConfig:
     # --- population & percentiles (§6.1)
@@ -126,6 +138,9 @@ class SubstrateConfig:
             s = sum(w.values())
             if abs(s - 1.0) > 1e-9:
                 raise ValueError(f"weights for {name} sum to {s}, not 1.0")
+            bad = set(w) - ALLOWED_INPUTS[name]
+            if bad:
+                raise ValueError(f"weights for {name} reference unknown inputs {sorted(bad)}")
         if not (0 < self.recent_window_frac < 1):
             raise ValueError("recent_window_frac must be in (0,1)")
         if self.n_min < 2:
