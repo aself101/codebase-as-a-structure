@@ -6,14 +6,14 @@ body{margin:0;background:#e9e6df;color:#26221d;font-family:ui-monospace,Menlo,mo
 .bar b{font-weight:600} label{cursor:pointer} .sheet{overflow-x:auto;padding:8px}
 </style></head><body>
 <div class="bar"><b>mcp-secure-server</b> <span>base profile: maintainability (always on)</span><label><input type="checkbox" checked data-target="overlay-0"> onboarding overlay</label>
-<span style="margin-left:auto;color:#6a6358">skeleton 777acdf2437e…</span></div>
+<span style="margin-left:auto;color:#6a6358">skeleton d10ce13bcc82…</span></div>
 <div class="sheet"><svg xmlns="http://www.w3.org/2000/svg" width="1760" height="547" viewBox="0 0 1760 547" font-family="ui-monospace, Menlo, monospace" font-size="11">
 <defs><pattern id="water" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#9fc5e8"/><path d="M0 4 Q2 2 4 4 T8 4" stroke="#3d7ab8" fill="none"/></pattern><pattern id="scaffold" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="none"/><line x1="0" y1="0" x2="0" y2="8" stroke="#5c8a3a" stroke-width="2"/></pattern></defs>
 <rect width="1760" height="547" fill="#faf8f3"/>
 <text x="24" y="26" font-size="16" font-weight="bold">mcp-secure-server @ ecb30716b8 — cutaway, profile maintainability + onboarding</text>
-<text x="24" y="46">diagnostic features: 327 · <tspan fill="#c2185b" font-weight="bold">decorative (ungrounded, not a diagnosis): 25</tspan> · degraded (graph): 0 · population 202 files · co-located across profiles: 30</text>
+<text x="24" y="46">diagnostic features: 327 · <tspan fill="#c2185b" font-weight="bold">decorative (ungrounded, not a diagnosis): 25</tspan> · degraded (graph): 0 · population 202 files · co-located across profiles: 48</text>
 <text x="24" y="64" fill="#555">gate: bug_pressure_index=unvalidated, centrality=asserted, fan_in=asserted, fan_out=asserted, last_touched_days=asserted, load_index=asserted, neglect_index=asserted, reinforcement_index=asserted</text>
-<text x="24" y="82" fill="#555">seed 2c7db66a25f4… · substrate fp 80b2a632f8b7… · validation fp cb320f191852… · ruleset maintainability@0.1.0 · skeleton 777acdf2437e…</text>
+<text x="24" y="82" fill="#555">seed 2c7db66a25f4… · substrate fp 80b2a632f8b7… · validation fp cb320f191852… · ruleset maintainability@0.1.0 · skeleton d10ce13bcc82…</text>
 <text x="24" y="100" fill="#555">strata = dependency layers (longest import path to a leaf), leaves at the bottom · wings = top-level directory · room width ∝ √lines · material = age · every named feature denotes present structural position (validation §2.1.1)</text>
 <rect x="24" y="118" width="14" height="10" style="stroke:#2b2b2b;stroke-width:3;fill:#d9cfb8"/>
 <text x="42" y="127" fill="#333">foundation / high-load hub</text>
@@ -31,7 +31,7 @@ body{margin:0;background:#e9e6df;color:#26221d;font-family:ui-monospace,Menlo,mo
 <text x="757" y="127" fill="#333">decorative (ungrounded)</text>
 <text x="24" y="145" fill="#333">overlays (corner badge per profile, shown side by side, never merged):</text>
 <polygon points="526,136 536,136 526,146" fill="#1f6f8b"/>
-<text x="540" y="145" fill="#333">onboarding: corridor, foundation</text>
+<text x="540" y="145" fill="#333">onboarding: corridor, entrance, foundation, leaf_utility</text>
 <g id="base" data-profile="maintainability">
 <text x="24" y="162" font-weight="bold" fill="#333">(root)</text>
 <line x1="20" y1="491" x2="104" y2="491" stroke="#bbb" stroke-dasharray="2 4"/>
@@ -154,17 +154,20 @@ lines 180 · fan_in 3 · fan_out 0 · age 252d · last touched 252d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="454" y="425" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/filesystem-server/vitest.config.ts
 lines 14 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
 [maintainability] dark_room
 [maintainability] flooded_basement</title></rect>
 <rect x="472" y="425" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>cookbook/http-server/src/tools/calculator.ts
 lines 55 · fan_in 3 · fan_out 0 · age 251d · last touched 251d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="497" y="425" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>cookbook/http-server/src/tools/echo.ts
 lines 31 · fan_in 3 · fan_out 0 · age 251d · last touched 251d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="519" y="425" width="13" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/http-server/vitest.config.ts
 lines 7 · fan_in 0 · fan_out 0 · age 251d · last touched 251d
 no named feature</title></rect>
@@ -218,7 +221,8 @@ lines 14 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
 lines 93 · fan_in 4 · fan_out 0 · age 252d · last touched 252d
 [maintainability] dark_room
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="381" y="406" width="30" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/kenpom-server/src/tools/efficiency.ts
 lines 124 · fan_in 2 · fan_out 0 · age 252d · last touched 252d
 [maintainability] dark_room
@@ -227,17 +231,20 @@ lines 124 · fan_in 2 · fan_out 0 · age 252d · last touched 252d
 lines 63 · fan_in 4 · fan_out 0 · age 252d · last touched 252d
 [maintainability] dark_room
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="440" y="406" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/kenpom-server/src/tools/ratings.ts
 lines 86 · fan_in 4 · fan_out 0 · age 252d · last touched 252d
 [maintainability] dark_room
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="469" y="406" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/kenpom-server/src/tools/team.ts
 lines 100 · fan_in 4 · fan_out 0 · age 252d · last touched 252d
 [maintainability] dark_room
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="500" y="406" width="12" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/kenpom-server/src/utils/index.ts
 lines 6 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
 [maintainability] dark_room
@@ -252,7 +259,8 @@ lines 375 · fan_in 3 · fan_out 0 · age 252d · last touched 252d
 [maintainability] flooded_basement
 [maintainability] foundation (position: high-load hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="181" y="387" width="41" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/monitoring-server/src/utils/audit-logger.ts
 lines 274 · fan_in 2 · fan_out 0 · age 252d · last touched 252d
 [maintainability] dark_room
@@ -264,7 +272,8 @@ lines 350 · fan_in 3 · fan_out 0 · age 252d · last touched 252d
 [maintainability] flooded_basement
 [maintainability] foundation (position: high-load hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="273" y="387" width="12" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/monitoring-server/vitest.config.ts
 lines 6 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
 [maintainability] dark_room
@@ -288,7 +297,8 @@ no named feature</title></rect>
 lines 114 · fan_in 4 · fan_out 0 · age 252d · last touched 252d
 [maintainability] dark_room
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="425" y="387" width="26" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/nba-server/src/tools/league.ts
 lines 86 · fan_in 2 · fan_out 0 · age 252d · last touched 252d
 [maintainability] dark_room
@@ -297,17 +307,20 @@ lines 86 · fan_in 2 · fan_out 0 · age 252d · last touched 252d
 lines 96 · fan_in 3 · fan_out 0 · age 252d · last touched 252d
 [maintainability] dark_room
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="484" y="387" width="34" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/nba-server/src/tools/player.ts
 lines 174 · fan_in 4 · fan_out 0 · age 252d · last touched 252d
 [maintainability] dark_room
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="132" y="368" width="27" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/nba-server/src/tools/team.ts
 lines 93 · fan_in 4 · fan_out 0 · age 252d · last touched 252d
 [maintainability] dark_room
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="162" y="368" width="12" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/nba-server/src/utils/index.ts
 lines 6 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
 [maintainability] dark_room
@@ -364,10 +377,10 @@ lines 17 · fan_in 5 · fan_out 1 · age 252d · last touched 252d
 [onboarding] foundation (position: high-load hub)</title></rect>
 <rect x="248" y="339" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/http-server/src/index.ts
 lines 53 · fan_in 0 · fan_out 2 · age 251d · last touched 229d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="273" y="339" width="10" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/http-server/src/tools/index.ts
 lines 2 · fan_in 0 · fan_out 2 · age 251d · last touched 251d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="286" y="339" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/image-gen-server/src/tools/edit.ts
 lines 139 · fan_in 4 · fan_out 1 · age 252d · last touched 252d
 [maintainability] dark_room
@@ -395,10 +408,11 @@ lines 4 · fan_in 0 · fan_out 1 · age 252d · last touched 252d
 [maintainability] dark_room</title></rect>
 <rect x="429" y="339" width="29" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/kenpom-server/src/index.ts
 lines 112 · fan_in 0 · fan_out 5 · age 252d · last touched 229d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="461" y="339" width="16" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/kenpom-server/src/tools/index.ts
 lines 20 · fan_in 0 · fan_out 5 · age 252d · last touched 252d
-[maintainability] dark_room</title></rect>
+[maintainability] dark_room
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="480" y="339" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/monitoring-server/src/utils/prometheus-formatter.ts
 lines 228 · fan_in 2 · fan_out 2 · age 252d · last touched 252d
 [maintainability] dark_room
@@ -412,20 +426,21 @@ lines 42 · fan_in 2 · fan_out 2 · age 251d · last touched 229d
 [maintainability] scaffolding</title></rect>
 <rect x="178" y="320" width="17" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/multi-endpoint-server/src/tools/index.ts
 lines 22 · fan_in 0 · fan_out 4 · age 251d · last touched 251d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="198" y="320" width="30" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/nba-server/src/index.ts
 lines 131 · fan_in 0 · fan_out 5 · age 252d · last touched 229d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="231" y="320" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/nba-server/src/tools/index.ts
 lines 37 · fan_in 0 · fan_out 5 · age 252d · last touched 252d
-[maintainability] dark_room</title></rect>
+[maintainability] dark_room
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="254" y="320" width="34" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/utils/session-store.ts
 lines 174 · fan_in 1 · fan_out 1 · age 251d · last touched 251d
 no named feature</title></rect>
 <line x1="128" y1="357" x2="538" y2="357" stroke="#bbb" stroke-dasharray="2 4"/>
 <rect x="132" y="291" width="37" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/advanced-validation-server/src/index.ts
 lines 222 · fan_in 0 · fan_out 2 · age 252d · last touched 229d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="172" y="291" width="28" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/api-wrapper-server/src/tools/currency.ts
 lines 105 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
 [maintainability] dark_room
@@ -513,16 +528,18 @@ lines 126 · fan_in 2 · fan_out 1 · age 252d · last touched 252d
 [maintainability] scaffolding</title></rect>
 <rect x="368" y="272" width="30" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/image-gen-server/src/index-debug.ts
 lines 128 · fan_in 0 · fan_out 2 · age 252d · last touched 248d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="401" y="272" width="19" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/image-gen-server/src/index-minimal.ts
 lines 33 · fan_in 0 · fan_out 2 · age 252d · last touched 252d
-[maintainability] dark_room</title></rect>
+[maintainability] dark_room
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="423" y="272" width="29" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/image-gen-server/src/index.ts
 lines 111 · fan_in 0 · fan_out 4 · age 252d · last touched 229d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="455" y="272" width="17" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/image-gen-server/src/tools/index.ts
 lines 24 · fan_in 0 · fan_out 4 · age 252d · last touched 252d
-[maintainability] dark_room</title></rect>
+[maintainability] dark_room
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="475" y="272" width="36" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/monitoring-server/src/tools/configure-alerts.ts
 lines 205 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
 [maintainability] dark_room
@@ -545,7 +562,7 @@ lines 52 · fan_in 5 · fan_out 4 · age 252d · last touched 252d
 [maintainability] flooded_basement</title></rect>
 <rect x="252" y="253" width="26" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/multi-endpoint-server/src/index.ts
 lines 83 · fan_in 0 · fan_out 2 · age 251d · last touched 248d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="281" y="253" width="26" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/tools/confirm-transaction.ts
 lines 90 · fan_in 1 · fan_out 1 · age 251d · last touched 251d
 no named feature</title></rect>
@@ -586,23 +603,23 @@ lines 187 · fan_in 0 · fan_out 1 · age 252d · last touched 229d
 no named feature</title></rect>
 <rect x="203" y="224" width="45" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/database-server/src/index.ts
 lines 347 · fan_in 0 · fan_out 2 · age 252d · last touched 229d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="251" y="224" width="37" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/filesystem-server/src/index.ts
 lines 223 · fan_in 0 · fan_out 2 · age 252d · last touched 229d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="291" y="224" width="43" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>cookbook/minimal-server/minimal-test-server.ts
 lines 320 · fan_in 0 · fan_out 1 · age 256d · last touched 227d
 no named feature</title></rect>
 <rect x="337" y="224" width="45" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/monitoring-server/src/index.ts
 lines 355 · fan_in 0 · fan_out 2 · age 252d · last touched 229d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="385" y="224" width="18" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/monitoring-server/src/tools/index.ts
 lines 27 · fan_in 1 · fan_out 4 · age 252d · last touched 252d
 [maintainability] dark_room
 [maintainability] flooded_basement</title></rect>
 <rect x="406" y="224" width="39" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/index.ts
 lines 241 · fan_in 0 · fan_out 3 · age 251d · last touched 229d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="448" y="224" width="28" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/tools/check-status.ts
 lines 105 · fan_in 1 · fan_out 2 · age 251d · last touched 251d
 no named feature</title></rect>
@@ -641,10 +658,12 @@ lines 63 · fan_in 6 · fan_out 0 · age 256d · last touched 37d
 [maintainability] foundation (position: high-load hub)
 [maintainability] lit_room
 [maintainability] toothpick_wing [decorative]
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="707" y="444" width="28" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/security/layers/contextual-config-builder.ts
 lines 104 · fan_in 3 · fan_out 0 · age 256d · last touched 248d
-[maintainability] flooded_basement</title></rect>
+[maintainability] flooded_basement
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="738" y="444" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/security/layers/layer-utils/content/unicode.ts
 lines 230 · fan_in 2 · fan_out 0 · age 256d · last touched 256d
 [maintainability] dark_room
@@ -663,11 +682,13 @@ lines 208 · fan_in 2 · fan_out 0 · age 256d · last touched 224d
 [maintainability] scaffolding</title></rect>
 <rect x="605" y="425" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/security/layers/layer-utils/semantics/glob-utils.ts
 lines 81 · fan_in 3 · fan_out 0 · age 227d · last touched 226d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="634" y="425" width="33" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/security/layers/layer-utils/semantics/semantic-quotas.ts
 lines 159 · fan_in 3 · fan_out 0 · age 256d · last touched 256d
 [maintainability] dark_room
-[maintainability] flooded_basement</title></rect>
+[maintainability] flooded_basement
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="670" y="425" width="23" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/security/transport/http-body-parser.ts
 lines 61 · fan_in 1 · fan_out 0 · age 225d · last touched 225d
 no named feature</title></rect>
@@ -676,7 +697,8 @@ lines 86 · fan_in 1 · fan_out 0 · age 256d · last touched 225d
 no named feature</title></rect>
 <rect x="725" y="425" width="26" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>src/security/utils/security-logger-types.ts
 lines 88 · fan_in 3 · fan_out 0 · age 227d · last touched 63d
-[maintainability] lit_room</title></rect>
+[maintainability] lit_room
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="754" y="425" width="29" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/types/messages.ts
 lines 113 · fan_in 1 · fan_out 0 · age 256d · last touched 256d
 [maintainability] dark_room
@@ -686,7 +708,8 @@ lines 147 · fan_in 3 · fan_out 0 · age 256d · last touched 248d
 [maintainability] flooded_basement
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="821" y="425" width="38" height="16" style="fill:#7e6f52;stroke:#8a4b00;stroke-width:2"><title>src/types/validation.ts
 lines 229 · fan_in 2 · fan_out 0 · age 256d · last touched 229d
 [maintainability] hub (position: hub)</title></rect>
@@ -899,23 +922,54 @@ lines 140 · fan_in 6 · fan_out 2 · age 256d · last touched 224d
 </g>
 <g class="overlay" id="overlay-0" data-profile="onboarding">
 <polygon points="417,425 424,425 417,432" fill="#1f6f8b"/>
+<polygon points="472,425 479,425 472,432" fill="#1f6f8b"/>
+<polygon points="497,425 504,425 497,432" fill="#1f6f8b"/>
 <polygon points="132,406 139,406 132,413" fill="#1f6f8b"/>
 <polygon points="159,406 166,406 159,413" fill="#1f6f8b"/>
 <polygon points="185,406 192,406 185,413" fill="#1f6f8b"/>
 <polygon points="213,406 220,406 213,413" fill="#1f6f8b"/>
 <polygon points="242,406 249,406 242,413" fill="#1f6f8b"/>
 <polygon points="271,406 278,406 271,413" fill="#1f6f8b"/>
+<polygon points="351,406 358,406 351,413" fill="#1f6f8b"/>
+<polygon points="414,406 421,406 414,413" fill="#1f6f8b"/>
+<polygon points="440,406 447,406 440,413" fill="#1f6f8b"/>
+<polygon points="469,406 476,406 469,413" fill="#1f6f8b"/>
 <polygon points="132,387 139,387 132,394" fill="#1f6f8b"/>
 <polygon points="225,387 232,387 225,394" fill="#1f6f8b"/>
+<polygon points="393,387 400,387 393,394" fill="#1f6f8b"/>
+<polygon points="454,387 461,387 454,394" fill="#1f6f8b"/>
+<polygon points="484,387 491,387 484,394" fill="#1f6f8b"/>
+<polygon points="132,368 139,368 132,375" fill="#1f6f8b"/>
 <polygon points="176,339 183,339 176,346" fill="#1f6f8b"/>
 <polygon points="211,339 218,339 211,346" fill="#1f6f8b"/>
 <polygon points="229,339 236,339 229,346" fill="#1f6f8b"/>
+<polygon points="248,339 255,339 248,346" fill="#1f6f8b"/>
+<polygon points="273,339 280,339 273,346" fill="#1f6f8b"/>
 <polygon points="320,339 327,339 320,346" fill="#1f6f8b"/>
+<polygon points="429,339 436,339 429,346" fill="#1f6f8b"/>
+<polygon points="461,339 468,339 461,346" fill="#1f6f8b"/>
+<polygon points="178,320 185,320 178,327" fill="#1f6f8b"/>
+<polygon points="198,320 205,320 198,327" fill="#1f6f8b"/>
+<polygon points="231,320 238,320 231,327" fill="#1f6f8b"/>
+<polygon points="132,291 139,291 132,298" fill="#1f6f8b"/>
+<polygon points="368,272 375,272 368,279" fill="#1f6f8b"/>
+<polygon points="401,272 408,272 401,279" fill="#1f6f8b"/>
+<polygon points="423,272 430,272 423,279" fill="#1f6f8b"/>
+<polygon points="455,272 462,272 455,279" fill="#1f6f8b"/>
+<polygon points="252,253 259,253 252,260" fill="#1f6f8b"/>
 <polygon points="484,253 491,253 484,260" fill="#1f6f8b"/>
+<polygon points="203,224 210,224 203,231" fill="#1f6f8b"/>
+<polygon points="251,224 258,224 251,231" fill="#1f6f8b"/>
+<polygon points="337,224 344,224 337,231" fill="#1f6f8b"/>
+<polygon points="406,224 413,224 406,231" fill="#1f6f8b"/>
 <polygon points="566,444 573,444 566,451" fill="#1f6f8b"/>
 <polygon points="611,444 618,444 611,451" fill="#1f6f8b"/>
 <polygon points="643,444 650,444 643,451" fill="#1f6f8b"/>
 <polygon points="681,444 688,444 681,451" fill="#1f6f8b"/>
+<polygon points="707,444 714,444 707,451" fill="#1f6f8b"/>
+<polygon points="605,425 612,425 605,432" fill="#1f6f8b"/>
+<polygon points="634,425 641,425 634,432" fill="#1f6f8b"/>
+<polygon points="725,425 732,425 725,432" fill="#1f6f8b"/>
 <polygon points="786,425 793,425 786,432" fill="#1f6f8b"/>
 <polygon points="731,339 738,339 731,346" fill="#1f6f8b"/>
 <polygon points="769,339 776,339 769,346" fill="#1f6f8b"/>
@@ -929,7 +983,7 @@ lines 140 · fan_in 6 · fan_out 2 · age 256d · last touched 224d
 <polygon points="665,167 672,167 665,174" fill="#1f6f8b"/>
 <polygon points="819,167 826,167 819,174" fill="#1f6f8b"/>
 </g>
-<text x="24" y="535" fill="#333">diagnostic: dark_room×100, flooded_basement×97, foundation×21, hub×22, lit_room×34, scaffolding×53   ·   decorative: 25 instance(s) of crack, toothpick_wing   ·   onboarding: corridor×18, foundation×21</text>
+<text x="24" y="535" fill="#333">diagnostic: dark_room×100, flooded_basement×97, foundation×21, hub×22, lit_room×34, scaffolding×53   ·   decorative: 25 instance(s) of crack, toothpick_wing   ·   onboarding: corridor×18, entrance×17, foundation×21, leaf_utility×19</text>
 </svg></div>
 <script>
 document.querySelectorAll('input[data-target]').forEach(cb => cb.addEventListener('change', () => {

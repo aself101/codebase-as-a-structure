@@ -37,18 +37,21 @@ def _signal_status(validation: dict[str, Any], sig: str) -> str:
 
 
 def _node_value(node: dict[str, Any], sig: str) -> float | None:
+    """The value a predicate name denotes (D-017): an index by its index name; otherwise the
+    RAW metric (so `fan_out == 0` means what it says); a percentile only for names that exist
+    solely as percentiles (`*_nonzero`). `pNN` thresholds are ranked over these same values,
+    so `fan_out >= p75` is the 75th percentile of raw fan_out. Booleans read as 0/1."""
     d = node.get("derived") or {}
     idx = d.get("indices") or {}
     if sig in idx:
         v = idx[sig]
         return None if isinstance(v, bool) else v
-    pct = d.get("percentiles") or {}
-    if sig in pct:
-        return pct[sig]
-    v = node["metrics"].get(sig)
-    if isinstance(v, bool):
-        return 1.0 if v else 0.0
-    return v
+    if sig in node["metrics"]:
+        v = node["metrics"].get(sig)
+        if isinstance(v, bool):
+            return 1.0 if v else 0.0
+        return v
+    return (d.get("percentiles") or {}).get(sig)
 
 
 def check_gate(ruleset: Ruleset, validation: dict[str, Any]) -> dict[str, str]:

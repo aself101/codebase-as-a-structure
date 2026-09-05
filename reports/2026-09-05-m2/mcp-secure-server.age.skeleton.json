@@ -5,6 +5,9 @@
   "cookbook/database-server/src/utils/index.ts",
   "cookbook/filesystem-server/src/utils/index.ts",
   "cookbook/filesystem-server/src/utils/path-validator.ts",
+  "cookbook/http-server/src/tools/calculator.ts",
+  "cookbook/http-server/src/tools/echo.ts",
+  "cookbook/image-gen-server/src/index-minimal.ts",
   "cookbook/image-gen-server/src/providers/bfl.ts",
   "cookbook/image-gen-server/src/providers/google.ts",
   "cookbook/image-gen-server/src/providers/ideogram.ts",
@@ -12,19 +15,34 @@
   "cookbook/image-gen-server/src/providers/openai.ts",
   "cookbook/image-gen-server/src/providers/stability.ts",
   "cookbook/image-gen-server/src/tools/generate.ts",
+  "cookbook/image-gen-server/src/tools/index.ts",
+  "cookbook/kenpom-server/src/tools/conference.ts",
+  "cookbook/kenpom-server/src/tools/index.ts",
+  "cookbook/kenpom-server/src/tools/player.ts",
+  "cookbook/kenpom-server/src/tools/ratings.ts",
+  "cookbook/kenpom-server/src/tools/team.ts",
   "cookbook/monitoring-server/src/utils/alert-manager.ts",
   "cookbook/monitoring-server/src/utils/metrics-collector.ts",
+  "cookbook/nba-server/src/tools/game.ts",
+  "cookbook/nba-server/src/tools/index.ts",
+  "cookbook/nba-server/src/tools/live.ts",
+  "cookbook/nba-server/src/tools/player.ts",
+  "cookbook/nba-server/src/tools/team.ts",
   "cookbook/transaction-server/src/utils/index.ts",
   "src/security/config/tool-policies-config.ts",
   "src/security/config/tool-policies.ts",
   "src/security/config/tool-policy-validation.ts",
   "src/security/constants.ts",
+  "src/security/layers/contextual-config-builder.ts",
   "src/security/layers/layer-utils/content/patterns/index.ts",
   "src/security/layers/layer-utils/content/patterns/injection.ts",
+  "src/security/layers/layer-utils/semantics/glob-utils.ts",
+  "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
   "src/security/layers/layer5-contextual.ts",
   "src/security/layers/validation-layer-base.ts",
   "src/security/transport/secure-transport.ts",
   "src/security/utils/error-sanitizer.ts",
+  "src/security/utils/security-logger-types.ts",
   "src/security/utils/security-logger.ts",
   "src/security/utils/validation-pipeline.ts",
   "src/types/index.ts",
@@ -501,7 +519,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9059
+    "centrality": 0.0099
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -513,7 +531,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -523,7 +541,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9109
+    "centrality": 0.0101
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -535,7 +553,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -545,7 +563,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9158
+    "centrality": 0.0109
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -557,7 +575,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -567,7 +585,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9208
+    "centrality": 0.0114
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -579,7 +597,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -589,7 +607,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9455
+    "centrality": 0.0128
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -601,7 +619,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -611,7 +629,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9455
+    "centrality": 0.0128
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -623,7 +641,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -633,7 +651,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9455
+    "centrality": 0.0128
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -645,7 +663,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -655,7 +673,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 1.0
+    "centrality": 0.0661
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -667,7 +685,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -677,7 +695,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9455
+    "centrality": 0.0128
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -689,7 +707,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -699,7 +717,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9455
+    "centrality": 0.0128
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -711,7 +729,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -721,7 +739,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9802
+    "centrality": 0.0178
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -733,7 +751,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -743,7 +761,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9752
+    "centrality": 0.0169
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -755,7 +773,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -765,7 +783,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9901
+    "centrality": 0.0287
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -777,7 +795,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -787,7 +805,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9851
+    "centrality": 0.0284
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -799,7 +817,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -809,7 +827,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9703
+    "centrality": 0.0138
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -821,7 +839,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -831,7 +849,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.8985
+    "centrality": 0.0097
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -843,7 +861,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -853,7 +871,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9307
+    "centrality": 0.0119
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -865,7 +883,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -875,7 +893,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.995
+    "centrality": 0.0367
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -887,7 +905,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -897,7 +915,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9257
+    "centrality": 0.0117
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -909,7 +927,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -919,7 +937,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9604
+    "centrality": 0.013
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -931,7 +949,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -941,7 +959,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.9653
+    "centrality": 0.0137
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -953,7 +971,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -963,7 +981,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "centrality": 0.8985
+    "centrality": 0.0097
    },
    "feature": "hub",
    "name_implies_consequence": false,
@@ -975,7 +993,7 @@
     "centrality": "asserted"
    },
    "thresholds": {
-    "centrality >= p90": 0.8985
+    "centrality >= p90": 0.0097
    },
    "validation_status": "asserted"
   },
@@ -4576,7 +4594,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4588,7 +4606,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4598,7 +4616,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4610,7 +4628,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4620,7 +4638,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4632,7 +4650,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4642,7 +4660,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4654,7 +4672,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4664,7 +4682,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4676,7 +4694,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4686,7 +4704,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4698,7 +4716,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4708,7 +4726,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4720,7 +4738,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4730,7 +4748,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4742,7 +4760,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4752,7 +4770,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4764,7 +4782,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4774,7 +4792,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4786,7 +4804,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4796,7 +4814,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4808,7 +4826,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4818,7 +4836,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4830,7 +4848,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4840,7 +4858,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4852,7 +4870,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4862,7 +4880,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4874,7 +4892,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4884,7 +4902,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4896,7 +4914,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4906,7 +4924,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4918,7 +4936,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4928,7 +4946,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4940,7 +4958,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4950,7 +4968,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4962,7 +4980,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4972,7 +4990,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -4984,7 +5002,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -4994,7 +5012,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5006,7 +5024,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5016,7 +5034,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5028,7 +5046,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5038,7 +5056,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5050,7 +5068,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5060,7 +5078,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5072,7 +5090,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5082,7 +5100,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5094,7 +5112,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5104,7 +5122,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5116,7 +5134,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5126,7 +5144,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5138,7 +5156,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5148,7 +5166,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5160,7 +5178,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5170,7 +5188,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5182,7 +5200,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5192,7 +5210,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5204,7 +5222,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5214,7 +5232,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5226,7 +5244,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5236,7 +5254,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5248,7 +5266,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5258,7 +5276,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5270,7 +5288,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5280,7 +5298,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5292,7 +5310,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5302,7 +5320,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5314,7 +5332,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5324,7 +5342,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5336,7 +5354,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5346,7 +5364,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5358,7 +5376,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5368,7 +5386,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5380,7 +5398,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5390,7 +5408,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5402,7 +5420,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5412,7 +5430,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5424,7 +5442,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5434,7 +5452,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5446,7 +5464,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5456,7 +5474,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5468,7 +5486,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5478,7 +5496,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5490,7 +5508,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5500,7 +5518,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5512,7 +5530,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5522,7 +5540,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5534,7 +5552,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5544,7 +5562,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5556,7 +5574,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5566,7 +5584,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5578,7 +5596,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5588,7 +5606,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5600,7 +5618,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5610,7 +5628,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5622,7 +5640,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5632,7 +5650,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5644,7 +5662,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5654,7 +5672,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5666,7 +5684,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5676,7 +5694,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5688,7 +5706,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5698,7 +5716,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5710,7 +5728,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5720,7 +5738,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5732,7 +5750,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5742,7 +5760,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5754,7 +5772,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5764,7 +5782,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5776,7 +5794,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5786,7 +5804,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5798,7 +5816,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5808,7 +5826,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5820,7 +5838,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5830,7 +5848,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5842,7 +5860,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5852,7 +5870,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5864,7 +5882,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5874,7 +5892,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5886,7 +5904,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5896,7 +5914,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5908,7 +5926,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5918,7 +5936,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5930,7 +5948,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5940,7 +5958,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5952,7 +5970,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5962,7 +5980,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5974,7 +5992,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -5984,7 +6002,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -5996,7 +6014,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6006,7 +6024,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6018,7 +6036,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6028,7 +6046,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6040,7 +6058,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6050,7 +6068,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6062,7 +6080,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6072,7 +6090,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6084,7 +6102,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6094,7 +6112,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6106,7 +6124,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6116,7 +6134,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6128,7 +6146,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6138,7 +6156,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6150,7 +6168,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6160,7 +6178,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6172,7 +6190,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6182,7 +6200,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6194,7 +6212,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6204,7 +6222,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6216,7 +6234,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6226,7 +6244,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6238,7 +6256,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6248,7 +6266,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6260,7 +6278,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6270,7 +6288,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6282,7 +6300,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6292,7 +6310,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6304,7 +6322,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6314,7 +6332,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6326,7 +6344,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6336,7 +6354,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6348,7 +6366,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6358,7 +6376,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6370,7 +6388,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6380,7 +6398,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6392,7 +6410,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6402,7 +6420,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6414,7 +6432,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6424,7 +6442,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6436,7 +6454,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6446,7 +6464,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6458,7 +6476,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6468,7 +6486,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6480,7 +6498,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6490,7 +6508,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6502,7 +6520,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6512,7 +6530,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6524,7 +6542,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6534,7 +6552,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6546,7 +6564,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6556,7 +6574,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6568,7 +6586,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6578,7 +6596,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6590,7 +6608,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6600,7 +6618,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.7376
+    "last_touched_days": 252
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6612,7 +6630,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6622,7 +6640,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.9851
+    "last_touched_days": 256
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6634,7 +6652,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6644,7 +6662,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.9851
+    "last_touched_days": 256
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6656,7 +6674,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6666,7 +6684,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.9851
+    "last_touched_days": 256
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6678,7 +6696,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6688,7 +6706,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.9851
+    "last_touched_days": 256
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6700,7 +6718,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6710,7 +6728,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.9851
+    "last_touched_days": 256
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6722,7 +6740,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6732,7 +6750,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.9851
+    "last_touched_days": 256
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6744,7 +6762,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6754,7 +6772,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.9851
+    "last_touched_days": 256
    },
    "feature": "dark_room",
    "name_implies_consequence": false,
@@ -6766,7 +6784,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days >= p90": 0.7376
+    "last_touched_days >= p90": 252.0
    },
    "validation_status": "asserted"
   },
@@ -6776,7 +6794,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.1312
+    "last_touched_days": 224
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -6788,7 +6806,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -6798,7 +6816,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.1312
+    "last_touched_days": 224
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -6810,7 +6828,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -6820,7 +6838,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0396
+    "last_touched_days": 37
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -6832,7 +6850,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -6842,7 +6860,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0396
+    "last_touched_days": 37
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -6854,7 +6872,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -6864,7 +6882,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0396
+    "last_touched_days": 37
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -6876,7 +6894,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -6886,7 +6904,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.1312
+    "last_touched_days": 224
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -6898,7 +6916,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -6908,7 +6926,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0891
+    "last_touched_days": 130
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -6920,7 +6938,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -6930,7 +6948,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0396
+    "last_touched_days": 37
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -6942,7 +6960,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -6952,7 +6970,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.1312
+    "last_touched_days": 224
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -6964,7 +6982,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -6974,7 +6992,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.1312
+    "last_touched_days": 224
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -6986,7 +7004,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -6996,7 +7014,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.1312
+    "last_touched_days": 224
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7008,7 +7026,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7018,7 +7036,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0396
+    "last_touched_days": 37
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7030,7 +7048,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7040,7 +7058,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0396
+    "last_touched_days": 37
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7052,7 +7070,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7062,7 +7080,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0396
+    "last_touched_days": 37
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7074,7 +7092,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7084,7 +7102,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0842
+    "last_touched_days": 117
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7096,7 +7114,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7106,7 +7124,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.1312
+    "last_touched_days": 224
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7118,7 +7136,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7128,7 +7146,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.1312
+    "last_touched_days": 224
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7140,7 +7158,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7150,7 +7168,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.1312
+    "last_touched_days": 224
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7162,7 +7180,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7172,7 +7190,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.1312
+    "last_touched_days": 224
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7184,7 +7202,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7194,7 +7212,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0396
+    "last_touched_days": 37
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7206,7 +7224,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7216,7 +7234,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0396
+    "last_touched_days": 37
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7228,7 +7246,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7238,7 +7256,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0396
+    "last_touched_days": 37
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7250,7 +7268,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7260,7 +7278,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.1312
+    "last_touched_days": 224
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7272,7 +7290,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7282,7 +7300,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.1312
+    "last_touched_days": 224
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7294,7 +7312,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7304,7 +7322,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.1312
+    "last_touched_days": 224
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7316,7 +7334,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7326,7 +7344,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.1312
+    "last_touched_days": 224
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7338,7 +7356,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7348,7 +7366,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.1312
+    "last_touched_days": 224
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7360,7 +7378,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7370,7 +7388,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.005
+    "last_touched_days": 0
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7382,7 +7400,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7392,7 +7410,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0396
+    "last_touched_days": 37
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7404,7 +7422,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7414,7 +7432,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0767
+    "last_touched_days": 63
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7426,7 +7444,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7436,7 +7454,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0767
+    "last_touched_days": 63
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7448,7 +7466,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7458,7 +7476,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.1312
+    "last_touched_days": 224
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7470,7 +7488,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7480,7 +7498,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0396
+    "last_touched_days": 37
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7492,7 +7510,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -7502,7 +7520,7 @@
    "degraded": false,
    "diagnostic": true,
    "evidence": {
-    "last_touched_days": 0.0396
+    "last_touched_days": 37
    },
    "feature": "lit_room",
    "name_implies_consequence": false,
@@ -7514,7 +7532,7 @@
     "last_touched_days": "asserted"
    },
    "thresholds": {
-    "last_touched_days <= p10": 0.1312
+    "last_touched_days <= p10": 224.0
    },
    "validation_status": "asserted"
   },
@@ -8104,7 +8122,7 @@
   "name": "age",
   "wing_depth": 1
  },
- "mapped_at": "2026-09-05T17:13:38+00:00",
+ "mapped_at": "2026-09-05T17:21:43+00:00",
  "mapper_version": "0.2.2",
  "overlays": [
   {
@@ -8115,8 +8133,433 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.9059,
-      "fan_out": 0.7203
+      "fan_in": 0,
+      "fan_out": 2
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/advanced-validation-server/src/index.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 0,
+      "fan_out": 2
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/database-server/src/index.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 0,
+      "fan_out": 2
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/filesystem-server/src/index.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 0,
+      "fan_out": 2
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/http-server/src/index.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 0,
+      "fan_out": 2
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/http-server/src/tools/index.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 0,
+      "fan_out": 2
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/image-gen-server/src/index-debug.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 0,
+      "fan_out": 2
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/image-gen-server/src/index-minimal.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 0,
+      "fan_out": 4
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/image-gen-server/src/index.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 0,
+      "fan_out": 4
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/image-gen-server/src/tools/index.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 0,
+      "fan_out": 5
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/kenpom-server/src/index.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 0,
+      "fan_out": 5
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/kenpom-server/src/tools/index.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 0,
+      "fan_out": 2
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/monitoring-server/src/index.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 0,
+      "fan_out": 2
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/multi-endpoint-server/src/index.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 0,
+      "fan_out": 4
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/multi-endpoint-server/src/tools/index.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 0,
+      "fan_out": 5
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/nba-server/src/index.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 0,
+      "fan_out": 5
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/nba-server/src/tools/index.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 0,
+      "fan_out": 3
+     },
+     "feature": "entrance",
+     "name_implies_consequence": false,
+     "node": "cookbook/transaction-server/src/index.ts",
+     "position_name": "import-graph root",
+     "predicate": "fan_in == 0 and fan_out >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in == 0": 0.0,
+      "fan_out >= p75": 2.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "centrality": 0.0099,
+      "fan_out": 2
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8129,8 +8572,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8140,8 +8583,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.9109,
-      "fan_out": 0.7203
+      "centrality": 0.0101,
+      "fan_out": 2
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8154,8 +8597,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8165,8 +8608,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.9158,
-      "fan_out": 0.5099
+      "centrality": 0.0109,
+      "fan_out": 1
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8179,8 +8622,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8190,8 +8633,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.9455,
-      "fan_out": 0.5099
+      "centrality": 0.0128,
+      "fan_out": 1
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8204,8 +8647,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8215,8 +8658,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.9455,
-      "fan_out": 0.5099
+      "centrality": 0.0128,
+      "fan_out": 1
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8229,8 +8672,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8240,8 +8683,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.9455,
-      "fan_out": 0.5099
+      "centrality": 0.0128,
+      "fan_out": 1
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8254,8 +8697,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8265,8 +8708,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 1.0,
-      "fan_out": 0.9431
+      "centrality": 0.0661,
+      "fan_out": 5
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8279,8 +8722,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8290,8 +8733,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.9455,
-      "fan_out": 0.5099
+      "centrality": 0.0128,
+      "fan_out": 1
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8304,8 +8747,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8315,8 +8758,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.9455,
-      "fan_out": 0.5099
+      "centrality": 0.0128,
+      "fan_out": 1
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8329,8 +8772,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8340,8 +8783,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.9802,
-      "fan_out": 0.7203
+      "centrality": 0.0178,
+      "fan_out": 2
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8354,8 +8797,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8365,8 +8808,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.9901,
-      "fan_out": 0.7203
+      "centrality": 0.0287,
+      "fan_out": 2
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8379,8 +8822,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8390,8 +8833,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.9851,
-      "fan_out": 0.5099
+      "centrality": 0.0284,
+      "fan_out": 1
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8404,8 +8847,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8415,8 +8858,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.9703,
-      "fan_out": 0.5099
+      "centrality": 0.0138,
+      "fan_out": 1
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8429,8 +8872,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8440,8 +8883,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.8985,
-      "fan_out": 0.5099
+      "centrality": 0.0097,
+      "fan_out": 1
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8454,8 +8897,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8465,8 +8908,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.9307,
-      "fan_out": 0.5099
+      "centrality": 0.0119,
+      "fan_out": 1
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8479,8 +8922,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8490,8 +8933,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.995,
-      "fan_out": 0.9431
+      "centrality": 0.0367,
+      "fan_out": 5
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8504,8 +8947,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8515,8 +8958,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.9257,
-      "fan_out": 0.8193
+      "centrality": 0.0117,
+      "fan_out": 3
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8529,8 +8972,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -8540,8 +8983,8 @@
      "degraded": false,
      "diagnostic": true,
      "evidence": {
-      "centrality": 0.9653,
-      "fan_out": 0.9777
+      "centrality": 0.0137,
+      "fan_out": 6
      },
      "feature": "corridor",
      "name_implies_consequence": false,
@@ -8554,8 +8997,8 @@
       "fan_out": "asserted"
      },
      "thresholds": {
-      "centrality >= p90": 0.8985,
-      "fan_out >= p50": 0.5099
+      "centrality >= p90": 0.0097,
+      "fan_out >= p50": 1.0
      },
      "validation_status": "asserted"
     },
@@ -9020,6 +9463,481 @@
       "load_index >= p90": 0.7855800000000002
      },
      "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 3,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "cookbook/filesystem-server/src/utils/path-validator.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 3,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "cookbook/http-server/src/tools/calculator.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 3,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "cookbook/http-server/src/tools/echo.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 4,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "cookbook/kenpom-server/src/tools/conference.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 4,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "cookbook/kenpom-server/src/tools/player.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 4,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "cookbook/kenpom-server/src/tools/ratings.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 4,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "cookbook/kenpom-server/src/tools/team.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 3,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "cookbook/monitoring-server/src/utils/alert-manager.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 3,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "cookbook/monitoring-server/src/utils/metrics-collector.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 4,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "cookbook/nba-server/src/tools/game.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 3,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "cookbook/nba-server/src/tools/live.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 4,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "cookbook/nba-server/src/tools/player.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 4,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "cookbook/nba-server/src/tools/team.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 6,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "src/security/constants.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 3,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "src/security/layers/contextual-config-builder.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 3,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "src/security/layers/layer-utils/semantics/glob-utils.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 3,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 3,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "src/security/utils/security-logger-types.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
+    },
+    {
+     "decorative": false,
+     "decorative_reason": null,
+     "degraded": false,
+     "diagnostic": true,
+     "evidence": {
+      "fan_in": 3,
+      "fan_out": 0
+     },
+     "feature": "leaf_utility",
+     "name_implies_consequence": false,
+     "node": "src/types/policies.ts",
+     "position_name": "imported leaf",
+     "predicate": "fan_out == 0 and fan_in >= p75",
+     "profile": "onboarding",
+     "signals": {
+      "fan_in": "asserted",
+      "fan_out": "asserted"
+     },
+     "thresholds": {
+      "fan_in >= p75": 3.0,
+      "fan_out == 0": 0.0
+     },
+     "validation_status": "asserted"
     }
    ],
    "profile": "onboarding",
@@ -9032,10 +9950,12 @@
     "decorative_count": 0,
     "decorative_features": [],
     "degraded_count": 0,
-    "diagnostic_count": 39,
+    "diagnostic_count": 75,
     "feature_counts": {
      "corridor": 18,
-     "foundation": 21
+     "entrance": 17,
+     "foundation": 21,
+     "leaf_utility": 19
     }
    }
   }
@@ -9054,7 +9974,7 @@
   "version": "0.1.0"
  },
  "schema_version": "0.1",
- "skeleton_hash": "59db6d2a1e812237a5047389eb1e2266a545e06c4e18356e410d6f9467ba0bb4",
+ "skeleton_hash": "bca692f67ea211423561345034d4bcfe4eb77580eb26e1217ce607e0bb95d2d2",
  "strata": {
   "bands": 5,
   "by_node": {
@@ -9470,7 +10390,7 @@
  "substrate_config_fingerprint": "80b2a632f8b73997c59367c86ae88c727c3f6fbf90180e966b9601600b3db92c",
  "substrate_seed": "2c7db66a25f4878a8c602cf119656c6ef585323a6a52ba2c180cc0acd86ceff8",
  "summary": {
-  "co_located_count": 30,
+  "co_located_count": 48,
   "decorative_count": 25,
   "decorative_features": [
    "crack",

@@ -2,9 +2,9 @@
 <defs><pattern id="water" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#9fc5e8"/><path d="M0 4 Q2 2 4 4 T8 4" stroke="#3d7ab8" fill="none"/></pattern><pattern id="scaffold" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="none"/><line x1="0" y1="0" x2="0" y2="8" stroke="#5c8a3a" stroke-width="2"/></pattern></defs>
 <rect width="1760" height="604" fill="#faf8f3"/>
 <text x="24" y="26" font-size="16" font-weight="bold">uluops-registry-api @ f7414cc7bb — cutaway, profile maintainability + onboarding</text>
-<text x="24" y="46">diagnostic features: 283 · <tspan fill="#c2185b" font-weight="bold">decorative (ungrounded, not a diagnosis): 27</tspan> · degraded (graph): 0 · population 267 files · co-located across profiles: 31</text>
+<text x="24" y="46">diagnostic features: 283 · <tspan fill="#c2185b" font-weight="bold">decorative (ungrounded, not a diagnosis): 27</tspan> · degraded (graph): 0 · population 267 files · co-located across profiles: 38</text>
 <text x="24" y="64" fill="#555">gate: bug_pressure_index=unvalidated, centrality=asserted, fan_in=asserted, fan_out=asserted, last_touched_days=asserted, load_index=asserted, neglect_index=asserted, reinforcement_index=asserted</text>
-<text x="24" y="82" fill="#555">seed c576e0759dc9… · substrate fp 80b2a632f8b7… · validation fp cb320f191852… · ruleset maintainability@0.1.0 · skeleton f6af19b2bde4…</text>
+<text x="24" y="82" fill="#555">seed c576e0759dc9… · substrate fp 80b2a632f8b7… · validation fp cb320f191852… · ruleset maintainability@0.1.0 · skeleton f7de2fffa416…</text>
 <text x="24" y="100" fill="#555">strata = dependency layers (longest import path to a leaf), leaves at the bottom · wings = top-level directory · room width ∝ √lines · material = age · every named feature denotes present structural position (validation §2.1.1)</text>
 <rect x="24" y="118" width="14" height="10" style="stroke:#2b2b2b;stroke-width:3;fill:#d9cfb8"/>
 <text x="42" y="127" fill="#333">foundation / high-load hub</text>
@@ -22,7 +22,7 @@
 <text x="757" y="127" fill="#333">decorative (ungrounded)</text>
 <text x="24" y="145" fill="#333">overlays (corner badge per profile, shown side by side, never merged):</text>
 <polygon points="526,136 536,136 526,146" fill="#1f6f8b"/>
-<text x="540" y="145" fill="#333">onboarding: corridor, foundation</text>
+<text x="540" y="145" fill="#333">onboarding: corridor, entrance, foundation, leaf_utility</text>
 <g id="base" data-profile="maintainability">
 <text x="24" y="162" font-weight="bold" fill="#333">(root)</text>
 <rect x="24" y="530" width="25" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>eslint.config.js
@@ -90,13 +90,13 @@ lines 100 · fan_in 0 · fan_out 3 · age 75d · last touched 75d
 no named feature</title></rect>
 <rect x="265" y="310" width="28" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-fork-parents.ts
 lines 110 · fan_in 0 · fan_out 5 · age 97d · last touched 50d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="296" y="310" width="29" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-is-latest.ts
 lines 118 · fan_in 0 · fan_out 1 · age 79d · last touched 15d
 no named feature</title></rect>
 <rect x="328" y="310" width="32" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-missing-risk-profiles.ts
 lines 149 · fan_in 0 · fan_out 6 · age 82d · last touched 15d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="363" y="310" width="30" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-normalize-hashes.ts
 lines 130 · fan_in 0 · fan_out 1 · age 78d · last touched 78d
 no named feature</title></rect>
@@ -105,7 +105,7 @@ lines 178 · fan_in 0 · fan_out 1 · age 50d · last touched 15d
 no named feature</title></rect>
 <rect x="244" y="291" width="40" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>scripts/calibration-gate.ts
 lines 258 · fan_in 0 · fan_out 5 · age 96d · last touched 15d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="287" y="291" width="38" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/lineage-consistency-check.ts
 lines 238 · fan_in 0 · fan_out 1 · age 82d · last touched 10d
 no named feature</title></rect>
@@ -125,25 +125,25 @@ no named feature</title></rect>
 <line x1="203" y1="328" x2="419" y2="328" stroke="#bbb" stroke-dasharray="2 4"/>
 <rect x="207" y="224" width="22" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-references.ts
 lines 54 · fan_in 0 · fan_out 4 · age 167d · last touched 167d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="232" y="224" width="37" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-stale-risk-profiles.ts
 lines 215 · fan_in 0 · fan_out 8 · age 82d · last touched 12d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="272" y="224" width="39" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-stale-runtime-md.ts
 lines 245 · fan_in 0 · fan_out 7 · age 31d · last touched 31d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="314" y="224" width="29" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-unique-execution-count.ts
 lines 117 · fan_in 0 · fan_out 2 · age 64d · last touched 64d
 no named feature</title></rect>
 <rect x="346" y="224" width="35" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-version-stamping.ts
 lines 187 · fan_in 0 · fan_out 5 · age 95d · last touched 95d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="384" y="224" width="29" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/requeue-deep-stale.ts
 lines 120 · fan_in 0 · fan_out 3 · age 12d · last touched 12d
 no named feature</title></rect>
 <rect x="207" y="205" width="30" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/run-deep-analysis.ts
 lines 122 · fan_in 0 · fan_out 5 · age 74d · last touched 74d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="240" y="205" width="19" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/time-recompute-all.ts
 lines 32 · fan_in 0 · fan_out 2 · age 55d · last touched 55d
 no named feature</title></rect>
@@ -155,7 +155,8 @@ lines 157 · fan_in 15 · fan_out 0 · age 226d · last touched 15d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="483" y="530" width="26" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/db/migrations/001_create_definitions.ts
 lines 82 · fan_in 0 · fan_out 0 · age 225d · last touched 225d
 [maintainability] dark_room
@@ -337,35 +338,42 @@ lines 144 · fan_in 12 · fan_out 0 · age 126d · last touched 120d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="916" y="492" width="27" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/schemas/fork/schema.ts
 lines 92 · fan_in 4 · fan_out 0 · age 225d · last touched 76d
 [maintainability] hub (position: hub)
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="447" y="473" width="26" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/schemas/user/schema.ts
 lines 88 · fan_in 8 · fan_out 0 · age 217d · last touched 142d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="476" y="473" width="27" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/schemas/validation/schema.ts
 lines 94 · fan_in 4 · fan_out 0 · age 225d · last touched 9d
 [maintainability] hub (position: hub)
 [maintainability] lit_room
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="506" y="473" width="48" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/schemas/wdl/types.ts
 lines 413 · fan_in 4 · fan_out 0 · age 222d · last touched 170d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="557" y="473" width="23" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/services/analytics/health.ts
 lines 57 · fan_in 4 · fan_out 0 · age 149d · last touched 7d
 [maintainability] crack [decorative]
 [maintainability] lit_room
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="583" y="473" width="27" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/services/safety/analyzer-version.ts
 lines 99 · fan_in 10 · fan_out 0 · age 44d · last touched 12d
 [maintainability] foundation (position: high-load hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="613" y="473" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/services/safety/section-classifier.ts
 lines 63 · fan_in 2 · fan_out 0 · age 67d · last touched 67d
 [maintainability] scaffolding</title></rect>
@@ -374,19 +382,22 @@ lines 283 · fan_in 23 · fan_out 0 · age 97d · last touched 12d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="683" y="473" width="31" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/services/safety/yaml-walker.ts
 lines 134 · fan_in 8 · fan_out 0 · age 92d · last touched 92d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="717" y="473" width="30" height="16" style="fill:#c7b894;stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>src/terminal/styles.ts
 lines 132 · fan_in 6 · fan_out 0 · age 218d · last touched 218d
 [maintainability] dark_room
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="750" y="473" width="20" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>src/utils/async-handler.ts
 lines 36 · fan_in 16 · fan_out 0 · age 226d · last touched 196d
 [maintainability] dark_room
@@ -394,7 +405,8 @@ lines 36 · fan_in 16 · fan_out 0 · age 226d · last touched 196d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="773" y="473" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/utils/cycle-detection.ts
 lines 145 · fan_in 3 · fan_out 0 · age 225d · last touched 225d
 [maintainability] dark_room
@@ -405,26 +417,31 @@ lines 254 · fan_in 56 · fan_out 0 · age 226d · last touched 10d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="850" y="473" width="17" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/utils/format-definition-id.ts
 lines 21 · fan_in 10 · fan_out 0 · age 213d · last touched 213d
 [maintainability] dark_room
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="870" y="473" width="16" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/utils/hash.ts
 lines 20 · fan_in 11 · fan_out 0 · age 226d · last touched 78d
 [maintainability] foundation (position: high-load hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="889" y="473" width="29" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/utils/json.ts
 lines 119 · fan_in 5 · fan_out 0 · age 223d · last touched 120d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="921" y="473" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/utils/platform-version-gate.ts
 lines 83 · fan_in 2 · fan_out 0 · age 61d · last touched 61d
 [maintainability] scaffolding</title></rect>
 <rect x="447" y="454" width="23" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/utils/request-context.ts
 lines 62 · fan_in 5 · fan_out 0 · age 67d · last touched 67d
 [maintainability] hub (position: hub)
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="473" y="454" width="19" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>src/utils/singleton.ts
 lines 34 · fan_in 18 · fan_out 0 · age 226d · last touched 226d
 [maintainability] dark_room
@@ -432,19 +449,22 @@ lines 34 · fan_in 18 · fan_out 0 · age 226d · last touched 226d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="495" y="454" width="26" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/utils/uuid.ts
 lines 81 · fan_in 36 · fan_out 0 · age 226d · last touched 55d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="524" y="454" width="26" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/utils/validated-request.ts
 lines 86 · fan_in 15 · fan_out 0 · age 224d · last touched 140d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <line x1="443" y1="548" x2="961" y2="548" stroke="#bbb" stroke-dasharray="2 4"/>
 <line x1="443" y1="443" x2="961" y2="443" stroke="#bbb" stroke-dasharray="2 4"/>
 <rect x="447" y="396" width="31" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/config/database.ts
@@ -776,7 +796,7 @@ lines 18 · fan_in 1 · fan_out 3 · age 225d · last touched 176d
 [maintainability] flooded_basement</title></rect>
 <rect x="447" y="272" width="36" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/schemas/index.ts
 lines 201 · fan_in 0 · fan_out 10 · age 225d · last touched 15d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="486" y="272" width="18" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/schemas/model/index.ts
 lines 28 · fan_in 1 · fan_out 3 · age 225d · last touched 176d
 [maintainability] flooded_basement</title></rect>
@@ -886,7 +906,7 @@ lines 253 · fan_in 3 · fan_out 9 · age 220d · last touched 9d
 [maintainability] scaffolding</title></rect>
 <rect x="698" y="224" width="22" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/controllers/index.ts
 lines 56 · fan_in 0 · fan_out 14 · age 224d · last touched 134d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="723" y="224" width="32" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/controllers/model-controller.ts
 lines 154 · fan_in 3 · fan_out 4 · age 224d · last touched 8d
 [maintainability] crack [decorative]
@@ -998,7 +1018,7 @@ lines 596 · fan_in 5 · fan_out 19 · age 220d · last touched 7d
 [maintainability] scaffolding</title></rect>
 <rect x="834" y="186" width="30" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/services/index.ts
 lines 124 · fan_in 0 · fan_out 10 · age 225d · last touched 95d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="867" y="186" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/services/model/index.ts
 lines 1167 · fan_in 6 · fan_out 9 · age 217d · last touched 8d
 [maintainability] crack [decorative]
@@ -1029,16 +1049,31 @@ no named feature</title></rect>
 <line x1="443" y1="242" x2="961" y2="242" stroke="#bbb" stroke-dasharray="2 4"/>
 </g>
 <g class="overlay" id="overlay-0" data-profile="onboarding">
+<polygon points="265,310 272,310 265,317" fill="#1f6f8b"/>
+<polygon points="328,310 335,310 328,317" fill="#1f6f8b"/>
+<polygon points="244,291 251,291 244,298" fill="#1f6f8b"/>
+<polygon points="207,224 214,224 207,231" fill="#1f6f8b"/>
+<polygon points="232,224 239,224 232,231" fill="#1f6f8b"/>
+<polygon points="272,224 279,224 272,231" fill="#1f6f8b"/>
+<polygon points="346,224 353,224 346,231" fill="#1f6f8b"/>
+<polygon points="207,205 214,205 207,212" fill="#1f6f8b"/>
 <polygon points="447,530 454,530 447,537" fill="#1f6f8b"/>
 <polygon points="881,492 888,492 881,499" fill="#1f6f8b"/>
+<polygon points="916,492 923,492 916,499" fill="#1f6f8b"/>
 <polygon points="447,473 454,473 447,480" fill="#1f6f8b"/>
+<polygon points="476,473 483,473 476,480" fill="#1f6f8b"/>
+<polygon points="506,473 513,473 506,480" fill="#1f6f8b"/>
+<polygon points="557,473 564,473 557,480" fill="#1f6f8b"/>
 <polygon points="583,473 590,473 583,480" fill="#1f6f8b"/>
 <polygon points="639,473 646,473 639,480" fill="#1f6f8b"/>
 <polygon points="683,473 690,473 683,480" fill="#1f6f8b"/>
 <polygon points="717,473 724,473 717,480" fill="#1f6f8b"/>
 <polygon points="750,473 757,473 750,480" fill="#1f6f8b"/>
 <polygon points="808,473 815,473 808,480" fill="#1f6f8b"/>
+<polygon points="850,473 857,473 850,480" fill="#1f6f8b"/>
 <polygon points="870,473 877,473 870,480" fill="#1f6f8b"/>
+<polygon points="889,473 896,473 889,480" fill="#1f6f8b"/>
+<polygon points="447,454 454,454 447,461" fill="#1f6f8b"/>
 <polygon points="473,454 480,454 473,461" fill="#1f6f8b"/>
 <polygon points="495,454 502,454 495,461" fill="#1f6f8b"/>
 <polygon points="524,454 531,454 524,461" fill="#1f6f8b"/>
@@ -1057,9 +1092,12 @@ no named feature</title></rect>
 <polygon points="610,310 617,310 610,317" fill="#1f6f8b"/>
 <polygon points="795,310 802,310 795,317" fill="#1f6f8b"/>
 <polygon points="913,291 920,291 913,298" fill="#1f6f8b"/>
+<polygon points="447,272 454,272 447,279" fill="#1f6f8b"/>
 <polygon points="829,272 836,272 829,279" fill="#1f6f8b"/>
 <polygon points="886,272 893,272 886,279" fill="#1f6f8b"/>
+<polygon points="698,224 705,224 698,231" fill="#1f6f8b"/>
 <polygon points="836,205 843,205 836,212" fill="#1f6f8b"/>
+<polygon points="834,186 841,186 834,193" fill="#1f6f8b"/>
 </g>
-<text x="24" y="592" fill="#333">diagnostic: dark_room×28, flooded_basement×28, foundation×27, hub×27, lit_room×40, scaffolding×133   ·   decorative: 27 instance(s) of crack   ·   onboarding: corridor×13, foundation×27</text>
+<text x="24" y="592" fill="#333">diagnostic: dark_room×28, flooded_basement×28, foundation×27, hub×27, lit_room×40, scaffolding×133   ·   decorative: 27 instance(s) of crack   ·   onboarding: corridor×13, entrance×11, foundation×27, leaf_utility×20</text>
 </svg>

@@ -7,7 +7,11 @@ each with a predicate over substrate signals. Predicate grammar (deliberately sm
     term := <signal> <op> <value>
     op   := >= | <= | > | < | ==
     value := pNN            -- the NN-th percentile of that signal across the population
-           | <float>        -- an absolute threshold (indices and percentiles are in [0, 1])
+           | <float>        -- an absolute threshold on the signal's own scale
+
+A signal name denotes an index (by its index name) or else the RAW metric — `fan_out == 0`
+means no in-repo imports — never the percentile of a raw metric; `pNN` ranks the raw values.
+Names that exist only as percentiles (`fan_in_nonzero`) resolve to those.
 
 `and` may also be written `∧`. There is no `or` and no `not`: a feature is a conjunction,
 and a different feature is a different conjunction.

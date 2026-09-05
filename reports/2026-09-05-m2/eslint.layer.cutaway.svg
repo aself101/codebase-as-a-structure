@@ -2,9 +2,9 @@
 <defs><pattern id="water" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#9fc5e8"/><path d="M0 4 Q2 2 4 4 T8 4" stroke="#3d7ab8" fill="none"/></pattern><pattern id="scaffold" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="none"/><line x1="0" y1="0" x2="0" y2="8" stroke="#5c8a3a" stroke-width="2"/></pattern></defs>
 <rect width="1943" height="756" fill="#faf8f3"/>
 <text x="24" y="26" font-size="16" font-weight="bold">eslint @ 3f20a57c62 — cutaway, profile maintainability + onboarding</text>
-<text x="24" y="46">diagnostic features: 648 · <tspan fill="#c2185b" font-weight="bold">decorative (ungrounded, not a diagnosis): 49</tspan> · degraded (graph): 0 · population 473 files · co-located across profiles: 55</text>
+<text x="24" y="46">diagnostic features: 648 · <tspan fill="#c2185b" font-weight="bold">decorative (ungrounded, not a diagnosis): 49</tspan> · degraded (graph): 0 · population 473 files · co-located across profiles: 181</text>
 <text x="24" y="64" fill="#555">gate: bug_pressure_index=unvalidated, centrality=asserted, fan_in=asserted, fan_out=asserted, last_touched_days=asserted, load_index=asserted, neglect_index=asserted, reinforcement_index=asserted</text>
-<text x="24" y="82" fill="#555">seed a50b92780e08… · substrate fp 80b2a632f8b7… · validation fp cb320f191852… · ruleset maintainability@0.1.0 · skeleton 5f1acf92a2ef…</text>
+<text x="24" y="82" fill="#555">seed a50b92780e08… · substrate fp 80b2a632f8b7… · validation fp cb320f191852… · ruleset maintainability@0.1.0 · skeleton 1f1cdedc7e8d…</text>
 <text x="24" y="100" fill="#555">strata = dependency layers (longest import path to a leaf), leaves at the bottom · wings = top-level directory · room width ∝ √lines · material = age · every named feature denotes present structural position (validation §2.1.1)</text>
 <rect x="24" y="118" width="14" height="10" style="stroke:#2b2b2b;stroke-width:3;fill:#d9cfb8"/>
 <text x="42" y="127" fill="#333">foundation / high-load hub</text>
@@ -22,7 +22,7 @@
 <text x="757" y="127" fill="#333">decorative (ungrounded)</text>
 <text x="24" y="145" fill="#333">overlays (corner badge per profile, shown side by side, never merged):</text>
 <polygon points="526,136 536,136 526,146" fill="#1f6f8b"/>
-<text x="540" y="145" fill="#333">onboarding: corridor, foundation</text>
+<text x="540" y="145" fill="#333">onboarding: corridor, entrance, foundation, leaf_utility</text>
 <g id="base" data-profile="maintainability">
 <text x="24" y="162" font-weight="bold" fill="#333">(root)</text>
 <line x1="20" y1="700" x2="141" y2="700" stroke="#bbb" stroke-dasharray="2 4"/>
@@ -38,11 +38,13 @@ lines 63 · fan_in 0 · fan_out 0 · age 2754d · last touched 533d
 <rect x="24" y="205" width="64" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>Makefile.js
 lines 989 · fan_in 0 · fan_out 3 · age 4663d · last touched 37d
 [maintainability] crack [decorative]
-[maintainability] lit_room</title></rect>
+[maintainability] lit_room
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="91" y="205" width="47" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>eslint.config.js
 lines 387 · fan_in 0 · fan_out 3 · age 1495d · last touched 0d
 [maintainability] crack [decorative]
-[maintainability] lit_room</title></rect>
+[maintainability] lit_room
+[onboarding] entrance (position: import-graph root)</title></rect>
 <line x1="20" y1="223" x2="141" y2="223" stroke="#bbb" stroke-dasharray="2 4"/>
 <text x="169" y="162" font-weight="bold" fill="#333">bin</text>
 <line x1="165" y1="700" x2="249" y2="700" stroke="#bbb" stroke-dasharray="2 4"/>
@@ -51,7 +53,8 @@ lines 387 · fan_in 0 · fan_out 3 · age 1495d · last touched 0d
 <line x1="165" y1="480" x2="249" y2="480" stroke="#bbb" stroke-dasharray="2 4"/>
 <rect x="169" y="205" width="34" height="16" style="fill:#7e6f52;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>bin/eslint.js
 lines 177 · fan_in 0 · fan_out 1 · age 4814d · last touched 99d
-[maintainability] crack [decorative]</title></rect>
+[maintainability] crack [decorative]
+[onboarding] entrance (position: import-graph root)</title></rect>
 <line x1="165" y1="223" x2="249" y2="223" stroke="#bbb" stroke-dasharray="2 4"/>
 <text x="277" y="162" font-weight="bold" fill="#333">conf</text>
 <line x1="273" y1="700" x2="357" y2="700" stroke="#bbb" stroke-dasharray="2 4"/>
@@ -60,13 +63,15 @@ lines 13 · fan_in 6 · fan_out 0 · age 968d · last touched 448d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="295" y="653" width="32" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>conf/globals.js
 lines 151 · fan_in 3 · fan_out 0 · age 1735d · last touched 163d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <line x1="273" y1="671" x2="357" y2="671" stroke="#bbb" stroke-dasharray="2 4"/>
 <line x1="273" y1="528" x2="357" y2="528" stroke="#bbb" stroke-dasharray="2 4"/>
 <line x1="273" y1="480" x2="357" y2="480" stroke="#bbb" stroke-dasharray="2 4"/>
@@ -76,7 +81,8 @@ lines 151 · fan_in 3 · fan_out 0 · age 1735d · last touched 163d
 <rect x="385" y="653" width="23" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>docs/_examples/custom-rule-tutorial-code/enforce-foo-bar.js
 lines 62 · fan_in 2 · fan_out 0 · age 1179d · last touched 161d
 [maintainability] hub (position: hub)
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="411" y="653" width="16" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/_examples/custom-rule-tutorial-code/example.js
 lines 16 · fan_in 0 · fan_out 0 · age 1179d · last touched 533d
 [maintainability] dark_room</title></rect>
@@ -140,7 +146,8 @@ lines 0 · fan_in 0 · fan_out 0 · age 1583d · last touched 1583d
 [maintainability] dark_room</title></rect>
 <rect x="511" y="615" width="18" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/tools/code-block-utils.js
 lines 26 · fan_in 2 · fan_out 0 · age 911d · last touched 533d
-[maintainability] dark_room</title></rect>
+[maintainability] dark_room
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="532" y="615" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/tools/validate-links.js
 lines 55 · fan_in 0 · fan_out 0 · age 1283d · last touched 169d
 no named feature</title></rect>
@@ -150,18 +157,19 @@ lines 8 · fan_in 1 · fan_out 1 · age 1179d · last touched 533d
 [maintainability] dark_room</title></rect>
 <rect x="401" y="510" width="21" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/_data/flags.js
 lines 43 · fan_in 0 · fan_out 1 · age 772d · last touched 533d
-[maintainability] dark_room</title></rect>
+[maintainability] dark_room
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="425" y="510" width="26" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/tools/markdown-it-rule-example.js
 lines 89 · fan_in 2 · fan_out 1 · age 1019d · last touched 385d
 no named feature</title></rect>
 <line x1="381" y1="528" x2="609" y2="528" stroke="#bbb" stroke-dasharray="2 4"/>
 <rect x="385" y="462" width="17" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/_examples/custom-rule-tutorial-code/eslint.config.js
 lines 23 · fan_in 0 · fan_out 1 · age 1179d · last touched 356d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <line x1="381" y1="480" x2="609" y2="480" stroke="#bbb" stroke-dasharray="2 4"/>
 <rect x="385" y="205" width="52" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/.eleventy.js
 lines 504 · fan_in 0 · fan_out 4 · age 1583d · last touched 140d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="440" y="205" width="25" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/_plugins/md-syntax-highlighter.js
 lines 80 · fan_in 1 · fan_out 1 · age 1365d · last touched 533d
 [maintainability] dark_room</title></rect>
@@ -188,23 +196,27 @@ lines 27 · fan_in 3 · fan_out 0 · age 3827d · last touched 533d
 [maintainability] dark_room
 [maintainability] foundation (position: high-load hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="739" y="653" width="15" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>lib/config-api.js
 lines 15 · fan_in 3 · fan_out 0 · age 545d · last touched 119d
 [maintainability] foundation (position: high-load hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="757" y="653" width="24" height="16" style="fill:#c7b894;stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>lib/languages/js/source-code/token-store/cursor.js
 lines 69 · fan_in 5 · fan_out 0 · age 3494d · last touched 533d
 [maintainability] dark_room
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="784" y="653" width="29" height="16" style="fill:#c7b894;stroke:#8a4b00;stroke-width:2"><title>lib/languages/js/source-code/token-store/utils.js
 lines 118 · fan_in 5 · fan_out 0 · age 3494d · last touched 168d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="816" y="653" width="34" height="16" style="fill:#e8e2d3;stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>lib/languages/js/validate-language-options.js
 lines 170 · fan_in 1 · fan_out 0 · age 812d · last touched 533d
 [maintainability] dark_room
@@ -215,458 +227,582 @@ lines 200 · fan_in 3 · fan_out 0 · age 3946d · last touched 0d
 [maintainability] hub (position: hub)
 [maintainability] lit_room
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="892" y="653" width="20" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>lib/linter/code-path-analysis/id-generator.js
 lines 36 · fan_in 3 · fan_out 0 · age 3946d · last touched 137d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="915" y="653" width="41" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>lib/linter/esquery.js
 lines 287 · fan_in 2 · fan_out 0 · age 495d · last touched 337d
 [maintainability] hub (position: hub)
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="959" y="653" width="25" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/linter/file-context.js
 lines 77 · fan_in 2 · fan_out 0 · age 735d · last touched 293d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="987" y="653" width="20" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>lib/linter/interpolate.js
 lines 41 · fan_in 3 · fan_out 0 · age 3162d · last touched 385d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1010" y="653" width="34" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>lib/linter/rule-fixer.js
 lines 169 · fan_in 3 · fan_out 0 · age 4019d · last touched 298d
 [maintainability] foundation (position: high-load hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1047" y="653" width="30" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>lib/linter/source-code-fixer.js
 lines 132 · fan_in 4 · fan_out 0 · age 4019d · last touched 517d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1080" y="653" width="24" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>lib/linter/source-code-visitor.js
 lines 70 · fan_in 3 · fan_out 0 · age 456d · last touched 456d
 [maintainability] foundation (position: high-load hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1107" y="653" width="27" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/linter/vfile.js
 lines 99 · fan_in 4 · fan_out 0 · age 812d · last touched 44d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] lit_room
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1137" y="653" width="48" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>lib/options.js
 lines 408 · fan_in 2 · fan_out 0 · age 4809d · last touched 17d
 [maintainability] crack [decorative]
 [maintainability] lit_room
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1188" y="653" width="30" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/block-scoped-var.js
 lines 123 · fan_in 2 · fan_out 0 · age 4715d · last touched 194d
 [maintainability] crack [decorative]
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1221" y="653" width="35" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/callback-return.js
 lines 189 · fan_in 2 · fan_out 0 · age 4091d · last touched 334d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="637" y="634" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/consistent-this.js
 lines 156 · fan_in 2 · fan_out 0 · age 4788d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="672" y="634" width="47" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/constructor-super.js
 lines 388 · fan_in 2 · fan_out 0 · age 4104d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="722" y="634" width="20" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/default-case-last.js
 lines 42 · fan_in 2 · fan_out 0 · age 2421d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="745" y="634" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/default-case.js
 lines 85 · fan_in 2 · fan_out 0 · age 4519d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="774" y="634" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/default-param-last.js
 lines 66 · fan_in 2 · fan_out 0 · age 2553d · last touched 120d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="801" y="634" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/eol-last.js
 lines 123 · fan_in 2 · fan_out 0 · age 4459d · last touched 347d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="834" y="634" width="35" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/for-direction.js
 lines 190 · fan_in 2 · fan_out 0 · age 3399d · last touched 116d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="872" y="634" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/func-style.js
 lines 197 · fan_in 2 · fan_out 0 · age 4630d · last touched 120d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="911" y="634" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/function-call-argument-newline.js
 lines 148 · fan_in 2 · fan_out 0 · age 2573d · last touched 347d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="946" y="634" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/generator-star-spacing.js
 lines 218 · fan_in 2 · fan_out 0 · age 4196d · last touched 61d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="986" y="634" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/global-require.js
 lines 102 · fan_in 2 · fan_out 0 · age 4045d · last touched 334d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1017" y="634" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/guard-for-in.js
 lines 71 · fan_in 2 · fan_out 0 · age 4800d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1044" y="634" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/handle-callback-err.js
 lines 107 · fan_in 2 · fan_out 0 · age 4577d · last touched 334d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1075" y="634" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/id-blacklist.js
 lines 215 · fan_in 2 · fan_out 0 · age 2243d · last touched 334d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1115" y="634" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/init-declarations.js
 lines 149 · fan_in 2 · fan_out 0 · age 4085d · last touched 120d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1150" y="634" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/max-classes-per-file.js
 lines 87 · fan_in 2 · fan_out 0 · age 3037d · last touched 76d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1179" y="634" width="33" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/max-depth.js
 lines 159 · fan_in 2 · fan_out 0 · age 4772d · last touched 85d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1215" y="634" width="50" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>lib/rules/max-len.js
 lines 441 · fan_in 2 · fan_out 0 · age 4770d · last touched 44d
 [maintainability] crack [decorative]
 [maintainability] lit_room
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="637" y="615" width="37" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/newline-before-return.js
 lines 211 · fan_in 2 · fan_out 0 · age 3847d · last touched 347d
 [maintainability] crack [decorative]
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="677" y="615" width="21" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-async-promise-executor.js
 lines 44 · fan_in 2 · fan_out 0 · age 2961d · last touched 146d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="701" y="615" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-await-in-loop.js
 lines 101 · fan_in 2 · fan_out 0 · age 3555d · last touched 414d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="732" y="615" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-bitwise.js
 lines 130 · fan_in 2 · fan_out 0 · age 4814d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="765" y="615" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-buffer-constructor.js
 lines 66 · fan_in 2 · fan_out 0 · age 3438d · last touched 334d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="792" y="615" width="21" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-caller.js
 lines 44 · fan_in 2 · fan_out 0 · age 4813d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="816" y="615" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-case-declarations.js
 lines 71 · fan_in 2 · fan_out 0 · age 3963d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="843" y="615" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-constructor-return.js
 lines 51 · fan_in 2 · fan_out 0 · age 2479d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="868" y="615" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-continue.js
 lines 31 · fan_in 2 · fan_out 0 · age 4178d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="890" y="615" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-control-regex.js
 lines 126 · fan_in 2 · fan_out 0 · age 4689d · last touched 62d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="923" y="615" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-debugger.js
 lines 34 · fan_in 2 · fan_out 0 · age 4814d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="945" y="615" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-delete-var.js
 lines 35 · fan_in 2 · fan_out 0 · age 4791d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="967" y="615" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-div-regex.js
 lines 50 · fan_in 2 · fan_out 0 · age 4691d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="992" y="615" width="44" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/rules/no-duplicate-imports.js
 lines 334 · fan_in 2 · fan_out 0 · age 3837d · last touched 32d
 [maintainability] lit_room
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1039" y="615" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-empty-character-class.js
 lines 68 · fan_in 2 · fan_out 0 · age 4132d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1066" y="615" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-empty-static-block.js
 lines 64 · fan_in 2 · fan_out 0 · age 1398d · last touched 366d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1093" y="615" width="21" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-eq-null.js
 lines 43 · fan_in 2 · fan_out 0 · age 4782d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1117" y="615" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-global-assign.js
 lines 88 · fan_in 2 · fan_out 0 · age 3685d · last touched 517d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1146" y="615" width="33" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-implicit-globals.js
 lines 166 · fan_in 2 · fan_out 0 · age 3925d · last touched 462d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1182" y="615" width="37" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/no-invalid-regexp.js
 lines 214 · fan_in 2 · fan_out 0 · age 4661d · last touched 62d
 [maintainability] crack [decorative]
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1222" y="615" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-lone-blocks.js
 lines 121 · fan_in 2 · fan_out 0 · age 4598d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="637" y="596" width="38" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/no-loop-func.js
 lines 234 · fan_in 2 · fan_out 0 · age 4781d · last touched 120d
 [maintainability] crack [decorative]
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="678" y="596" width="37" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/rules/no-loss-of-precision.js
 lines 221 · fan_in 2 · fan_out 0 · age 2298d · last touched 10d
 [maintainability] lit_room
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="718" y="596" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-mixed-requires.js
 lines 238 · fan_in 2 · fan_out 0 · age 4774d · last touched 334d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="759" y="596" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-mixed-spaces-and-tabs.js
 lines 129 · fan_in 2 · fan_out 0 · age 4454d · last touched 61d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="792" y="596" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-multi-assign.js
 lines 56 · fan_in 2 · fan_out 0 · age 3513d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="817" y="596" width="35" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-multiple-empty-lines.js
 lines 190 · fan_in 2 · fan_out 0 · age 4355d · last touched 347d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="855" y="596" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-native-reassign.js
 lines 101 · fan_in 2 · fan_out 0 · age 4792d · last touched 334d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="886" y="596" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-negated-condition.js
 lines 89 · fan_in 2 · fan_out 0 · age 4004d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="915" y="596" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-negated-in-lhs.js
 lines 52 · fan_in 2 · fan_out 0 · age 4678d · last touched 334d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="940" y="596" width="20" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-nested-ternary.js
 lines 39 · fan_in 2 · fan_out 0 · age 4645d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="963" y="596" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-new-native-nonconstructor.js
 lines 57 · fan_in 2 · fan_out 0 · age 1398d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="989" y="596" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-new-require.js
 lines 59 · fan_in 2 · fan_out 0 · age 4496d · last touched 334d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1015" y="596" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-new-symbol.js
 lines 63 · fan_in 2 · fan_out 0 · age 3893d · last touched 334d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1041" y="596" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-new.js
 lines 35 · fan_in 2 · fan_out 0 · age 4796d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1063" y="596" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-nonoctal-decimal-escape.js
 lines 154 · fan_in 2 · fan_out 0 · age 2114d · last touched 517d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1098" y="596" width="21" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-octal-escape.js
 lines 44 · fan_in 2 · fan_out 0 · age 4755d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1122" y="596" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-octal.js
 lines 35 · fan_in 2 · fan_out 0 · age 4799d · last touched 385d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1144" y="596" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-param-reassign.js
 lines 220 · fan_in 2 · fan_out 0 · age 4193d · last touched 517d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1184" y="596" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-path-concat.js
 lines 69 · fan_in 2 · fan_out 0 · age 4604d · last touched 334d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1211" y="596" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-plusplus.js
 lines 86 · fan_in 2 · fan_out 0 · age 4790d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1240" y="596" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-process-env.js
 lines 60 · fan_in 2 · fan_out 0 · age 4363d · last touched 334d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="637" y="577" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-process-exit.js
 lines 59 · fan_in 2 · fan_out 0 · age 4597d · last touched 334d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="663" y="577" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-restricted-syntax.js
 lines 67 · fan_in 2 · fan_out 0 · age 4025d · last touched 121d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="690" y="577" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-self-compare.js
 lines 66 · fan_in 2 · fan_out 0 · age 4786d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="717" y="577" width="27" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-shadow-restricted-names.js
 lines 99 · fan_in 2 · fan_out 0 · age 4662d · last touched 300d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="747" y="577" width="27" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-spaced-func.js
 lines 93 · fan_in 2 · fan_out 0 · age 4691d · last touched 290d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="777" y="577" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-sync.js
 lines 72 · fan_in 2 · fan_out 0 · age 4783d · last touched 334d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="804" y="577" width="27" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-tabs.js
 lines 99 · fan_in 2 · fan_out 0 · age 3688d · last touched 347d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="834" y="577" width="20" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-template-curly-in-string.js
 lines 38 · fan_in 2 · fan_out 0 · age 3678d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="857" y="577" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-ternary.js
 lines 31 · fan_in 2 · fan_out 0 · age 4788d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="879" y="577" width="25" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-unassigned-vars.js
 lines 73 · fan_in 2 · fan_out 0 · age 484d · last touched 120d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="907" y="577" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-undef.js
 lines 71 · fan_in 2 · fan_out 0 · age 4787d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="934" y="577" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-undefined.js
 lines 72 · fan_in 2 · fan_out 0 · age 4453d · last touched 194d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="961" y="577" width="45" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-underscore-dangle.js
 lines 351 · fan_in 2 · fan_out 0 · age 4783d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1009" y="577" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-unsafe-finally.js
 lines 106 · fan_in 2 · fan_out 0 · age 3782d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1040" y="577" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-unsafe-optional-chaining.js
 lines 208 · fan_in 2 · fan_out 0 · age 2099d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1079" y="577" width="47" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/no-use-before-define.js
 lines 392 · fan_in 2 · fan_out 0 · age 4759d · last touched 120d
 [maintainability] crack [decorative]
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1129" y="577" width="56" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-useless-assignment.js
 lines 592 · fan_in 2 · fan_out 0 · age 969d · last touched 185d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1188" y="577" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-useless-backreference.js
 lines 227 · fan_in 2 · fan_out 0 · age 2429d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1229" y="577" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-useless-catch.js
 lines 50 · fan_in 2 · fan_out 0 · age 3114d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1254" y="577" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-void.js
 lines 60 · fan_in 2 · fan_out 0 · age 4454d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="637" y="558" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-with.js
 lines 35 · fan_in 2 · fan_out 0 · age 4814d · last touched 85d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="659" y="558" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/nonblock-statement-body-position.js
 lines 147 · fan_in 2 · fan_out 0 · age 3476d · last touched 347d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="694" y="558" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/object-property-newline.js
 lines 136 · fan_in 2 · fan_out 0 · age 3776d · last touched 347d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="728" y="558" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/one-var-declaration-per-line.js
 lines 103 · fan_in 2 · fan_out 0 · age 3879d · last touched 347d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="759" y="558" width="34" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/prefer-named-capture-group.js
 lines 172 · fan_in 2 · fan_out 0 · age 2743d · last touched 479d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="796" y="558" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/prefer-reflect.js
 lines 137 · fan_in 2 · fan_out 0 · age 4067d · last touched 512d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="830" y="558" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/prefer-rest-params.js
 lines 105 · fan_in 2 · fan_out 0 · age 3938d · last touched 194d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="861" y="558" width="43" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/require-atomic-updates.js
 lines 314 · fan_in 2 · fan_out 0 · age 2961d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="907" y="558" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/rest-spread-spacing.js
 lines 136 · fan_in 2 · fan_out 0 · age 3746d · last touched 290d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="941" y="558" width="42" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/sort-imports.js
 lines 293 · fan_in 2 · fan_out 0 · age 3903d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="986" y="558" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/sort-vars.js
 lines 123 · fan_in 2 · fan_out 0 · age 4641d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1019" y="558" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/template-tag-spacing.js
 lines 109 · fan_in 2 · fan_out 0 · age 3507d · last touched 290d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1050" y="558" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/unicode-bom.js
 lines 64 · fan_in 2 · fan_out 0 · age 3755d · last touched 524d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1077" y="558" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/utils/char-source.js
 lines 213 · fan_in 2 · fan_out 0 · age 913d · last touched 385d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1117" y="558" width="16" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>lib/rules/utils/code-path-utils.js
 lines 18 · fan_in 8 · fan_out 0 · age 94d · last touched 94d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1136" y="558" width="24" height="16" style="fill:url(#water);stroke:#2b2b2b;stroke-width:3;opacity:0.45"><title>lib/rules/utils/keywords.js
 lines 66 · fan_in 3 · fan_out 0 · age 4083d · last touched 533d
 [maintainability] dark_room
 [maintainability] flooded_basement
 [maintainability] foundation (position: high-load hub)
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1163" y="558" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/utils/lazy-loading-rule-map.js
 lines 105 · fan_in 2 · fan_out 0 · age 2673d · last touched 494d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1194" y="558" width="22" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>lib/rules/utils/regular-expressions.js
 lines 50 · fan_in 4 · fan_out 0 · age 1255d · last touched 533d
 [maintainability] dark_room
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1219" y="558" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/utils/unicode/is-combining-character.js
 lines 12 · fan_in 2 · fan_out 0 · age 2958d · last touched 181d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1236" y="558" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/rules/utils/unicode/is-emoji-modifier.js
 lines 12 · fan_in 2 · fan_out 0 · age 2958d · last touched 533d
 [maintainability] dark_room
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1253" y="558" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/rules/utils/unicode/is-regional-indicator-symbol.js
 lines 12 · fan_in 2 · fan_out 0 · age 2958d · last touched 533d
 [maintainability] dark_room
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="637" y="539" width="15" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/rules/utils/unicode/is-surrogate-pair.js
 lines 13 · fan_in 2 · fan_out 0 · age 2958d · last touched 533d
 [maintainability] dark_room
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="655" y="539" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/vars-on-top.js
 lines 146 · fan_in 2 · fan_out 0 · age 4387d · last touched 524d
 [maintainability] flooded_basement
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="690" y="539" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/wrap-regex.js
 lines 81 · fan_in 2 · fan_out 0 · age 4716d · last touched 347d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="719" y="539" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/yield-star-spacing.js
 lines 143 · fan_in 2 · fan_out 0 · age 3937d · last touched 290d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="753" y="539" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/services/parser-service.js
 lines 55 · fan_in 2 · fan_out 0 · age 742d · last touched 299d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="778" y="539" width="25" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>lib/services/warning-service.js
 lines 78 · fan_in 8 · fan_out 0 · age 471d · last touched 217d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="806" y="539" width="18" height="16" style="fill:#d9cfb8;stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>lib/shared/ajv.js
 lines 28 · fan_in 2 · fan_out 0 · age 3346d · last touched 533d
 [maintainability] dark_room
-[maintainability] hub (position: hub)</title></rect>
+[maintainability] hub (position: hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="827" y="539" width="16" height="16" style="fill:#e8e2d3;stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>lib/shared/assert.js
 lines 18 · fan_in 5 · fan_out 0 · age 660d · last touched 533d
 [maintainability] dark_room
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="846" y="539" width="18" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>lib/shared/ast-utils.js
 lines 27 · fan_in 7 · fan_out 0 · age 2662d · last touched 533d
 [maintainability] dark_room
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="867" y="539" width="22" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>lib/shared/deep-merge-arrays.js
 lines 52 · fan_in 3 · fan_out 0 · age 657d · last touched 533d
 [maintainability] dark_room
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="892" y="539" width="15" height="16" style="fill:#e8e2d3;stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>lib/shared/directives.js
 lines 14 · fan_in 2 · fan_out 0 · age 1328d · last touched 533d
 [maintainability] dark_room
-[maintainability] hub (position: hub)</title></rect>
+[maintainability] hub (position: hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="910" y="539" width="25" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>lib/shared/flags.js
 lines 79 · fan_in 2 · fan_out 0 · age 801d · last touched 300d
-no named feature</title></rect>
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="938" y="539" width="19" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>lib/shared/logging.js
 lines 33 · fan_in 3 · fan_out 0 · age 3968d · last touched 533d
 [maintainability] dark_room
@@ -674,48 +810,57 @@ lines 33 · fan_in 3 · fan_out 0 · age 3968d · last touched 533d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="960" y="539" width="20" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>lib/shared/message-counts.js
 lines 41 · fan_in 3 · fan_out 0 · age 171d · last touched 171d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="983" y="539" width="27" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>lib/shared/naming.js
 lines 94 · fan_in 4 · fan_out 0 · age 3228d · last touched 194d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1013" y="539" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/shared/option-utils.js
 lines 54 · fan_in 2 · fan_out 0 · age 595d · last touched 533d
 [maintainability] dark_room
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1038" y="539" width="17" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/shared/relative-module-resolver.js
 lines 23 · fan_in 2 · fan_out 0 · age 2709d · last touched 450d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1058" y="539" width="25" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>lib/shared/serialization.js
 lines 74 · fan_in 2 · fan_out 0 · age 957d · last touched 48d
 [maintainability] hub (position: hub)
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1086" y="539" width="21" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>lib/shared/severity.js
 lines 45 · fan_in 4 · fan_out 0 · age 994d · last touched 533d
 [maintainability] dark_room
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1110" y="539" width="18" height="16" style="fill:#e8e2d3;stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>lib/shared/stats.js
 lines 26 · fan_in 2 · fan_out 0 · age 892d · last touched 533d
 [maintainability] dark_room
-[maintainability] hub (position: hub)</title></rect>
+[maintainability] hub (position: hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1131" y="539" width="21" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>lib/shared/string-utils.js
 lines 47 · fan_in 8 · fan_out 0 · age 1931d · last touched 533d
 [maintainability] dark_room
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1155" y="539" width="23" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/shared/text-table.js
 lines 60 · fan_in 1 · fan_out 0 · age 668d · last touched 533d
 [maintainability] dark_room</title></rect>
@@ -725,7 +870,8 @@ lines 177 · fan_in 7 · fan_out 0 · age 3829d · last touched 533d
 [maintainability] foundation (position: high-load hub)
 [maintainability] hub (position: hub)
 [maintainability] scaffolding
-[onboarding] foundation (position: high-load hub)</title></rect>
+[onboarding] foundation (position: high-load hub)
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <line x1="633" y1="671" x2="1280" y2="671" stroke="#bbb" stroke-dasharray="2 4"/>
 <rect x="637" y="510" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/cli-engine/formatters/stylish.js
 lines 135 · fan_in 2 · fan_out 1 · age 4613d · last touched 266d
@@ -1536,7 +1682,7 @@ lines 5 · fan_in 2 · fan_out 1 · age 2323d · last touched 295d
 [maintainability] scaffolding</title></rect>
 <rect x="984" y="205" width="31" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>lib/eslint/worker.js
 lines 140 · fan_in 0 · fan_out 3 · age 385d · last touched 315d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="1018" y="205" width="42" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/languages/js/index.js
 lines 293 · fan_in 6 · fan_out 4 · age 812d · last touched 40d
 [maintainability] foundation (position: high-load hub)
@@ -1639,7 +1785,8 @@ lines 427 · fan_in 2 · fan_out 2 · age 4800d · last touched 347d
 [maintainability] scaffolding</title></rect>
 <rect x="689" y="167" width="13" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/universal.js
 lines 7 · fan_in 0 · fan_out 1 · age 715d · last touched 715d
-[maintainability] dark_room</title></rect>
+[maintainability] dark_room
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="705" y="167" width="16" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/unsupported-api.js
 lines 16 · fan_in 1 · fan_out 2 · age 1855d · last touched 220d
 [maintainability] scaffolding</title></rect>
@@ -1690,17 +1837,18 @@ lines 15 · fan_in 0 · fan_out 0 · age 161d · last touched 161d
 no named feature</title></rect>
 <rect x="1378" y="634" width="16" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>messages/shared.js
 lines 20 · fan_in 2 · fan_out 0 · age 1218d · last touched 533d
-[maintainability] dark_room</title></rect>
+[maintainability] dark_room
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1397" y="634" width="13" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>messages/whitespace-found.js
 lines 8 · fan_in 0 · fan_out 0 · age 1931d · last touched 533d
 [maintainability] dark_room</title></rect>
 <line x1="1304" y1="671" x2="1494" y2="671" stroke="#bbb" stroke-dasharray="2 4"/>
 <rect x="1308" y="510" width="14" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>messages/invalid-rule-options.js
 lines 11 · fan_in 0 · fan_out 1 · age 1218d · last touched 217d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="1325" y="510" width="14" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>messages/invalid-rule-severity.js
 lines 9 · fan_in 0 · fan_out 1 · age 1218d · last touched 217d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <line x1="1304" y1="528" x2="1494" y2="528" stroke="#bbb" stroke-dasharray="2 4"/>
 <line x1="1304" y1="480" x2="1494" y2="480" stroke="#bbb" stroke-dasharray="2 4"/>
 <line x1="1304" y1="223" x2="1494" y2="223" stroke="#bbb" stroke-dasharray="2 4"/>
@@ -1708,13 +1856,14 @@ no named feature</title></rect>
 <line x1="1518" y1="700" x2="1665" y2="700" stroke="#bbb" stroke-dasharray="2 4"/>
 <rect x="1522" y="653" width="43" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/eslint-config-eslint/base.js
 lines 315 · fan_in 2 · fan_out 0 · age 1151d · last touched 166d
-no named feature</title></rect>
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1568" y="653" width="31" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>packages/eslint-config-eslint/formatting.js
 lines 136 · fan_in 0 · fan_out 0 · age 819d · last touched 533d
 [maintainability] dark_room</title></rect>
 <rect x="1602" y="653" width="21" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>packages/eslint-config-eslint/nodejs.js
 lines 44 · fan_in 2 · fan_out 0 · age 1151d · last touched 533d
-[maintainability] dark_room</title></rect>
+[maintainability] dark_room
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1626" y="653" width="36" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/js/src/configs/eslint-all.js
 lines 209 · fan_in 1 · fan_out 0 · age 1288d · last touched 287d
 no named feature</title></rect>
@@ -1724,10 +1873,12 @@ lines 74 · fan_in 1 · fan_out 0 · age 4814d · last touched 287d
 <line x1="1518" y1="671" x2="1665" y2="671" stroke="#bbb" stroke-dasharray="2 4"/>
 <rect x="1522" y="510" width="13" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>packages/eslint-config-eslint/cjs.js
 lines 7 · fan_in 0 · fan_out 2 · age 1151d · last touched 533d
-[maintainability] dark_room</title></rect>
+[maintainability] dark_room
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="1538" y="510" width="16" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>packages/eslint-config-eslint/index.js
 lines 17 · fan_in 0 · fan_out 2 · age 3978d · last touched 533d
-[maintainability] dark_room</title></rect>
+[maintainability] dark_room
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="1557" y="510" width="16" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>packages/js/src/index.js
 lines 19 · fan_in 4 · fan_out 2 · age 1288d · last touched 533d
 [maintainability] dark_room
@@ -1744,7 +1895,8 @@ lines 121 · fan_in 0 · fan_out 0 · age 870d · last touched 0d
 [maintainability] lit_room</title></rect>
 <rect x="1726" y="653" width="40" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>tools/code-sample-minimizer.js
 lines 263 · fan_in 2 · fan_out 0 · age 2672d · last touched 120d
-[maintainability] scaffolding</title></rect>
+[maintainability] scaffolding
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1769" y="653" width="15" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>tools/commit-readme.sh
 lines 14 · fan_in 0 · fan_out 0 · age 1345d · last touched 533d
 [maintainability] dark_room</title></rect>
@@ -1767,7 +1919,7 @@ lines 53 · fan_in 0 · fan_out 0 · age 31d · last touched 31d
 [maintainability] lit_room</title></rect>
 <rect x="1751" y="634" width="24" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>tools/test-ecosystem/data.mjs
 lines 70 · fan_in 2 · fan_out 0 · age 130d · last touched 130d
-no named feature</title></rect>
+[onboarding] leaf_utility (position: imported leaf)</title></rect>
 <rect x="1778" y="634" width="22" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>tools/test-ecosystem/sync-ecosystem-issue.js
 lines 49 · fan_in 0 · fan_out 0 · age 31d · last touched 31d
 [maintainability] lit_room</title></rect>
@@ -1777,15 +1929,16 @@ no named feature</title></rect>
 <line x1="1689" y1="671" x2="1891" y2="671" stroke="#bbb" stroke-dasharray="2 4"/>
 <rect x="1693" y="510" width="33" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>tools/test-ecosystem/index.mjs
 lines 168 · fan_in 0 · fan_out 1 · age 130d · last touched 0d
-[maintainability] lit_room</title></rect>
+[maintainability] lit_room
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="1729" y="510" width="26" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>tools/test-ecosystem/update.mjs
 lines 81 · fan_in 0 · fan_out 1 · age 130d · last touched 130d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <line x1="1689" y1="528" x2="1891" y2="528" stroke="#bbb" stroke-dasharray="2 4"/>
 <line x1="1689" y1="480" x2="1891" y2="480" stroke="#bbb" stroke-dasharray="2 4"/>
 <rect x="1693" y="205" width="43" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>tools/check-rule-examples.js
 lines 308 · fan_in 0 · fan_out 5 · age 1019d · last touched 251d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="1739" y="205" width="49" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>tools/config-rule.js
 lines 429 · fan_in 3 · fan_out 1 · age 3943d · last touched 56d
 [maintainability] foundation (position: high-load hub)
@@ -1799,46 +1952,169 @@ lines 73 · fan_in 1 · fan_out 2 · age 3343d · last touched 408d
 no named feature</title></rect>
 <rect x="1861" y="205" width="27" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>tools/generate-formatter-examples.js
 lines 96 · fan_in 0 · fan_out 3 · age 402d · last touched 402d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="1693" y="186" width="18" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>tools/internal-rules/multiline-comment-style.js
 lines 29 · fan_in 1 · fan_out 1 · age 3232d · last touched 293d
 [maintainability] scaffolding</title></rect>
 <rect x="1714" y="186" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>tools/update-eslint-all.js
 lines 36 · fan_in 0 · fan_out 1 · age 3739d · last touched 287d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="1737" y="186" width="21" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>tools/update-eslint-recommended.js
 lines 44 · fan_in 0 · fan_out 1 · age 320d · last touched 287d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <rect x="1761" y="186" width="43" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>tools/update-rule-type-headers.js
 lines 311 · fan_in 0 · fan_out 1 · age 595d · last touched 385d
-no named feature</title></rect>
+[onboarding] entrance (position: import-graph root)</title></rect>
 <line x1="1689" y1="223" x2="1891" y2="223" stroke="#bbb" stroke-dasharray="2 4"/>
 </g>
 <g class="overlay" id="overlay-0" data-profile="onboarding">
+<polygon points="24,205 31,205 24,212" fill="#1f6f8b"/>
+<polygon points="91,205 98,205 91,212" fill="#1f6f8b"/>
+<polygon points="169,205 176,205 169,212" fill="#1f6f8b"/>
 <polygon points="277,653 284,653 277,660" fill="#1f6f8b"/>
 <polygon points="295,653 302,653 295,660" fill="#1f6f8b"/>
+<polygon points="385,653 392,653 385,660" fill="#1f6f8b"/>
+<polygon points="511,615 518,615 511,622" fill="#1f6f8b"/>
+<polygon points="401,510 408,510 401,517" fill="#1f6f8b"/>
+<polygon points="385,462 392,462 385,469" fill="#1f6f8b"/>
+<polygon points="385,205 392,205 385,212" fill="#1f6f8b"/>
 <polygon points="718,653 725,653 718,660" fill="#1f6f8b"/>
 <polygon points="739,653 746,653 739,660" fill="#1f6f8b"/>
 <polygon points="757,653 764,653 757,660" fill="#1f6f8b"/>
 <polygon points="784,653 791,653 784,660" fill="#1f6f8b"/>
 <polygon points="853,653 860,653 853,660" fill="#1f6f8b"/>
 <polygon points="892,653 899,653 892,660" fill="#1f6f8b"/>
+<polygon points="915,653 922,653 915,660" fill="#1f6f8b"/>
+<polygon points="959,653 966,653 959,660" fill="#1f6f8b"/>
 <polygon points="987,653 994,653 987,660" fill="#1f6f8b"/>
 <polygon points="1010,653 1017,653 1010,660" fill="#1f6f8b"/>
 <polygon points="1047,653 1054,653 1047,660" fill="#1f6f8b"/>
 <polygon points="1080,653 1087,653 1080,660" fill="#1f6f8b"/>
 <polygon points="1107,653 1114,653 1107,660" fill="#1f6f8b"/>
+<polygon points="1137,653 1144,653 1137,660" fill="#1f6f8b"/>
+<polygon points="1188,653 1195,653 1188,660" fill="#1f6f8b"/>
+<polygon points="1221,653 1228,653 1221,660" fill="#1f6f8b"/>
+<polygon points="637,634 644,634 637,641" fill="#1f6f8b"/>
+<polygon points="672,634 679,634 672,641" fill="#1f6f8b"/>
+<polygon points="722,634 729,634 722,641" fill="#1f6f8b"/>
+<polygon points="745,634 752,634 745,641" fill="#1f6f8b"/>
+<polygon points="774,634 781,634 774,641" fill="#1f6f8b"/>
+<polygon points="801,634 808,634 801,641" fill="#1f6f8b"/>
+<polygon points="834,634 841,634 834,641" fill="#1f6f8b"/>
+<polygon points="872,634 879,634 872,641" fill="#1f6f8b"/>
+<polygon points="911,634 918,634 911,641" fill="#1f6f8b"/>
+<polygon points="946,634 953,634 946,641" fill="#1f6f8b"/>
+<polygon points="986,634 993,634 986,641" fill="#1f6f8b"/>
+<polygon points="1017,634 1024,634 1017,641" fill="#1f6f8b"/>
+<polygon points="1044,634 1051,634 1044,641" fill="#1f6f8b"/>
+<polygon points="1075,634 1082,634 1075,641" fill="#1f6f8b"/>
+<polygon points="1115,634 1122,634 1115,641" fill="#1f6f8b"/>
+<polygon points="1150,634 1157,634 1150,641" fill="#1f6f8b"/>
+<polygon points="1179,634 1186,634 1179,641" fill="#1f6f8b"/>
+<polygon points="1215,634 1222,634 1215,641" fill="#1f6f8b"/>
+<polygon points="637,615 644,615 637,622" fill="#1f6f8b"/>
+<polygon points="677,615 684,615 677,622" fill="#1f6f8b"/>
+<polygon points="701,615 708,615 701,622" fill="#1f6f8b"/>
+<polygon points="732,615 739,615 732,622" fill="#1f6f8b"/>
+<polygon points="765,615 772,615 765,622" fill="#1f6f8b"/>
+<polygon points="792,615 799,615 792,622" fill="#1f6f8b"/>
+<polygon points="816,615 823,615 816,622" fill="#1f6f8b"/>
+<polygon points="843,615 850,615 843,622" fill="#1f6f8b"/>
+<polygon points="868,615 875,615 868,622" fill="#1f6f8b"/>
+<polygon points="890,615 897,615 890,622" fill="#1f6f8b"/>
+<polygon points="923,615 930,615 923,622" fill="#1f6f8b"/>
+<polygon points="945,615 952,615 945,622" fill="#1f6f8b"/>
+<polygon points="967,615 974,615 967,622" fill="#1f6f8b"/>
+<polygon points="992,615 999,615 992,622" fill="#1f6f8b"/>
+<polygon points="1039,615 1046,615 1039,622" fill="#1f6f8b"/>
+<polygon points="1066,615 1073,615 1066,622" fill="#1f6f8b"/>
+<polygon points="1093,615 1100,615 1093,622" fill="#1f6f8b"/>
+<polygon points="1117,615 1124,615 1117,622" fill="#1f6f8b"/>
+<polygon points="1146,615 1153,615 1146,622" fill="#1f6f8b"/>
+<polygon points="1182,615 1189,615 1182,622" fill="#1f6f8b"/>
+<polygon points="1222,615 1229,615 1222,622" fill="#1f6f8b"/>
+<polygon points="637,596 644,596 637,603" fill="#1f6f8b"/>
+<polygon points="678,596 685,596 678,603" fill="#1f6f8b"/>
+<polygon points="718,596 725,596 718,603" fill="#1f6f8b"/>
+<polygon points="759,596 766,596 759,603" fill="#1f6f8b"/>
+<polygon points="792,596 799,596 792,603" fill="#1f6f8b"/>
+<polygon points="817,596 824,596 817,603" fill="#1f6f8b"/>
+<polygon points="855,596 862,596 855,603" fill="#1f6f8b"/>
+<polygon points="886,596 893,596 886,603" fill="#1f6f8b"/>
+<polygon points="915,596 922,596 915,603" fill="#1f6f8b"/>
+<polygon points="940,596 947,596 940,603" fill="#1f6f8b"/>
+<polygon points="963,596 970,596 963,603" fill="#1f6f8b"/>
+<polygon points="989,596 996,596 989,603" fill="#1f6f8b"/>
+<polygon points="1015,596 1022,596 1015,603" fill="#1f6f8b"/>
+<polygon points="1041,596 1048,596 1041,603" fill="#1f6f8b"/>
+<polygon points="1063,596 1070,596 1063,603" fill="#1f6f8b"/>
+<polygon points="1098,596 1105,596 1098,603" fill="#1f6f8b"/>
+<polygon points="1122,596 1129,596 1122,603" fill="#1f6f8b"/>
+<polygon points="1144,596 1151,596 1144,603" fill="#1f6f8b"/>
+<polygon points="1184,596 1191,596 1184,603" fill="#1f6f8b"/>
+<polygon points="1211,596 1218,596 1211,603" fill="#1f6f8b"/>
+<polygon points="1240,596 1247,596 1240,603" fill="#1f6f8b"/>
+<polygon points="637,577 644,577 637,584" fill="#1f6f8b"/>
+<polygon points="663,577 670,577 663,584" fill="#1f6f8b"/>
+<polygon points="690,577 697,577 690,584" fill="#1f6f8b"/>
+<polygon points="717,577 724,577 717,584" fill="#1f6f8b"/>
+<polygon points="747,577 754,577 747,584" fill="#1f6f8b"/>
+<polygon points="777,577 784,577 777,584" fill="#1f6f8b"/>
+<polygon points="804,577 811,577 804,584" fill="#1f6f8b"/>
+<polygon points="834,577 841,577 834,584" fill="#1f6f8b"/>
+<polygon points="857,577 864,577 857,584" fill="#1f6f8b"/>
+<polygon points="879,577 886,577 879,584" fill="#1f6f8b"/>
+<polygon points="907,577 914,577 907,584" fill="#1f6f8b"/>
+<polygon points="934,577 941,577 934,584" fill="#1f6f8b"/>
+<polygon points="961,577 968,577 961,584" fill="#1f6f8b"/>
+<polygon points="1009,577 1016,577 1009,584" fill="#1f6f8b"/>
+<polygon points="1040,577 1047,577 1040,584" fill="#1f6f8b"/>
+<polygon points="1079,577 1086,577 1079,584" fill="#1f6f8b"/>
+<polygon points="1129,577 1136,577 1129,584" fill="#1f6f8b"/>
+<polygon points="1188,577 1195,577 1188,584" fill="#1f6f8b"/>
+<polygon points="1229,577 1236,577 1229,584" fill="#1f6f8b"/>
+<polygon points="1254,577 1261,577 1254,584" fill="#1f6f8b"/>
+<polygon points="637,558 644,558 637,565" fill="#1f6f8b"/>
+<polygon points="659,558 666,558 659,565" fill="#1f6f8b"/>
+<polygon points="694,558 701,558 694,565" fill="#1f6f8b"/>
+<polygon points="728,558 735,558 728,565" fill="#1f6f8b"/>
+<polygon points="759,558 766,558 759,565" fill="#1f6f8b"/>
+<polygon points="796,558 803,558 796,565" fill="#1f6f8b"/>
+<polygon points="830,558 837,558 830,565" fill="#1f6f8b"/>
+<polygon points="861,558 868,558 861,565" fill="#1f6f8b"/>
+<polygon points="907,558 914,558 907,565" fill="#1f6f8b"/>
+<polygon points="941,558 948,558 941,565" fill="#1f6f8b"/>
+<polygon points="986,558 993,558 986,565" fill="#1f6f8b"/>
+<polygon points="1019,558 1026,558 1019,565" fill="#1f6f8b"/>
+<polygon points="1050,558 1057,558 1050,565" fill="#1f6f8b"/>
+<polygon points="1077,558 1084,558 1077,565" fill="#1f6f8b"/>
 <polygon points="1117,558 1124,558 1117,565" fill="#1f6f8b"/>
 <polygon points="1136,558 1143,558 1136,565" fill="#1f6f8b"/>
+<polygon points="1163,558 1170,558 1163,565" fill="#1f6f8b"/>
 <polygon points="1194,558 1201,558 1194,565" fill="#1f6f8b"/>
+<polygon points="1219,558 1226,558 1219,565" fill="#1f6f8b"/>
+<polygon points="1236,558 1243,558 1236,565" fill="#1f6f8b"/>
+<polygon points="1253,558 1260,558 1253,565" fill="#1f6f8b"/>
+<polygon points="637,539 644,539 637,546" fill="#1f6f8b"/>
+<polygon points="655,539 662,539 655,546" fill="#1f6f8b"/>
+<polygon points="690,539 697,539 690,546" fill="#1f6f8b"/>
+<polygon points="719,539 726,539 719,546" fill="#1f6f8b"/>
+<polygon points="753,539 760,539 753,546" fill="#1f6f8b"/>
 <polygon points="778,539 785,539 778,546" fill="#1f6f8b"/>
+<polygon points="806,539 813,539 806,546" fill="#1f6f8b"/>
 <polygon points="827,539 834,539 827,546" fill="#1f6f8b"/>
 <polygon points="846,539 853,539 846,546" fill="#1f6f8b"/>
 <polygon points="867,539 874,539 867,546" fill="#1f6f8b"/>
+<polygon points="892,539 899,539 892,546" fill="#1f6f8b"/>
+<polygon points="910,539 917,539 910,546" fill="#1f6f8b"/>
 <polygon points="938,539 945,539 938,546" fill="#1f6f8b"/>
 <polygon points="960,539 967,539 960,546" fill="#1f6f8b"/>
 <polygon points="983,539 990,539 983,546" fill="#1f6f8b"/>
+<polygon points="1013,539 1020,539 1013,546" fill="#1f6f8b"/>
+<polygon points="1038,539 1045,539 1038,546" fill="#1f6f8b"/>
+<polygon points="1058,539 1065,539 1058,546" fill="#1f6f8b"/>
 <polygon points="1086,539 1093,539 1086,546" fill="#1f6f8b"/>
+<polygon points="1110,539 1117,539 1110,546" fill="#1f6f8b"/>
 <polygon points="1131,539 1138,539 1131,546" fill="#1f6f8b"/>
 <polygon points="1181,539 1188,539 1181,546" fill="#1f6f8b"/>
 <polygon points="671,510 678,510 671,517" fill="#1f6f8b"/>
@@ -1858,6 +2134,7 @@ no named feature</title></rect>
 <polygon points="797,205 804,205 797,212" fill="#1f6f8b"/>
 <polygon points="835,205 842,205 835,212" fill="#1f6f8b"/>
 <polygon points="902,205 909,205 902,212" fill="#1f6f8b"/>
+<polygon points="984,205 991,205 984,212" fill="#1f6f8b"/>
 <polygon points="1018,205 1025,205 1018,212" fill="#1f6f8b"/>
 <polygon points="1063,205 1070,205 1063,212" fill="#1f6f8b"/>
 <polygon points="1078,205 1085,205 1078,212" fill="#1f6f8b"/>
@@ -1868,8 +2145,25 @@ no named feature</title></rect>
 <polygon points="952,186 959,186 952,193" fill="#1f6f8b"/>
 <polygon points="967,186 974,186 967,193" fill="#1f6f8b"/>
 <polygon points="1034,186 1041,186 1034,193" fill="#1f6f8b"/>
+<polygon points="689,167 696,167 689,174" fill="#1f6f8b"/>
+<polygon points="1378,634 1385,634 1378,641" fill="#1f6f8b"/>
+<polygon points="1308,510 1315,510 1308,517" fill="#1f6f8b"/>
+<polygon points="1325,510 1332,510 1325,517" fill="#1f6f8b"/>
+<polygon points="1522,653 1529,653 1522,660" fill="#1f6f8b"/>
+<polygon points="1602,653 1609,653 1602,660" fill="#1f6f8b"/>
+<polygon points="1522,510 1529,510 1522,517" fill="#1f6f8b"/>
+<polygon points="1538,510 1545,510 1538,517" fill="#1f6f8b"/>
 <polygon points="1557,510 1564,510 1557,517" fill="#1f6f8b"/>
+<polygon points="1726,653 1733,653 1726,660" fill="#1f6f8b"/>
+<polygon points="1751,634 1758,634 1751,641" fill="#1f6f8b"/>
+<polygon points="1693,510 1700,510 1693,517" fill="#1f6f8b"/>
+<polygon points="1729,510 1736,510 1729,517" fill="#1f6f8b"/>
+<polygon points="1693,205 1700,205 1693,212" fill="#1f6f8b"/>
 <polygon points="1739,205 1746,205 1739,212" fill="#1f6f8b"/>
+<polygon points="1861,205 1868,205 1861,212" fill="#1f6f8b"/>
+<polygon points="1714,186 1721,186 1714,193" fill="#1f6f8b"/>
+<polygon points="1737,186 1744,186 1737,193" fill="#1f6f8b"/>
+<polygon points="1761,186 1768,186 1761,193" fill="#1f6f8b"/>
 </g>
-<text x="24" y="744" fill="#333">diagnostic: dark_room×83, flooded_basement×48, foundation×48, hub×50, lit_room×48, scaffolding×371   ·   decorative: 49 instance(s) of crack, toothpick_wing   ·   onboarding: corridor×22, foundation×48</text>
+<text x="24" y="744" fill="#333">diagnostic: dark_room×83, flooded_basement×48, foundation×48, hub×50, lit_room×48, scaffolding×371   ·   decorative: 49 instance(s) of crack, toothpick_wing   ·   onboarding: corridor×22, entrance×19, foundation×48, leaf_utility×148</text>
 </svg>
