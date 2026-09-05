@@ -37,7 +37,7 @@ Out of scope for v0:
 - Output is a pure function of `(repo content at SHA, extractor_version, config, toolchain_versions)`, where `config` now includes the index weights.
 - The **seed** is the content hash of the resolved tree; later stochastic stages consume it.
 - The **config_fingerprint** is a hash of the effective config, including index weights, percentile settings, exclude globs, **and `toolchain_versions`** (see below). Two runs with different index weights produce different `derived` values and a different fingerprint — so "why did this file score 0.92 last month and 0.81 now" always resolves to a config/toolchain diff or a code change, never to nondeterminism.
-- **`toolchain_versions` — external tools are inside the fingerprint, not outside it.** The substrate shells out to / links against tools whose *own* versions change the output: the dependency extractor (`madge` / `dependency-cruiser` / `tree-sitter` grammar), the graph library (`networkx`), and the history miner (`pydriller`). A silent `madge` upgrade that resolves imports differently would move `fan_in` → `load_index` with no code or config change — exactly the nondeterminism this contract forbids. So the **resolved versions of every value-affecting external tool are captured into `toolchain_versions`, hashed into `config_fingerprint`, and recorded verbatim in `repo` (§4)**. The capture format is pinned: each entry is `"<role>": "<package-name>@<version>"`, where the version string is exactly what the tool's own resolver reports — for a Node tool, the `version` field of its installed `package.json`; for a Python library, `importlib.metadata.version(name)`; for the git binary, the semver-looking token from `git --version`. No normalization beyond trimming: the string is hashed as reported, so two builds that report differently are different fingerprints, which is the intended behavior. The roles present in v0 are `history` (pydriller), `graph` (networkx), `dep_extractor` (dependency-cruiser, D-006), `git`, and `python` (the interpreter, `platform.python_version()`). Pinning PageRank's numerics (§6.2.2) is necessary but insufficient without this: it makes the *algorithm* deterministic, while this makes the *toolchain* attributable.
+- **`toolchain_versions` — external tools are inside the fingerprint, not outside it.** The substrate shells out to / links against tools whose *own* versions change the output: the dependency extractor (`madge` / `dependency-cruiser` / `tree-sitter` grammar), the graph library (`networkx`), and the history miner (`pydriller`). A silent `madge` upgrade that resolves imports differently would move `fan_in` → `load_index` with no code or config change — exactly the nondeterminism this contract forbids. So the **resolved versions of every value-affecting external tool are captured into `toolchain_versions`, hashed into `config_fingerprint`, and recorded verbatim in `repo` (§4)**. The capture format is pinned: each entry is `"<role>": "<package-name>@<version>"`, where the version string is exactly what the tool's own resolver reports — for a Node tool, the `version` field of its installed `package.json`; for a Python library, `importlib.metadata.version(name)`; for the git binary, the semver-looking token from `git --version`. No normalization beyond trimming: the string is hashed as reported, so two builds that report differently are different fingerprints, which is the intended behavior. The roles present in v0 are `history` (pydriller), `dep_extractor` (dependency-cruiser, D-006), `git`, `python` (the interpreter, `platform.python_version()`), and `substrate` (this package's own version, since its code is a value-affecting input too). There is no `graph` role: PageRank is in-package (§6.2.2). The independent scanner (`altdeps.py`) is part of the package and covered by the `substrate` role. Pinning PageRank's numerics (§6.2.2) is necessary but insufficient without this: it makes the *algorithm* deterministic, while this makes the *toolchain* attributable.
 - Re-running on the same SHA with the same `extractor_version`, `config`, and `toolchain_versions` is byte-identical except `extracted_at` (excluded from the seed). A toolchain change is a *fingerprint* change, so a moved value is always attributable — never silent.
 - Stable ordering throughout; floating-point values rounded to 4 dp.
 
@@ -55,10 +55,14 @@ Out of scope for v0:
     "branch": "string",
     "root_commit_sha": "string",
     "config_fingerprint": "<sha256 of effective config incl. index weights + toolchain_versions>",
+    "as_of": "<ISO8601 author_date of the last commit in (ts, sha) order — the reference for every day count>",
+    "truncated_at": "<sha or null: set when --truncate-at moved both inventory and history to this split>",
     "toolchain_versions": {
-      "extractor": "madge@6.1.0",
-      "graph": "networkx@3.3",
-      "history": "pydriller@2.7"
+      "dep_extractor": "dependency-cruiser@18.2.0",
+      "git": "git@2.53.0",
+      "history": "pydriller@2.11",
+      "python": "python@3.13.12",
+      "substrate": "repo-substrate@0.2.2"
     }
   },
   "summary": {
@@ -68,9 +72,15 @@ Out of scope for v0:
     "orphan_nodes": 0,
     "graph_available": true,
     "graph_resolution_rate": 0.0,
+    "fan_in_instrument_tau": 0.0,
+    "graph_instruments_disagree": false,
     "graph_degraded": false,
     "external_imports": 0,
     "unresolved_imports": 0,
+    "non_node_imports": 0,
+    "blame_failed": 0,
+    "alt_scanner_unreadable": 0,
+    "tsconfig_malformed": false,
     "total_loc": 0,
     "repo_age_days": 0,
     "commit_count": 0,
@@ -110,9 +120,16 @@ Out of scope for v0:
     { "sha": "string", "ts": "ISO8601", "author": "string", "subject": "string",
       "type": "feat|fix|refactor|docs|chore|test|revert|merge|other",
       "matched_rule": "string", "nodes_touched": ["src/a.ts"], "added": 0, "deleted": 0 }
-  ]
+  ],
+  "renames": { "<historical path>": "<successor path, one hop>" },
+  "caveats": {
+    "orphan_nodes": [], "unresolved_import_samples": [], "blame_failed": [],
+    "alt_scanner_unreadable": [], "tsconfig_malformed": null
+  }
 }
 ```
+
+Per-node `metrics` also carry, beyond the §5 catalog: `centrality` (§6.2.2), `fan_in_alt`, `fan_out_alt`, `test_fan_in`, `test_fan_in_alt` (§5 second-instrument metrics), `test_proximity`, `recent_commit_share` (§6.2.2), and `history_missing` (§5 orphans). `nodes_touched` in the timeline are recorded under the name current *at that commit*; a consumer joining timeline paths to nodes resolves through `renames`. `summary` fields added since the June draft: `fan_in_instrument_tau` and `graph_instruments_disagree` (the local G2 check, D-011), `non_node_imports` (§8's third kind of non-edge), `blame_failed`, `alt_scanner_unreadable`, `tsconfig_malformed` (instrument faults, distinct from absent measurements — 2026-09-04 audit).
 
 When the percentile population is too small (§6.1), `derived.percentiles` and `derived.indices` are `null` per node and `summary.percentiles_valid` is `false`. Raw metrics are always emitted.
 
@@ -183,7 +200,7 @@ Canonical names are **pinned** here; earlier drafts drifted (`volatility_index`,
 | `reinforcement_index` | Test support | discrete: `has_sibling_test`, test proximity, `is_test`; later coverage |
 | `complexity_proxy_index` | Internal intricacy (cheap) | `size_loc` pctile, nesting-depth proxy pctile, `fan_out` pctile, function count if easy |
 
-`reinforcement_index` is the deliberate exception to "built from percentiles": it is composed from normalized discrete test signals (0.0 none / partial proximity / 1.0 direct sibling test). Its inputs are still unit-free and bounded, so the "normalized inputs only" rule holds; it is just not percentile-derived.
+`reinforcement_index` (**revised 2026-09-04, D-011**) is read from the import graph, not from file naming: `0.0` when no test file imports the node; otherwise `0.5 + 0.5 · percentile(test_fan_in)` among nodes that some test imports, so "one test touches it" and "the most-tested file in the repo" are distinguishable. When the graph is degraded (§6.3) it is `null` with `reinforcement_index_degraded: true`. The path-convention reading (`has_sibling_test`, `test_proximity`) is still emitted as a metric and reported as a correlate, but it is no longer an input: on the reference set it disagreed with the graph reading on three of four repos, and on a repo whose tests are named by feature rather than by module it is simply wrong. Its inputs are unit-free and bounded, so the "normalized inputs only" rule holds.
 
 #### 6.2.1 Pinned v0 weights (placeholders — tuned per `validation-spec.md`)
 
@@ -204,10 +221,10 @@ All names refer to the percentile of that metric unless noted. Weights within ea
 
 Four inputs above are not raw metrics and were previously underspecified; pinned here so every index value is deterministic and traceable. Like the weights (§6.2.1) these are **v0 defaults**, but unlike the weights they are *method* choices — changing one changes the metric's meaning, so each is recorded in config and feeds `config_fingerprint`.
 
-- **`centrality`** (in `load_index`): **PageRank** over the directed import graph (edge `from → to` per §8), computed by `networkx.pagerank` with **`alpha = 0.85`, `max_iter = 100`, `tol = 1e-06`, uniform `personalization` (none), uniform `dangling` distribution (the library default — a file that imports nothing redistributes its mass evenly), unweighted edges, and the pure-Python power-iteration backend** (not the SciPy sparse path, whose floating-point summation order differs across BLAS builds). All five settings are recorded in config and feed `config_fingerprint`. Values are rounded to 4 dp before ranking, which absorbs last-ulp differences across platforms. PageRank chosen over betweenness for stability under small graph changes (continuity matters for the time-lapse) and lower cost. Percentile-ranked like any metric. Absent graph → the §6.3 degraded path. Note that "present structural position" (`validation-spec.md` §2.1.1) means position *under this method with these parameters*; a different centrality would name a different position, and that is disclosed rather than hidden (tribunal A6).
+- **`centrality`** (in `load_index`): **PageRank** over the directed import graph (edge `from → to` per §8), computed by an **in-package power iteration** (`graph.py`) that replicates networkx's pure-Python `_pagerank_python` semantics exactly and is tested against it: **`alpha = 0.85`, `max_iter = 100`, `tol = 1e-06`** (L1 convergence `err < N·tol`), uniform personalization, uniform dangling distribution (a file that imports nothing redistributes its mass evenly), unweighted edges, plain Python floats summed in sorted-node order. networkx is *not* a dependency: the numeric path must not depend on which sparse or BLAS backend a platform loads. *(Corrected 2026-09-04 — the June text named `networkx.pagerank` as the implementation, which the code never was; the architecture validator caught the divergence.)* All five settings are recorded in config and feed `config_fingerprint`. Values are rounded to 4 dp before ranking, which absorbs last-ulp differences across platforms. PageRank chosen over betweenness for stability under small graph changes (continuity matters for the time-lapse) and lower cost. Percentile-ranked like any metric. Absent graph → the §6.3 degraded path. Note that "present structural position" (`validation-spec.md` §2.1.1) means position *under this method with these parameters*; a different centrality would name a different position, and that is disclosed rather than hidden (tribunal A6).
 - **`nesting_proxy`** (in `complexity_proxy_index`): **maximum indentation depth** of the file, language-agnostic — leading-whitespace runs normalized to a unit. Pinned edge cases: a tab counts as one level; the **modal indent width** is the most common positive leading-space count over lines whose leading whitespace is spaces only, ties broken toward the *smaller* width; if no line has leading spaces the width is `1`; a line's depth is `tabs + floor(spaces / width)`; lines inside a run with mixed tabs and spaces are counted as `tabs + floor(spaces / width)` too (no error); blank and whitespace-only lines are skipped; a file with no indented lines has `nesting_proxy = 0`; files over `nesting_max_bytes` (config, default 2 MiB) are `null` (treated as unavailable, weight renormalized). A cheap stand-in for cyclomatic complexity. Percentile-ranked.
 - **`recent_commit_share`** (in `neglect_index`): timeline-relative, **not** wall-clock, so it is stable on re-run. Let the **recent window** be the last `recent_window_frac` of the timeline by commit count (config default `0.20`, mirroring the validation split). `recent_commit_share` = (this file's commits inside that window) / (this file's total commits). `neglect_index` uses `(1 − recent_commit_share)`: a file with no recent commits scores high neglect.
-- **Test proximity** (the `0.5` tier of `reinforcement_index`): `1.0` = a direct **sibling** test (name-matched, e.g. `foo.ts` ↔ `foo.test.ts` / `foo.spec.ts`); `0.5` = a test file exists in the **same directory** (or maps to the same module) but is not a name-matched sibling; `0.0` = neither. Resolution rule (sibling-name patterns, module mapping) lives in config alongside `test-path patterns`.
+- **Test proximity** (a metric and correlate; no longer an index input as of D-011): `1.0` = a **name-matched** test — a test file whose stem (test suffix stripped) equals the module's stem and *either* whose mirrored directory equals the module's directory (`tests/lib/x.js` ↔ `lib/x.js`, `lib/__tests__/x.test.ts` ↔ `lib/x.ts`) *or* whose stem is unique among non-test modules (so `test/unit/utils/x.test.js` reaches `src/security/utils/x.ts` when exactly one module is named `x`); `0.5` = a test file's mirrored directory equals the module's directory, or a stem-matched test exists but the stem is ambiguous; `0.0` = neither. `has_sibling_test` ≝ `test_proximity == 1.0`. The test roots, suffixes, and globs live in config; the unique-stem rule is fixed. *(The June draft's "direct sibling" wording omitted the unique-stem rule; the architecture validator caught the divergence.)*
 
 The substrate still never says `"feature": "toothpick"`. It says `load_index: 0.91, reinforcement_index: 0.0, has_sibling_test: false`, and leaves the naming to C3.
 
@@ -234,7 +251,7 @@ Deterministic rule cascade, first match wins, recorded in `matched_rule`:
 4. **Subject regex fallback** (`/\b(bug|hotfix|patch)\b/i` → `fix`) → `matched_rule: subject-regex`.
 5. **Default** → `other`, `matched_rule: default`.
 
-No probabilistic classification; every type is traceable to a rule. This cascade is authoritative and matches `history_miner.py::classify_commit` in behavior. It matters beyond C1: validation labels (`validation-spec.md` §3.4) are a pure function of which commits land in `{fix, revert}`. Git-native reverts *are* labeled positive — but via stage 1, not stage 2; stage 2 changes no label.
+No probabilistic classification; every type is traceable to a rule. This cascade is authoritative and matches `history.py::classify_commit` in behavior. The validation gate re-runs the same cascade over holdout subjects with its own frozen fallback regex to derive labels (`validation-spec.md` §3.4). It matters beyond C1: validation labels (`validation-spec.md` §3.4) are a pure function of which commits land in `{fix, revert}`. Git-native reverts *are* labeled positive — but via stage 1, not stage 2; stage 2 changes no label.
 
 **Open item (code, not spec).** The dead stage 2 reflects a latent choice. Either (a) drop the redundant `_NATIVE_REVERT` regex, since stage 1 already covers it, or (b) tighten stage 1 to require a conventional delimiter (`:`/`(`/`!`) so stage 2 becomes live and `native-revert-subject` is reachable. Option (b) is **not** label-neutral: it would reclassify colon-less `fix …`/`feat …` subjects out of `{fix}`, moving validation positives — so it must be decided against the holdout, not silently. Until then, this spec describes (a)'s behavior (stage 2 dead) as the truth of the code.
 
@@ -253,7 +270,8 @@ No probabilistic classification; every type is traceable to a rule. This cascade
     - **Unresolved imports** (an import that looked in-repo/relative but the extractor *could not place* — a genuine resolution *failure*, e.g. a `tree-sitter` parse miss or an alias it couldn't follow) → counted in `summary.unresolved_imports`. These *are* the quality signal.
     - `summary.graph_resolution_rate` is computed from in-repo failures only (§6.3). Conflating external imports into the failure count would collapse the rate on every normal npm repo (where most imports are external) and falsely trip degradation — so the split is mandatory, not cosmetic.
   - Edges sorted by `(from, to)` for stable output.
-- CLI: `extract <repo_path> [--rev HEAD] [--truncate-at <sha>] [--config cfg.toml] -o substrate.json --report substrate-report.md`. `--rev` selects the tip; `--truncate-at` additionally drops all commits after `<sha>` (the validation holdout split), so the substrate sees only the training window.
+- CLI: `extract <repo_path> [--rev HEAD] [--truncate-at <sha>] [--config cfg.toml] -o substrate.json --report substrate-report.md`. `--rev` selects the tip. `--truncate-at <sha>` **supersedes** `--rev`: both the inventory and the history are taken at `<sha>`, so the substrate sees only the training window and its node set is the tree at the split (a HEAD inventory with truncated history would make every holdout-born file an orphan). `repo.truncated_at` records the split.
+  - **Three kinds of non-edge**, all counted: `external_imports` (bare specifiers, successful out-of-repo resolutions), `unresolved_imports` (in-repo-shaped specifiers the extractor could not place — the §6.3 quality signal), and `non_node_imports` (resolved to an in-repo path that is not a node: an excluded glob, or a non-source extension such as `.json`/`.css`). Only the second enters the resolution-rate denominator.
 - Config: exclude globs, test-path patterns, sibling-test/name patterns, fix-subject regexes, `N_min`, `exclude_tests_from_population`, `recent_window_frac` (§6.2.2), `graph_quality_min` (§6.3, default 0.80), rounding precision, centrality method/params, and **index weights**. All config that affects a value feeds `config_fingerprint`; `toolchain_versions` (§3) does too.
 
 ## 9. The substrate report

@@ -66,13 +66,17 @@ def render_report(sub: dict[str, Any], cfg: SubstrateConfig) -> str:
         f"naming is C3's job. Seed `{sub['seed'][:12]}…`, config fingerprint `{r['config_fingerprint'][:12]}…`, "
         f"as-of {r['as_of'][:10]}.*\n"
     )
+    out.append("> **UNGATED.** This report consults no `validation.json`. Every number below is a measurement or a "
+               "fixed-weight blend of measurements; none has passed the anti-horoscope gate, and nothing here is a "
+               "diagnosis. Diagnostic claims come only from C3 over gated signals (`structural-mapper-spec.md` §3).\n")
     out.append("## Summary\n")
     out.append("| field | value |\n|---|---:|")
     for key in ("node_count", "population_size", "percentiles_valid", "orphan_nodes", "graph_available",
-                "graph_resolution_rate", "graph_degraded", "external_imports", "unresolved_imports",
-                "total_loc", "repo_age_days", "commit_count", "author_count", "authorship_gini",
+                "graph_resolution_rate", "fan_in_instrument_tau", "graph_instruments_disagree", "graph_degraded",
+                "external_imports", "unresolved_imports", "non_node_imports", "blame_failed", "alt_scanner_unreadable",
+                "tsconfig_malformed", "total_loc", "repo_age_days", "commit_count", "author_count", "authorship_gini",
                 "test_loc_ratio", "dep_graph_density"):
-        out.append(f"| `{key}` | {_fmt(s[key])} |")
+        out.append(f"| `{key}` | {_fmt(s.get(key))} |")
     out.append("")
     if not s["percentiles_valid"]:
         out.append(f"> **Percentiles invalid**: population {s['population_size']} < N_min {cfg.n_min}. "

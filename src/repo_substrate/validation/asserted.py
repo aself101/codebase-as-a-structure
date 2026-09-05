@@ -4,6 +4,7 @@ recognition check."""
 
 from __future__ import annotations
 
+import math
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -33,11 +34,16 @@ class RepoAsserted:
 
 
 def _signal_value(node: dict[str, Any], sig: str) -> float | None:
+    """Index value if `sig` is an index; else the raw metric; else a percentile-only signal
+    (the `_nonzero` variants exist only in `derived.percentiles`)."""
     d = node.get("derived") or {}
     idx = d.get("indices") or {}
     if sig in idx:
         return idx[sig]
-    v = node["metrics"].get(sig)
+    if sig in node["metrics"]:
+        v = node["metrics"].get(sig)
+    else:
+        v = (d.get("percentiles") or {}).get(sig)
     if isinstance(v, bool):
         return 1.0 if v else 0.0
     return v
@@ -78,24 +84,40 @@ def run_stability(full: dict[str, Any], pert: dict[str, Any], vcfg: ValidationCo
     pert_pop = {canon(nd["id"]): nd for nd in population(pert)}
     common_all = set(head_pop) & set(pert_pop)
     common = sorted(common_all - touched)
+    n_excluded = len(common_all) - len(common)
+    excluded_frac = (n_excluded / len(common_all)) if common_all else 1.0
+    # D-011 floors: the test must not get easier as the removed commits touch more of the repo.
+    population_ok = len(common) >= vcfg.stability_min_n and excluded_frac <= vcfg.stability_max_excluded_frac
     out: dict[str, dict[str, Any]] = {}
     for sig in GROUNDING:
         deltas = []
+        head_vals: set[float] = set()
         for p in common:
             a = _stability_value(head_pop[p], sig)
             b = _stability_value(pert_pop[p], sig)
             if a is None or b is None:
                 continue
+            head_vals.add(float(a))
             deltas.append(abs(float(a) - float(b)))
-        if not deltas:
-            out[sig] = {"k": k, "median_abs_delta": None, "max_abs_delta": None, "p95_abs_delta": None, "passed": None, "n": 0}
+        base = {"k": k, "eps": vcfg.stability_eps, "delta": vcfg.stability_delta, "n": len(deltas),
+                "n_excluded_touched": n_excluded, "excluded_frac": excluded_frac,
+                "distinct_values": len(head_vals)}
+        if not deltas or not population_ok:
+            out[sig] = {**base, "median_abs_delta": None, "max_abs_delta": None, "p95_abs_delta": None,
+                        "passed": None, "reason": "insufficient_stability_population"}
+            continue
+        # D-011 degeneracy: a near-constant signal passes any stability budget trivially (Popper's
+        # constant objection). It is not certified by stability; it is degenerate.
+        if len(head_vals) < vcfg.degenerate_min_distinct:
+            out[sig] = {**base, "median_abs_delta": 0.0, "max_abs_delta": 0.0, "p95_abs_delta": 0.0,
+                        "passed": False, "reason": "degenerate"}
             continue
         med, mx = float(median(deltas)), float(max(deltas))
         p95 = float(np.quantile(deltas, 0.95))
-        out[sig] = {"k": k, "eps": vcfg.stability_eps, "delta": vcfg.stability_delta,
-                    "median_abs_delta": med, "max_abs_delta": mx, "p95_abs_delta": p95, "n": len(deltas),
-                    "passed": bool(med <= vcfg.stability_eps and mx <= vcfg.stability_delta)}
-    return out, len(common), len(common_all) - len(common)
+        passed = bool(med <= vcfg.stability_eps and mx <= vcfg.stability_delta)
+        out[sig] = {**base, "median_abs_delta": med, "max_abs_delta": mx, "p95_abs_delta": p95,
+                    "passed": passed, "reason": None if passed else "unstable"}
+    return out, len(common), n_excluded
 
 
 def _tau_block(pop: list[dict[str, Any]], sig: str, cp: str, vcfg: ValidationConfig, floor: float | None) -> dict[str, Any]:
@@ -114,7 +136,7 @@ def _tau_block(pop: list[dict[str, Any]], sig: str, cp: str, vcfg: ValidationCon
     pval = permutation_p(xs, ys, kendall_tau_b, vcfg.permutation_n, vcfg.rng_seed + 1)
     block: dict[str, Any] = {"counterpart": cp, "n": len(xs), "tau_b": tau, "tau_b_ci": [lo, hi], "permutation_p": pval}
     if floor is not None:
-        passed = bool(lo == lo and lo >= floor)  # lo == lo filters NaN
+        passed = bool(not math.isnan(lo) and lo >= floor)
         block.update({"tau_floor": floor, "passed": passed, "reason": None if passed else "corroboration_fail"})
     return block
 
@@ -169,7 +191,7 @@ def run_recognition(full: dict[str, Any], blind_path: Path | None, k: int = 10) 
     values on the ranked files. Reported, never gating (n = 1)."""
     if blind_path is None or not blind_path.exists():
         return {}, None
-    lists = parse_blind_ranking(blind_path.read_text())
+    lists = parse_blind_ranking(blind_path.read_text(encoding="utf-8"))
     nodes = {nd["id"]: nd for nd in full["nodes"]}
     out: dict[str, dict[str, Any]] = {}
     for num, sig in RECOGNITION_LISTS.items():

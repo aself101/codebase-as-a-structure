@@ -23,28 +23,58 @@ def render_holdout_report(doc: dict[str, Any]) -> str:
                f"validation fingerprint `{doc['validation_config_fingerprint'][:12]}…`. "
                "Verdicts are stated for fix-**activity** (the declared §3.4.1 proxy), never defect origin.*\n")
 
+    vc = doc["validation_config"]
+    out.append("## Gate configuration (every floor, so a loosened one is visible here)\n")
+    out.append(f"- holdout: frac {vc['holdout_frac']}, ROC margin +{vc['auc_margin']}, PR-AUC ×{vc['pr_auc_mult']}, coverage ≥ {vc['coverage_min']}, "
+               f"signal floor ×{vc['signal_floor_mult']} base rate, **min test repos {vc['min_repos']}**")
+    out.append(f"- asserted: K {vc['stability_perturbation_k']}, **stability eps {vc['stability_eps']} / delta {vc['stability_delta']}**, "
+               f"min compared {vc['stability_min_n']}, max excluded {vc['stability_max_excluded_frac']}, min distinct {vc['degenerate_min_distinct']}, "
+               f"τ floors G3 {vc['tau_asserted']} / G2 {vc['tau_instrument']}, retire {vc['tau_retire']}, **m_asserted {vc['m_asserted']}**")
+    out.append(f"- label regex (frozen, validation side): `{vc['label_subject_regex']}`; bootstrap {vc['bootstrap_n']}, permutation {vc['permutation_n']}, seed {vc['rng_seed']}")
+    sec = doc.get("substrate_effective_config") or {}
+    w = sec.get("weights") or {}
+    if w:
+        out.append("- substrate weights validated (the fingerprint's preimage): " + "; ".join(
+            f"`{k}` = {{{', '.join(f'{i}: {v}' for i, v in ws.items())}}}" for k, ws in w.items()))
+        out.append(f"- substrate feature-side fix regex: `{sec.get('fix_subject_regex')}`"
+                   + ("  ⚠ differs from the label regex" if sec.get("fix_subject_regex") != vc["label_subject_regex"] else " (same as label regex)"))
+        out.append(f"- toolchain: {', '.join(f'{k}={v}' for k, v in (sec.get('toolchain_versions') or {}).items())}")
+    out.append("")
+
     out.append("## Reference repos\n")
-    out.append("| repo | HEAD | commits | nodes | split | holdout commits | eligible | coverage | positives | base rate | fix-label rate | degenerate |")
-    out.append("|---|---|---:|---:|---|---:|---:|---:|---:|---:|---:|---|")
+    out.append("| repo | role | expected (D-009) | HEAD | commits | nodes | population | split | holdout commits | eligible | coverage | positives | base rate | fix-label rate | degenerate |")
+    out.append("|---|---|---|---|---:|---:|---:|---|---:|---:|---:|---:|---:|---:|---|")
     for r in doc["reference_repos"]:
         h = r.get("holdout", {})
-        out.append(f"| `{r['name']}` | `{r['head_sha'][:10]}` | {h.get('n_commits','–')} | {h.get('n_head_nodes','–')} | "
+        a = r.get("asserted", {})
+        exp = r.get("expected_role")
+        exp_s = (exp or "not pre-registered") + ("" if exp == r.get("role") else " ⚠ MISMATCH")
+        out.append(f"| `{r['name']}` | {r.get('role','test')} | {exp_s} | `{r['head_sha'][:10]}` | {h.get('n_commits','–')} | {h.get('n_head_nodes','–')} | {a.get('n_population','–')} | "
                    f"`{str(h.get('split_sha',''))[:10]}` | {h.get('n_holdout_commits','–')} | {h.get('n_eligible','–')} | "
                    f"{_f(h.get('coverage'))} | {h.get('n_positives','–')} | {_f(h.get('base_rate'))} | {_f(h.get('fix_label_rate'))} | {h.get('degenerate') or '–'} |")
     out.append("")
+    att = doc.get("substrate_attestations") or {}
+    if att:
+        out.append("**Substrate attestations** (cache file → seed, sha256 of the scored bytes):\n")
+        for k, v in att.items():
+            out.append(f"- `{k}`: seed `{v['seed'][:12]}…`, bytes `{v['bytes_sha256'][:12]}…`")
+        out.append("")
 
     out.append("## 1. Verdict table — predictive signals\n")
-    out.append("| signal | status | repo | ROC-AUC | best-baseline ROC | PR-AUC | best-baseline PR | base rate | p@10 | passed | failed clauses |")
-    out.append("|---|---|---|---:|---:|---:|---:|---:|---:|---|---|")
+    tc = doc.get("tuned_config_commit")
+    out.append(f"*Verdicts count **test**-role repos only (D-009); tuning-role rows are in-sample and shown for the record. "
+               f"Tuned config commit: `{tc[:12] if tc else 'none (spec placeholder weights)'}`.*\n")
+    out.append("| signal | status | repo | role | ROC-AUC | best-baseline ROC | PR-AUC | best-baseline PR | base rate | p@10 | τ(index, baseline) | passed | failed clauses |")
+    out.append("|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---|---|")
     for name, s in sig.items():
         if s["kind"] != "predictive":
             continue
         for r in s["holdout"]["per_repo"]:
             bb = r.get("best_baseline")
             bm = (r.get("baselines") or {}).get(bb, {}) if bb else {}
-            out.append(f"| `{name}` | **{s['status']}** | `{r['name']}` | {_f(r.get('roc_auc'))} | {_f(bm.get('roc_auc'))} ({bb or '–'}) | "
+            out.append(f"| `{name}` | **{s['status']}** | `{r['name']}` | {r.get('role','test')} | {_f(r.get('roc_auc'))} | {_f(bm.get('roc_auc'))} ({bb or '–'}) | "
                        f"{_f(r.get('pr_auc'))} | {_f(bm.get('pr_auc'))} | {_f(r.get('base_rate'))} | "
-                       f"{_f((r.get('precision_at_k') or {}).get('10'))} | {_f(r.get('passed'))} | "
+                       f"{_f((r.get('precision_at_k') or {}).get('10'))} | {_f(r.get('tau_vs_best_baseline'),2)} | {_f(r.get('passed'))} | "
                        f"{', '.join(r.get('failed_clauses') or []) or (r.get('degenerate') or '–')} |")
     out.append("")
 
@@ -88,21 +118,30 @@ def render_holdout_report(doc: dict[str, Any]) -> str:
                f"{doc['validation_config']['tau_instrument']}), G3 cross-modal (a different modality; floor τ ≥ "
                f"{doc['validation_config']['tau_asserted']}), G4 derived (stability + every input asserted; the name carries no "
                "claim beyond its inputs). Stability compares nodes untouched by the K removed commits.*\n")
-    out.append("| signal | class | status | repo | reason | stability med / p95 / max Δ | stable | counterpart | τ-b | 95% CI | perm p | corroborated | recognition overlap@10 / τ |")
-    out.append("|---|---|---|---|---|---:|---|---|---:|---|---:|---|---|")
+    out.append("| signal | class | status | repo | reason | stability med / p95 / max Δ (n) | distinct | stable | counterpart | n | τ-b | 95% CI | perm p | corroborated |")
+    out.append("|---|---|---|---|---|---:|---:|---|---|---:|---:|---|---:|---|")
     for name, s in sig.items():
         if s["kind"] != "descriptive":
             continue
         for r in s["grounding"]["per_repo"]:
-            st, cm, rec = r.get("stability", {}), r.get("corroboration", {}), r.get("recognition")
+            st, cm = r.get("stability", {}), r.get("corroboration", {})
             ci = cm.get("tau_b_ci")
             ci_s = f"[{_f(ci[0])}, {_f(ci[1])}]" if ci else "–"
-            rec_s = f"{_f(rec.get('overlap_at_k'),2)} / {_f(rec.get('tau_b_on_ranked'),2)}" if rec and rec.get("ranked") else "–"
             corro = _f(cm.get("passed")) if cm.get("passed") is not None else (cm.get("reason") or "–")
+            inst = cm.get("counterpart") or s.get("instrument") or "–"
             out.append(f"| `{name}` | {s['grounding_class']} | **{s['status']}** | `{r['name']}` | {r.get('reason') or '–'} | "
-                       f"{_f(st.get('median_abs_delta'))} / {_f(st.get('p95_abs_delta'))} / {_f(st.get('max_abs_delta'))} | {_f(st.get('passed'))} | "
-                       f"`{cm.get('counterpart') or cm.get('instrument') or '–'}` | {_f(cm.get('tau_b'))} | {ci_s} | {_f(cm.get('permutation_p'))} | {corro} | {rec_s} |")
+                       f"{_f(st.get('median_abs_delta'))} / {_f(st.get('p95_abs_delta'))} / {_f(st.get('max_abs_delta'))} ({st.get('n','–')}) | {st.get('distinct_values','–')} | {_f(st.get('passed'))} | "
+                       f"`{inst}` | {cm.get('n','–')} | {_f(cm.get('tau_b'))} | {ci_s} | {_f(cm.get('permutation_p'))} | {corro} |")
     out.append("")
+    heur = [(n, s["heuristic"]) for n, s in sig.items() if s["kind"] == "descriptive" and s.get("heuristic")]
+    if heur:
+        out.append("**Declared heuristics inside G1 (bounded risks, not certifications):**\n")
+        for n, h in heur:
+            out.append(f"- `{n}`: {h}")
+        out.append("")
+    nd = [n for n, s in sig.items() if s["kind"] == "descriptive" and s.get("non_discriminating")]
+    out.append(f"**Non-discriminating pairs (min lower-CI τ ≥ {doc['validation_config']['tau_retire']} on every repo — cannot fail, so not a falsifier; adversarial fixture required):** "
+               + (", ".join(f"`{n}`" for n in nd) if nd else "none") + "\n")
     out.append("**τ distribution across repos (the §2.4 known limit — a counterpart that cannot fail is not a falsifier):**\n")
     for name, s in sig.items():
         if s["kind"] != "descriptive" or s.get("counterpart") is None:
@@ -134,7 +173,7 @@ def render_holdout_report(doc: dict[str, Any]) -> str:
         try:
             from pathlib import Path
 
-            text = Path(ref).read_text()
+            text = Path(ref).read_text(encoding="utf-8")
         except OSError:
             out.append("_(file not readable at report time)_\n")
             continue

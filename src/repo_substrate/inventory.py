@@ -16,7 +16,7 @@ from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 
 from .config import LANGUAGE_BY_EXT, SubstrateConfig
-from .gitutil import ls_tree
+from .gitutil import cat_blobs, ls_tree
 
 
 @dataclass
@@ -159,15 +159,17 @@ def nesting_proxy(data: bytes, max_bytes: int) -> int | None:
     return max(tabs + spaces // width for tabs, spaces in leads)
 
 
-def build_inventory(repo: Path, worktree: Path, rev: str, cfg: SubstrateConfig) -> tuple[list[StaticNode], str]:
-    """Nodes at ``rev`` (read from the detached worktree) and the seed."""
+def build_inventory(repo: Path, rev: str, cfg: SubstrateConfig) -> tuple[list[StaticNode], str]:
+    """Nodes at ``rev`` and the seed. Contents are read by blob SHA (``git cat-file``),
+    never by worktree path, so a case-insensitive filesystem cannot swap two files."""
     included = included_paths(ls_tree(repo, rev), cfg)
     seed = tree_seed(included)
     paths = [p for p, _ in included]
     prox = test_proximity(paths, cfg)
+    blobs = cat_blobs(repo, [sha for _, sha in included])
     nodes: list[StaticNode] = []
     for path, sha in included:
-        data = (worktree / path).read_bytes()
+        data = blobs[sha]
         nodes.append(StaticNode(
             path=path, blob_sha=sha,
             lang=LANGUAGE_BY_EXT[PurePosixPath(path).suffix],

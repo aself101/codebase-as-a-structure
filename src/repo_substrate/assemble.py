@@ -9,6 +9,7 @@ to them; a FileHistory whose canonical path is absent at the rev is dropped
 from __future__ import annotations
 
 import importlib.metadata
+import math
 import platform
 import re
 from dataclasses import dataclass
@@ -95,25 +96,33 @@ def extract(
     fingerprint = cfg.fingerprint(tv)
     fix_fallback = re.compile(cfg.fix_subject_regex, re.IGNORECASE)
 
-    # --- steps 2–4: inventory + seed, history, edges — all at ``rev``
-    with detached_worktree(repo, rev, opts.scratch_dir) as wt:
-        static_nodes, seed = build_inventory(repo, wt, rev, cfg)
-        node_paths = {n.path for n in static_nodes}
-        js_ts = {n.path for n in static_nodes if n.lang in ("ts", "js")}
-        dep = extractor.extract(wt, js_ts) if (extractor is not None and js_ts) else DependencyResult()
-        # Second instrument for the fan-in family (validation §2.4.2 G2, D-008): independent scanner.
-        fan_in_alt, fan_out_alt = scan_fan_in_alt(wt, js_ts) if js_ts else ({}, {})
+    # --- steps 2–4: inventory + seed (by blob, no worktree), edges (worktree), history
+    static_nodes, seed = build_inventory(repo, rev, cfg)
+    node_paths = {n.path for n in static_nodes}
+    static_by_path = {n.path: n for n in static_nodes}
+    js_ts = {n.path for n in static_nodes if n.lang in ("ts", "js")}
+    test_paths = {n.path for n in static_nodes if n.is_test}
+    dep = DependencyResult()
+    fan_in_alt: dict[str, int] = {}
+    fan_out_alt: dict[str, int] = {}
+    test_fan_in_alt: dict[str, int] = {}
+    alt_unreadable: list[str] = []
+    if js_ts:
+        with detached_worktree(repo, rev, opts.scratch_dir) as wt:
+            if extractor is not None:
+                dep = extractor.extract(wt, js_ts)
+            # Second instrument for the fan-in family (validation §2.4.2 G2, D-008/D-011): independent scanner.
+            fan_in_alt, fan_out_alt, test_fan_in_alt, alt_unreadable = scan_fan_in_alt(wt, js_ts, test_paths)
     hist = miner.mine(repo, rev, fix_fallback)
     as_of = hist.as_of
 
     # --- §5 node-set invariant: nodes = rev inventory; attach history; count orphans
     paths = sorted(node_paths)
     cochange = cochange_degree(hist.timeline, cfg.cochange_min, cfg.cochange_max_files)
-    blame = blame_age_median(repo, rev, paths, as_of, opts.blame_workers)
+    blame, blame_failed = blame_age_median(repo, rev, paths, as_of, opts.blame_workers)
     fan_in, fan_out = fan_counts(paths, dep.edges)
-    # test_fan_in: importers that are test files — the import-graph instrument for reinforcement
-    # (validation §2.4.2 G2): a test that imports X reinforces X, whatever the file is named.
-    test_paths = {n.path for n in static_nodes if n.is_test}
+    # test_fan_in: importers that are test files — the import-graph reading of reinforcement
+    # (D-011): a test that imports X reinforces X, whatever the file is named.
     test_fan_in: dict[str, int] = {p: 0 for p in paths}
     for a, b in dep.edges:
         if a in test_paths and b in test_fan_in:
@@ -121,14 +130,26 @@ def extract(
     graph_available = len(dep.edges) > 0
     denom = len(dep.edges) + dep.unresolved_imports
     resolution_rate = (len(dep.edges) / denom) if denom else None
-    graph_degraded = (not graph_available) or (resolution_rate is not None and resolution_rate < cfg.graph_quality_min)
+    # Local second-instrument agreement (D-011): τ-b between the primary and alternate fan_in over
+    # JS/TS non-test nodes. Resolution rate catches non-resolution; this catches the other failure —
+    # a confident graph that another reader of the same source does not reproduce.
+    instrument_tau: float | None = None
+    if graph_available and js_ts:
+        from scipy.stats import kendalltau
+
+        pairs = [(fan_in.get(p, 0), fan_in_alt.get(p, 0)) for p in sorted(js_ts) if p not in test_paths]
+        if len(pairs) >= 10:
+            t = kendalltau([a for a, _ in pairs], [b for _, b in pairs], variant="b").statistic
+            instrument_tau = None if t != t else float(t)
+    instruments_disagree = instrument_tau is not None and instrument_tau < cfg.instrument_tau_min
+    graph_degraded = (not graph_available) or (resolution_rate is not None and resolution_rate < cfg.graph_quality_min) or instruments_disagree
     centrality = pagerank(paths, dep.edges, cfg.pagerank_alpha, cfg.pagerank_max_iter, cfg.pagerank_tol) if graph_available else {}
 
     n_commits = len(hist.timeline)
-    recent_start = int(round(n_commits * (1.0 - cfg.recent_window_frac)))
+    # floor, mirroring the validation split (§3.1) so the two 0.20 windows coincide exactly
+    recent_start = math.floor(n_commits * (1.0 - cfg.recent_window_frac))
 
     metrics_by_node: dict[str, dict[str, Any]] = {}
-    static_by_path = {n.path: n for n in static_nodes}
     orphans: list[str] = []
     recent_share: dict[str, float | None] = {}
     for p in paths:
@@ -146,6 +167,8 @@ def extract(
             "fan_in_alt": fan_in_alt.get(p, 0) if s.lang in ("ts", "js") else None,
             "fan_out_alt": fan_out_alt.get(p, 0) if s.lang in ("ts", "js") else None,
             "test_fan_in": test_fan_in.get(p, 0),
+            "test_fan_in_alt": test_fan_in_alt.get(p, 0) if s.lang in ("ts", "js") else None,
+            "test_proximity": s.test_proximity,
             "centrality": (round(centrality[p], cfg.rounding_dp) if p in centrality else None),
         }
         if fh is None:
@@ -159,6 +182,7 @@ def extract(
             m["history_missing"] = False
             recent = sum(1 for i in fh.commit_idxs if i >= recent_start)
             recent_share[p] = recent / fh.commit_count if fh.commit_count else None
+        m["recent_commit_share"] = recent_share[p]
         metrics_by_node[p] = m
 
     # --- §6.1 population and percentiles
@@ -175,11 +199,12 @@ def extract(
         m = metrics_by_node[p]
         raw = dict(m)
         derived: dict[str, Any] | None
-        if percentiles_valid and pct[p] is not None and not m["history_missing"]:
-            indices = compute_indices(pct[p], m, s.test_proximity, recent_share[p], graph_degraded, cfg)
-            derived = {"percentiles": pct[p], "indices": indices}
+        node_pct = pct[p]
+        if percentiles_valid and node_pct is not None and not m["history_missing"]:
+            indices = compute_indices(node_pct, m, m["test_fan_in"], recent_share[p], graph_degraded, cfg)
+            derived = {"percentiles": node_pct, "indices": indices}
         else:
-            derived = {"percentiles": pct[p] if percentiles_valid else None, "indices": None}
+            derived = {"percentiles": node_pct if percentiles_valid else None, "indices": None}
         nodes_out.append({"id": p, "kind": "file", "lang": s.lang, "metrics": raw, "derived": derived})
 
     # --- summary (§4 pinned definitions)
@@ -208,9 +233,15 @@ def extract(
         "orphan_nodes": len(orphans),
         "graph_available": graph_available,
         "graph_resolution_rate": resolution_rate,
+        "fan_in_instrument_tau": instrument_tau,
+        "graph_instruments_disagree": instruments_disagree,
         "graph_degraded": graph_degraded,
         "external_imports": dep.external_imports,
         "unresolved_imports": dep.unresolved_imports,
+        "non_node_imports": dep.non_node_imports,
+        "blame_failed": len(blame_failed),
+        "alt_scanner_unreadable": len(alt_unreadable),
+        "tsconfig_malformed": dep.tsconfig_malformed is not None,
         "total_loc": total_loc,
         "repo_age_days": repo_age_days,
         "commit_count": n_commits,
@@ -253,6 +284,9 @@ def extract(
         "caveats": {
             "orphan_nodes": orphans,
             "unresolved_import_samples": [{"from": a, "specifier": s} for a, s in dep.unresolved_samples],
+            "blame_failed": blame_failed,          # instrument broken, not absent (audit 2026-09-04)
+            "alt_scanner_unreadable": alt_unreadable,
+            "tsconfig_malformed": dep.tsconfig_malformed,
         },
     }
     return _round(out, cfg.rounding_dp)

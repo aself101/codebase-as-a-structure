@@ -1,87 +1,133 @@
-"""End-to-end determinism on a synthetic repository built in a temp dir
-(repo-substrate-spec §3 [B], §5 node-set invariant [C], §7 [G]).
-
-The synthetic history exercises: a rename, a file deleted before HEAD (must not
-be a node), a conventional fix, a merge, and a --truncate-at split.
-"""
+"""End-to-end invariants on the scripted synthetic repository (conftest.scripted_repo):
+determinism (repo-substrate-spec §3), the node-set invariant and orphans (§5),
+rename following incl. path reuse (§5; 2026-09-04 audit), classification (§7),
+and --truncate-at (§8). One invariant per test so a failure names what broke."""
 
 from __future__ import annotations
 
 import json
-import os
-import subprocess
-from pathlib import Path
 
 import pytest
 
-from repo_substrate.assemble import ExtractOptions, extract
-from repo_substrate.config import SubstrateConfig
-
-
-def _git(repo: Path, *args: str, env: dict | None = None) -> str:
-    e = {**os.environ, "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@x", "GIT_COMMITTER_NAME": "t",
-         "GIT_COMMITTER_EMAIL": "t@x", **(env or {})}
-    return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, check=True, env=e).stdout
-
-
-def _commit(repo: Path, msg: str, when: str) -> str:
-    _git(repo, "add", "-A")
-    _git(repo, "commit", "-q", "-m", msg, env={"GIT_AUTHOR_DATE": when, "GIT_COMMITTER_DATE": when})
-    return _git(repo, "rev-parse", "HEAD").strip()
+from repo_substrate.config import IndexWeights, SubstrateConfig
+from conftest import run_extract
 
 
 @pytest.fixture
-def synthetic_repo(tmp_path: Path) -> tuple[Path, list[str]]:
-    repo = tmp_path / "repo"
-    repo.mkdir()
-    _git(repo, "init", "-q", "-b", "main")
-    (repo / "src").mkdir()
-    (repo / "src" / "core.js").write_text("const x = 1;\nmodule.exports = x;\n")
-    (repo / "src" / "old.js").write_text("require('./core');\n")
-    shas = [_commit(repo, "feat: initial", "2026-01-01T00:00:00Z")]
-    (repo / "src" / "core.js").write_text("const x = 2;\nmodule.exports = x;\n")
-    shas.append(_commit(repo, "fix: off by one", "2026-01-02T00:00:00Z"))
-    _git(repo, "mv", "src/old.js", "src/renamed.js")
-    shas.append(_commit(repo, "refactor: rename", "2026-01-03T00:00:00Z"))
-    (repo / "src" / "gone.js").write_text("// temporary\n")
-    shas.append(_commit(repo, "chore: add temp", "2026-01-04T00:00:00Z"))
-    (repo / "src" / "gone.js").unlink()
-    shas.append(_commit(repo, "chore: remove temp", "2026-01-05T00:00:00Z"))
-    return repo, shas
+def sub(scripted_repo, small_cfg, tmp_path):
+    repo, shas = scripted_repo
+    return run_extract(repo, small_cfg, tmp_path), repo, shas
 
 
-def _run(repo: Path, tmp: Path, **kw) -> dict:
-    cfg = SubstrateConfig(n_min=2)
-    return extract(repo, cfg, ExtractOptions(scratch_dir=tmp, blame_workers=2, **kw), extractor=None)
+def _node(sub, path):
+    return next(n for n in sub["nodes"] if n["id"] == path)
 
 
-def test_golden_determinism_and_invariants(synthetic_repo, tmp_path):
-    repo, shas = synthetic_repo
-    a = _run(repo, tmp_path)
-    b = _run(repo, tmp_path)
+def test_rerun_is_byte_identical_modulo_extracted_at(scripted_repo, small_cfg, tmp_path):
+    repo, _ = scripted_repo
+    a = run_extract(repo, small_cfg, tmp_path)
+    b = run_extract(repo, small_cfg, tmp_path)
     a.pop("extracted_at"); b.pop("extracted_at")
     assert json.dumps(a, sort_keys=True) == json.dumps(b, sort_keys=True)
 
-    ids = {n["id"] for n in a["nodes"]}
-    assert ids == {"src/core.js", "src/renamed.js"}          # gone.js deleted before HEAD is not a node
-    assert a["summary"]["orphan_nodes"] == 0
-    renamed = next(n for n in a["nodes"] if n["id"] == "src/renamed.js")
-    assert renamed["metrics"]["age_days"] == 4                # rename-followed: age from the original commit
-    assert renamed["metrics"]["commit_count"] == 2            # initial + rename
-    core = next(n for n in a["nodes"] if n["id"] == "src/core.js")
-    assert core["metrics"]["fix_count"] == 1
-    assert [c["type"] for c in a["timeline"]] == ["feat", "fix", "refactor", "chore", "chore"]
-    assert a["repo"]["root_commit_sha"] == shas[0]
-    assert a["summary"]["graph_available"] is False           # no extractor → degraded path
-    assert all(n["derived"]["indices"]["load_index_degraded"] for n in a["nodes"])
-    assert a["summary"]["commit_count"] == 5
+
+def test_node_set_is_head_inventory(sub):
+    s, _, _ = sub
+    ids = {n["id"] for n in s["nodes"]}
+    assert "src/gone.js" not in ids          # deleted before HEAD: history but not a node (§5)
+    assert {"src/f0.js", "src/f1.js", "src/f2.js", "src/f3.js", "src/renamed.js", "src/old.js",
+            "src/side.js", "src/merge_only.js"} <= ids
 
 
-def test_truncate_at_sees_only_training_window(synthetic_repo, tmp_path):
-    repo, shas = synthetic_repo
-    t = _run(repo, tmp_path, truncate_at=shas[3])
-    assert t["repo"]["head_sha"] == shas[3]
-    assert t["repo"]["truncated_at"] == shas[3]
-    assert t["summary"]["commit_count"] == 4
-    assert {n["id"] for n in t["nodes"]} == {"src/core.js", "src/renamed.js", "src/gone.js"}  # gone.js alive at split
-    assert t["repo"]["as_of"].startswith("2026-01-04")
+def test_merge_only_file_is_an_orphan_defect_signal(sub):
+    s, _, _ = sub
+    assert s["summary"]["orphan_nodes"] == 1
+    assert s["caveats"]["orphan_nodes"] == ["src/merge_only.js"]
+    n = _node(s, "src/merge_only.js")
+    assert n["metrics"]["history_missing"] is True
+    assert n["metrics"]["commit_count"] is None and n["metrics"]["size_loc"] == 1
+    assert n["derived"]["indices"] is None   # excluded from the population, never indexed
+
+
+def test_rename_followed_age_and_counts(sub):
+    s, _, _ = sub
+    renamed = _node(s, "src/renamed.js")
+    assert renamed["metrics"]["commit_count"] == 2   # add + rename
+    assert renamed["metrics"]["fix_count"] == 0
+    assert renamed["metrics"]["introduced_idx"] == 1
+    assert s["renames"] == {}                         # the alias for old.js was broken by the reuse below
+
+
+def test_path_reuse_after_rename_starts_a_fresh_lineage(sub):
+    """x→y then a new ADD at x must not inherit y's history (audit 2026-09-04)."""
+    s, _, _ = sub
+    old = _node(s, "src/old.js")
+    assert old["metrics"]["commit_count"] == 2       # reuse add + fix
+    assert old["metrics"]["fix_count"] == 1
+    assert old["metrics"]["introduced_idx"] == 3
+    renamed = _node(s, "src/renamed.js")
+    assert renamed["metrics"]["fix_count"] == 0      # the fix did NOT land on the old lineage
+
+
+def test_rename_onto_a_reused_name(make_repo, small_cfg, tmp_path):
+    """x→y, then z→x, then a fix to the new x: reproduced by the audit as landing on y."""
+    r = make_repo("reuse")
+    r.write("x.js", "1\n"); r.commit("feat: x")
+    r.git("mv", "x.js", "y.js"); r.commit("refactor: x -> y")
+    r.write("z.js", "2\n"); r.commit("feat: z")
+    r.git("mv", "z.js", "x.js"); r.commit("refactor: z -> x")
+    r.write("x.js", "3\n"); r.commit("fix: new x")
+    s = run_extract(r, small_cfg, tmp_path)
+    y = _node(s, "y.js"); x = _node(s, "x.js")
+    assert (y["metrics"]["commit_count"], y["metrics"]["fix_count"]) == (2, 0)
+    assert (x["metrics"]["commit_count"], x["metrics"]["fix_count"]) == (3, 1)
+    assert s["renames"] == {"z.js": "x.js"}          # the stale x→y alias was broken
+
+
+def test_timeline_classification_and_order(sub):
+    s, _, shas = sub
+    types = [c["type"] for c in s["timeline"]]
+    assert types == ["feat", "feat", "refactor", "feat", "fix", "fix", "chore", "chore", "feat", "chore", "merge", "fix"]
+    assert [c["sha"] for c in s["timeline"]] == shas   # (ts, sha) order == scripted order
+    assert s["repo"]["root_commit_sha"] == shas[0]
+
+
+def test_graph_absent_degrades_load_and_reinforcement(sub):
+    s, _, _ = sub
+    assert s["summary"]["graph_available"] is False and s["summary"]["graph_degraded"] is True
+    for n in s["nodes"]:
+        idx = n["derived"]["indices"]
+        if idx is None:
+            continue
+        assert idx["load_index_degraded"] is True
+        assert idx["reinforcement_index"] is None and idx["reinforcement_index_degraded"] is True
+
+
+def test_truncate_at_sees_only_training_window(scripted_repo, small_cfg, tmp_path):
+    repo, shas = scripted_repo
+    t = run_extract(repo, small_cfg, tmp_path, truncate_at=shas[6])   # just after "chore: add temp"
+    assert t["repo"]["head_sha"] == shas[6] and t["repo"]["truncated_at"] == shas[6]
+    assert t["summary"]["commit_count"] == 7
+    assert "src/gone.js" in {n["id"] for n in t["nodes"]}          # alive at the split
+    assert "src/side.js" not in {n["id"] for n in t["nodes"]}      # born after it
+
+
+def test_config_validate_error_paths():
+    with pytest.raises(ValueError, match="sum to"):
+        SubstrateConfig(weights=IndexWeights(load_index={"fan_in_nonzero": 0.6, "centrality": 0.6})).validate()
+    with pytest.raises(ValueError, match="unknown inputs"):
+        SubstrateConfig(weights=IndexWeights(load_index={"fan_in_nonzero": 0.5, "bogus": 0.5})).validate()
+    with pytest.raises(ValueError, match="n_min"):
+        SubstrateConfig(n_min=1).validate()
+    with pytest.raises(ValueError, match="recent_window_frac"):
+        SubstrateConfig(recent_window_frac=1.5).validate()
+
+
+def test_non_ascii_path_survives_c_locale(make_repo, small_cfg, tmp_path, monkeypatch):
+    monkeypatch.setenv("LC_ALL", "C")
+    monkeypatch.setenv("LANG", "C")
+    r = make_repo("uni")
+    r.write("src/café.js", "1\n"); r.commit("feat: café")
+    r.write("src/b.js", "2\n"); r.commit("feat: b")
+    s = run_extract(r, small_cfg, tmp_path)
+    assert "src/café.js" in {n["id"] for n in s["nodes"]}

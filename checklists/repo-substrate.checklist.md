@@ -20,7 +20,7 @@
 - [ ] `[DET]` Output is a pure function of `(repo content@SHA, extractor_version, config incl. weights, toolchain_versions)`. *(§3)* `(golden)`
 - [ ] `[DET]` `seed` = content hash of the resolved tree. *(§3)* `(unit)`
 - [ ] `[DET]` `config_fingerprint` hashes the effective config: index weights, percentile settings, exclude globs, **and** `toolchain_versions`. *(§3)* `(golden)`
-- [ ] `[DET]` `toolchain_versions` captures resolved versions of every value-affecting external tool (dep extractor, graph lib, history miner), hashed into the fingerprint and recorded verbatim in `repo`. *(§3)* `(unit)`
+- [x] `[DET]` `toolchain_versions` captures resolved versions of every value-affecting tool (`history`, `dep_extractor`, `git`, `python`, `substrate` — no `graph` role, PageRank is in-package), hashed into the fingerprint and recorded verbatim in `repo`. *(§3)* `(unit)` — tests/test_units.py fingerprint test
 - [ ] `[DET]` Re-run on same SHA + versions + config is byte-identical except `extracted_at` (excluded from seed). *(§3)* `(golden)`
 - [ ] `[DET]` Stable ordering throughout; floats rounded to 4 dp. *(§3)* `(unit)`
 
@@ -51,7 +51,8 @@
 - [ ] `[ALG]` `load_index` and `bug_pressure_index` consume the `_nonzero` inputs per the §6.2.1 formulas. *(§6.1, §6.2.1)* `(unit)`
 - [ ] `[ALG]` v0 weights match §6.2.1 and live in config (feeding `config_fingerprint`); within-index weights sum to 1.0. *(§6.2.1)* `(unit)`
 - [ ] `[ALG]` `reinforcement_index` is the documented exception — composed from normalized discrete test signals (1.0 sibling / 0.5 proximity / 0.0 none), still bounded. *(§6.2)* `(unit)`
-- [ ] `[ALG]` Pinned input definitions honored: `centrality` = `networkx.pagerank` (alpha 0.85, max_iter 100, tol 1e-6, uniform dangling, pure-Python backend, 4 dp before ranking); `nesting_proxy` = normalized max indent depth with the §6.2.2 edge cases (modal width, tie → smaller, no-spaces → 1, no-indent → 0, oversize → null); `recent_commit_share` = timeline-relative (not wall-clock); test-proximity tiers per §6.2.2. *(§6.2.2)* `(unit)`
+- [x] `[ALG]` Pinned input definitions honored: `centrality` = in-package power iteration replicating networkx's pure-Python semantics (alpha 0.85, max_iter 100, tol 1e-6, uniform dangling, 4 dp before ranking) — tested against `_pagerank_python`; `nesting_proxy` = normalized max indent depth with the §6.2.2 edge cases; `recent_commit_share` = timeline-relative (floor, mirroring the validation split); test-proximity tiers incl. the unique-stem rule per §6.2.2. *(§6.2.2)* `(unit)` — tests/test_units.py
+- [x] `[ALG]` `reinforcement_index` from the import graph (D-011): 0 when no test imports the node, else 0.5 + 0.5·pct(`test_fan_in`); null + `reinforcement_index_degraded` when the graph is degraded. *(§6.2)* `(unit)` — tests/test_golden.py
 - [ ] `[DET]` Method choices in §6.2.2 are recorded in config and feed `config_fingerprint`. *(§6.2.2)* `(golden)`
 
 ## F. Graph fallback — quality, not just presence (§6.3)

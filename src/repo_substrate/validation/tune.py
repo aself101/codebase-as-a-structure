@@ -3,7 +3,8 @@
 Tune the two predictive indices' weights on the tuning repos only, by a fixed
 grid, with a fixed objective, and freeze the result to a TOML file. The test
 repos are never read here. Indices are recomputed from the cached training
-substrates' percentiles, so tuning needs no re-extraction.
+substrates' percentiles, so tuning needs no re-extraction. The split and the
+eligibility rule come from ``holdout.split_and_eligible`` — one owner.
 """
 
 from __future__ import annotations
@@ -14,12 +15,12 @@ from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
-from ..config import ALLOWED_INPUTS, IndexWeights, SubstrateConfig
+from ..config import ALLOWED_INPUTS, SubstrateConfig
 from ..derived import compute_indices
 from .config import ValidationConfig
-from .holdout import FIX_TYPES
+from .holdout import SplitContext, split_and_eligible
 from .stats import average_precision, roc_auc
-from .substrates import SubstrateCache, canonical_resolver
+from .substrates import SubstrateCache
 
 GRID_STEP = 0.1
 
@@ -27,7 +28,7 @@ GRID_STEP = 0.1
 def compositions(keys: list[str], step: float) -> list[dict[str, float]]:
     """All weight vectors over `keys` with entries in {0, step, 2·step, …} summing to 1."""
     n = len(keys)
-    units = int(round(1.0 / step))
+    units = round(1.0 / step)
     out = []
     for cuts in itertools.combinations(range(units + n - 1), n - 1):
         parts = []
@@ -39,56 +40,46 @@ def compositions(keys: list[str], step: float) -> list[dict[str, float]]:
     return out
 
 
-def _holdout_context(repo: Path, cache: SubstrateCache, vcfg: ValidationConfig, cfg: SubstrateConfig) -> dict[str, Any]:
-    """Everything the objective needs for one repo: eligible ids, labels, baselines, and the
-    per-node inputs (percentiles, metrics, proximity, recent share) to recompute indices."""
-    full = cache.get(repo, "HEAD")
-    timeline = full["timeline"]
-    n = len(timeline)
-    split_idx = int(math.floor(n * (1.0 - vcfg.holdout_frac)))
-    split_sha = timeline[split_idx - 1]["sha"]
-    holdout = timeline[split_idx:]
-    train = cache.get(repo, split_sha, truncate=True)
-    canon = canonical_resolver(full)
-    head_nodes = {nd["id"] for nd in full["nodes"]}
-    positives = {canon(p) for c in holdout if c["type"] in FIX_TYPES for p in c["nodes_touched"]}
-    ids, labels, nodes = [], [], []
-    for nd in train["nodes"]:
-        if (nd.get("derived") or {}).get("indices") is None:
-            continue
-        if not vcfg.holdout_include_tests and nd["metrics"].get("is_test"):
-            continue
-        hid = canon(nd["id"])
-        if hid not in head_nodes:
-            continue
-        ids.append(nd["id"])
-        labels.append(1 if hid in positives else 0)
-        nodes.append(nd)
-    recency = [1.0 - (nd["derived"]["percentiles"].get("last_touched_days") or 0.0) for nd in nodes]
-    busyness = [float(nd["metrics"].get("commit_count") or 0) for nd in nodes]
-    best_roc = max(roc_auc(recency, labels), roc_auc(busyness, labels))
-    best_pr = max(average_precision(recency, labels), average_precision(busyness, labels))
-    # recent_commit_share is not stored; neglect is not tuned, so pass None (its weight renormalizes).
-    return {"name": full["repo"]["name"], "ids": ids, "labels": labels, "nodes": nodes,
-            "best_roc": best_roc, "best_pr": best_pr, "graph_degraded": train["summary"]["graph_degraded"]}
+def _baselines(ctx: SplitContext) -> tuple[float, float]:
+    best_roc = max(roc_auc(ctx.recency, ctx.labels), roc_auc(ctx.busyness, ctx.labels))
+    best_pr = max(average_precision(ctx.recency, ctx.labels), average_precision(ctx.busyness, ctx.labels))
+    return best_roc, best_pr
 
 
-def _score(ctx: dict[str, Any], index: str, weights: dict[str, float], cfg: SubstrateConfig) -> tuple[float, float]:
+def _score(ctx: SplitContext, best: tuple[float, float], index: str, weights: dict[str, float], cfg: SubstrateConfig) -> tuple[float, float]:
     w = replace(cfg.weights, **{index: weights})
     c = replace(cfg, weights=w)
     scores = []
-    for nd in ctx["nodes"]:
-        idx = compute_indices(nd["derived"]["percentiles"], nd["metrics"],
-                              1.0 if nd["metrics"].get("has_sibling_test") else 0.0, None,
-                              ctx["graph_degraded"], c)
-        scores.append(float(idx[index] or 0.0))
-    return roc_auc(scores, ctx["labels"]) - ctx["best_roc"], average_precision(scores, ctx["labels"]) / ctx["best_pr"]
+    for nd in ctx.nodes:
+        m = nd["metrics"]
+        idx = compute_indices(nd["derived"]["percentiles"], m, m.get("test_fan_in") or 0,
+                              m.get("recent_commit_share"), ctx.graph_degraded, c)
+        v = idx[index]
+        if v is None:
+            return float("nan"), float("nan")  # unmeasurable under these weights; sorts last (see tune())
+        scores.append(float(v))
+    return roc_auc(scores, ctx.labels) - best[0], average_precision(scores, ctx.labels) / best[1]
+
+
+def _sort_key(row: tuple[tuple[float, float], dict[str, float], list[tuple[float, float]]]) -> tuple[float, float]:
+    """Descending objective; NaN objectives sort strictly last (a NaN key would otherwise
+    leave Python's sort in input order)."""
+    d, r = row[0]
+    return (-d if not math.isnan(d) else float("inf"), -r if not math.isnan(r) else float("inf"))
 
 
 def tune(tuning_repos: list[Path], cache: SubstrateCache, vcfg: ValidationConfig, cfg: SubstrateConfig,
          indices: tuple[str, ...] = ("bug_pressure_index", "change_pressure_index")) -> dict[str, Any]:
-    ctxs = [_holdout_context(r, cache, vcfg, cfg) for r in tuning_repos]
-    result: dict[str, Any] = {"tuning_repos": [c["name"] for c in ctxs], "grid_step": GRID_STEP,
+    ctxs = [split_and_eligible(r, cache, vcfg) for r in tuning_repos]
+    # Degeneracy guards (audit: a NaN objective silently froze grid point #1 as the result).
+    for c in ctxs:
+        if not c.ids or c.n_positives == 0 or c.n_positives == len(c.ids):
+            raise ValueError(f"{c.name}: degenerate tuning repo (eligible={len(c.ids)}, positives={c.n_positives}); refusing to tune")
+    bests = [_baselines(c) for c in ctxs]
+    for c, (r, p) in zip(ctxs, bests, strict=True):
+        if math.isnan(r) or math.isnan(p) or p == 0.0:
+            raise ValueError(f"{c.name}: baseline undefined (roc={r}, pr={p}); refusing to tune")
+    result: dict[str, Any] = {"tuning_repos": [c.name for c in ctxs], "grid_step": GRID_STEP,
                               "objective": "min over tuning repos of (ROC-AUC − best baseline ROC-AUC); tie: min PR-AUC ratio",
                               "indices": {}}
     for index in indices:
@@ -96,21 +87,23 @@ def tune(tuning_repos: list[Path], cache: SubstrateCache, vcfg: ValidationConfig
         grid = compositions(keys, GRID_STEP)
         rows = []
         for wts in grid:
-            per = [_score(c, index, wts, cfg) for c in ctxs]
+            per = [_score(c, b, index, wts, cfg) for c, b in zip(ctxs, bests, strict=True)]
             obj = (min(d for d, _ in per), min(r for _, r in per))
             rows.append((obj, wts, per))
-        rows.sort(key=lambda t: (-t[0][0], -t[0][1]))
+        rows.sort(key=_sort_key)
         best_obj, best_w, best_per = rows[0]
+        if math.isnan(best_obj[0]):
+            raise ValueError(f"{index}: every grid point was unmeasurable; refusing to freeze weights")
         baseline_w = getattr(cfg.weights, index)
-        base_per = [_score(c, index, baseline_w, cfg) for c in ctxs]
+        base_per = [_score(c, b, index, baseline_w, cfg) for c, b in zip(ctxs, bests, strict=True)]
         result["indices"][index] = {
             "inputs": keys,
             "grid_size": len(grid),
             "chosen": {k: v for k, v in best_w.items() if v > 0},
             "chosen_objective": {"min_delta_roc": best_obj[0], "min_pr_ratio": best_obj[1]},
-            "chosen_per_repo": [{"name": c["name"], "delta_roc": d, "pr_ratio": r} for c, (d, r) in zip(ctxs, best_per, strict=True)],
-            "spec_placeholder": {k: v for k, v in baseline_w.items()},
-            "spec_placeholder_per_repo": [{"name": c["name"], "delta_roc": d, "pr_ratio": r} for c, (d, r) in zip(ctxs, base_per, strict=True)],
+            "chosen_per_repo": [{"name": c.name, "delta_roc": d, "pr_ratio": r} for c, (d, r) in zip(ctxs, best_per, strict=True)],
+            "spec_placeholder": dict(baseline_w),
+            "spec_placeholder_per_repo": [{"name": c.name, "delta_roc": d, "pr_ratio": r} for c, (d, r) in zip(ctxs, base_per, strict=True)],
             "top10": [{"weights": {k: v for k, v in w.items() if v > 0}, "min_delta_roc": o[0], "min_pr_ratio": o[1]} for o, w, _ in rows[:10]],
         }
     return result
@@ -126,8 +119,4 @@ def write_tuned_toml(result: dict[str, Any], cfg: SubstrateConfig, path: Path) -
         items = ", ".join(f'"{k}" = {v}' for k, v in chosen.items())
         lines.append(f"{name} = {{ {items} }}")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("\n".join(lines) + "\n")
-
-
-def _load_weights_toml(_: IndexWeights) -> None:  # pragma: no cover — documented in SubstrateConfig.load
-    pass
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")

@@ -90,7 +90,14 @@ class SubstrateConfig:
     cochange_min: int = 2
     cochange_max_files: int = 30
     recent_window_frac: float = 0.20
-    # --- graph (§6.2.2, §6.3)
+    # --- graph (§6.2.2, §6.3, §8)
+    # dependency-cruiser drops `import type` edges unless it analyzes pre-compilation
+    # dependencies. For a structural map a type import is a real compile-time dependency,
+    # so this is on; it is a value-affecting choice and feeds the fingerprint (D-011).
+    dep_ts_pre_compilation_deps: bool = True
+    # Local second-instrument check (validation §2.4.2 G2, D-011): τ-b between fan_in and
+    # fan_in_alt over the population; below this floor the graph is flagged `instruments_disagree`.
+    instrument_tau_min: float = 0.60
     pagerank_alpha: float = 0.85
     pagerank_max_iter: int = 100
     pagerank_tol: float = 1e-6
@@ -111,7 +118,7 @@ class SubstrateConfig:
         a typo in a config must not silently leave a default in place."""
         if path is None:
             return cls()
-        raw: dict[str, Any] = tomllib.loads(Path(path).read_text())
+        raw: dict[str, Any] = tomllib.loads(Path(path).read_text(encoding="utf-8"))
         weights_raw = raw.pop("weights", None)
         known = {f for f in cls.__dataclass_fields__ if f != "weights"}
         unknown = set(raw) - known

@@ -16,9 +16,9 @@ from .config import SubstrateConfig
 PERCENTILE_METRICS: tuple[str, ...] = (
     "size_loc", "age_days", "last_touched_days", "commit_count", "churn_lines",
     "fix_count", "revert_count", "author_count", "fan_in", "fan_out",
-    "cochange_degree", "blame_age_median",
+    "cochange_degree", "blame_age_median", "test_fan_in",
 )
-NONZERO_VARIANTS: tuple[str, ...] = ("fan_in", "fix_count", "revert_count")
+NONZERO_VARIANTS: tuple[str, ...] = ("fan_in", "fix_count", "revert_count", "test_fan_in")
 DERIVED_PERCENTILED: tuple[str, ...] = ("centrality", "nesting_proxy")
 
 
@@ -117,7 +117,7 @@ def _weighted(inputs: dict[str, float | None], weights: Mapping[str, float]) -> 
 def compute_indices(
     pct: Mapping[str, float | None],
     metrics: Mapping[str, float | int | None],
-    test_proximity: float,
+    test_fan_in: int,
     recent_commit_share: float | None,
     graph_degraded: bool,
     cfg: SubstrateConfig,
@@ -174,12 +174,26 @@ def compute_indices(
         "fan_out": pct.get("fan_out"),
     }, w.complexity_proxy_index)
 
+    # reinforcement_index (§6.2 as revised by D-011): the import-graph reading. 0.0 when no test
+    # imports the file; otherwise 0.5 + 0.5 · percentile among files that some test imports, so
+    # "one test touches it" and "the most-tested file in the repo" are distinguishable. Path
+    # convention (has_sibling_test / test_proximity) is kept as a metric and reported correlate,
+    # not an input: it is convention-dependent and disagreed with the graph on 3 of 4 reference repos.
+    if graph_degraded:
+        reinforcement: float | None = None
+    elif test_fan_in <= 0:
+        reinforcement = 0.0
+    else:
+        tp = pct.get("test_fan_in_nonzero")
+        reinforcement = 0.5 + 0.5 * (tp if tp is not None else 0.0)
+
     return {
         "load_index": load,
         "load_index_degraded": load_deg,
         "change_pressure_index": change,
         "bug_pressure_index": bug,
         "neglect_index": neglect,
-        "reinforcement_index": test_proximity,
+        "reinforcement_index": reinforcement,
+        "reinforcement_index_degraded": graph_degraded,
         "complexity_proxy_index": complexity,
     }

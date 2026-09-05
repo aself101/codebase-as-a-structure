@@ -35,15 +35,15 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     cfg = SubstrateConfig.load(args.config)
-    extractor = None if args.no_deps else DependencyCruiserExtractor(TOOLS_DIR)
+    extractor = None if args.no_deps else DependencyCruiserExtractor(TOOLS_DIR, cfg.dep_ts_pre_compilation_deps)
     opts = ExtractOptions(rev=args.rev, truncate_at=args.truncate_at, scratch_dir=args.scratch,
                           blame_workers=args.blame_workers)
     result = extract(args.repo, cfg, opts, extractor)
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(result, indent=1, sort_keys=True, ensure_ascii=False) + "\n")
+    args.output.write_text(json.dumps(result, indent=1, sort_keys=True, ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)
-        args.report.write_text(render_report(result, cfg))
+        args.report.write_text(render_report(result, cfg), encoding="utf-8")
     s = result["summary"]
     print(f"{result['repo']['name']}@{result['repo']['head_sha'][:10]}: nodes={s['node_count']} "
           f"population={s['population_size']} edges={len(result['edges'])} "

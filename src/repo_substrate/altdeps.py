@@ -15,7 +15,10 @@ import re
 from collections import defaultdict
 from pathlib import Path, PurePosixPath
 
-from .deps import load_tsconfig
+from .deps import (  # JSONC parsing only; no resolution code is shared
+    TsconfigMalformed,
+    load_tsconfig,
+)
 
 _SPECIFIER = re.compile(
     r"""(?:^|[^\w$.])(?:import|export)\s*(?:[\w*{}\s,$]+?\s*from\s*)?['"]([^'"\n]+)['"]"""
@@ -91,17 +94,24 @@ def _resolve(spec: str, importer: str, nodes: set[str], base_url: str, aliases: 
     return None
 
 
-def scan_fan_in_alt(worktree: Path, node_paths: set[str]) -> tuple[dict[str, int], dict[str, int]]:
-    """Returns (fan_in_alt, fan_out_alt) over in-repo resolved edges, self-loops dropped,
-    duplicates collapsed — the same edge contract as the primary extractor (§8)."""
-    base_url, aliases = _alias_map(load_tsconfig(worktree))
+def scan_fan_in_alt(worktree: Path, node_paths: set[str], test_paths: set[str] | None = None
+                    ) -> tuple[dict[str, int], dict[str, int], dict[str, int], list[str]]:
+    """Returns (fan_in_alt, fan_out_alt, test_fan_in_alt, unreadable_paths) over in-repo resolved
+    edges, self-loops dropped, duplicates collapsed — the same edge contract as the primary
+    extractor (§8). test_fan_in_alt counts importers that are in `test_paths`."""
+    try:
+        base_url, aliases = _alias_map(load_tsconfig(worktree))
+    except TsconfigMalformed:
+        base_url, aliases = "", []  # the primary extractor records the caveat; this instrument proceeds alias-less
     importers: dict[str, set[str]] = defaultdict(set)
     out_edges: dict[str, set[str]] = defaultdict(set)
     js_ts = {p for p in node_paths if PurePosixPath(p).suffix in _EXTS}
+    unreadable: list[str] = []
     for p in sorted(js_ts):
         try:
             src = (worktree / p).read_text(encoding="utf-8", errors="replace")
         except OSError:
+            unreadable.append(p)  # counted, not swallowed: an under-count moves a G2 verdict
             continue
         for m in _SPECIFIER.finditer(_strip_comments(src)):
             spec = m.group(1) or m.group(2) or m.group(3)
@@ -111,6 +121,8 @@ def scan_fan_in_alt(worktree: Path, node_paths: set[str]) -> tuple[dict[str, int
             if target and target != p:
                 importers[target].add(p)
                 out_edges[p].add(target)
+    tests = test_paths or set()
     fan_in = {p: len(importers.get(p, ())) for p in node_paths}
     fan_out = {p: len(out_edges.get(p, ())) for p in node_paths}
-    return fan_in, fan_out
+    test_fan_in = {p: sum(1 for i in importers.get(p, ()) if i in tests) for p in node_paths}
+    return fan_in, fan_out, test_fan_in, unreadable
