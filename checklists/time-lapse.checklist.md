@@ -19,12 +19,12 @@ Testable contracts for Phase 1. Tags: `[NOW]` required for the phase; `[TL]` tim
 - [x] `[NOW][BUDGET]` Adjacent mapped frames are diffed with the later frame's renames and the exact touched set (`touched_between`: commits in the later timeline absent from the earlier). *(§4)* `(unit)`
 - [x] `[NOW][TL]` Movement decomposes into edits (touched), ripple (untouched), structural (born + deleted); shares sum to one. *(§4)* `(unit: test_timelapse_on_scripted_repo)`
 - [x] `[NOW][TL]` Ripple splits into clock (clock-relative signals, age strata) and rank (rank-only signals, layer strata); a feature's kind follows its predicate's signals. *(§4)* `(unit: test_timelapse_on_scripted_repo)`
-- [ ] `[TL][BUDGET]` The report states the K of every transition and that the budget was pinned at K = 5. *(§4)* `(review)`
+- [x] `[TL][BUDGET]` The report states the K of every transition and that the budget was pinned at K = 5. *(§4)* `(review: reports/2026-09-05-phase1/*.timelapse.md, 2026-09-05)`
 
 ## D. Outputs (§5)
 
 - [x] `[NOW][TL]` `frames.json`, `timelapse.md`, `timelapse.html`, and per-frame skeleton / SVG / diff are written; the page carries every mapped frame and overlay toggles across frames. *(§5)* `(unit)`
-- [ ] `[TL]` Limitations §6 appear verbatim on the report. *(§6)* `(unit: test_timelapse_on_scripted_repo asserts the first; review for the rest)`
+- [x] `[TL]` Limitations §6 appear on the report. *(§6)* `(unit: test_timelapse_on_scripted_repo asserts the first; review for the rest)`
 
 ## E. Open (§7)
 
