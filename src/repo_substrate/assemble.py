@@ -30,6 +30,7 @@ from .gitutil import (
 )
 from .graph import fan_counts, pagerank
 from .history import HistoryMiner, PydrillerHistoryMiner, blame_age_median, cochange_degree
+from .altdeps import scan_fan_in_alt
 from .inventory import build_inventory
 
 SCHEMA_VERSION = "0.2"
@@ -100,6 +101,8 @@ def extract(
         node_paths = {n.path for n in static_nodes}
         js_ts = {n.path for n in static_nodes if n.lang in ("ts", "js")}
         dep = extractor.extract(wt, js_ts) if (extractor is not None and js_ts) else DependencyResult()
+        # Second instrument for the fan-in family (validation §2.4.2 G2, D-008): independent scanner.
+        fan_in_alt, fan_out_alt = scan_fan_in_alt(wt, js_ts) if js_ts else ({}, {})
     hist = miner.mine(repo, rev, fix_fallback)
     as_of = hist.as_of
 
@@ -108,6 +111,13 @@ def extract(
     cochange = cochange_degree(hist.timeline, cfg.cochange_min, cfg.cochange_max_files)
     blame = blame_age_median(repo, rev, paths, as_of, opts.blame_workers)
     fan_in, fan_out = fan_counts(paths, dep.edges)
+    # test_fan_in: importers that are test files — the import-graph instrument for reinforcement
+    # (validation §2.4.2 G2): a test that imports X reinforces X, whatever the file is named.
+    test_paths = {n.path for n in static_nodes if n.is_test}
+    test_fan_in: dict[str, int] = {p: 0 for p in paths}
+    for a, b in dep.edges:
+        if a in test_paths and b in test_fan_in:
+            test_fan_in[b] += 1
     graph_available = len(dep.edges) > 0
     denom = len(dep.edges) + dep.unresolved_imports
     resolution_rate = (len(dep.edges) / denom) if denom else None
@@ -133,6 +143,9 @@ def extract(
             "nesting_proxy": s.nesting_proxy,
             "cochange_degree": cochange.get(p, 0),
             "blame_age_median": blame.get(p),
+            "fan_in_alt": fan_in_alt.get(p, 0) if s.lang in ("ts", "js") else None,
+            "fan_out_alt": fan_out_alt.get(p, 0) if s.lang in ("ts", "js") else None,
+            "test_fan_in": test_fan_in.get(p, 0),
             "centrality": (round(centrality[p], cfg.rounding_dp) if p in centrality else None),
         }
         if fh is None:
@@ -233,6 +246,10 @@ def extract(
         "nodes": nodes_out,
         "edges": [{"from": a, "to": b, "kind": "import"} for a, b in sorted(dep.edges)],
         "timeline": timeline,
+        # Historical path -> successor, one hop each; chase to reach the name at this rev.
+        # nodes_touched in the timeline are recorded under the name current *at that commit*,
+        # so a consumer joining timeline paths to nodes must resolve through this map.
+        "renames": dict(sorted(hist.renames.items())),
         "caveats": {
             "orphan_nodes": orphans,
             "unresolved_import_samples": [{"from": a, "specifier": s} for a, s in dep.unresolved_samples],

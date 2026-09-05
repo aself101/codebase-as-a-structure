@@ -114,9 +114,7 @@ def test_proximity(all_paths: list[str], cfg: SubstrateConfig) -> dict[str, floa
             out[p] = 0.0
             continue
         d, stem = _module_key(p, cfg)
-        if (d, stem) in sibling_keys:
-            out[p] = 1.0
-        elif stem in test_stems and stem_counts[stem] == 1:
+        if (d, stem) in sibling_keys or stem in test_stems and stem_counts[stem] == 1:
             out[p] = 1.0
         elif d in test_dirs or stem in test_stems:
             out[p] = 0.5

@@ -119,6 +119,15 @@ class HistoryResult:
     as_of: datetime
     files: dict[str, FileHistory]
     timeline: list[CommitRecord]
+    renames: dict[str, str] = field(default_factory=dict)  # historical path -> successor (one hop)
+
+    def canonical(self, path: str) -> str:
+        """Resolve a historical path to its name at the analyzed rev (follows the chain)."""
+        seen: set[str] = set()
+        while path in self.renames and path not in seen:
+            seen.add(path)
+            path = self.renames[path]
+        return path
 
 
 class HistoryMiner(Protocol):
@@ -220,7 +229,7 @@ class PydrillerHistoryMiner:
         # orphans if they exist at HEAD (§5) and are reported as such by the assembler.
         tip_sha = raw[order[-1]][1]
         as_of = raw[order[-1]][0]
-        return HistoryResult(tip_sha, as_of, files, timeline)
+        return HistoryResult(tip_sha, as_of, files, timeline, dict(alias))
 
 
 # --- §5 cochange_degree ----------------------------------------------------------

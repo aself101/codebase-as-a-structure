@@ -57,6 +57,41 @@ def _is_relative_or_alias(spec: str) -> bool:
     return False
 
 
+def load_tsconfig(worktree: Path) -> dict | None:
+    """tsconfig.json with comments and trailing commas stripped (it is JSONC in practice)."""
+    p = worktree / "tsconfig.json"
+    if not p.exists():
+        return None
+    text = p.read_text(errors="replace")
+    text = re.sub(r"/\*.*?\*/", "", text, flags=re.S)
+    text = re.sub(r"(^|[^:\"'])//[^\n]*", r"\1", text)
+    text = re.sub(r",(\s*[}\]])", r"\1", text)
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        return None
+
+
+def _usable_tsconfig(worktree: Path) -> str | None:
+    """dependency-cruiser loads tsconfig through the TypeScript API, which fails hard when
+    `extends` names a package that is not installed (a fresh clone has no node_modules).
+    Path aliases are the only thing we need from it, so: if the config is self-contained,
+    use it; if it extends a package, write a stripped copy into the (temporary) worktree
+    with `extends` removed and use that; if there is nothing alias-relevant, skip it."""
+    cfg = load_tsconfig(worktree)
+    if cfg is None:
+        return None
+    ext = cfg.get("extends")
+    if not ext:
+        return "tsconfig.json"
+    if isinstance(ext, str) and ext.startswith(".") and (worktree / ext).exists():
+        return "tsconfig.json"
+    stripped = {k: v for k, v in cfg.items() if k != "extends"}
+    out = worktree / "tsconfig.substrate.json"
+    out.write_text(json.dumps(stripped))
+    return out.name
+
+
 class DependencyCruiserExtractor:
     """Shells out to the pinned dependency-cruiser in this project's node_modules."""
 
@@ -85,9 +120,9 @@ class DependencyCruiserExtractor:
             "--do-not-follow", "(^|/)node_modules/",
             "--max-depth", "0",
         ]
-        tsconfig = worktree / "tsconfig.json"
-        if tsconfig.exists():
-            args += ["--ts-config", "tsconfig.json"]
+        ts_arg = _usable_tsconfig(worktree)
+        if ts_arg:
+            args += ["--ts-config", ts_arg]
         args += roots
         env = dict(os.environ)
         env["NODE_OPTIONS"] = env.get("NODE_OPTIONS", "") + " --max-old-space-size=4096"

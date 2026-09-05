@@ -79,3 +79,47 @@ Resolves the four questions the June 19 proposal left open. Referenced by the tr
 ## D-007 · 2026-09-04 · Tracker reconciliation before building
 
 **Decision.** The tracker project carries 50 open issues; roughly a dozen were resolved in the specs on June 19–20 without being closed. Each is closed with a note citing the spec section that resolved it before any new issues are logged. The tracker is the work queue only once it is true.
+
+## D-008 · 2026-09-04 · Grounding classes for descriptive signals; the load family gets a second instrument, not a second modality
+
+**Context.** The first run of the gate on `mcp-secure-server` and `uluops-registry-api` returned: `age_days` ↔ `blame_age_median` τ 0.77 / 0.78 (a genuine cross-modal confirmation); `neglect_index` ↔ blame τ 0.43 / 0.65; but the load family ↔ `cochange_degree` τ 0.24 / 0.44 with lower CI bounds below the 0.30 floor on the smaller repo, and `last_touched_days` ↔ blame τ 0.23 / 0.34. Several stability failures traced to the protocol counting files the removed commits had directly edited.
+
+**Decision.**
+1. **Stability compares only nodes untouched by the K removed commits.** A file edited in those commits has its recency, churn, and co-change legitimately move; that is the signal reporting the edit. The budget measures whether editing *other* files moves *this* file's value. `p95` is reported beside `max`.
+2. **Descriptive signals are grounded by class**, recorded in `validation.json` as `grounding_class`:
+   - **G1 measurement** — direct git or file facts (`commit_count`, `churn_lines`, `fix_count`, `revert_count`, `author_count`, `last_touched_days`, `size_loc`, `nesting_proxy`, `cochange_degree`, `blame_age_median`). Bar: stability. The instrument is git or the file; the metric's name is literal, so no meaning rides on the label. Popper's constant objection targets models, not measurements.
+   - **G2 instrument-checked** — resolver-dependent facts checked against an independent second instrument measuring the *same property*: `fan_in`, `fan_in_nonzero`, `fan_out` ↔ `fan_in_alt` / `fan_out_alt` from a regex scanner with its own resolver (`altdeps.py`, no shared code with dependency-cruiser); `has_sibling_test` ↔ `test_fan_in` (importers that are test files). Bar: stability + τ-b lower CI ≥ `tau_instrument` = 0.60, set now, before the numbers are seen. Same property measured twice should agree strongly; a low τ means the instruments disagree on alias-heavy or dynamic-import code, which is substrate open question #8 made measurable.
+   - **G3 cross-modal** — a different modality of the same property: `age_days`, `neglect_index` ↔ `blame_age_median`. Bar: stability + τ-b lower CI ≥ `tau_asserted` = 0.30.
+   - **G4 derived** — fixed-weight blends and graph functions of asserted inputs: `centrality` (from `fan_in`), `load_index`, `complexity_proxy_index`, `reinforcement_index`. Bar: stability + every input asserted. The composite's name carries no claim beyond its inputs (D-004 Q3 handles the name); `cochange_degree` and `test_fan_in` are computed and **reported as correlates**, never gated.
+3. `last_touched_days` moves from G3 to G1. Blame age measures how old the surviving text is; last-touched measures when the file was last edited. They are different properties, and the low τ was the counterpart being wrong, not the signal.
+
+**Why.** D-004 asked for a counterpart "not in the formula" and named co-change for load. The run showed co-change is *change* coupling, and a foundation is precisely the file that is imported by many and changed by few, so the pairing was conceptually mismatched, not merely under-correlated. There is no independent measurement of "load-bearing" in v0 beyond the import graph; pretending otherwise would be the horoscope move in reverse. The honest position is that `load_index` is a named blend of independently checked measurements and claims nothing more. Lowering the τ floor until co-change passed was the deadline bypass the tribunal warned about and was not considered.
+
+**Assumes.** The second scanner is genuinely independent (it is: separate module, no shared resolution code) and that τ ≥ 0.60 is the right agreement bar for two instruments on one property. Both are checked by the τ distribution in the report.
+
+**Breaks if.** G4 is read as a loophole — a ruleset naming `load_index ≥ p90` "foundation" and C5 voicing "if this breaks, much falls." That is forbidden by §2.1.1 and D-004 Q3 regardless of G4; the register lint (M3) is the enforcement. **Flagged for audit**: this is the decision most worth a lens pass.
+
+## D-009 · 2026-09-04 · Weight tuning is pre-registered: tune on two repos, verdict from the other two
+
+**Context.** Both predictive indices failed the holdout on both small repos. `bug_pressure_index` ranked *below* the recency and busyness baselines (ROC −0.21 and −0.04). `change_pressure_index` beat the best baseline on ROC by +0.03 and +0.05 against a +0.05 margin, and on PR-AUC by ×1.69 and ×1.00 against ×1.20; it is, by construction, a blend of the two baselines and so cannot easily beat them by margin.
+
+**Decision.** The §6.2.1 weights are tuned once, under this protocol, before any test-set number is seen:
+- **Tuning set:** `uluops-registry-api` (956 commits, 132 holdout positives) and `eslint` (11,008 commits). One internal, one external, both with hundreds of positives.
+- **Test set:** `typeorm` and `mcp-secure-server`. The `validated` verdict is computed **only** from the test set; tuning-set passes are reported but do not count. `min_repos` = 2 therefore means both test repos must pass.
+- **Search:** a grid at 0.1 steps over each index's inputs (weights summing to 1), inputs for `bug_pressure_index` widened to {`fix_count` pctile, `fix_count_nonzero`, `revert_count`, `fix_ratio`, recency, `commit_count` pctile}. Objective: the **minimum** over tuning repos of (index ROC-AUC − best-baseline ROC-AUC), tie-broken by the minimum PR-AUC ratio. The minimum, not the mean, so one repo cannot carry the other.
+- **Frozen** into `config/tuned.toml` and committed before the test set is run. The commit hash of the frozen config is recorded in the holdout report.
+- The pass margins (+0.05, ×1.20) are **not** tuned. The interaction between the multiplicative PR margin and high base rates is noted in the report as a limitation, not adjusted away.
+
+**Why.** The spec always said the weights are placeholders tuned against the holdout, held out not in sample. Tuning without pre-registration is the researcher-degrees-of-freedom leak the corroboration section already closes for its own thresholds; the same discipline applies here.
+
+**Breaks if.** The tuned indices still fail the test set. Then the finding ships as `unvalidated`, the report says by how much, and C3 may not name a feature over either index. That outcome is acceptable; hiding it is not.
+
+## D-010 · 2026-09-04 · The sealed recognition rankings are model-assisted priors, accepted as the n=1 substitute
+
+**Context.** Alex had a separate Claude (Fable 5.1) session fill `blind/uluops-registry-api.md` and `blind/mcp-secure-server.md` from its session memory of those repos plus `git ls-files` (to make paths valid), and reviewed and endorsed the result. Each file states its own provenance: no `git log`, no `git blame`, no import tracing, no file contents, and no substrate output read. Substrate reports for both repos existed on disk in `out/` at the time; the provenance statements say they were not read, and the rankings contain items (`CHANGELOG.md`, `package.json`) that the substrate does not even emit, which is consistent with that.
+
+**Decision.** Accept both files as the §2.4.3 recognition record, sealed at this commit, with the provenance carried into the holdout report verbatim: "n = 1, model-assisted, maintainer-endorsed." They remain non-gating, as §2.4.3 already requires. The next repos' rankings, if any, follow the same rule: provenance stated in the file, sealed before that repo's first gate run.
+
+**Why.** The alternative was no recognition record at all. A model's priors endorsed by the maintainer are a weaker witness than the maintainer's own blind list, and a stronger one than nothing; since the record never gates, the cost of accepting it is bounded to the report's honesty, which the provenance note preserves. Section 5 ("the one structural fact") and section 6 ("where the metrics will lie") of each file are the more valuable content: they are pre-registered predictions about where the substrate will mislead, and the report should check them.
+
+**Breaks if.** A future ranking is produced after reading substrate output. Then it is not a recognition check and must not be sealed; the file's own provenance line is the control.

@@ -12,9 +12,11 @@ from repo_substrate.derived import compute_indices, compute_percentiles, ecdf_pe
 from repo_substrate.graph import fan_counts, pagerank
 from repo_substrate.history import CommitRecord, classify_commit, cochange_degree
 from repo_substrate.inventory import count_loc, nesting_proxy, tree_seed
-from repo_substrate.inventory import test_proximity as proximity_tiers  # alias: pytest would collect the name
+from repo_substrate.inventory import (
+    test_proximity as proximity_tiers,  # alias: pytest would collect the name
+)
 
-FIX = re.compile(r"\b(bug|hotfix|patch)\b", re.I)
+FIX = re.compile(r"\b(bug|hotfix|patch)\b", re.IGNORECASE)
 
 
 # --- §7 classification [G] ------------------------------------------------------
@@ -213,6 +215,7 @@ def test_fingerprint_moves_with_weights_and_toolchain():
     assert f1 == cfg.fingerprint(dict(tv))
     assert f1 != cfg.fingerprint({"history": "pydriller@2.12"})
     from dataclasses import replace
+
     from repo_substrate.config import IndexWeights
     w = IndexWeights(load_index={"fan_in_nonzero": 0.6, "centrality": 0.2, "inv_fan_out": 0.1, "size_loc": 0.1})
     assert replace(cfg, weights=w).fingerprint(tv) != f1
