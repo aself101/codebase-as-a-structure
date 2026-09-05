@@ -242,10 +242,21 @@ def parse_blind_ranking(text: str) -> dict[int, list[str]]:
             continue
         m = _ITEM.match(line)
         if m and m.group(1):
-            item = m.group(1).strip().strip("`").strip()
-            if item and not item.startswith("<"):
+            for item in _paths_in_item(m.group(1)):
                 lists[current].append(item)
     return lists
+
+
+def _paths_in_item(text: str) -> list[str]:
+    """Paths in one numbered item. Backtick-quoted tokens win (a tie line may hold several, and
+    an item may carry a trailing ' — comment'); otherwise the text before ' — ' / ' (' is the path."""
+    quoted = [q.strip() for q in re.findall(r"`([^`]+)`", text)]
+    # a quoted token is a path only if it looks like one (identifiers in comments are not)
+    quoted = [q for q in quoted if q and not q.startswith("<") and ("/" in q or "." in q)]
+    if quoted:
+        return quoted
+    bare = re.split(r"\s+—\s+|\s+\(", text, maxsplit=1)[0].strip()
+    return [bare] if bare and not bare.startswith("<") else []
 
 
 def run_recognition(

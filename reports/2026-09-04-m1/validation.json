@@ -1,0 +1,4175 @@
+{
+ "reference_repos": [
+  {
+   "asserted": {
+    "n_compared": 576,
+    "n_excluded_touched": 7,
+    "n_population": 583,
+    "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+    "recognition_ref": null,
+    "recognition_seal": null
+   },
+   "expected_role": "test",
+   "head_sha": "ac41823b9e27e3a8079ce487c9772c5ef8f1e226",
+   "holdout": {
+    "base_rate": 0.44591029023746703,
+    "best_baseline": "busyness",
+    "coverage": 0.6316666666666667,
+    "degenerate": null,
+    "fix_label_rate": 0.3281121187139324,
+    "head_sha": "ac41823b9e27e3a8079ce487c9772c5ef8f1e226",
+    "n_commits": 6065,
+    "n_eligible": 2274,
+    "n_head_nodes": 3600,
+    "n_holdout_commits": 1213,
+    "n_positives": 1014,
+    "name": "typeorm",
+    "split_sha": "fe7f328fd5b918cab2e7301d57c62e81d9ff34f3"
+   },
+   "name": "typeorm",
+   "path": "/Users/aself/projects/codebase-as-structure/reference/typeorm",
+   "role": "test"
+  },
+  {
+   "asserted": {
+    "n_compared": 188,
+    "n_excluded_touched": 14,
+    "n_population": 202,
+    "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+    "recognition_ref": "blind/mcp-secure-server.md",
+    "recognition_seal": {
+     "committed_blob": "9a480fb2d456c68ae40f0adf51563eb68a9aa7f9",
+     "first_commit": "40770adf69f3f215a64106db61fbe064a8c4e2bb",
+     "first_commit_time": "2026-09-04T15:55:48-10:00",
+     "path": "blind/mcp-secure-server.md",
+     "worktree_blob": "9a480fb2d456c68ae40f0adf51563eb68a9aa7f9"
+    }
+   },
+   "expected_role": "test",
+   "head_sha": "ecb30716b87ed127f0412956738afb7af385b267",
+   "holdout": {
+    "base_rate": 0.08560311284046693,
+    "best_baseline": "recency",
+    "coverage": 0.9884615384615385,
+    "degenerate": null,
+    "fix_label_rate": 0.4642857142857143,
+    "head_sha": "ecb30716b87ed127f0412956738afb7af385b267",
+    "n_commits": 139,
+    "n_eligible": 257,
+    "n_head_nodes": 260,
+    "n_holdout_commits": 28,
+    "n_positives": 22,
+    "name": "mcp-secure-server",
+    "split_sha": "3f55fd476ded0738c100f53654910d7e3cbd7fc2"
+   },
+   "name": "mcp-secure-server",
+   "path": "/Users/aself/uluops/misc/npm-packages/mcp-secure-server",
+   "role": "test"
+  },
+  {
+   "asserted": {
+    "n_compared": 267,
+    "n_excluded_touched": 0,
+    "n_population": 267,
+    "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+    "recognition_ref": "blind/uluops-registry-api.md",
+    "recognition_seal": {
+     "committed_blob": "ed6ea5935a2d35386daf2e47f1ebaa9529a6d66a",
+     "first_commit": "40770adf69f3f215a64106db61fbe064a8c4e2bb",
+     "first_commit_time": "2026-09-04T15:55:48-10:00",
+     "path": "blind/uluops-registry-api.md",
+     "worktree_blob": "ed6ea5935a2d35386daf2e47f1ebaa9529a6d66a"
+    }
+   },
+   "expected_role": "tuning",
+   "head_sha": "f7414cc7bbec62ba80068af4b045667064d1d59e",
+   "holdout": {
+    "base_rate": 0.32754342431761785,
+    "best_baseline": "busyness",
+    "coverage": 0.8837719298245614,
+    "degenerate": null,
+    "fix_label_rate": 0.3125,
+    "head_sha": "f7414cc7bbec62ba80068af4b045667064d1d59e",
+    "n_commits": 956,
+    "n_eligible": 403,
+    "n_head_nodes": 456,
+    "n_holdout_commits": 192,
+    "n_positives": 132,
+    "name": "uluops-registry-api",
+    "split_sha": "417d4387a048343fdc34b2b9116ef90ea94b2787"
+   },
+   "name": "uluops-registry-api",
+   "path": "/Users/aself/uluops/uluops-registry-api",
+   "role": "tuning"
+  },
+  {
+   "asserted": {
+    "n_compared": 462,
+    "n_excluded_touched": 10,
+    "n_population": 473,
+    "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+    "recognition_ref": null,
+    "recognition_seal": null
+   },
+   "expected_role": "tuning",
+   "head_sha": "3f20a57c6293371b6193d3fb6746c2b7b2ac2689",
+   "holdout": {
+    "base_rate": 0.184577522559475,
+    "best_baseline": "busyness",
+    "coverage": 0.8230925050641459,
+    "degenerate": null,
+    "fix_label_rate": 0.1344232515894641,
+    "head_sha": "3f20a57c6293371b6193d3fb6746c2b7b2ac2689",
+    "n_commits": 11008,
+    "n_eligible": 1219,
+    "n_head_nodes": 1481,
+    "n_holdout_commits": 2202,
+    "n_positives": 225,
+    "name": "eslint",
+    "split_sha": "3398431574b903757bc78b08c8ed36b7b9fce8eb"
+   },
+   "name": "eslint",
+   "path": "/Users/aself/projects/codebase-as-structure/reference/eslint",
+   "role": "tuning"
+  }
+ ],
+ "schema_version": "0.3",
+ "signals": {
+  "age_days": {
+   "adversarial_fixture": null,
+   "counterpart": "blame_age_median",
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": "blame_age_median",
+       "n": 583,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.48303995556810825,
+       "tau_b_ci": [
+        0.42704270514737824,
+        0.5355445057895039
+       ],
+       "tau_floor": 0.3
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 208,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.008599999999999941,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.10069444444444445,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0017000000000000348,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": "blame_age_median",
+       "n": 202,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.7663284205823935,
+       "tau_b_ci": [
+        0.6685516751487233,
+        0.8466464696252797
+       ],
+       "tau_floor": 0.3
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 8,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.0024999999999999988,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.5478723404255319,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": "blame_age_median",
+       "n": 267,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.7803653596963042,
+       "tau_b_ci": [
+        0.7207222887192448,
+        0.834974548340711
+       ],
+       "tau_floor": 0.3
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 66,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.1068,
+       "median_abs_delta": 0.0038000000000000256,
+       "modal_share": 0.19850187265917604,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.07209999999999961,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": "blame_age_median",
+       "n": 472,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.37766298590043135,
+       "tau_b_ci": [
+        0.31568760158403786,
+        0.437034555875315
+       ],
+       "tau_floor": 0.3
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 323,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.007699999999999929,
+       "median_abs_delta": 0.0010999999999999899,
+       "modal_share": 0.02813852813852814,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0020000000000000018,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G3",
+   "heuristic": null,
+   "inputs": null,
+   "instrument": null,
+   "kind": "descriptive",
+   "non_discriminating": false,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "author_count": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log",
+       "passed": true,
+       "reason": null
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 42,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0009000000000000119,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.1388888888888889,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0009000000000000119,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log",
+       "passed": true,
+       "reason": null
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 2,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.7978723404255319,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log",
+       "passed": true,
+       "reason": null
+      },
+      "name": "uluops-registry-api",
+      "passed": false,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": "degenerate",
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 2,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.9962546816479401,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": false,
+       "reason": "degenerate"
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log",
+       "passed": true,
+       "reason": null
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 48,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.001999999999999995,
+       "median_abs_delta": 0.0008500000000000174,
+       "modal_share": 0.08441558441558442,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.001999999999999995,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 3
+   },
+   "grounding_class": "G1",
+   "heuristic": "author email, no mailmap (inflates on multi-email authors)",
+   "inputs": null,
+   "instrument": "git log",
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "blame_age_median": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git blame -w",
+       "passed": true,
+       "reason": null
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 228,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.3211805555555556,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git blame -w",
+       "passed": true,
+       "reason": null
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 19,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.0050000000000000044,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.31382978723404253,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.0024999999999999467,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git blame -w",
+       "passed": true,
+       "reason": null
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 161,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.07865168539325842,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git blame -w",
+       "passed": true,
+       "reason": null
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 315,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.0021000000000000046,
+       "median_abs_delta": 0.0010999999999999899,
+       "modal_share": 0.0455531453362256,
+       "n": 461,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.001999999999999995,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G1",
+   "heuristic": "blame line attribution; no -M/-C",
+   "inputs": null,
+   "instrument": "git blame -w",
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "bug_pressure_index": {
+   "holdout": {
+    "n_test_repos": 2,
+    "per_repo": [
+     {
+      "base_rate": 0.44591029023746703,
+      "baselines": {
+       "busyness": {
+        "pr_auc": 0.7169297036706842,
+        "precision_at_k": {
+         "10": 1.0,
+         "114": 0.9824561403508771,
+         "20": 1.0
+        },
+        "recall_at_k": {
+         "10": 0.009861932938856016,
+         "114": 0.11045364891518737,
+         "20": 0.01972386587771203
+        },
+        "roc_auc": 0.7281425127578973
+       },
+       "recency": {
+        "pr_auc": 0.6147028214379944,
+        "precision_at_k": {
+         "10": 0.5,
+         "114": 0.7368421052631579,
+         "20": 0.6
+        },
+        "recall_at_k": {
+         "10": 0.004930966469428008,
+         "114": 0.08284023668639054,
+         "20": 0.011834319526627219
+        },
+        "roc_auc": 0.693198788391096
+       }
+      },
+      "best_baseline": "busyness",
+      "coverage": 0.6316666666666667,
+      "degenerate": null,
+      "failed_clauses": [
+       "roc_margin",
+       "pr_auc_mult"
+      ],
+      "holdout_positives": 1014,
+      "n_eligible": 2274,
+      "name": "typeorm",
+      "passed": false,
+      "pr_auc": 0.7592860776702852,
+      "precision_at_k": {
+       "10": 1.0,
+       "114": 0.9912280701754386,
+       "20": 1.0
+      },
+      "recall_at_k": {
+       "10": 0.009861932938856016,
+       "114": 0.11143984220907298,
+       "20": 0.01972386587771203
+      },
+      "roc_auc": 0.7699191478037631,
+      "role": "test",
+      "split_sha": "fe7f328fd5b918cab2e7301d57c62e81d9ff34f3",
+      "tau_vs_best_baseline": 0.7281863004480081
+     },
+     {
+      "base_rate": 0.08560311284046693,
+      "baselines": {
+       "busyness": {
+        "pr_auc": 0.3666166103621604,
+        "precision_at_k": {
+         "10": 0.5,
+         "13": 0.38461538461538464,
+         "20": 0.4
+        },
+        "recall_at_k": {
+         "10": 0.22727272727272727,
+         "13": 0.22727272727272727,
+         "20": 0.36363636363636365
+        },
+        "roc_auc": 0.7994197292069632
+       },
+       "recency": {
+        "pr_auc": 0.2614343502372914,
+        "precision_at_k": {
+         "10": 0.3,
+         "13": 0.38461538461538464,
+         "20": 0.3
+        },
+        "recall_at_k": {
+         "10": 0.13636363636363635,
+         "13": 0.22727272727272727,
+         "20": 0.2727272727272727
+        },
+        "roc_auc": 0.8247582205029014
+       }
+      },
+      "best_baseline": "recency",
+      "coverage": 0.9884615384615385,
+      "degenerate": null,
+      "failed_clauses": [
+       "roc_margin"
+      ],
+      "holdout_positives": 22,
+      "n_eligible": 257,
+      "name": "mcp-secure-server",
+      "passed": false,
+      "pr_auc": 0.4061276968317127,
+      "precision_at_k": {
+       "10": 0.5,
+       "13": 0.38461538461538464,
+       "20": 0.4
+      },
+      "recall_at_k": {
+       "10": 0.22727272727272727,
+       "13": 0.22727272727272727,
+       "20": 0.36363636363636365
+      },
+      "recognition": {
+       "k": 10,
+       "list": 2,
+       "missing": [],
+       "n": 1,
+       "overlap_at_k": 0.3,
+       "ranked": 10,
+       "ref": "blind/mcp-secure-server.md",
+       "tau_b_on_ranked": -0.5555555555555555
+      },
+      "roc_auc": 0.8284332688588008,
+      "role": "test",
+      "split_sha": "3f55fd476ded0738c100f53654910d7e3cbd7fc2",
+      "tau_vs_best_baseline": 0.7233245521470775
+     },
+     {
+      "base_rate": 0.32754342431761785,
+      "baselines": {
+       "busyness": {
+        "pr_auc": 0.5845071107499046,
+        "precision_at_k": {
+         "10": 1.0,
+         "20": 0.95,
+         "21": 0.9523809523809523
+        },
+        "recall_at_k": {
+         "10": 0.07575757575757576,
+         "20": 0.14393939393939395,
+         "21": 0.15151515151515152
+        },
+        "roc_auc": 0.6965363971821537
+       },
+       "recency": {
+        "pr_auc": 0.5002652703107123,
+        "precision_at_k": {
+         "10": 0.8,
+         "20": 0.6,
+         "21": 0.5714285714285714
+        },
+        "recall_at_k": {
+         "10": 0.06060606060606061,
+         "20": 0.09090909090909091,
+         "21": 0.09090909090909091
+        },
+        "roc_auc": 0.6874510790562451
+       }
+      },
+      "best_baseline": "busyness",
+      "coverage": 0.8837719298245614,
+      "degenerate": null,
+      "failed_clauses": [
+       "roc_margin",
+       "pr_auc_mult"
+      ],
+      "holdout_positives": 132,
+      "n_eligible": 403,
+      "name": "uluops-registry-api",
+      "passed": false,
+      "pr_auc": 0.5857942570607501,
+      "precision_at_k": {
+       "10": 1.0,
+       "20": 0.75,
+       "21": 0.7142857142857143
+      },
+      "recall_at_k": {
+       "10": 0.07575757575757576,
+       "20": 0.11363636363636363,
+       "21": 0.11363636363636363
+      },
+      "recognition": {
+       "k": 10,
+       "list": 2,
+       "missing": [
+        "package.json"
+       ],
+       "n": 1,
+       "overlap_at_k": 0.2,
+       "ranked": 9,
+       "ref": "blind/uluops-registry-api.md",
+       "tau_b_on_ranked": -0.3333333333333333
+      },
+      "roc_auc": 0.7215978977971598,
+      "role": "tuning",
+      "split_sha": "417d4387a048343fdc34b2b9116ef90ea94b2787",
+      "tau_vs_best_baseline": 0.821944725326324
+     },
+     {
+      "base_rate": 0.184577522559475,
+      "baselines": {
+       "busyness": {
+        "pr_auc": 0.4307427638878999,
+        "precision_at_k": {
+         "10": 0.8,
+         "20": 0.8,
+         "61": 0.5901639344262295
+        },
+        "recall_at_k": {
+         "10": 0.035555555555555556,
+         "20": 0.07111111111111111,
+         "61": 0.16
+        },
+        "roc_auc": 0.7765347641403979
+       },
+       "recency": {
+        "pr_auc": 0.3767844613788161,
+        "precision_at_k": {
+         "10": 0.7,
+         "20": 0.7,
+         "61": 0.5245901639344263
+        },
+        "recall_at_k": {
+         "10": 0.03111111111111111,
+         "20": 0.06222222222222222,
+         "61": 0.14222222222222222
+        },
+        "roc_auc": 0.7445226917057903
+       }
+      },
+      "best_baseline": "busyness",
+      "coverage": 0.8230925050641459,
+      "degenerate": null,
+      "failed_clauses": [
+       "roc_margin",
+       "pr_auc_mult"
+      ],
+      "holdout_positives": 225,
+      "n_eligible": 1219,
+      "name": "eslint",
+      "passed": false,
+      "pr_auc": 0.46159830694370513,
+      "precision_at_k": {
+       "10": 0.8,
+       "20": 0.8,
+       "61": 0.6065573770491803
+      },
+      "recall_at_k": {
+       "10": 0.035555555555555556,
+       "20": 0.07111111111111111,
+       "61": 0.16444444444444445
+      },
+      "roc_auc": 0.7905119606528057,
+      "role": "tuning",
+      "split_sha": "3398431574b903757bc78b08c8ed36b7b9fce8eb",
+      "tau_vs_best_baseline": 0.8253246989646946
+     }
+    ],
+    "test_passes": 0,
+    "test_ran": 2
+   },
+   "kind": "predictive",
+   "reason": "passed_on_0_of_2_test_repos_need_2",
+   "status": "unvalidated"
+  },
+  "centrality": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {
+       "cochange_degree": {
+        "counterpart": "cochange_degree",
+        "n": 583,
+        "permutation_p": 0.000999000999000999,
+        "tau_b": 0.1302159769859723,
+        "tau_b_ci": [
+         0.0703236545457968,
+         0.19360596225573662
+        ]
+       }
+      },
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "fan_in"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 58,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.3020833333333333,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {
+       "cochange_degree": {
+        "counterpart": "cochange_degree",
+        "n": 202,
+        "permutation_p": 0.003996003996003996,
+        "tau_b": 0.18601720499277993,
+        "tau_b_ci": [
+         0.07510824170408191,
+         0.2997343588804887
+        ]
+       }
+      },
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "fan_in"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 53,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.032200000000000006,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.22872340425531915,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.022199999999999998,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {
+       "cochange_degree": {
+        "counterpart": "cochange_degree",
+        "n": 267,
+        "permutation_p": 0.000999000999000999,
+        "tau_b": 0.3849174388538634,
+        "tau_b_ci": [
+         0.2957465886779934,
+         0.4611591016619867
+        ]
+       }
+      },
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "fan_in"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 59,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.3707865168539326,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {
+       "cochange_degree": {
+        "counterpart": "cochange_degree",
+        "n": 473,
+        "permutation_p": 0.17682317682317683,
+        "tau_b": 0.047315334680114444,
+        "tau_b_ci": [
+         -0.03781965088687677,
+         0.1426691635808334
+        ]
+       }
+      },
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "fan_in"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 39,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.028900000000000037,
+       "median_abs_delta": 0.0021999999999999797,
+       "modal_share": 0.5909090909090909,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0021999999999999797,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G4",
+   "heuristic": null,
+   "inputs": [
+    "fan_in"
+   ],
+   "instrument": null,
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "change_pressure_index": {
+   "holdout": {
+    "n_test_repos": 2,
+    "per_repo": [
+     {
+      "base_rate": 0.44591029023746703,
+      "baselines": {
+       "busyness": {
+        "pr_auc": 0.7169297036706842,
+        "precision_at_k": {
+         "10": 1.0,
+         "114": 0.9824561403508771,
+         "20": 1.0
+        },
+        "recall_at_k": {
+         "10": 0.009861932938856016,
+         "114": 0.11045364891518737,
+         "20": 0.01972386587771203
+        },
+        "roc_auc": 0.7281425127578973
+       },
+       "recency": {
+        "pr_auc": 0.6147028214379944,
+        "precision_at_k": {
+         "10": 0.5,
+         "114": 0.7368421052631579,
+         "20": 0.6
+        },
+        "recall_at_k": {
+         "10": 0.004930966469428008,
+         "114": 0.08284023668639054,
+         "20": 0.011834319526627219
+        },
+        "roc_auc": 0.693198788391096
+       }
+      },
+      "best_baseline": "busyness",
+      "coverage": 0.6316666666666667,
+      "degenerate": null,
+      "failed_clauses": [],
+      "holdout_positives": 1014,
+      "n_eligible": 2274,
+      "name": "typeorm",
+      "passed": true,
+      "pr_auc": 0.8682268357671444,
+      "precision_at_k": {
+       "10": 1.0,
+       "114": 0.9912280701754386,
+       "20": 1.0
+      },
+      "recall_at_k": {
+       "10": 0.009861932938856016,
+       "114": 0.11143984220907298,
+       "20": 0.01972386587771203
+      },
+      "roc_auc": 0.8784665476973169,
+      "role": "test",
+      "split_sha": "fe7f328fd5b918cab2e7301d57c62e81d9ff34f3",
+      "tau_vs_best_baseline": 0.5457132974995498
+     },
+     {
+      "base_rate": 0.08560311284046693,
+      "baselines": {
+       "busyness": {
+        "pr_auc": 0.3666166103621604,
+        "precision_at_k": {
+         "10": 0.5,
+         "13": 0.38461538461538464,
+         "20": 0.4
+        },
+        "recall_at_k": {
+         "10": 0.22727272727272727,
+         "13": 0.22727272727272727,
+         "20": 0.36363636363636365
+        },
+        "roc_auc": 0.7994197292069632
+       },
+       "recency": {
+        "pr_auc": 0.2614343502372914,
+        "precision_at_k": {
+         "10": 0.3,
+         "13": 0.38461538461538464,
+         "20": 0.3
+        },
+        "recall_at_k": {
+         "10": 0.13636363636363635,
+         "13": 0.22727272727272727,
+         "20": 0.2727272727272727
+        },
+        "roc_auc": 0.8247582205029014
+       }
+      },
+      "best_baseline": "recency",
+      "coverage": 0.9884615384615385,
+      "degenerate": null,
+      "failed_clauses": [
+       "roc_margin"
+      ],
+      "holdout_positives": 22,
+      "n_eligible": 257,
+      "name": "mcp-secure-server",
+      "passed": false,
+      "pr_auc": 0.43795817006851556,
+      "precision_at_k": {
+       "10": 0.7,
+       "13": 0.5384615384615384,
+       "20": 0.4
+      },
+      "recall_at_k": {
+       "10": 0.3181818181818182,
+       "13": 0.3181818181818182,
+       "20": 0.36363636363636365
+      },
+      "recognition": {
+       "k": 10,
+       "list": 3,
+       "missing": [
+        "CHANGELOG.md",
+        "README.md"
+       ],
+       "n": 1,
+       "overlap_at_k": 0.3,
+       "ranked": 9,
+       "ref": "blind/mcp-secure-server.md",
+       "tau_b_on_ranked": -0.05555555555555555
+      },
+      "roc_auc": 0.8555125725338492,
+      "role": "test",
+      "split_sha": "3f55fd476ded0738c100f53654910d7e3cbd7fc2",
+      "tau_vs_best_baseline": 0.5440257869775139
+     },
+     {
+      "base_rate": 0.32754342431761785,
+      "baselines": {
+       "busyness": {
+        "pr_auc": 0.5845071107499046,
+        "precision_at_k": {
+         "10": 1.0,
+         "20": 0.95,
+         "21": 0.9523809523809523
+        },
+        "recall_at_k": {
+         "10": 0.07575757575757576,
+         "20": 0.14393939393939395,
+         "21": 0.15151515151515152
+        },
+        "roc_auc": 0.6965363971821537
+       },
+       "recency": {
+        "pr_auc": 0.5002652703107123,
+        "precision_at_k": {
+         "10": 0.8,
+         "20": 0.6,
+         "21": 0.5714285714285714
+        },
+        "recall_at_k": {
+         "10": 0.06060606060606061,
+         "20": 0.09090909090909091,
+         "21": 0.09090909090909091
+        },
+        "roc_auc": 0.6874510790562451
+       }
+      },
+      "best_baseline": "busyness",
+      "coverage": 0.8837719298245614,
+      "degenerate": null,
+      "failed_clauses": [
+       "pr_auc_mult"
+      ],
+      "holdout_positives": 132,
+      "n_eligible": 403,
+      "name": "uluops-registry-api",
+      "passed": false,
+      "pr_auc": 0.5826563527079563,
+      "precision_at_k": {
+       "10": 0.9,
+       "20": 0.65,
+       "21": 0.6666666666666666
+      },
+      "recall_at_k": {
+       "10": 0.06818181818181818,
+       "20": 0.09848484848484848,
+       "21": 0.10606060606060606
+      },
+      "recognition": {
+       "k": 10,
+       "list": 3,
+       "missing": [
+        "package.json",
+        "package-lock.json",
+        "CHANGELOG.md"
+       ],
+       "n": 1,
+       "overlap_at_k": 0.1,
+       "ranked": 8,
+       "ref": "blind/uluops-registry-api.md",
+       "tau_b_on_ranked": 0.0
+      },
+      "roc_auc": 0.7490076037124007,
+      "role": "tuning",
+      "split_sha": "417d4387a048343fdc34b2b9116ef90ea94b2787",
+      "tau_vs_best_baseline": 0.6208729832558869
+     },
+     {
+      "base_rate": 0.184577522559475,
+      "baselines": {
+       "busyness": {
+        "pr_auc": 0.4307427638878999,
+        "precision_at_k": {
+         "10": 0.8,
+         "20": 0.8,
+         "61": 0.5901639344262295
+        },
+        "recall_at_k": {
+         "10": 0.035555555555555556,
+         "20": 0.07111111111111111,
+         "61": 0.16
+        },
+        "roc_auc": 0.7765347641403979
+       },
+       "recency": {
+        "pr_auc": 0.3767844613788161,
+        "precision_at_k": {
+         "10": 0.7,
+         "20": 0.7,
+         "61": 0.5245901639344263
+        },
+        "recall_at_k": {
+         "10": 0.03111111111111111,
+         "20": 0.06222222222222222,
+         "61": 0.14222222222222222
+        },
+        "roc_auc": 0.7445226917057903
+       }
+      },
+      "best_baseline": "busyness",
+      "coverage": 0.8230925050641459,
+      "degenerate": null,
+      "failed_clauses": [
+       "roc_margin",
+       "pr_auc_mult"
+      ],
+      "holdout_positives": 225,
+      "n_eligible": 1219,
+      "name": "eslint",
+      "passed": false,
+      "pr_auc": 0.49179175343884834,
+      "precision_at_k": {
+       "10": 1.0,
+       "20": 0.85,
+       "61": 0.6229508196721312
+      },
+      "recall_at_k": {
+       "10": 0.044444444444444446,
+       "20": 0.07555555555555556,
+       "61": 0.1688888888888889
+      },
+      "roc_auc": 0.8066778448468589,
+      "role": "tuning",
+      "split_sha": "3398431574b903757bc78b08c8ed36b7b9fce8eb",
+      "tau_vs_best_baseline": 0.6918099979660906
+     }
+    ],
+    "test_passes": 1,
+    "test_ran": 2
+   },
+   "kind": "predictive",
+   "reason": "passed_on_1_of_2_test_repos_need_2",
+   "status": "unvalidated"
+  },
+  "churn_lines": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log --numstat",
+       "passed": true,
+       "reason": null
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 323,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0018000000000000238,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.017361111111111112,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0016999999999999793,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log --numstat",
+       "passed": true,
+       "reason": null
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 135,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.00990000000000002,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.031914893617021274,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.007400000000000073,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log --numstat",
+       "passed": true,
+       "reason": null
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 186,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.018726591760299626,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log --numstat",
+       "passed": true,
+       "reason": null
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 403,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.001700000000000007,
+       "median_abs_delta": 0.0006000000000000449,
+       "modal_share": 0.008658008658008658,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0015999999999999903,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G1",
+   "heuristic": null,
+   "inputs": null,
+   "instrument": "git log --numstat",
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "cochange_degree": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log co-occurrence (§5)",
+       "passed": true,
+       "reason": null
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 87,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.4583333333333333,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log co-occurrence (§5)",
+       "passed": true,
+       "reason": null
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 11,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.02970000000000006,
+       "median_abs_delta": 0.0050000000000000044,
+       "modal_share": 0.8882978723404256,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.024700000000000055,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log co-occurrence (§5)",
+       "passed": true,
+       "reason": null
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 44,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.4419475655430712,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log co-occurrence (§5)",
+       "passed": true,
+       "reason": null
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 46,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.0020999999999999908,
+       "median_abs_delta": 0.000800000000000009,
+       "modal_share": 0.21212121212121213,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0015999999999999903,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G1",
+   "heuristic": null,
+   "inputs": null,
+   "instrument": "git log co-occurrence (§5)",
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "commit_count": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log",
+       "passed": true,
+       "reason": null
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 86,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0018000000000000238,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.09375,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0018000000000000238,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log",
+       "passed": true,
+       "reason": null
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 10,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.014899999999999913,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.5851063829787234,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.012300000000000089,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log",
+       "passed": true,
+       "reason": null
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 37,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.24719101123595505,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log",
+       "passed": true,
+       "reason": null
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 76,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.001999999999999995,
+       "median_abs_delta": 0.0008999999999999009,
+       "modal_share": 0.0735930735930736,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0019000000000000128,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G1",
+   "heuristic": null,
+   "inputs": null,
+   "instrument": "git log",
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "complexity_proxy_index": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "size_loc",
+        "nesting_proxy",
+        "fan_out"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 410,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0010999999999999899,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.019097222222222224,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.00040000000000006697,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "size_loc",
+        "nesting_proxy",
+        "fan_out"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 160,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.007000000000000006,
+       "median_abs_delta": 0.0010000000000000009,
+       "modal_share": 0.026595744680851064,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.003965000000000008,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "size_loc",
+        "nesting_proxy",
+        "fan_out"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 246,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.011235955056179775,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "size_loc",
+        "nesting_proxy",
+        "fan_out"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 406,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.0011999999999999789,
+       "median_abs_delta": 0.00029999999999996696,
+       "modal_share": 0.010822510822510822,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0007000000000000311,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G4",
+   "heuristic": null,
+   "inputs": [
+    "size_loc",
+    "nesting_proxy",
+    "fan_out"
+   ],
+   "instrument": null,
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "fan_in": {
+   "adversarial_fixture": "tests/test_instruments.py",
+   "counterpart": "fan_in_alt",
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": "fan_in_alt",
+       "n": 582,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.9992683140815221,
+       "tau_b_ci": [
+        0.9976509411836474,
+        1.0
+       ],
+       "tau_floor": 0.6
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 55,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.3211805555555556,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": "fan_in_alt",
+       "n": 202,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 1.0,
+       "tau_b_ci": [
+        0.9999999999999999,
+        1.0
+       ],
+       "tau_floor": 0.6
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 10,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.0024999999999999467,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.35106382978723405,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.0016249999999999795,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": "fan_in_alt",
+       "n": 261,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.9948323244045392,
+       "tau_b_ci": [
+        0.9907661951188536,
+        0.9984264716145697
+       ],
+       "tau_floor": 0.6
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 26,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.3707865168539326,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": "fan_in_alt",
+       "n": 472,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.9814744018285809,
+       "tau_b_ci": [
+        0.9443931919625956,
+        0.9999251584673429
+       ],
+       "tau_floor": 0.6
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 13,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.010600000000000054,
+       "median_abs_delta": 0.0010999999999999899,
+       "modal_share": 0.70995670995671,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0010999999999999899,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G2",
+   "heuristic": null,
+   "inputs": null,
+   "instrument": null,
+   "kind": "descriptive",
+   "non_discriminating": true,
+   "retirement_backed": true,
+   "status": "asserted"
+  },
+  "fan_in_nonzero": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "fan_in"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 54,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.3345388788426763,
+       "n": 553,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "fan_in"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 9,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.0030999999999999917,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.45517241379310347,
+       "n": 145,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.0030999999999999917,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "fan_in"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 25,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.20833333333333334,
+       "n": 168,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "fan_in"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 12,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.012299999999999978,
+       "median_abs_delta": 0.0011999999999999789,
+       "modal_share": 0.8159203980099502,
+       "n": 402,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0011999999999999789,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G4",
+   "heuristic": null,
+   "inputs": [
+    "fan_in"
+   ],
+   "instrument": null,
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "fan_out": {
+   "adversarial_fixture": "tests/test_instruments.py",
+   "counterpart": "fan_out_alt",
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": "fan_out_alt",
+       "n": 582,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 1.0,
+       "tau_b_ci": [
+        0.9999999999999999,
+        1.0
+       ],
+       "tau_floor": 0.6
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 35,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.2690972222222222,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": "fan_out_alt",
+       "n": 202,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 1.0,
+       "tau_b_ci": [
+        0.9999999999999999,
+        1.0
+       ],
+       "tau_floor": 0.6
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 8,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.0024999999999999467,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.3882978723404255,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.0024999999999999467,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": "fan_out_alt",
+       "n": 261,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.9999999999999998,
+       "tau_b_ci": [
+        0.9999999999999998,
+        1.0
+       ],
+       "tau_floor": 0.6
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 17,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.35580524344569286,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": "fan_out_alt",
+       "n": 472,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.9958781093739845,
+       "tau_b_ci": [
+        0.9900989039191203,
+        0.9997800014123549
+       ],
+       "tau_floor": 0.6
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 10,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.0008000000000000229,
+       "median_abs_delta": 0.0006000000000000172,
+       "modal_share": 0.44372294372294374,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0008000000000000229,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G2",
+   "heuristic": null,
+   "inputs": null,
+   "instrument": null,
+   "kind": "descriptive",
+   "non_discriminating": true,
+   "retirement_backed": true,
+   "status": "asserted"
+  },
+  "fix_count": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log",
+       "passed": true,
+       "reason": null
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 31,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0009000000000000119,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.296875,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0009000000000000119,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log",
+       "passed": true,
+       "reason": null
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 5,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.8191489361702128,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log",
+       "passed": true,
+       "reason": null
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 26,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.32209737827715357,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log",
+       "passed": true,
+       "reason": null
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 27,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.0045000000000000595,
+       "median_abs_delta": 0.0002999999999999947,
+       "modal_share": 0.30303030303030304,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0045000000000000595,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G1",
+   "heuristic": "§7 subject classifier (regex over commit subjects; also the holdout label)",
+   "inputs": null,
+   "instrument": "git log",
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "has_sibling_test": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "path convention config (§6.2.2)",
+       "passed": true,
+       "reason": null
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 2,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.9618055555555556,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "path convention config (§6.2.2)",
+       "passed": true,
+       "reason": null
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 2,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.9042553191489362,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "path convention config (§6.2.2)",
+       "passed": true,
+       "reason": null
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 2,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.6591760299625468,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "path convention config (§6.2.2)",
+       "passed": true,
+       "reason": null
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 2,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.7705627705627706,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G1",
+   "heuristic": "filename adjacency; literal name, convention-dependent",
+   "inputs": null,
+   "instrument": "path convention config (§6.2.2)",
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "last_touched_days": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log author_date",
+       "passed": true,
+       "reason": null
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 80,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.03770000000000001,
+       "median_abs_delta": 0.0017000000000000348,
+       "modal_share": 0.18055555555555555,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.009399999999999999,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log author_date",
+       "passed": true,
+       "reason": null
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 15,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.06190000000000001,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.4946808510638298,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.01730000000000001,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log author_date",
+       "passed": true,
+       "reason": null
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 70,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.035499999999999976,
+       "median_abs_delta": 0.001899999999999985,
+       "modal_share": 0.07116104868913857,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.013169999999999992,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log author_date",
+       "passed": true,
+       "reason": null
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 106,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.028099999999999986,
+       "median_abs_delta": 0.0010999999999999899,
+       "modal_share": 0.1774891774891775,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0168,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G1",
+   "heuristic": null,
+   "inputs": null,
+   "instrument": "git log author_date",
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "load_index": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {
+       "cochange_degree": {
+        "counterpart": "cochange_degree",
+        "n": 583,
+        "permutation_p": 0.000999000999000999,
+        "tau_b": 0.19145796850512944,
+        "tau_b_ci": [
+         0.13415957831965075,
+         0.25084201921050925
+        ]
+       },
+       "test_fan_in": {
+        "counterpart": "test_fan_in",
+        "n": 583,
+        "permutation_p": 0.000999000999000999,
+        "tau_b": 0.4238514504859724,
+        "tau_b_ci": [
+         0.3813280113654086,
+         0.4646061291247973
+        ]
+       }
+      },
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "fan_in_nonzero",
+        "centrality",
+        "fan_out",
+        "size_loc"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 489,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.000200000000000089,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.015625,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0001000000000000445,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {
+       "cochange_degree": {
+        "counterpart": "cochange_degree",
+        "n": 202,
+        "permutation_p": 0.000999000999000999,
+        "tau_b": 0.2377434633673041,
+        "tau_b_ci": [
+         0.12855380638967082,
+         0.3416883044805835
+        ]
+       },
+       "test_fan_in": {
+        "counterpart": "test_fan_in",
+        "n": 202,
+        "permutation_p": 0.000999000999000999,
+        "tau_b": 0.4717085621036038,
+        "tau_b_ci": [
+         0.4013694420632049,
+         0.5353516178575999
+        ]
+       }
+      },
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "fan_in_nonzero",
+        "centrality",
+        "fan_out",
+        "size_loc"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 169,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.009899999999999964,
+       "median_abs_delta": 0.0004999999999999866,
+       "modal_share": 0.026595744680851064,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.00670000000000002,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {
+       "cochange_degree": {
+        "counterpart": "cochange_degree",
+        "n": 267,
+        "permutation_p": 0.000999000999000999,
+        "tau_b": 0.390918605437226,
+        "tau_b_ci": [
+         0.3118524898247264,
+         0.46054771386375787
+        ]
+       },
+       "test_fan_in": {
+        "counterpart": "test_fan_in",
+        "n": 267,
+        "permutation_p": 0.000999000999000999,
+        "tau_b": 0.7212598378310919,
+        "tau_b_ci": [
+         0.6881420361623599,
+         0.7526387847831141
+        ]
+       }
+      },
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "fan_in_nonzero",
+        "centrality",
+        "fan_out",
+        "size_loc"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 239,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.0149812734082397,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {
+       "cochange_degree": {
+        "counterpart": "cochange_degree",
+        "n": 473,
+        "permutation_p": 0.000999000999000999,
+        "tau_b": 0.147654044623586,
+        "tau_b_ci": [
+         0.07374801858434744,
+         0.22774610821162264
+        ]
+       },
+       "test_fan_in": {
+        "counterpart": "test_fan_in",
+        "n": 473,
+        "permutation_p": 0.000999000999000999,
+        "tau_b": 0.4568004437192151,
+        "tau_b_ci": [
+         0.3778553665554717,
+         0.5285894104981407
+        ]
+       }
+      },
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "fan_in_nonzero",
+        "centrality",
+        "fan_out",
+        "size_loc"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 386,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.011499999999999955,
+       "median_abs_delta": 0.0011999999999999789,
+       "modal_share": 0.010822510822510822,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0014000000000000123,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G4",
+   "heuristic": null,
+   "inputs": [
+    "fan_in_nonzero",
+    "centrality",
+    "fan_out",
+    "size_loc"
+   ],
+   "instrument": null,
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "neglect_index": {
+   "adversarial_fixture": null,
+   "counterpart": "blame_age_median",
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {
+       "cochange_degree": {
+        "counterpart": "cochange_degree",
+        "n": 583,
+        "permutation_p": 0.001998001998001998,
+        "tau_b": 0.11013704676506994,
+        "tau_b_ci": [
+         0.0552707747780324,
+         0.16451930500514308
+        ]
+       }
+      },
+      "corroboration": {
+       "counterpart": "blame_age_median",
+       "n": 583,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.5637289326509433,
+       "tau_b_ci": [
+        0.5188268019061726,
+        0.6019085259737051
+       ],
+       "tau_floor": 0.3
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 451,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.09999999999999998,
+       "median_abs_delta": 0.0007000000000000339,
+       "modal_share": 0.034722222222222224,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.004400000000000029,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {
+       "cochange_degree": {
+        "counterpart": "cochange_degree",
+        "n": 202,
+        "permutation_p": 0.000999000999000999,
+        "tau_b": -0.3179759543821006,
+        "tau_b_ci": [
+         -0.40934054889389876,
+         -0.21845123008344958
+        ]
+       }
+      },
+      "corroboration": {
+       "counterpart": "blame_age_median",
+       "n": 202,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.43134741866822457,
+       "tau_b_ci": [
+        0.3266344381046865,
+        0.5436998204652472
+       ],
+       "tau_floor": 0.3
+      },
+      "name": "mcp-secure-server",
+      "passed": false,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": "unstable",
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 32,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.20690000000000003,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.5053191489361702,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.0248,
+       "passed": false,
+       "reason": "unstable"
+      }
+     },
+     {
+      "correlates": {
+       "cochange_degree": {
+        "counterpart": "cochange_degree",
+        "n": 267,
+        "permutation_p": 0.00999000999000999,
+        "tau_b": -0.1117246337139867,
+        "tau_b_ci": [
+         -0.19636461371564795,
+         -0.0326757982861184
+        ]
+       }
+      },
+      "corroboration": {
+       "counterpart": "blame_age_median",
+       "n": 267,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.6527720577833198,
+       "tau_b_ci": [
+        0.6014753045872016,
+        0.6996651192271004
+       ],
+       "tau_floor": 0.3
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 192,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.04349999999999998,
+       "median_abs_delta": 0.0036999999999999256,
+       "modal_share": 0.04868913857677903,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.028139999999999867,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {
+       "cochange_degree": {
+        "counterpart": "cochange_degree",
+        "n": 473,
+        "permutation_p": 0.003996003996003996,
+        "tau_b": 0.09898580044697566,
+        "tau_b_ci": [
+         0.04048953425759505,
+         0.15296390235699947
+        ]
+       }
+      },
+      "corroboration": {
+       "counterpart": "blame_age_median",
+       "n": 472,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.37278588141108854,
+       "tau_b_ci": [
+        0.3207157733058007,
+        0.42626902522300836
+       ],
+       "tau_floor": 0.3
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 416,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.02890000000000001,
+       "median_abs_delta": 0.0010000000000000009,
+       "modal_share": 0.012987012987012988,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.009594999999999998,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 3
+   },
+   "grounding_class": "G3",
+   "heuristic": null,
+   "inputs": [
+    "age_days",
+    "last_touched_days",
+    "recent_commit_share"
+   ],
+   "instrument": null,
+   "kind": "descriptive",
+   "non_discriminating": false,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "nesting_proxy": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "indent counter (§6.2.2)",
+       "passed": true,
+       "reason": null
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 19,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0009000000000000119,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.3923611111111111,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0009000000000000119,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "indent counter (§6.2.2)",
+       "passed": true,
+       "reason": null
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 10,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.007500000000000062,
+       "median_abs_delta": 0.0024999999999999467,
+       "modal_share": 0.324468085106383,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.007500000000000062,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "indent counter (§6.2.2)",
+       "passed": true,
+       "reason": null
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 11,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.26591760299625467,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "indent counter (§6.2.2)",
+       "passed": true,
+       "reason": null
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 21,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.0008000000000000229,
+       "median_abs_delta": 0.00039999999999995595,
+       "modal_share": 0.17965367965367965,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0008000000000000229,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G1",
+   "heuristic": "indentation depth as a stand-in for nesting",
+   "inputs": null,
+   "instrument": "indent counter (§6.2.2)",
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "recent_commit_share": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log (timeline-relative window, §6.2.2)",
+       "passed": true,
+       "reason": null
+      },
+      "name": "typeorm",
+      "passed": false,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": "unstable",
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 152,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.5,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.28125,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0,
+       "passed": false,
+       "reason": "unstable"
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log (timeline-relative window, §6.2.2)",
+       "passed": true,
+       "reason": null
+      },
+      "name": "mcp-secure-server",
+      "passed": false,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": "unstable",
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 10,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 1.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.9308510638297872,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.0,
+       "passed": false,
+       "reason": "unstable"
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log (timeline-relative window, §6.2.2)",
+       "passed": true,
+       "reason": null
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 44,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.03999999999999998,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.5430711610486891,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log (timeline-relative window, §6.2.2)",
+       "passed": true,
+       "reason": null
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 184,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.125,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.15151515151515152,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 2
+   },
+   "grounding_class": "G1",
+   "heuristic": null,
+   "inputs": null,
+   "instrument": "git log (timeline-relative window, §6.2.2)",
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "reinforcement_index": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {
+       "has_sibling_test": {
+        "counterpart": "has_sibling_test",
+        "n": 583,
+        "permutation_p": 0.000999000999000999,
+        "tau_b": 0.1953296043608915,
+        "tau_b_ci": [
+         0.11760672187152478,
+         0.2690090590096382
+        ]
+       }
+      },
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "test_fan_in"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 32,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.71875,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {
+       "has_sibling_test": {
+        "counterpart": "has_sibling_test",
+        "n": 202,
+        "permutation_p": 0.013986013986013986,
+        "tau_b": 0.16827737790362782,
+        "tau_b_ci": [
+         0.027471408590874286,
+         0.3076750327225
+        ]
+       }
+      },
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "test_fan_in"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 4,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.7340425531914894,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {
+       "has_sibling_test": {
+        "counterpart": "has_sibling_test",
+        "n": 267,
+        "permutation_p": 0.000999000999000999,
+        "tau_b": 0.561388854831378,
+        "tau_b_ci": [
+         0.4757601591061406,
+         0.658971934117196
+        ]
+       }
+      },
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "test_fan_in"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 13,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.50187265917603,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {
+       "has_sibling_test": {
+        "counterpart": "has_sibling_test",
+        "n": 473,
+        "permutation_p": 0.000999000999000999,
+        "tau_b": 0.722474589172393,
+        "tau_b_ci": [
+         0.6096700789579458,
+         0.8115471345654369
+        ]
+       }
+      },
+      "corroboration": {
+       "counterpart": null,
+       "inputs": [
+        "test_fan_in"
+       ],
+       "passed": null,
+       "reason": "derived"
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 7,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.0027000000000000357,
+       "median_abs_delta": 0.0005999999999999339,
+       "modal_share": 0.7489177489177489,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0005999999999999339,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G4",
+   "heuristic": null,
+   "inputs": [
+    "test_fan_in"
+   ],
+   "instrument": null,
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "revert_count": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log",
+       "passed": true,
+       "reason": null
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 5,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.9375,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log",
+       "passed": true,
+       "reason": null
+      },
+      "name": "mcp-secure-server",
+      "passed": false,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": "degenerate",
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 1,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 1.0,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.0,
+       "passed": false,
+       "reason": "degenerate"
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log",
+       "passed": true,
+       "reason": null
+      },
+      "name": "uluops-registry-api",
+      "passed": false,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": "degenerate",
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 1,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 1.0,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": false,
+       "reason": "degenerate"
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "git log",
+       "passed": true,
+       "reason": null
+      },
+      "name": "eslint",
+      "passed": false,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": "degenerate",
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 3,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.974025974025974,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0,
+       "passed": false,
+       "reason": "degenerate"
+      }
+     }
+    ],
+    "repos_passed": 1
+   },
+   "grounding_class": "G1",
+   "heuristic": "§7 subject classifier",
+   "inputs": null,
+   "instrument": "git log",
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "reason": "degenerate",
+   "retirement_backed": null,
+   "status": "untested"
+  },
+  "size_loc": {
+   "adversarial_fixture": null,
+   "counterpart": null,
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "non-blank line count",
+       "passed": true,
+       "reason": null
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 220,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0017000000000000348,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.041666666666666664,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0016999999999999793,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "non-blank line count",
+       "passed": true,
+       "reason": null
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 133,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.00990000000000002,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.031914893617021274,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.0050000000000000044,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "non-blank line count",
+       "passed": true,
+       "reason": null
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 174,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.02247191011235955,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": null,
+       "instrument": "non-blank line count",
+       "passed": true,
+       "reason": null
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 270,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.0029000000000000137,
+       "median_abs_delta": 0.000500000000000056,
+       "modal_share": 0.012987012987012988,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0013999999999999568,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G1",
+   "heuristic": null,
+   "inputs": null,
+   "instrument": "non-blank line count",
+   "kind": "descriptive",
+   "non_discriminating": null,
+   "retirement_backed": null,
+   "status": "asserted"
+  },
+  "test_fan_in": {
+   "adversarial_fixture": "tests/test_instruments.py",
+   "counterpart": "test_fan_in_alt",
+   "grounding": {
+    "per_repo": [
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": "test_fan_in_alt",
+       "n": 582,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.9969169414505179,
+       "tau_b_ci": [
+        0.9895640044077877,
+        1.0
+       ],
+       "tau_floor": 0.6
+      },
+      "name": "typeorm",
+      "passed": true,
+      "perturbed_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 32,
+       "eps": 0.05,
+       "excluded_frac": 0.012006861063464836,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.71875,
+       "n": 576,
+       "n_excluded_touched": 7,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": "test_fan_in_alt",
+       "n": 202,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.9999999999999999,
+       "tau_b_ci": [
+        0.9999999999999999,
+        1.0
+       ],
+       "tau_floor": 0.6
+      },
+      "name": "mcp-secure-server",
+      "passed": true,
+      "perturbed_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 4,
+       "eps": 0.05,
+       "excluded_frac": 0.06930693069306931,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.7340425531914894,
+       "n": 188,
+       "n_excluded_touched": 14,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": "test_fan_in_alt",
+       "n": 261,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.9861638874123705,
+       "tau_b_ci": [
+        0.9760655564918969,
+        0.9951426256210207
+       ],
+       "tau_floor": 0.6
+      },
+      "name": "uluops-registry-api",
+      "passed": true,
+      "perturbed_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 13,
+       "eps": 0.05,
+       "excluded_frac": 0.0,
+       "k": 5,
+       "max_abs_delta": 0.0,
+       "median_abs_delta": 0.0,
+       "modal_share": 0.50187265917603,
+       "n": 267,
+       "n_excluded_touched": 0,
+       "p95_abs_delta": 0.0,
+       "passed": true,
+       "reason": null
+      }
+     },
+     {
+      "correlates": {},
+      "corroboration": {
+       "counterpart": "test_fan_in_alt",
+       "n": 472,
+       "passed": true,
+       "permutation_p": 0.000999000999000999,
+       "reason": null,
+       "tau_b": 0.9750208581234026,
+       "tau_b_ci": [
+        0.9321034255632561,
+        1.0
+       ],
+       "tau_floor": 0.6
+      },
+      "name": "eslint",
+      "passed": true,
+      "perturbed_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+      "reason": null,
+      "stability": {
+       "delta": 0.15,
+       "distinct_values": 7,
+       "eps": 0.05,
+       "excluded_frac": 0.0211864406779661,
+       "k": 5,
+       "max_abs_delta": 0.0041999999999999815,
+       "median_abs_delta": 0.0022999999999999687,
+       "modal_share": 0.7489177489177489,
+       "n": 462,
+       "n_excluded_touched": 10,
+       "p95_abs_delta": 0.0022999999999999687,
+       "passed": true,
+       "reason": null
+      }
+     }
+    ],
+    "repos_passed": 4
+   },
+   "grounding_class": "G2",
+   "heuristic": null,
+   "inputs": null,
+   "instrument": null,
+   "kind": "descriptive",
+   "non_discriminating": true,
+   "retirement_backed": true,
+   "status": "asserted"
+  }
+ },
+ "substrate_attestations": {
+  "eslint-3398431574b9-trunc-80b2a632f8b7.substrate.json": {
+   "bytes_sha256": "329504cbaac8fc833424df3f91679657e358f974632fb054b080c72cce099084",
+   "head_sha": "3398431574b903757bc78b08c8ed36b7b9fce8eb",
+   "seed": "1dc7cfaaec63b226e792cb6035091471bb9e21682842891cf5eea7bfcafcd331",
+   "truncated_at": "3398431574b903757bc78b08c8ed36b7b9fce8eb"
+  },
+  "eslint-3f20a57c6293-tip-80b2a632f8b7.substrate.json": {
+   "bytes_sha256": "b3dc4d2662e8eac376f17ed39959d66d8f74a29536b424bf85ba966b8533a6aa",
+   "head_sha": "3f20a57c6293371b6193d3fb6746c2b7b2ac2689",
+   "seed": "a50b92780e083cb217e293902bc5db06459ad4272b53a413f1968f5cd0c09c4c",
+   "truncated_at": null
+  },
+  "eslint-9d8153223dbf-trunc-80b2a632f8b7.substrate.json": {
+   "bytes_sha256": "72dab2bc21ab4e72a0e97f2da8c50ef63539efc2e2f2cec80fd6350fdc74847d",
+   "head_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+   "seed": "62f015640c92f6df9339ee4ff371a1dde3486f00d13e3f45e597ae1fcbddc350",
+   "truncated_at": "9d8153223dbf47b9aecdc1474202aaee4845f146"
+  },
+  "mcp-secure-server-080f992e6dba-trunc-80b2a632f8b7.substrate.json": {
+   "bytes_sha256": "dab4b518a2ef4b61a8013f769b4ea369a509de4597146f66cea367a5c344d08a",
+   "head_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+   "seed": "11e5fdeb2290e6e79d0c7a302ad20dfaa4e9a9da995ba4b5e8c422e7bc039a82",
+   "truncated_at": "080f992e6dba29070a99dbac2747e7aa012dc903"
+  },
+  "mcp-secure-server-3f55fd476ded-trunc-80b2a632f8b7.substrate.json": {
+   "bytes_sha256": "f6b65cd5291e3f5ba3f7d5a1372feb615b3f6071826a2e9c09d29f857842ed56",
+   "head_sha": "3f55fd476ded0738c100f53654910d7e3cbd7fc2",
+   "seed": "5fad71a46159070417343f0588f022cec1a6a6a81e473c4c1149ac1f621f5478",
+   "truncated_at": "3f55fd476ded0738c100f53654910d7e3cbd7fc2"
+  },
+  "mcp-secure-server-ecb30716b87e-tip-80b2a632f8b7.substrate.json": {
+   "bytes_sha256": "c8ca2c716bfa148dde047ac98683eebb756ab8401a14928c62c80cf85f81b821",
+   "head_sha": "ecb30716b87ed127f0412956738afb7af385b267",
+   "seed": "2c7db66a25f4878a8c602cf119656c6ef585323a6a52ba2c180cc0acd86ceff8",
+   "truncated_at": null
+  },
+  "typeorm-8cf22582d32f-trunc-80b2a632f8b7.substrate.json": {
+   "bytes_sha256": "be69372888d3c8acb30bfee759f1304276414b92e72cffcf276e9f775df84485",
+   "head_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+   "seed": "024e7a62a7e36665ef9049a19a9b7b6d2a93b30a0b1718b62acb686b847605b5",
+   "truncated_at": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84"
+  },
+  "typeorm-ac41823b9e27-tip-80b2a632f8b7.substrate.json": {
+   "bytes_sha256": "48f7110ed9c6f6dbe07bdc3fe42a600923427b062747da9c575fb937ccb56689",
+   "head_sha": "ac41823b9e27e3a8079ce487c9772c5ef8f1e226",
+   "seed": "33fbe1cfaa1af6389a1c832353c945fc05b921f480dd4dceac5ca9eb92092702",
+   "truncated_at": null
+  },
+  "typeorm-fe7f328fd5b9-trunc-80b2a632f8b7.substrate.json": {
+   "bytes_sha256": "396606e394f6c69c856fba72812df491a8cbd6e0030bb555afac7169a6a7c6f4",
+   "head_sha": "fe7f328fd5b918cab2e7301d57c62e81d9ff34f3",
+   "seed": "df3baed073ea6998b427799bdd07d322a915f0c2b938e94d626120101781f394",
+   "truncated_at": "fe7f328fd5b918cab2e7301d57c62e81d9ff34f3"
+  },
+  "uluops-registry-api-2ff7b5b7067e-trunc-80b2a632f8b7.substrate.json": {
+   "bytes_sha256": "3700881910754bb4ba307abaa07ea9b1b453a16db0217ad10c7889d8d9db3a4b",
+   "head_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+   "seed": "c576e0759dc911cc96dd805c584bf32c943ac411106c06b4e24432ce64d2380a",
+   "truncated_at": "2ff7b5b7067efb387d211ab950e266616001e70b"
+  },
+  "uluops-registry-api-417d4387a048-trunc-80b2a632f8b7.substrate.json": {
+   "bytes_sha256": "565bb5a13a3e6aebcd9c4d3dbc5e6a006c3cc7fa427239cb8b84e8fdc3c40779",
+   "head_sha": "417d4387a048343fdc34b2b9116ef90ea94b2787",
+   "seed": "f564280e55a8253d9610c5546f46d9094af440bf767636090cb128bf985e679b",
+   "truncated_at": "417d4387a048343fdc34b2b9116ef90ea94b2787"
+  },
+  "uluops-registry-api-f7414cc7bbec-tip-80b2a632f8b7.substrate.json": {
+   "bytes_sha256": "635f9ee194c61ae15fe7a60fb733d13fd8b78d0e812195523f20221819dd98f8",
+   "head_sha": "f7414cc7bbec62ba80068af4b045667064d1d59e",
+   "seed": "c576e0759dc911cc96dd805c584bf32c943ac411106c06b4e24432ce64d2380a",
+   "truncated_at": null
+  }
+ },
+ "substrate_config_fingerprint": "80b2a632f8b73997c59367c86ae88c727c3f6fbf90180e966b9601600b3db92c",
+ "substrate_effective_config": {
+  "cochange_max_files": 30,
+  "cochange_min": 2,
+  "dep_ts_pre_compilation_deps": true,
+  "exclude_globs": [
+   "**/node_modules/**",
+   "**/dist/**",
+   "**/build/**",
+   "**/out/**",
+   "**/coverage/**",
+   "**/vendor/**",
+   "**/third_party/**",
+   "**/.git/**",
+   "**/generated/**",
+   "**/__generated__/**",
+   "**/*.min.js",
+   "**/*.d.ts",
+   "**/*.map",
+   "**/*.snap"
+  ],
+  "exclude_tests_from_population": true,
+  "fix_subject_regex": "\\b(bug|hotfix|patch)\\b",
+  "graph_quality_min": 0.8,
+  "include_extensions": [
+   ".c",
+   ".cc",
+   ".cjs",
+   ".cpp",
+   ".cs",
+   ".cts",
+   ".go",
+   ".h",
+   ".hpp",
+   ".java",
+   ".js",
+   ".jsx",
+   ".kt",
+   ".mjs",
+   ".mts",
+   ".php",
+   ".py",
+   ".pyi",
+   ".rb",
+   ".rs",
+   ".scala",
+   ".sh",
+   ".sql",
+   ".swift",
+   ".ts",
+   ".tsx"
+  ],
+  "instrument_tau_min": 0.6,
+  "n_min": 30,
+  "nesting_max_bytes": 2097152,
+  "pagerank_alpha": 0.85,
+  "pagerank_backend": "power-iteration-python",
+  "pagerank_max_iter": 100,
+  "pagerank_tol": 1e-06,
+  "recent_window_frac": 0.2,
+  "report_p": 0.9,
+  "report_q": 0.1,
+  "report_top_k": 10,
+  "rounding_dp": 4,
+  "test_globs": [
+   "**/*.test.*",
+   "**/*.spec.*",
+   "**/*_test.*",
+   "**/test_*.py",
+   "**/test/**",
+   "**/tests/**",
+   "**/__tests__/**",
+   "**/spec/**",
+   "**/__mocks__/**"
+  ],
+  "test_roots": [
+   "test/",
+   "tests/",
+   "__tests__/",
+   "spec/"
+  ],
+  "test_suffixes": [
+   ".test",
+   ".spec",
+   "_test"
+  ],
+  "toolchain_versions": {
+   "dep_extractor": "dependency-cruiser@18.2.0",
+   "git": "git@2.53.0",
+   "history": "pydriller@2.11",
+   "python": "python@3.13.12",
+   "substrate": "repo-substrate@0.2.2"
+  },
+  "weights": {
+   "bug_pressure_index": {
+    "commit_count": 0.5,
+    "recency": 0.2,
+    "revert_count": 0.3
+   },
+   "change_pressure_index": {
+    "churn_lines": 0.5,
+    "commit_count": 0.2,
+    "recency": 0.3
+   },
+   "complexity_proxy_index": {
+    "fan_out": 0.2,
+    "nesting_proxy": 0.4,
+    "size_loc": 0.4
+   },
+   "load_index": {
+    "centrality": 0.3,
+    "fan_in_nonzero": 0.5,
+    "inv_fan_out": 0.1,
+    "size_loc": 0.1
+   },
+   "neglect_index": {
+    "age_days": 0.4,
+    "inv_recent_commit_share": 0.2,
+    "last_touched_days": 0.4
+   }
+  }
+ },
+ "tuned_config_commit": "24c087a123e5da04e0b6e1f51d8edaad42c99529",
+ "validated_at": "2026-09-05T02:50:14+00:00",
+ "validation_config": {
+  "auc_margin": 0.05,
+  "bootstrap_n": 1000,
+  "coverage_min": 0.5,
+  "degenerate_max_modal_share": 0.97,
+  "holdout_frac": 0.2,
+  "holdout_include_tests": true,
+  "label_subject_regex": "\\b(bug|hotfix|patch)\\b",
+  "m_asserted": 2,
+  "min_repos": 2,
+  "permutation_n": 1000,
+  "pr_auc_mult": 1.2,
+  "rng_seed": 20260904,
+  "signal_floor_mult": 1.5,
+  "stability_delta": 0.15,
+  "stability_eps": 0.05,
+  "stability_max_excluded_frac": 0.5,
+  "stability_min_n": 30,
+  "stability_perturbation_k": 5,
+  "tau_asserted": 0.3,
+  "tau_instrument": 0.6,
+  "tau_retire": 0.85
+ },
+ "validation_config_fingerprint": "cb320f19185242be4855065300532b3b652be40847a9d2cf1a72bda6da71985b",
+ "validation_version": "0.3.0"
+}

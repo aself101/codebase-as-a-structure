@@ -187,3 +187,51 @@ Definition versions and token counts were not attached to runs 4–9 at save tim
 **Rule 4 — the novelty claim is exact.** README states the prior art (CodeCity; CodeScene; Nagappan & Zimmermann; Google 2011) and claims only the temporal-holdout gate between metric and picture, citing only results the report has produced.
 
 **Name (system-spec open question #5, substrate open question #9).** *Resolved.* The system is **codebase-as-structure** (the repository name, the parent spec, the tracker project). The standalone product — C1 plus the gate — is **repo-substrate** (the Python package and the CLI). Two names because they are two things: the second must be valuable even if the first never renders (`repo-substrate-spec.md` §1). No further naming work.
+
+## D-014 · 2026-09-04 · The tuned weights are frozen; two gate corrections from the placeholder run
+
+**Context.** The four-repo run under the D-011/D-012 gate (out/validation-placeholder) and the pre-registered tuning (config/tuning.json) landed together.
+
+**Tuning outcome (D-009 protocol, tuning set = uluops-registry-api + eslint, grid step 0.1, objective = min-over-repos ΔROC then min PR ratio).**
+
+| index | best weights found | min ΔROC (bar +0.05) | min PR ratio (bar ×1.20) | spec placeholder |
+|---|---|---:|---:|---|
+| `bug_pressure_index` | commit_count 0.5, recency 0.2, revert_count 0.3 | **+0.014** | **1.00** | ΔROC −0.041 / −0.119 |
+| `change_pressure_index` | churn_lines 0.5, commit_count 0.2, recency 0.3 | **+0.030** | **1.00** | ΔROC +0.052 / +0.030 |
+
+No weight vector in either grid reaches the pre-registered bar on the tuning set itself. The best `bug_pressure_index` drops `fix_count` and `fix_ratio` to zero weight: on these repos, historical fix concentration carries no forecast of future fix activity beyond busyness and recency. That is the substantive finding of M1 so far, and it is what the spec said the gate exists to find ("write down where the indices lie"). The weights are frozen in `config/tuned.toml` at this commit, before the test set is scored; the margins are not touched (D-009). The expected verdict on the test set is `unvalidated` for both, and if so C3 may not name a feature over either.
+
+**Correction 1 — degeneracy is a modal-value share, not a distinct-value count.** The D-011 check marked `has_sibling_test` degenerate on every repo because it is binary. A two-valued signal with a real minority class is not a constant. `degenerate_max_modal_share` = 0.97 replaces `degenerate_min_distinct`; a constant (share 1.0) still fails. Enforced in `validation/asserted.py::run_stability`; floor validated in `ValidationConfig.validate()`.
+
+**Correction 2 — the retirement criterion is satisfied by a committed fixture, and says so.** After the `import type` fix the two import instruments agree at τ 0.98–1.00 on every reference repo, which trips the D-011 criterion for `fan_in`, `fan_out`, `test_fan_in`. The criterion's purpose was to refuse a counterpart that *cannot* fail; `tests/test_instruments.py` shows these can (the scanner over-counts an import-shaped string; the primary drops type edges with the flag off; the fingerprint moves with the flag). The grounding table now records `adversarial_fixture` per G2 pair, `validation.json` carries `retirement_backed`, and the report prints the fixture name or "NO FIXTURE." A pair that trips the criterion without a fixture would be reported as such; none does. Enforced in `validation/config.py` (`GROUNDING`), `validation/gate.py::descriptive_verdict`, `validation/report.py`.
+
+**Observed and left as is.** `neglect_index` is unstable on `mcp-secure-server` (max Δ 0.207, p95 0.025 — one node) and passes on the other three; the `max` clause is deliberately strict and the signal is `asserted` at M = 2. `has_sibling_test` under the corrected check is expected to be `asserted` (G1) with its heuristic declared; it feeds nothing.
+
+**Breaks if.** The test-set verdict comes back `validated` for either index despite the tuning set failing the bar — that would be a sign the split leaked, and the first thing to check is `substrate_attestations` and the split SHAs.
+
+## D-015 · 2026-09-04 · M1 verdict: both predictive indices `unvalidated`; twenty-one descriptive signals `asserted`; what C3 may name
+
+**The test-set verdict** (out/validation, tuned config commit 24c087a, test repos typeorm and mcp-secure-server, tuning repos in-sample for the record):
+
+| index | repo | role | ROC vs best baseline | PR-AUC ratio | passed |
+|---|---|---|---:|---:|---|
+| `bug_pressure_index` | typeorm | test | 0.770 vs 0.728 (+0.042) | ×1.06 | no |
+| `bug_pressure_index` | mcp-secure-server | test | 0.828 vs 0.825 (+0.004) | ×1.55 | no |
+| `change_pressure_index` | typeorm | test | 0.878 vs 0.728 (+0.150) | ×1.21 | **yes** |
+| `change_pressure_index` | mcp-secure-server | test | 0.856 vs 0.825 (+0.031) | ×1.68 | no |
+
+`bug_pressure_index`: **unvalidated**, 0 of 2. `change_pressure_index`: **unvalidated**, 1 of 2 (the bar is both test repos). Tuning-set rows fail the same clauses, as the tuning already showed.
+
+**What the numbers say.** With the tuned weights `bug_pressure_index` rank-correlates with the baseline it must beat at τ 0.72–0.83: it *is* busyness plus recency with a revert term, which is what a grid search over a space that cannot beat busyness will find. The June concept — "historical fix concentration forecasts future fix activity" — is not supported on these four repos beyond what busyness already carries. `change_pressure_index` carries real signal on the large TypeScript repo (+0.150 ROC, the only clean pass in the whole run) and beats the baselines everywhere but never by the margin on the small one, whose holdout is 28 commits and 22 positives.
+
+**Consequences, per the anti-horoscope contract (system spec §3, mapper §3).**
+- C3 may not name a feature over `bug_pressure_index` or `change_pressure_index` except as `decorative: true` with a `decorative_reason`. The toothpick's fragility half and the crack/fault-line features have no validated forecast to rest on in v0.
+- C3 may name features over the twenty-one `asserted` signals, in the descriptive register only (§2.1.1): `load_index`, `centrality`, `fan_in`, `fan_in_nonzero`, `fan_out`, `neglect_index`, `age_days`, `last_touched_days`, `blame_age_median`, `reinforcement_index`, `test_fan_in`, `has_sibling_test`, `complexity_proxy_index`, `nesting_proxy`, `size_loc`, `commit_count`, `churn_lines`, `fix_count`, `author_count`, `cochange_degree`, `recent_commit_share`. Foundation, strata, corridor (position), flooded basement (load-bearing ∧ neglected), scaffolding (reinforcement), and lighting/material (recency/age) are all reachable as descriptions.
+- `revert_count` is `untested (degenerate)`: on every reference repo the modal value (zero) covers more than 97% of files. It stays a raw metric and feeds nothing named.
+- The G2 pairs are `non_discriminating` on the reference set and fixture-backed (D-014); `age_days` and `neglect_index` ↔ blame are discriminating on their own (τ 0.38–0.78).
+
+**What M1 delivered.** A substrate that is byte-identical on re-run, attested by seed and content hash, with every value-affecting choice in a published fingerprint preimage; a gate whose floors cannot be loosened below spec, whose labels are frozen on the validation side, whose test/tuning roles are in the artifact, and which returned a negative result on the first thing it was built to test. That is the product the substrate spec §1 said must be valuable even if nothing renders. **M1 is complete** in the sense the spec defines; the checklists' remaining unchecked items are the known deferrals (§3A corroboration, the population-drift stability variant, the edge-dropout sweep for `centrality`, a generic degradation flag for the non-graph indices).
+
+**What changes for M2.** The ruleset is authored over `asserted` signals in the descriptive register. The recognition record for `load_index` on registry-api is overlap 0.40 / τ 0.44 against a model-assisted n=1 ranking — reported, not evidence. The cutaway's first consumer of `validation.json` (D-013 rule 3) is the next thing built.
+
+**Breaks if.** A future reference repo with a long, fix-tagged history and a stable busyness profile lets `bug_pressure_index` clear the bar. Then the verdict moves, the report shows which repo moved it, and the toothpick's fragility half becomes voiceable. Nothing about the design has to change for that; only the evidence.

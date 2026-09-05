@@ -59,15 +59,15 @@ def test_parse_blind_ranking():
     text = """# x
 ## 1. Load-bearing
 1. `src/a.ts`
-2. src/b.ts — comment stays out of the path? no: keep whole line
-3.
+2. src/b.ts — a trailing comment is not part of the path
+3. `src/x.ts`, `src/y.ts` (tie — two paths on one line)
+4.
 ## 2. Next
-1. `src/c.ts`
+1. `src/c.ts` — comment after a quoted path
 """
     lists = parse_blind_ranking(text)
-    assert lists[1][0] == "src/a.ts"
+    assert lists[1] == ["src/a.ts", "src/b.ts", "src/x.ts", "src/y.ts"]
     assert lists[2] == ["src/c.ts"]
-    assert len(lists[1]) == 2
 
 
 def test_grounding_taxonomy_is_closed():
