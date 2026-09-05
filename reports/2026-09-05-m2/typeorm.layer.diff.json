@@ -1,0 +1,135 @@
+{
+ "after": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "ac41823b9e27e3a8079ce487c9772c5ef8f1e226",
+   "name": "typeorm"
+  },
+  "skeleton_hash": "5686a13357360c75c6e8b870f8c3360427f596012dd3a8744659c5c224b9ca23"
+ },
+ "before": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+   "name": "typeorm"
+  },
+  "skeleton_hash": "e123bca14906a29c197c09bd436b97663d82797517a069ddf5d36899140c3f58"
+ },
+ "born": 0,
+ "budget": {
+  "feature_churn_max": 0.05,
+  "max_touched_frac": 0.5,
+  "min_untouched_n": 30,
+  "reason": null,
+  "strata_moved_max": 0.05,
+  "verdict": "within_budget"
+ },
+ "commits_between": 5,
+ "common_nodes": 583,
+ "deleted": 0,
+ "feature_churn": 0.013157894736842105,
+ "per_feature": {
+  "maintainability/dark_room": {
+   "added": [],
+   "after": 70,
+   "before": 70,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/flooded_basement": {
+   "added": [],
+   "after": 59,
+   "before": 59,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/foundation": {
+   "added": [],
+   "after": 59,
+   "before": 59,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/hub": {
+   "added": [],
+   "after": 60,
+   "before": 60,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/lit_room": {
+   "added": [
+    "packages/codemod/src/transforms/v1/mongodb-types.ts",
+    "src/decorator/options/SpatialColumnOptions.ts",
+    "src/driver/cockroachdb/CockroachQueryRunner.ts",
+    "src/driver/postgres/PostgresQueryRunner.ts",
+    "src/query-builder/transformer/RawSqlResultsToEntityTransformer.ts"
+   ],
+   "after": 63,
+   "before": 61,
+   "jaccard": 0.8787878787878788,
+   "removed": [
+    "src/metadata-builder/ClosureJunctionEntityMetadataBuilder.ts",
+    "src/metadata/types/ClosureTreeOptions.ts",
+    "src/repository/TreeRepository.ts"
+   ],
+   "untouched_changes": 3
+  },
+  "maintainability/scaffolding": {
+   "added": [],
+   "after": 164,
+   "before": 164,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/corridor": {
+   "added": [],
+   "after": 37,
+   "before": 37,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/entrance": {
+   "added": [],
+   "after": 1,
+   "before": 1,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/foundation": {
+   "added": [],
+   "after": 59,
+   "before": 59,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/leaf_utility": {
+   "added": [],
+   "after": 33,
+   "before": 33,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  }
+ },
+ "strata_moved": [],
+ "strata_moved_frac": 0.0,
+ "touched": {
+  "frac": 0.012006861063464836,
+  "n": 7
+ },
+ "untouched": {
+  "feature_churn": 0.005076142131979695,
+  "n": 576,
+  "strata_moved": [],
+  "strata_moved_frac": 0.0
+ }
+}

@@ -51,7 +51,7 @@
 
 - [ ] `[RULESET]` **Archetype resolution** — how per-node features + `summary` aggregates resolve to one archetype label, and whether that label is itself gated (archetype on `unvalidated` signals → `decorative`). *(§7 Q1)* `(unit)`
 - [ ] `[RULESET]` **Predicate threshold defaults** — `p`/`q` cutoffs for conjunctive features, set per-profile, interacting with the substrate percentile distribution (start from substrate §9 `p=0.90`, `q=0.10`). *(§7 Q2)* `(fixture)`
-- [ ] `[RULESET]` **Stability budget** — how far a small code change may move the skeleton before it counts as a structural shift vs. jitter (the validation method for non-predictive features; shared with sys open Q3 / validation §2.1). *(§7 Q3)* `(fixture)`
+- [x] `[NOW][DET]` **Stability budget** — untouched feature churn ≤ 0.05 and untouched strata movement ≤ 0.05 per comparison, floors ≥ 30 untouched / ≤ 0.5 touched; verdict `untested` without a touched set, never a silent pass (D-018). *(§7 Q3)* `(unit: test_skeleton_budget_is_judged_over_the_untouched_population, test_skeleton_budget_floors_refuse_to_get_easier; fixture: reports/2026-09-05-m2/skeleton-budget.md)`
 - [ ] `[RULESET]` **C2 (signal) coupling** — which features may read `signal.json` and which become unavailable when C2 is skipped (C2 optional in v0). *(§7 Q4)* `(unit)`
 
 ---

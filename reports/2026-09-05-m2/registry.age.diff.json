@@ -1,0 +1,140 @@
+{
+ "after": {
+  "geometry": "age",
+  "repo": {
+   "head_sha": "f7414cc7bbec62ba80068af4b045667064d1d59e",
+   "name": "uluops-registry-api"
+  },
+  "skeleton_hash": "f18c9d99d55648bafdea544a37fc1bc687e2f5489ceaad8e6249fad08d9ecd0b"
+ },
+ "before": {
+  "geometry": "age",
+  "repo": {
+   "head_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+   "name": "uluops-registry-api"
+  },
+  "skeleton_hash": "45fc74e33dda78222d260d7d888c33e4e7bae92a8e209e5b6da62e80e42f130a"
+ },
+ "born": 0,
+ "budget": {
+  "feature_churn_max": 0.05,
+  "max_touched_frac": 0.5,
+  "min_untouched_n": 30,
+  "reason": null,
+  "strata_moved_max": 0.05,
+  "verdict": "within_budget"
+ },
+ "commits_between": 5,
+ "common_nodes": 267,
+ "deleted": 0,
+ "feature_churn": 0.011267605633802818,
+ "per_feature": {
+  "maintainability/dark_room": {
+   "added": [
+    "src/db/migrations/013_relax_delete_constraints.ts"
+   ],
+   "after": 28,
+   "before": 27,
+   "jaccard": 0.9642857142857143,
+   "removed": [],
+   "untouched_changes": 1
+  },
+  "maintainability/flooded_basement": {
+   "added": [
+    "src/db/migrations/20260119222852_alter_hash_column_size.ts",
+    "src/routes/index.ts"
+   ],
+   "after": 28,
+   "before": 27,
+   "jaccard": 0.896551724137931,
+   "removed": [
+    "src/schemas/cdl/index.ts"
+   ],
+   "untouched_changes": 3
+  },
+  "maintainability/foundation": {
+   "added": [],
+   "after": 27,
+   "before": 27,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/hub": {
+   "added": [],
+   "after": 27,
+   "before": 27,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/lit_room": {
+   "added": [],
+   "after": 40,
+   "before": 40,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/scaffolding": {
+   "added": [],
+   "after": 133,
+   "before": 133,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/corridor": {
+   "added": [],
+   "after": 13,
+   "before": 13,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/entrance": {
+   "added": [],
+   "after": 11,
+   "before": 11,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/foundation": {
+   "added": [],
+   "after": 27,
+   "before": 27,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/leaf_utility": {
+   "added": [],
+   "after": 20,
+   "before": 20,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  }
+ },
+ "strata_moved": [
+  "src/schemas/cdl/index.ts",
+  "src/schemas/cdl/types.ts",
+  "src/services/definition-renderer/index.ts"
+ ],
+ "strata_moved_frac": 0.011235955056179775,
+ "touched": {
+  "frac": 0.0,
+  "n": 0
+ },
+ "untouched": {
+  "feature_churn": 0.011267605633802818,
+  "n": 267,
+  "strata_moved": [
+   "src/schemas/cdl/index.ts",
+   "src/schemas/cdl/types.ts",
+   "src/services/definition-renderer/index.ts"
+  ],
+  "strata_moved_frac": 0.011235955056179775
+ }
+}

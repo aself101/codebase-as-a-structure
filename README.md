@@ -25,7 +25,7 @@ That claim is defensible only insofar as the gate can fail and the report shows 
 | `blind/` | Sealed recognition rankings per reference repo (n = 1, non-gating, provenance stated in-file) |
 | `src/repo_substrate/` | The package: `substrate extract \| map \| render` and `substrate-validate run \| tune` |
 | `rulesets/` | C3 rulesets (TOML): maintainability v0.1.0 (base) and onboarding v0.1.0 (overlay) |
-| `tests/` | 62 tests incl. a scripted synthetic repository, verdict-path tests, and integrity checks |
+| `tests/` | 85 tests incl. a scripted synthetic repository, verdict-path tests, and integrity checks |
 | `docs/` | Review history: the June tribunal, the archived prototype, notes |
 
 ## Running it
@@ -40,7 +40,7 @@ uv run substrate map out/x.substrate.json --validation out/validation/validation
     --ruleset rulesets/maintainability.toml --overlay rulesets/onboarding.toml \
     --geometry layer -o out/x.skeleton.json          # geometry: age | layer
 uv run substrate render out/x.skeleton.json out/x.substrate.json -o out/x.cutaway.svg --html out/x.cutaway.html
-uv run substrate skeleton-diff out/x.before.skeleton.json out/x.skeleton.json --renames out/x.substrate.json
+uv run substrate skeleton-diff out/x.before.skeleton.json out/x.skeleton.json --renames out/x.substrate.json   # budget verdict over untouched nodes
 uv run pytest -q
 ```
 

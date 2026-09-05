@@ -81,22 +81,27 @@ def main(argv: list[str] | None = None) -> int:
         "--renames",
         type=Path,
         default=None,
-        help="substrate.json of the AFTER revision, for its renames map",
+        help="substrate.json of the AFTER revision: its renames map, and its timeline "
+        "for the set of nodes the intervening commits touched (the budget population)",
     )
     sd.add_argument("-o", "--output", type=Path, default=None)
     args = ap.parse_args(argv)
 
     if args.cmd == "skeleton-diff":
-        from .mapper.diff import skeleton_diff
+        from .mapper.diff import skeleton_diff, touched_since
 
         a = json.loads(args.before.read_text(encoding="utf-8"))
         b = json.loads(args.after.read_text(encoding="utf-8"))
-        ren = (
-            json.loads(args.renames.read_text(encoding="utf-8")).get("renames", {})
-            if args.renames
-            else {}
-        )
-        d = skeleton_diff(a, b, ren)
+        ren: dict[str, str] = {}
+        touched: set[str] | None = None
+        between: int | None = None
+        if args.renames:
+            after_sub = json.loads(args.renames.read_text(encoding="utf-8"))
+            ren = after_sub.get("renames", {})
+            ts = touched_since(after_sub, a["repo"]["head_sha"], ren)
+            if ts is not None:
+                touched, between = ts
+        d = skeleton_diff(a, b, ren, touched, between)
         text = json.dumps(d, indent=1, sort_keys=True, ensure_ascii=False, allow_nan=False) + "\n"
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -105,7 +110,10 @@ def main(argv: list[str] | None = None) -> int:
             sys.stdout.write(text)
         print(
             f"common={d['common_nodes']} born={d['born']} deleted={d['deleted']} "
-            f"feature_churn={d['feature_churn']:.3f} strata_moved={len(d['strata_moved'])} ({d['strata_moved_frac']:.3f})",
+            f"feature_churn={d['feature_churn']:.3f} strata_moved={len(d['strata_moved'])} ({d['strata_moved_frac']:.3f}) | "
+            f"untouched n={d['untouched']['n']} churn={d['untouched']['feature_churn']:.3f} "
+            f"strata={d['untouched']['strata_moved_frac']:.3f} → {d['budget']['verdict']}"
+            + (f" ({d['budget']['reason']})" if d["budget"]["reason"] else ""),
             file=sys.stderr,
         )
         return 0

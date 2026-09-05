@@ -241,6 +241,75 @@ def test_skeleton_diff_measures_churn_on_common_nodes(sub):
     assert d2["feature_churn"] > 0
 
 
+def test_skeleton_budget_is_judged_over_the_untouched_population(sub):
+    """D-018: a node the intervening commits edited may change; one they did not edit
+    that changes anyway is ripple, and ripple is what the budget counts."""
+    from repo_substrate.mapper.diff import SKELETON_BUDGET, skeleton_diff
+
+    base = load_ruleset(RULESET)
+    a = map_skeleton(sub, _all_asserted(base), base)
+    b = json.loads(json.dumps(a))
+    victim = next(f for f in b["features"] if f["diagnostic"])
+    b["features"] = [f for f in b["features"] if f is not victim]
+    loose = {**SKELETON_BUDGET, "min_untouched_n": 1}
+    # Without a touched set the verdict is untested, never a pass.
+    assert skeleton_diff(a, b)["budget"]["verdict"] == "untested"
+    assert skeleton_diff(a, b)["budget"]["reason"] == "touched_set_unavailable"
+    # The victim was edited: whole-population churn > 0, untouched churn 0, within budget.
+    d = skeleton_diff(a, b, touched={victim["node"]}, commits_between=1, budget=loose)
+    assert d["feature_churn"] > 0 and d["untouched"]["feature_churn"] == 0.0
+    assert d["touched"]["n"] == 1 and d["budget"]["verdict"] == "within_budget"
+    key = f"{victim['profile']}/{victim['feature']}"
+    assert d["per_feature"][key]["untouched_changes"] == 0
+    # The victim was not edited: the same change is ripple and counts against the budget.
+    tight = {**loose, "feature_churn_max": 0.0}
+    d2 = skeleton_diff(a, b, touched=set(), commits_between=1, budget=tight)
+    assert d2["untouched"]["feature_churn"] > 0 and d2["budget"]["verdict"] == "over_budget"
+    assert d2["per_feature"][key]["untouched_changes"] == 1
+
+
+def test_skeleton_budget_floors_refuse_to_get_easier(sub):
+    from repo_substrate.mapper.diff import SKELETON_BUDGET, skeleton_diff
+
+    base = load_ruleset(RULESET)
+    a = map_skeleton(sub, _all_asserted(base), base)
+    nodes = list(a["strata"]["by_node"])
+    small = skeleton_diff(
+        a,
+        a,
+        touched=set(),
+        commits_between=1,
+        budget={**SKELETON_BUDGET, "min_untouched_n": len(nodes) + 1},
+    )
+    assert small["budget"]["verdict"] == "untested"
+    assert small["budget"]["reason"] == "insufficient_untouched_population"
+    # Touching most of the repo shrinks the population the budget is judged on; refuse.
+    wide = skeleton_diff(
+        a,
+        a,
+        touched=set(nodes[: len(nodes) * 3 // 4]),
+        commits_between=1,
+        budget={**SKELETON_BUDGET, "min_untouched_n": 1},
+    )
+    assert wide["budget"]["verdict"] == "untested"
+    assert wide["budget"]["reason"] == "touched_fraction_exceeds_floor"
+
+
+def test_touched_since_reads_the_after_timeline_through_renames():
+    from repo_substrate.mapper.diff import touched_since
+
+    sub = {
+        "timeline": [
+            {"sha": "aaa", "nodes_touched": ["x.js"]},
+            {"sha": "bbb", "nodes_touched": ["old.js", "y.js"]},
+            {"sha": "ccc", "nodes_touched": []},
+        ]
+    }
+    assert touched_since(sub, "aaa", {"old.js": "new.ts"}) == ({"new.ts", "y.js"}, 2)
+    assert touched_since(sub, "ccc") == (set(), 0)
+    assert touched_since(sub, "zzz") is None
+
+
 def test_html_wrapper_has_overlay_toggles(sub):
     from repo_substrate.cutaway import render_html
 

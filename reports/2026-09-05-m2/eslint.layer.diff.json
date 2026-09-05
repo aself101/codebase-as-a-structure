@@ -1,0 +1,148 @@
+{
+ "after": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "3f20a57c6293371b6193d3fb6746c2b7b2ac2689",
+   "name": "eslint"
+  },
+  "skeleton_hash": "1f1cdedc7e8d2413a0500904e987c4c1029fc82742273154126d61293f40fece"
+ },
+ "before": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+   "name": "eslint"
+  },
+  "skeleton_hash": "c1e7eb11e5f01580295e4fc4ec9be7dfff6f06e97bf9cecc9499b385ece613a4"
+ },
+ "born": 1,
+ "budget": {
+  "feature_churn_max": 0.05,
+  "max_touched_frac": 0.5,
+  "min_untouched_n": 30,
+  "reason": null,
+  "strata_moved_max": 0.05,
+  "verdict": "within_budget"
+ },
+ "commits_between": 5,
+ "common_nodes": 472,
+ "deleted": 0,
+ "feature_churn": 0.017957351290684626,
+ "per_feature": {
+  "maintainability/dark_room": {
+   "added": [],
+   "after": 83,
+   "before": 83,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/flooded_basement": {
+   "added": [],
+   "after": 48,
+   "before": 48,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/foundation": {
+   "added": [
+    "lib/cli-engine/lint-result-cache.js"
+   ],
+   "after": 48,
+   "before": 48,
+   "jaccard": 0.9591836734693877,
+   "removed": [
+    "lib/api.js"
+   ],
+   "untouched_changes": 1
+  },
+  "maintainability/hub": {
+   "added": [],
+   "after": 50,
+   "before": 50,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/lit_room": {
+   "added": [
+    "lib/cli-engine/lint-result-cache.js",
+    "lib/cli.js",
+    "lib/eslint/eslint-helpers.js",
+    "lib/linter/code-path-analysis/code-path-analyzer.js",
+    "lib/linter/linter.js"
+   ],
+   "after": 47,
+   "before": 48,
+   "jaccard": 0.7924528301886793,
+   "removed": [
+    "lib/rules/class-methods-use-this.js",
+    "lib/rules/eqeqeq.js",
+    "lib/rules/max-nested-callbacks.js",
+    "lib/rules/preserve-caught-error.js",
+    "lib/shared/serialization.js",
+    "tools/config-rule.js"
+   ],
+   "untouched_changes": 6
+  },
+  "maintainability/scaffolding": {
+   "added": [
+    "lib/cli-engine/lint-result-cache.js"
+   ],
+   "after": 370,
+   "before": 369,
+   "jaccard": 0.9972972972972973,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/corridor": {
+   "added": [],
+   "after": 22,
+   "before": 22,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/entrance": {
+   "added": [],
+   "after": 19,
+   "before": 19,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/foundation": {
+   "added": [
+    "lib/cli-engine/lint-result-cache.js"
+   ],
+   "after": 48,
+   "before": 48,
+   "jaccard": 0.9591836734693877,
+   "removed": [
+    "lib/api.js"
+   ],
+   "untouched_changes": 1
+  },
+  "onboarding/leaf_utility": {
+   "added": [],
+   "after": 148,
+   "before": 148,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  }
+ },
+ "strata_moved": [],
+ "strata_moved_frac": 0.0,
+ "touched": {
+  "frac": 0.0211864406779661,
+  "n": 10
+ },
+ "untouched": {
+  "feature_churn": 0.009345794392523364,
+  "n": 462,
+  "strata_moved": [],
+  "strata_moved_frac": 0.0
+ }
+}
