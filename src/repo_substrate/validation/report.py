@@ -122,4 +122,48 @@ def render_holdout_report(doc: dict[str, Any]) -> str:
     out.append("")
     out.append("## 5. Cross-source corroboration (§3A)\n")
     out.append("- Not run in M1 (D-005): §3A is built after the holdout leaves a `validated` signal to corroborate.\n")
+
+    out.append("## 6. Recognition record (§2.4.3, D-010) — sealed rankings, n = 1, never gating\n")
+    any_rec = False
+    for r in doc["reference_repos"]:
+        ref = (r.get("asserted") or {}).get("recognition_ref")
+        if not ref:
+            continue
+        any_rec = True
+        out.append(f"### `{r['name']}` — `{ref}`\n")
+        try:
+            from pathlib import Path
+
+            text = Path(ref).read_text()
+        except OSError:
+            out.append("_(file not readable at report time)_\n")
+            continue
+        prov = [ln for ln in text.splitlines() if ln.startswith("*Provenance")]
+        if prov:
+            out.append(prov[0] + "\n")
+        # recognition numbers per signal
+        rows = []
+        for name, s in sig.items():
+            for pr in (s.get("holdout", {}).get("per_repo") if s["kind"] == "predictive" else s.get("grounding", {}).get("per_repo")) or []:
+                if pr.get("name") == r["name"] and pr.get("recognition"):
+                    rec = pr["recognition"]
+                    rows.append(f"| `{name}` | list {rec.get('list')} | {rec.get('ranked')} | {_f(rec.get('overlap_at_k'),2)} | "
+                                f"{_f(rec.get('tau_b_on_ranked'),2)} | {', '.join(f'`{m}`' for m in (rec.get('missing') or [])[:6]) or '–'} |")
+        if rows:
+            out.append("| signal | source | ranked & present | overlap@10 | τ-b on ranked | items not in substrate |")
+            out.append("|---|---|---:|---:|---:|---|")
+            out.extend(rows)
+            out.append("")
+        # quote the pre-registered predictions verbatim
+        for header in ("## 5.", "## 6."):
+            start = text.find(header)
+            if start < 0:
+                continue
+            end = text.find("\n## ", start + 1)
+            block = text[start:end if end > 0 else None].strip()
+            lines = [ln for ln in block.splitlines() if not ln.startswith("*\"") and not ln.startswith("*Optional")]
+            out.append("> " + "\n> ".join(lines))
+            out.append("")
+    if not any_rec:
+        out.append("- no sealed rankings found for these repos\n")
     return "\n".join(out)

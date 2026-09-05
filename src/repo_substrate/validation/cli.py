@@ -36,12 +36,36 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--scratch", type=Path, default=None)
     run.add_argument("--no-deps", action="store_true")
     run.add_argument("--blame-workers", type=int, default=8)
+    tn = sub.add_parser("tune", help="pre-registered weight tuning on the tuning repos only (D-009)")
+    tn.add_argument("--repo", type=Path, action="append", required=True, help="tuning repos ONLY")
+    tn.add_argument("--out", type=Path, required=True, help="directory for tuning.json + tuned.toml")
+    tn.add_argument("--config", type=Path, default=None)
+    tn.add_argument("--vconfig", type=Path, default=None)
+    tn.add_argument("--cache", type=Path, default=Path("out/cache"))
+    tn.add_argument("--scratch", type=Path, default=None)
+    tn.add_argument("--no-deps", action="store_true")
+    tn.add_argument("--blame-workers", type=int, default=8)
     args = ap.parse_args(argv)
 
     cfg = SubstrateConfig.load(args.config)
     vcfg = ValidationConfig.load(args.vconfig)
     extractor = None if args.no_deps else DependencyCruiserExtractor(TOOLS_DIR)
     cache = SubstrateCache(args.cache, cfg, extractor, args.scratch, args.blame_workers)
+
+    if args.cmd == "tune":
+        from .tune import tune, write_tuned_toml
+
+        result = tune([r.resolve() for r in args.repo], cache, vcfg, cfg)
+        args.out.mkdir(parents=True, exist_ok=True)
+        (args.out / "tuning.json").write_text(json.dumps(result, indent=1, sort_keys=True) + "\n")
+        write_tuned_toml(result, cfg, args.out / "tuned.toml")
+        for name, r in result["indices"].items():
+            print(f"{name}: chosen={r['chosen']} min_delta_roc={r['chosen_objective']['min_delta_roc']:+.3f} "
+                  f"min_pr_ratio={r['chosen_objective']['min_pr_ratio']:.2f}", file=sys.stderr)
+            for p in r["chosen_per_repo"]:
+                print(f"    {p['name']}: delta_roc={p['delta_roc']:+.3f} pr_ratio={p['pr_ratio']:.2f}", file=sys.stderr)
+            print(f"  spec placeholder: {[(p['name'], round(p['delta_roc'],3), round(p['pr_ratio'],2)) for p in r['spec_placeholder_per_repo']]}", file=sys.stderr)
+        return 0
 
     holdouts, asserted, refs = [], [], []
     for repo in args.repo:
