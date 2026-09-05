@@ -372,6 +372,11 @@ def render_page(m: dict[str, Any], out_dir: Path) -> str:
         if f["status"] != "mapped":
             continue
         svg = (out_dir / f"{f['stem']}.cutaway.svg").read_text(encoding="utf-8")
+        change = (
+            (out_dir / f"{f['change_stem']}.change.svg").read_text(encoding="utf-8")
+            if f.get("change_stem")
+            else ""
+        )
         d = f.get("diff")
         cap = f"frame {f['index']} · {escape(f['sha'][:8])} · {escape(f['as_of'][:10])} · {f['commit_count']} commits · {f['population']} rooms"
         if d:
@@ -381,7 +386,11 @@ def render_page(m: dict[str, Any], out_dir: Path) -> str:
                 + (f" ({escape(d['budget_reason'])})" if d["budget_reason"] else "")
             )
         captions.append(cap)
-        frames_html.append(f'<div class="frame" hidden>{svg}</div>')
+        frames_html.append(
+            f'<div class="frame" hidden><div class="cut">{svg}</div>'
+            + (f'<div class="chg" hidden>{change}</div>' if change else "")
+            + "</div>"
+        )
     toggles = "".join(
         f'<label><input type="checkbox" checked data-target="overlay-{i}"> {escape(o["profile"])} overlay</label>'
         for i, o in enumerate(m["overlays"])
@@ -395,10 +404,11 @@ body{{margin:0;background:#e9e6df;color:#26221d;font-family:ui-monospace,Menlo,m
 .bar{{position:sticky;top:0;background:#faf8f3;border-bottom:1px solid #c9c2b4;padding:8px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}}
 .bar b{{font-weight:600}} label{{cursor:pointer}} button{{font:inherit}} input[type=range]{{width:min(420px,50vw)}}
 .cap{{padding:6px 16px;color:#4a443b;background:#f3f0e9;border-bottom:1px solid #d8d2c5}}
-.sheet{{overflow-x:auto;padding:8px}} .frame[hidden]{{display:none}}
+.sheet{{overflow-x:auto;padding:8px}} .frame[hidden],.cut[hidden],.chg[hidden]{{display:none}}
 </style></head><body>
 <div class="bar"><b>{name}</b> <span>time-lapse · {n} frames · geometry {escape(m["geometry"])}</span>
 <button id="prev">◀</button><input id="scrub" type="range" min="0" max="{max(n - 1, 0)}" value="{max(n - 1, 0)}"><button id="next">▶</button>
+<label><input type="radio" name="mode" value="cutaway" checked> cutaway</label><label><input type="radio" name="mode" value="change"> change sheet (since previous frame, D-023)</label>
 <span>base profile: {escape(m["ruleset"]["profile"])} (always on)</span>{toggles}</div>
 <div class="cap" id="cap"></div>
 <div class="sheet">{"".join(frames_html)}</div>
@@ -406,8 +416,12 @@ body{{margin:0;background:#e9e6df;color:#26221d;font-family:ui-monospace,Menlo,m
 const caps = {caps_json};
 const frames = Array.from(document.querySelectorAll('.frame'));
 const scrub = document.getElementById('scrub');
+function mode() {{ return document.querySelector('input[name=mode]:checked').value; }}
 function show(i) {{ i = Math.max(0, Math.min(frames.length - 1, i)); frames.forEach((f, j) => f.hidden = j !== i);
-  scrub.value = i; document.getElementById('cap').textContent = caps[i] || ''; }}
+  const f = frames[i], chg = f.querySelector('.chg'), cut = f.querySelector('.cut');
+  const useChange = mode() === 'change' && chg; if (chg) chg.hidden = !useChange; cut.hidden = !!useChange;
+  scrub.value = i; document.getElementById('cap').textContent = (caps[i] || '') + (mode() === 'change' && !chg ? ' · no previous frame: cutaway shown' : ''); }}
+document.querySelectorAll('input[name=mode]').forEach(r => r.addEventListener('change', () => show(+scrub.value)));
 scrub.addEventListener('input', () => show(+scrub.value));
 document.getElementById('prev').addEventListener('click', () => show(+scrub.value - 1));
 document.getElementById('next').addEventListener('click', () => show(+scrub.value + 1));

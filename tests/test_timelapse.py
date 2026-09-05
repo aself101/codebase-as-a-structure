@@ -88,6 +88,7 @@ def test_timelapse_on_scripted_repo(scripted_repo, small_cfg, tmp_path):
     assert manifest["gate"]["substrate_config_fingerprint"] == cache.fingerprint
     page = (out / "timelapse.html").read_text(encoding="utf-8")
     assert page.count('class="frame"') == len(mapped) and 'data-target="overlay-0"' in page
+    assert page.count('class="chg"') == len(mapped) - 1 and 'name="mode"' in page
     report = (out / "timelapse.md").read_text(encoding="utf-8")
     assert "Decomposition of movement" in report and "HEAD's gate governs every frame" in report
 
