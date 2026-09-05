@@ -36,6 +36,15 @@ SKELETON_BUDGET: dict[str, float | int] = {
 }
 
 
+def canonicalize(path: str, renames: dict[str, str]) -> str:
+    """Chase a name through the renames map to the name current at the AFTER revision."""
+    seen: set[str] = set()
+    while path in renames and path not in seen:
+        seen.add(path)
+        path = renames[path]
+    return path
+
+
 def touched_since(
     substrate: dict[str, Any], before_sha: str, renames: dict[str, str] | None = None
 ) -> tuple[set[str], int] | None:
@@ -186,7 +195,7 @@ def skeleton_diff(
         "strata_moved_frac": (len(strata_moved) / len(common)) if common else 0.0,
         "per_feature": per_feature,
         "commits_between": commits_between,
-        "touched": {"n": len(touched), "frac": touched_frac},
+        "touched": {"n": len(touched), "frac": touched_frac, "nodes": sorted(touched)},
         "untouched": {
             "n": len(untouched),
             "feature_churn": u_churn,

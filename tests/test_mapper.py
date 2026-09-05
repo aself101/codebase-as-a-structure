@@ -334,3 +334,29 @@ def test_html_wrapper_has_overlay_toggles(sub):
         and 'id="overlay-0"' in page
         and "onboarding overlay" in page
     )
+
+
+def test_change_sheet_marks_rooms_by_what_happened(sub):
+    """D-023: the change sheet shares the after layout and classifies each room."""
+    from repo_substrate.cutaway import render_change_sheet
+    from repo_substrate.mapper.diff import skeleton_diff
+    from repo_substrate.timelapse import feature_kinds
+
+    base = load_ruleset(RULESET)
+    a = map_skeleton(sub, _all_asserted(base), base)
+    b = json.loads(json.dumps(a))
+    kinds = feature_kinds(base, ())
+    victim = next(f for f in b["features"] if f["diagnostic"])
+    expected = kinds[f"{victim['profile']}/{victim['feature']}"]  # clock or rank
+    b["features"] = [f for f in b["features"] if f is not victim]
+    # untouched → the lost feature is ripple, of the feature's kind
+    d = skeleton_diff(a, b, touched=set(), commits_between=1)
+    svg = render_change_sheet(a, b, sub, d, kinds, sub)
+    assert svg.startswith("<svg") and "change sheet" in svg
+    assert f'data-change="{expected}"><title>{victim["node"]}' in svg.replace("\n", " ")
+    assert svg.count('data-change="unchanged"') == len(a["strata"]["by_node"]) - 1
+    # touched → the same change is an edit
+    d2 = skeleton_diff(a, b, touched={victim["node"]}, commits_between=1)
+    svg2 = render_change_sheet(a, b, sub, d2, kinds, sub)
+    assert f'data-change="edit"><title>{victim["node"]}' in svg2.replace("\n", " ")
+    assert render_change_sheet(a, b, sub, d2, kinds, sub) == svg2

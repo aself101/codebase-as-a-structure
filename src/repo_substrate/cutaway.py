@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import math
 from collections import defaultdict
+from dataclasses import dataclass
 from typing import Any
 from xml.sax.saxutils import escape
 
@@ -56,23 +57,26 @@ def _strata_caption(skeleton: dict[str, Any]) -> str:
     return "strata = age_days percentile bands, oldest at the bottom"
 
 
-def render_cutaway(skeleton: dict[str, Any], substrate: dict[str, Any]) -> str:
+@dataclass
+class _Layout:
+    """Wings (columns) × strata (rows); rooms packed left→right within a band. A pure
+    function of the skeleton's strata and the substrate's sizes, so the change sheet
+    (D-023) can share the after-frame's layout and keep every room in place."""
+
+    nodes: dict[str, dict[str, Any]]
+    strata_by_node: dict[str, int]
+    wing_names: list[str]
+    band_rows: dict[tuple[str, int], list[list[str]]]
+    wing_w: dict[str, int]
+    band_h: list[int]
+    total_w: int
+
+
+def _layout(skeleton: dict[str, Any], substrate: dict[str, Any]) -> _Layout:
     wing_depth = int((skeleton.get("geometry") or {}).get("wing_depth", 1))
     nodes = {n["id"]: n for n in substrate["nodes"]}
     strata_by_node: dict[str, int] = skeleton["strata"]["by_node"]
-    base_feats: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    for f in skeleton["features"]:
-        base_feats[f["node"]].append(f)
-    overlays = skeleton.get("overlays") or []
-    overlay_feats: list[dict[str, list[dict[str, Any]]]] = []
-    for od in overlays:
-        d: dict[str, list[dict[str, Any]]] = defaultdict(list)
-        for f in od["features"]:
-            d[f["node"]].append(f)
-        overlay_feats.append(d)
     population = sorted(strata_by_node)
-
-    # --- layout: wings (columns) × strata (rows); rooms packed left→right within a band
     wings: dict[str, list[str]] = defaultdict(list)
     for nid in population:
         wings[_wing_of(nid, wing_depth)].append(nid)
@@ -107,6 +111,29 @@ def render_cutaway(skeleton: dict[str, Any], substrate: dict[str, Any]) -> str:
         for b in range(STRATA)
     ]
     total_w = max(MIN_W, MARGIN * 2 + sum(wing_w[w] + WING_GAP for w in wing_names))
+    return _Layout(nodes, strata_by_node, wing_names, band_rows, wing_w, band_h, total_w)
+
+
+def render_cutaway(skeleton: dict[str, Any], substrate: dict[str, Any]) -> str:
+    base_feats: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for f in skeleton["features"]:
+        base_feats[f["node"]].append(f)
+    overlays = skeleton.get("overlays") or []
+    overlay_feats: list[dict[str, list[dict[str, Any]]]] = []
+    for od in overlays:
+        d: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        for f in od["features"]:
+            d[f["node"]].append(f)
+        overlay_feats.append(d)
+    L = _layout(skeleton, substrate)
+    nodes = L.nodes
+    wing_names, band_rows, wing_w, band_h, total_w = (
+        L.wing_names,
+        L.band_rows,
+        L.wing_w,
+        L.band_h,
+        L.total_w,
+    )
     header_h = 140 + (18 if overlays else 0)
     total_h = header_h + sum(band_h) + MARGIN + 30
 
@@ -272,6 +299,168 @@ def render_cutaway(skeleton: dict[str, Any], substrate: dict[str, Any]) -> str:
         )
         line += f"   ·   {od['profile']}: {oc}"
     out.append(f'<text x="{MARGIN}" y="{fy}" fill="#333">{escape(line)}</text>')
+    out.append("</svg>")
+    return "\n".join(out)
+
+
+# --- the change sheet (D-023): one drawing per transition, rooms marked by what happened
+CHANGE_STYLE: dict[str, str] = {
+    "unchanged": "fill:#f4f1ea;stroke:#d5cfc2;stroke-width:1",
+    "born": "fill:#bcd3e6;stroke:#4f7ea8;stroke-width:1.5",
+    "edit": "fill:#a9aeb6;stroke:#6b717b;stroke-width:1",
+    "clock": "fill:#efd28a;stroke:#c58b1e;stroke-width:1",
+    "rank": "fill:#eba39c;stroke:#c8322b;stroke-width:1.5",
+    "demolished": "fill:none;stroke:#8c8577;stroke-width:1;stroke-dasharray:3 2",
+}
+CHANGE_ORDER = ["born", "edit", "clock", "rank", "unchanged", "demolished"]
+
+
+def render_change_sheet(
+    before: dict[str, Any],
+    after: dict[str, Any],
+    substrate_after: dict[str, Any],
+    diff: dict[str, Any],
+    kinds: dict[str, str],
+    substrate_before: dict[str, Any] | None = None,
+) -> str:
+    """The transition `before → after` as one drawing on the after-frame's layout (so the
+    room a reader is looking at stays where the cutaway put it). Each room is marked by
+    what happened to it: born; edit (a commit touched it and a feature or its floor
+    changed); clock (untouched, moved through a clock-relative feature or the age band —
+    time reported); rank (untouched, the percentile or dependency layer moved beneath it —
+    jitter); unchanged (ghost). Rooms deleted between the frames are drawn dashed in a
+    demolished strip under each wing. `diff` is `skeleton_diff`'s output with
+    `touched.nodes`; `kinds` is `timelapse.feature_kinds`."""
+    from .mapper.diff import canonicalize
+
+    renames = substrate_after.get("renames", {})
+    a_by_node = {canonicalize(n, renames): b for n, b in before["strata"]["by_node"].items()}
+    b_by_node = after["strata"]["by_node"]
+    common = set(a_by_node) & set(b_by_node)
+    touched = set(diff["touched"].get("nodes") or [])
+    geometry = after["geometry"]["name"]
+    changes: dict[str, list[str]] = defaultdict(list)
+    kind_of: dict[str, set[str]] = defaultdict(set)
+    for key, v in diff["per_feature"].items():
+        for n in v["added"]:
+            changes[n].append(f"+{key}")
+            kind_of[n].add(kinds.get(key, "rank"))
+        for n in v["removed"]:
+            changes[n].append(f"−{key}")
+            kind_of[n].add(kinds.get(key, "rank"))
+    for n in diff["strata_moved"]:
+        changes[n].append(f"floor {a_by_node.get(n)}→{b_by_node.get(n)}")
+        kind_of[n].add("clock" if geometry == "age" else "rank")
+
+    def classify(n: str) -> str:
+        if n not in common:
+            return "born"
+        if n not in changes:
+            return "unchanged"
+        if n in touched:
+            return "edit"
+        return "rank" if "rank" in kind_of[n] else "clock"
+
+    L = _layout(after, substrate_after)
+    counts = {k: 0 for k in CHANGE_ORDER}
+    cls_of = {n: classify(n) for n in L.strata_by_node}
+    for n, k in cls_of.items():
+        counts[k] += 1
+    deleted = sorted(set(a_by_node) - set(b_by_node))
+    counts["demolished"] = len(deleted)
+    wing_depth = int((after.get("geometry") or {}).get("wing_depth", 1))
+    demolished: dict[str, list[str]] = defaultdict(list)
+    for n in deleted:
+        demolished[_wing_of(n, wing_depth)].append(n)
+    before_nodes = {n["id"]: n for n in substrate_before["nodes"]} if substrate_before else {}
+
+    header_h = 150
+    strip_h = ROOM_H + ROOM_GAP * 2 + 16
+    total_h = header_h + sum(L.band_h) + strip_h + MARGIN + 30
+    total_w = L.total_w
+    ra, rb = before["repo"], after["repo"]
+    bud = diff["budget"]
+    out: list[str] = []
+    out.append(
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{total_w}" height="{total_h}" '
+        f'viewBox="0 0 {total_w} {total_h}" font-family="ui-monospace, Menlo, monospace" font-size="11">'
+    )
+    out.append(f'<rect width="{total_w}" height="{total_h}" fill="#faf8f3"/>')
+    out.append(
+        f'<text x="{MARGIN}" y="26" font-size="16" font-weight="bold">{escape(rb["name"])} — change sheet, '
+        f"{escape(ra['head_sha'][:10])} → {escape(rb['head_sha'][:10])} · {diff['commits_between']} commits</text>"
+    )
+    verdict = bud["verdict"].replace("_", " ") + (
+        f" ({bud['reason']})" if bud.get("reason") else ""
+    )
+    out.append(
+        f'<text x="{MARGIN}" y="46">born {counts["born"]} · demolished {counts["demolished"]} · edited {counts["edit"]} · '
+        f'<tspan fill="#c58b1e">clock {counts["clock"]}</tspan> · <tspan fill="#c8322b" font-weight="bold">rank {counts["rank"]}</tspan> · '
+        f"unchanged {counts['unchanged']} · common {diff['common_nodes']} · touched {diff['touched']['n']} · "
+        f"budget (D-018, over the untouched population): {escape(verdict)}</text>"
+    )
+    out.append(
+        f'<text x="{MARGIN}" y="64" fill="#555">a room is marked by what happened to it between the two frames — edit: a commit touched it and a feature or its floor changed · '
+        "clock: untouched, moved through a clock-relative feature or the age band (time reported) · rank: untouched, the percentile or dependency layer moved beneath it (jitter)</text>"
+    )
+    out.append(
+        f'<text x="{MARGIN}" y="82" fill="#555">layout = the after frame\'s cutaway (same wings, same floors, same room positions) · '
+        f"skeletons {escape(before['skeleton_hash'][:12])}… → {escape(after['skeleton_hash'][:12])}… · geometry {escape(geometry)}</text>"
+    )
+    lx, ly = MARGIN, 112
+    for k in CHANGE_ORDER:
+        out.append(
+            f'<rect x="{lx}" y="{ly - 10}" width="14" height="10" style="{CHANGE_STYLE[k]}"/>'
+        )
+        label = f"{k} ×{counts[k]}"
+        out.append(f'<text x="{lx + 18}" y="{ly - 1}" fill="#333">{escape(label)}</text>')
+        lx += 18 + 7 * len(label) + 16
+    # --- the building, on the after layout
+    x = MARGIN
+    y_top = header_h + 6
+    rooms: list[str] = []
+    for w in L.wing_names:
+        rooms.append(
+            f'<text x="{x}" y="{y_top - 2}" font-weight="bold" fill="#333">{escape(w)}</text>'
+        )
+        y = y_top + sum(L.band_h[b] for b in range(STRATA)) - BAND_GAP
+        for band in range(STRATA):
+            yb = y
+            for row in L.band_rows[(w, band)]:
+                rx = x
+                for nid in row:
+                    m = L.nodes[nid]["metrics"]
+                    rw = _room_w(m["size_loc"])
+                    k = cls_of[nid]
+                    detail = ", ".join(changes.get(nid, [])) or "no change"
+                    title = f"{nid}\n{k}" + (" (touched)" if nid in touched else "") + f"\n{detail}"
+                    rooms.append(
+                        f'<rect x="{rx}" y="{yb - ROOM_H}" width="{rw}" height="{ROOM_H}" style="{CHANGE_STYLE[k]}" data-change="{k}"><title>{escape(title)}</title></rect>'
+                    )
+                    rx += rw + ROOM_GAP
+                yb -= ROOM_H + ROOM_GAP
+            rooms.append(
+                f'<line x1="{x - 4}" y1="{y + 2}" x2="{x + L.wing_w[w]}" y2="{y + 2}" stroke="#bbb" stroke-dasharray="2 4"/>'
+            )
+            y -= L.band_h[band]
+        # demolished strip under the wing
+        sy = y_top + sum(L.band_h) + 14
+        gone = demolished.get(w, [])
+        rooms.append(f'<text x="{x}" y="{sy - 3}" fill="#8c8577">demolished ×{len(gone)}</text>')
+        rx = x
+        for nid in gone:
+            bn = before_nodes.get(nid)
+            rw = _room_w(bn["metrics"]["size_loc"]) if bn else 14
+            if rx + rw > x + L.wing_w[w] + WING_GAP - 4:
+                break  # the strip is one row; the count above is exact
+            rooms.append(
+                f'<rect x="{rx}" y="{sy}" width="{rw}" height="{ROOM_H}" style="{CHANGE_STYLE["demolished"]}" data-change="demolished"><title>{escape(nid)}\ndemolished</title></rect>'
+            )
+            rx += rw + ROOM_GAP
+        x += L.wing_w[w] + WING_GAP
+    out.append('<g id="change">')
+    out.extend(rooms)
+    out.append("</g>")
     out.append("</svg>")
     return "\n".join(out)
 

@@ -64,6 +64,7 @@ def test_timelapse_on_scripted_repo(scripted_repo, small_cfg, tmp_path):
             "untested",
         )
         assert (out / f"{f['stem']}.diff.json").exists()
+        assert f["change_stem"] == f["stem"] and (out / f"{f['stem']}.change.svg").exists()
     for f in mapped:
         assert (out / f"{f['stem']}.skeleton.json").exists()
         assert (out / f"{f['stem']}.cutaway.svg").read_text(encoding="utf-8").startswith("<svg")

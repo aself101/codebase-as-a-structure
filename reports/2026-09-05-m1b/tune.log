@@ -1,0 +1,8 @@
+bug_pressure_index: chosen={'commit_count': 0.5, 'recency': 0.2, 'revert_count': 0.3} min_delta_roc=+0.014 min_pr_ratio=1.00
+    uluops-registry-api: delta_roc=+0.025 pr_ratio=1.00
+    eslint: delta_roc=+0.014 pr_ratio=1.07
+  spec placeholder: [('uluops-registry-api', -0.041, 0.85), ('eslint', -0.119, 0.75)]
+change_pressure_index: chosen={'churn_lines': 0.5, 'commit_count': 0.2, 'recency': 0.3} min_delta_roc=+0.030 min_pr_ratio=1.00
+    uluops-registry-api: delta_roc=+0.052 pr_ratio=1.00
+    eslint: delta_roc=+0.030 pr_ratio=1.14
+  spec placeholder: [('uluops-registry-api', 0.052, 1.0), ('eslint', 0.03, 1.14)]

@@ -14,7 +14,7 @@ from html import escape
 from pathlib import Path
 from typing import Any
 
-from .cutaway import render_cutaway
+from .cutaway import render_change_sheet, render_cutaway
 from .gitutil import run_git
 from .mapper import Ruleset, map_skeleton
 from .mapper.diff import skeleton_diff, touched_between
@@ -190,6 +190,10 @@ def run_timelapse(
                 encoding="utf-8",
             )
             frame["diff"] = _diff_summary(d, kinds, geometry)
+            (out_dir / f"{stem}.change.svg").write_text(
+                render_change_sheet(pskel, skel, sub, d, kinds, psub), encoding="utf-8"
+            )
+            frame["change_stem"] = stem
         frames.append(frame)
         prev = (sub, skel)
         if log:

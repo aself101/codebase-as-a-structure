@@ -2,7 +2,7 @@
 
 *A single git repository rendered as a building you can read. The picture is diagnostic, not decorative: every visual feature is a function of a measured signal, and a feature may not render unless its signal has earned it.*
 
-**Package:** `repo-substrate` (C1 + the validation gate). **Status (2026-09-04):** M1 complete (D-015). The substrate and the gate are built, reviewed by six lenses, hardened, and run: both predictive indices are `unvalidated` on the pre-registered test set; twenty-one descriptive signals are `asserted`. **M2 complete (2026-09-05, D-020):** C3 applies `rulesets/maintainability.toml` (+ `onboarding.toml` as an overlay) under the gate, the cutaway renders it in two geometries, `skeleton-diff` measures churn against a pinned budget (D-018), and no archetype is claimed (D-019); pictures and readings in `reports/2026-09-05-m2/`. **Phase 1 first reading (2026-09-05, D-021):** `substrate timelapse` replays a repository at twelve trunk checkpoints under HEAD's gate; across the reference set, rank jitter is 2–15% of movement, the rest edits, time, and births (`reports/2026-09-05-phase1/`).
+**Package:** `repo-substrate` (C1 + the validation gate). **Status (2026-09-04):** M1 complete (D-015). The substrate and the gate are built, reviewed by six lenses, hardened, and run: both predictive indices are `unvalidated` on the pre-registered test set; twenty-one descriptive signals are `asserted`. **M2 complete (2026-09-05, D-020):** C3 applies `rulesets/maintainability.toml` (+ `onboarding.toml` as an overlay) under the gate, the cutaway renders it in two geometries, `skeleton-diff` measures churn against a pinned budget (D-018), and no archetype is claimed (D-019); pictures and readings in `reports/2026-09-05-m2/`. **Phase 1 (2026-09-05, D-021–D-023):** `substrate timelapse` replays a repository at trunk checkpoints under HEAD's gate and draws a change sheet per transition; across the reference set, rank jitter is a few percent of movement, the rest edits, time, and births. The time-lapse found an integer-day tie artefact in the substrate's age signals (D-022); age and recency are now fractional days (substrate 0.3.0) and the gate was re-run with the same verdicts (`reports/2026-09-05-m1b/`).
 
 ## What is new here, exactly
 
@@ -26,7 +26,7 @@ That claim is defensible only insofar as the gate can fail and the report shows 
 | `blind/` | Sealed recognition rankings per reference repo (n = 1, non-gating, provenance stated in-file) |
 | `src/repo_substrate/` | The package: `substrate extract \| map \| render` and `substrate-validate run \| tune` |
 | `rulesets/` | C3 rulesets (TOML): maintainability v0.1.0 (base) and onboarding v0.1.0 (overlay) |
-| `tests/` | 90 tests incl. a scripted synthetic repository, verdict-path tests, and integrity checks |
+| `tests/` | 92 tests incl. a scripted synthetic repository, verdict-path tests, and integrity checks |
 | `docs/` | Review history: the June tribunal, the archived prototype, notes |
 
 ## Running it

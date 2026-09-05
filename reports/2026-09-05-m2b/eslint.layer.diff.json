@@ -1,0 +1,160 @@
+{
+ "after": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "3f20a57c6293371b6193d3fb6746c2b7b2ac2689",
+   "name": "eslint"
+  },
+  "skeleton_hash": "b8722131e7ec9d953271500a48f14057a135ef42882a2fc397650627f86e3d3f"
+ },
+ "before": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "9d8153223dbf47b9aecdc1474202aaee4845f146",
+   "name": "eslint"
+  },
+  "skeleton_hash": "fcd381587d51fd1a882de7e128a43f21728f67eff77b27a29216cfc5839545ba"
+ },
+ "born": 1,
+ "budget": {
+  "feature_churn_max": 0.05,
+  "max_touched_frac": 0.5,
+  "min_untouched_n": 30,
+  "reason": null,
+  "strata_moved_max": 0.05,
+  "verdict": "within_budget"
+ },
+ "commits_between": 5,
+ "common_nodes": 472,
+ "deleted": 0,
+ "feature_churn": 0.017957351290684626,
+ "per_feature": {
+  "maintainability/dark_room": {
+   "added": [],
+   "after": 83,
+   "before": 83,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/flooded_basement": {
+   "added": [],
+   "after": 48,
+   "before": 48,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/foundation": {
+   "added": [
+    "lib/cli-engine/lint-result-cache.js"
+   ],
+   "after": 48,
+   "before": 48,
+   "jaccard": 0.9591836734693877,
+   "removed": [
+    "lib/api.js"
+   ],
+   "untouched_changes": 1
+  },
+  "maintainability/hub": {
+   "added": [],
+   "after": 50,
+   "before": 50,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/lit_room": {
+   "added": [
+    "lib/cli-engine/lint-result-cache.js",
+    "lib/cli.js",
+    "lib/eslint/eslint-helpers.js",
+    "lib/linter/code-path-analysis/code-path-analyzer.js",
+    "lib/linter/linter.js"
+   ],
+   "after": 47,
+   "before": 48,
+   "jaccard": 0.7924528301886793,
+   "removed": [
+    "lib/rules/class-methods-use-this.js",
+    "lib/rules/eqeqeq.js",
+    "lib/rules/max-nested-callbacks.js",
+    "lib/rules/preserve-caught-error.js",
+    "lib/shared/serialization.js",
+    "tools/config-rule.js"
+   ],
+   "untouched_changes": 6
+  },
+  "maintainability/scaffolding": {
+   "added": [
+    "lib/cli-engine/lint-result-cache.js"
+   ],
+   "after": 370,
+   "before": 369,
+   "jaccard": 0.9972972972972973,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/corridor": {
+   "added": [],
+   "after": 22,
+   "before": 22,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/entrance": {
+   "added": [],
+   "after": 19,
+   "before": 19,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/foundation": {
+   "added": [
+    "lib/cli-engine/lint-result-cache.js"
+   ],
+   "after": 48,
+   "before": 48,
+   "jaccard": 0.9591836734693877,
+   "removed": [
+    "lib/api.js"
+   ],
+   "untouched_changes": 1
+  },
+  "onboarding/leaf_utility": {
+   "added": [],
+   "after": 148,
+   "before": 148,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  }
+ },
+ "strata_moved": [],
+ "strata_moved_frac": 0.0,
+ "touched": {
+  "frac": 0.0211864406779661,
+  "n": 10,
+  "nodes": [
+   "eslint.config.js",
+   "lib/cli-engine/lint-result-cache.js",
+   "lib/cli.js",
+   "lib/config/config-loader.js",
+   "lib/eslint/eslint-helpers.js",
+   "lib/eslint/eslint.js",
+   "lib/linter/code-path-analysis/code-path-analyzer.js",
+   "lib/linter/code-path-analysis/debug-helpers.js",
+   "lib/linter/linter.js",
+   "tools/test-ecosystem/index.mjs"
+  ]
+ },
+ "untouched": {
+  "feature_churn": 0.009345794392523364,
+  "n": 462,
+  "strata_moved": [],
+  "strata_moved_frac": 0.0
+ }
+}

@@ -1,0 +1,126 @@
+{
+ "after": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "f7414cc7bbec62ba80068af4b045667064d1d59e",
+   "name": "uluops-registry-api"
+  },
+  "skeleton_hash": "da003390347bc362ac5f8dff8ec557df263f888dbbf2beb55f60621ec9e9de96"
+ },
+ "before": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+   "name": "uluops-registry-api"
+  },
+  "skeleton_hash": "caa06c9388d0504da8c6b5e99cd61ae4bc2d9815e6df16d84b3a36a5a3477529"
+ },
+ "born": 0,
+ "budget": {
+  "feature_churn_max": 0.05,
+  "max_touched_frac": 0.5,
+  "min_untouched_n": 30,
+  "reason": null,
+  "strata_moved_max": 0.05,
+  "verdict": "within_budget"
+ },
+ "commits_between": 5,
+ "common_nodes": 267,
+ "deleted": 0,
+ "feature_churn": 0.0,
+ "per_feature": {
+  "maintainability/dark_room": {
+   "added": [],
+   "after": 27,
+   "before": 27,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/flooded_basement": {
+   "added": [],
+   "after": 27,
+   "before": 27,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/foundation": {
+   "added": [],
+   "after": 27,
+   "before": 27,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/hub": {
+   "added": [],
+   "after": 27,
+   "before": 27,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/lit_room": {
+   "added": [],
+   "after": 40,
+   "before": 40,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/scaffolding": {
+   "added": [],
+   "after": 133,
+   "before": 133,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/corridor": {
+   "added": [],
+   "after": 13,
+   "before": 13,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/entrance": {
+   "added": [],
+   "after": 11,
+   "before": 11,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/foundation": {
+   "added": [],
+   "after": 27,
+   "before": 27,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/leaf_utility": {
+   "added": [],
+   "after": 20,
+   "before": 20,
+   "jaccard": 1.0,
+   "removed": [],
+   "untouched_changes": 0
+  }
+ },
+ "strata_moved": [],
+ "strata_moved_frac": 0.0,
+ "touched": {
+  "frac": 0.0,
+  "n": 0,
+  "nodes": []
+ },
+ "untouched": {
+  "feature_churn": 0.0,
+  "n": 267,
+  "strata_moved": [],
+  "strata_moved_frac": 0.0
+ }
+}
