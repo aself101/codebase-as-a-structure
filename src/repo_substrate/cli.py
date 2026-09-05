@@ -40,7 +40,49 @@ def main(argv: list[str] | None = None) -> int:
         "--scratch", type=Path, default=None, help="directory for the temporary worktree"
     )
     ex.add_argument("--blame-workers", type=int, default=8)
+    mp = sub.add_parser(
+        "map", help="C3: apply a ruleset under the anti-horoscope gate → skeleton.json"
+    )
+    mp.add_argument("substrate", type=Path)
+    mp.add_argument("--validation", type=Path, required=True)
+    mp.add_argument("--ruleset", type=Path, required=True)
+    mp.add_argument("-o", "--output", type=Path, required=True)
+    rd = sub.add_parser(
+        "render", help="C6: deterministic 2D cutaway SVG from skeleton.json + substrate.json"
+    )
+    rd.add_argument("skeleton", type=Path)
+    rd.add_argument("substrate", type=Path)
+    rd.add_argument("-o", "--output", type=Path, required=True)
     args = ap.parse_args(argv)
+
+    if args.cmd == "map":
+        from .mapper import load_ruleset, map_skeleton
+
+        sub_doc = json.loads(args.substrate.read_text(encoding="utf-8"))
+        val_doc = json.loads(args.validation.read_text(encoding="utf-8"))
+        rs = load_ruleset(args.ruleset)
+        skel = map_skeleton(sub_doc, val_doc, rs)
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(
+            json.dumps(skel, indent=1, sort_keys=True, ensure_ascii=False, allow_nan=False) + "\n",
+            encoding="utf-8",
+        )
+        sm = skel["summary"]
+        print(
+            f"{skel['repo']['name']}: diagnostic={sm['diagnostic_count']} decorative={sm['decorative_count']} "
+            f"degraded={sm['degraded_count']} counts={sm['feature_counts']}",
+            file=sys.stderr,
+        )
+        return 0
+    if args.cmd == "render":
+        from .cutaway import render_cutaway
+
+        skel = json.loads(args.skeleton.read_text(encoding="utf-8"))
+        sub_doc = json.loads(args.substrate.read_text(encoding="utf-8"))
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(render_cutaway(skel, sub_doc), encoding="utf-8")
+        print(f"wrote {args.output}", file=sys.stderr)
+        return 0
 
     cfg = SubstrateConfig.load(args.config)
     extractor = (

@@ -1,0 +1,1743 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1905" height="776" viewBox="0 0 1905 776" font-family="ui-monospace, Menlo, monospace" font-size="11">
+<defs><pattern id="water" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#9fc5e8"/><path d="M0 4 Q2 2 4 4 T8 4" stroke="#3d7ab8" fill="none"/></pattern><pattern id="scaffold" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="none"/><line x1="0" y1="0" x2="0" y2="8" stroke="#5c8a3a" stroke-width="2"/></pattern></defs>
+<rect width="1905" height="776" fill="#faf8f3"/>
+<text x="24" y="26" font-size="16" font-weight="bold">eslint @ 3f20a57c62 — cutaway, profile maintainability</text>
+<text x="24" y="46">diagnostic features: 648 · <tspan fill="#c2185b" font-weight="bold">decorative (ungrounded, not a diagnosis): 49</tspan> · degraded (graph): 0 · population 473 files</text>
+<text x="24" y="64" fill="#555">gate: bug_pressure_index=unvalidated, centrality=asserted, last_touched_days=asserted, load_index=asserted, neglect_index=asserted, reinforcement_index=asserted</text>
+<text x="24" y="82" fill="#555">seed a50b92780e08… · substrate fp 80b2a632f8b7… · validation fp cb320f191852… · ruleset maintainability@0.1.0 · skeleton b253a276aa9a…</text>
+<text x="24" y="100" fill="#555">strata = age_days percentile bands, oldest at the bottom · wings = top-level directory · room width ∝ √lines · material = age · every named feature denotes present structural position (validation §2.1.1)</text>
+<rect x="24" y="118" width="14" height="10" style="stroke:#2b2b2b;stroke-width:3;fill:#d9cfb8"/>
+<text x="42" y="127" fill="#333">foundation / high-load hub</text>
+<rect x="240" y="118" width="14" height="10" style="stroke:#8a4b00;stroke-width:2;fill:#d9cfb8"/>
+<text x="258" y="127" fill="#333">hub</text>
+<rect x="295" y="118" width="14" height="10" style="fill:url(#water);stroke:#888"/>
+<text x="313" y="127" fill="#333">flooded basement</text>
+<rect x="441" y="118" width="14" height="10" style="fill:url(#scaffold);stroke:#888"/>
+<text x="459" y="127" fill="#333">scaffolding</text>
+<rect x="552" y="118" width="14" height="10" style="fill:#d9cfb8;opacity:0.45;stroke:#888"/>
+<text x="570" y="127" fill="#333">dark room</text>
+<rect x="649" y="118" width="14" height="10" style="stroke:#f2c14e;stroke-width:2;fill:#d9cfb8"/>
+<text x="667" y="127" fill="#333">lit room</text>
+<rect x="739" y="118" width="14" height="10" style="stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3;fill:#d9cfb8"/>
+<text x="757" y="127" fill="#333">decorative (ungrounded)</text>
+<text x="24" y="144" font-weight="bold" fill="#333">(root)</text>
+<rect x="24" y="702" width="64" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>Makefile.js
+lines 989 · fan_in 0 · age 4663d · last touched 37d
+crack [decorative]
+lit_room</title></rect>
+<line x1="20" y1="720" x2="104" y2="720" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="20" y1="596" x2="104" y2="596" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="20" y1="472" x2="104" y2="472" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="24" y="330" width="23" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>webpack.config.js
+lines 63 · fan_in 0 · age 2754d · last touched 533d
+dark_room</title></rect>
+<line x1="20" y1="348" x2="104" y2="348" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="24" y="225" width="21" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cypress.config.js
+lines 48 · fan_in 0 · age 542d · last touched 533d
+dark_room</title></rect>
+<rect x="48" y="225" width="47" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>eslint.config.js
+lines 387 · fan_in 0 · age 1495d · last touched 0d
+crack [decorative]
+lit_room</title></rect>
+<line x1="20" y1="243" x2="104" y2="243" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="132" y="144" font-weight="bold" fill="#333">bin</text>
+<rect x="132" y="702" width="34" height="16" style="fill:#7e6f52;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>bin/eslint.js
+lines 177 · fan_in 0 · age 4814d · last touched 99d
+crack [decorative]</title></rect>
+<line x1="128" y1="720" x2="212" y2="720" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="128" y1="596" x2="212" y2="596" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="128" y1="472" x2="212" y2="472" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="128" y1="348" x2="212" y2="348" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="128" y1="243" x2="212" y2="243" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="240" y="144" font-weight="bold" fill="#333">conf</text>
+<line x1="236" y1="720" x2="320" y2="720" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="236" y1="596" x2="320" y2="596" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="236" y1="472" x2="320" y2="472" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="240" y="330" width="32" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>conf/globals.js
+lines 151 · fan_in 3 · age 1735d · last touched 163d
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<line x1="236" y1="348" x2="320" y2="348" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="240" y="225" width="15" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>conf/ecma-version.js
+lines 13 · fan_in 6 · age 968d · last touched 448d
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<line x1="236" y1="243" x2="320" y2="243" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="348" y="144" font-weight="bold" fill="#333">docs</text>
+<line x1="344" y1="720" x2="570" y2="720" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="344" y1="596" x2="570" y2="596" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="344" y1="472" x2="570" y2="472" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="344" y1="348" x2="570" y2="348" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="348" y="225" width="52" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/.eleventy.js
+lines 504 · fan_in 0 · age 1583d · last touched 140d
+no named feature</title></rect>
+<rect x="403" y="225" width="23" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>docs/_examples/custom-rule-tutorial-code/enforce-foo-bar.js
+lines 62 · fan_in 2 · age 1179d · last touched 161d
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="429" y="225" width="13" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/_examples/custom-rule-tutorial-code/eslint-plugin-example.js
+lines 8 · fan_in 1 · age 1179d · last touched 533d
+dark_room</title></rect>
+<rect x="445" y="225" width="17" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/_examples/custom-rule-tutorial-code/eslint.config.js
+lines 23 · fan_in 0 · age 1179d · last touched 356d
+no named feature</title></rect>
+<rect x="465" y="225" width="16" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/_examples/custom-rule-tutorial-code/example.js
+lines 16 · fan_in 0 · age 1179d · last touched 533d
+dark_room</title></rect>
+<rect x="484" y="225" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/_examples/integration-tutorial-code/example-eslint-integration.js
+lines 55 · fan_in 1 · age 1172d · last touched 533d
+dark_room
+scaffolding</title></rect>
+<rect x="509" y="225" width="17" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/_examples/integration-tutorial-code/sample-data/test-file.js
+lines 24 · fan_in 0 · age 1172d · last touched 533d
+dark_room</title></rect>
+<rect x="529" y="225" width="12" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/postcss.config.js
+lines 5 · fan_in 0 · age 1291d · last touched 533d
+dark_room</title></rect>
+<rect x="544" y="225" width="23" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/_data/eslintVersions.js
+lines 58 · fan_in 0 · age 882d · last touched 533d
+dark_room</title></rect>
+<rect x="348" y="206" width="21" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/_data/flags.js
+lines 43 · fan_in 0 · age 772d · last touched 533d
+dark_room</title></rect>
+<rect x="372" y="206" width="18" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/_data/helpers.js
+lines 29 · fan_in 0 · age 1583d · last touched 533d
+dark_room</title></rect>
+<rect x="393" y="206" width="10" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/_data/layout.js
+lines 2 · fan_in 0 · age 1393d · last touched 872d
+dark_room</title></rect>
+<rect x="406" y="206" width="18" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/_data/rules_categories.js
+lines 27 · fan_in 0 · age 1059d · last touched 533d
+dark_room</title></rect>
+<rect x="427" y="206" width="16" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/_data/site.js
+lines 20 · fan_in 0 · age 1541d · last touched 533d
+dark_room</title></rect>
+<rect x="446" y="206" width="25" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/_plugins/md-syntax-highlighter.js
+lines 80 · fan_in 1 · age 1365d · last touched 533d
+dark_room</title></rect>
+<rect x="474" y="206" width="16" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/_plugins/pre-wrapper.js
+lines 20 · fan_in 1 · age 534d · last touched 533d
+dark_room</title></rect>
+<rect x="493" y="206" width="19" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/assets/js/components-index.js
+lines 31 · fan_in 0 · age 1583d · last touched 533d
+dark_room</title></rect>
+<rect x="348" y="187" width="64" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/src/assets/js/css-vars-ponyfill@2.js
+lines 1489 · fan_in 0 · age 1583d · last touched 61d
+no named feature</title></rect>
+<rect x="415" y="187" width="41" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/assets/js/focus-visible.js
+lines 273 · fan_in 0 · age 1583d · last touched 533d
+dark_room</title></rect>
+<rect x="459" y="187" width="27" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/src/assets/js/inert-polyfill.js
+lines 96 · fan_in 0 · age 1583d · last touched 61d
+no named feature</title></rect>
+<rect x="489" y="187" width="40" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/assets/js/main.js
+lines 264 · fan_in 0 · age 1583d · last touched 533d
+dark_room</title></rect>
+<rect x="532" y="187" width="15" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/assets/js/scroll-up-btn.js
+lines 15 · fan_in 0 · age 1258d · last touched 533d
+dark_room</title></rect>
+<rect x="348" y="168" width="39" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/assets/js/search.js
+lines 255 · fan_in 0 · age 1583d · last touched 533d
+dark_room</title></rect>
+<rect x="390" y="168" width="41" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/assets/js/tabs.js
+lines 287 · fan_in 0 · age 1583d · last touched 533d
+dark_room</title></rect>
+<rect x="434" y="168" width="24" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/assets/js/themes.js
+lines 69 · fan_in 0 · age 1583d · last touched 533d
+dark_room</title></rect>
+<rect x="461" y="168" width="10" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/src/static/serviceworker.js
+lines 0 · fan_in 0 · age 1583d · last touched 1583d
+dark_room</title></rect>
+<rect x="474" y="168" width="18" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>docs/tools/code-block-utils.js
+lines 26 · fan_in 2 · age 911d · last touched 533d
+dark_room</title></rect>
+<rect x="495" y="168" width="26" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/tools/markdown-it-rule-example.js
+lines 89 · fan_in 2 · age 1019d · last touched 385d
+no named feature</title></rect>
+<rect x="348" y="149" width="50" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/tools/prism-eslint-hook.js
+lines 448 · fan_in 2 · age 911d · last touched 128d
+no named feature</title></rect>
+<rect x="401" y="149" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/tools/validate-links.js
+lines 55 · fan_in 0 · age 1283d · last touched 169d
+no named feature</title></rect>
+<line x1="344" y1="243" x2="570" y2="243" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="598" y="144" font-weight="bold" fill="#333">lib</text>
+<rect x="598" y="702" width="19" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/api.js
+lines 32 · fan_in 5 · age 4796d · last touched 265d
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="620" y="702" width="50" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>lib/cli.js
+lines 447 · fan_in 2 · age 4814d · last touched 0d
+crack [decorative]
+lit_room
+scaffolding</title></rect>
+<rect x="673" y="702" width="64" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2;stroke-dasharray:1 0"><title>lib/linter/linter.js
+lines 1437 · fan_in 2 · age 4814d · last touched 0d
+crack [decorative]
+hub (position: hub)
+lit_room</title></rect>
+<rect x="740" y="702" width="48" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>lib/options.js
+lines 408 · fan_in 2 · age 4809d · last touched 17d
+crack [decorative]
+lit_room
+scaffolding</title></rect>
+<rect x="791" y="702" width="30" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/block-scoped-var.js
+lines 123 · fan_in 2 · age 4715d · last touched 194d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="824" y="702" width="39" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/brace-style.js
+lines 254 · fan_in 2 · age 4796d · last touched 347d
+scaffolding</title></rect>
+<rect x="866" y="702" width="46" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/camelcase.js
+lines 376 · fan_in 2 · age 4814d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="915" y="702" width="34" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>lib/rules/complexity.js
+lines 172 · fan_in 2 · age 4789d · last touched 44d
+crack [decorative]
+lit_room
+scaffolding</title></rect>
+<rect x="952" y="702" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/consistent-this.js
+lines 156 · fan_in 2 · age 4788d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="987" y="702" width="46" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/curly.js
+lines 377 · fan_in 2 · age 4814d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1036" y="702" width="35" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/dot-notation.js
+lines 193 · fan_in 2 · age 4793d · last touched 298d
+scaffolding</title></rect>
+<rect x="1074" y="702" width="36" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/eqeqeq.js
+lines 204 · fan_in 2 · age 4814d · last touched 60d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="1113" y="702" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/func-style.js
+lines 197 · fan_in 2 · age 4630d · last touched 120d
+scaffolding</title></rect>
+<rect x="1152" y="702" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/guard-for-in.js
+lines 71 · fan_in 2 · age 4800d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1179" y="702" width="33" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/max-depth.js
+lines 159 · fan_in 2 · age 4772d · last touched 85d
+scaffolding</title></rect>
+<rect x="598" y="683" width="50" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>lib/rules/max-len.js
+lines 441 · fan_in 2 · age 4770d · last touched 44d
+crack [decorative]
+lit_room
+scaffolding</title></rect>
+<rect x="651" y="683" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/max-nested-callbacks.js
+lines 123 · fan_in 2 · age 4638d · last touched 57d
+scaffolding</title></rect>
+<rect x="684" y="683" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/max-params.js
+lines 134 · fan_in 2 · age 4791d · last touched 120d
+scaffolding</title></rect>
+<rect x="718" y="683" width="33" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/max-statements.js
+lines 166 · fan_in 2 · age 4790d · last touched 92d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="754" y="683" width="37" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>lib/rules/new-cap.js
+lines 223 · fan_in 2 · age 4813d · last touched 3d
+crack [decorative]
+lit_room
+scaffolding</title></rect>
+<rect x="794" y="683" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/new-parens.js
+lines 106 · fan_in 2 · age 4797d · last touched 347d
+scaffolding</title></rect>
+<rect x="825" y="683" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-alert.js
+lines 129 · fan_in 2 · age 4809d · last touched 385d
+flooded_basement
+scaffolding</title></rect>
+<rect x="858" y="683" width="33" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-array-constructor.js
+lines 164 · fan_in 2 · age 4788d · last touched 120d
+scaffolding</title></rect>
+<rect x="894" y="683" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-bitwise.js
+lines 130 · fan_in 2 · age 4814d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="927" y="683" width="21" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-caller.js
+lines 44 · fan_in 2 · age 4813d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="951" y="683" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-catch-shadow.js
+lines 81 · fan_in 2 · age 4754d · last touched 334d
+scaffolding</title></rect>
+<rect x="980" y="683" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-cond-assign.js
+lines 150 · fan_in 2 · age 4786d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1015" y="683" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-console.js
+lines 197 · fan_in 2 · age 4814d · last touched 194d
+scaffolding</title></rect>
+<rect x="1054" y="683" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-control-regex.js
+lines 126 · fan_in 2 · age 4689d · last touched 62d
+scaffolding</title></rect>
+<rect x="1087" y="683" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-debugger.js
+lines 34 · fan_in 2 · age 4814d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1109" y="683" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-delete-var.js
+lines 35 · fan_in 2 · age 4791d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1131" y="683" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-div-regex.js
+lines 50 · fan_in 2 · age 4691d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1156" y="683" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-dupe-keys.js
+lines 140 · fan_in 2 · age 4779d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1190" y="683" width="47" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-else-return.js
+lines 394 · fan_in 2 · age 4771d · last touched 194d
+scaffolding</title></rect>
+<rect x="598" y="664" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-empty.js
+lines 133 · fan_in 2 · age 4814d · last touched 372d
+flooded_basement
+scaffolding</title></rect>
+<rect x="632" y="664" width="21" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-eq-null.js
+lines 43 · fan_in 2 · age 4782d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="656" y="664" width="40" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/no-eval.js
+lines 257 · fan_in 2 · age 4814d · last touched 194d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="699" y="664" width="21" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-ex-assign.js
+lines 47 · fan_in 2 · age 4787d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="723" y="664" width="33" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-extend-native.js
+lines 160 · fan_in 2 · age 4662d · last touched 168d
+scaffolding</title></rect>
+<rect x="759" y="664" width="64" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/no-extra-parens.js
+lines 1494 · fan_in 2 · age 4662d · last touched 290d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="826" y="664" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-extra-semi.js
+lines 149 · fan_in 2 · age 4786d · last touched 347d
+scaffolding</title></rect>
+<rect x="861" y="664" width="37" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/no-fallthrough.js
+lines 215 · fan_in 2 · age 4800d · last touched 94d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="901" y="664" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-floating-decimal.js
+lines 89 · fan_in 2 · age 4799d · last touched 347d
+scaffolding</title></rect>
+<rect x="930" y="664" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-func-assign.js
+lines 65 · fan_in 2 · age 4754d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="957" y="664" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-implied-eval.js
+lines 150 · fan_in 2 · age 4795d · last touched 218d
+scaffolding</title></rect>
+<rect x="992" y="664" width="37" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/no-invalid-regexp.js
+lines 214 · fan_in 2 · age 4661d · last touched 62d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="1032" y="664" width="20" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-iterator.js
+lines 39 · fan_in 2 · age 4756d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1055" y="664" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-label-var.js
+lines 64 · fan_in 2 · age 4790d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1082" y="664" width="38" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/no-loop-func.js
+lines 234 · fan_in 2 · age 4781d · last touched 120d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="1123" y="664" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-mixed-requires.js
+lines 238 · fan_in 2 · age 4774d · last touched 334d
+scaffolding</title></rect>
+<rect x="1164" y="664" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-multi-str.js
+lines 56 · fan_in 2 · age 4788d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1189" y="664" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-native-reassign.js
+lines 101 · fan_in 2 · age 4792d · last touched 334d
+scaffolding</title></rect>
+<rect x="1220" y="664" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-negated-in-lhs.js
+lines 52 · fan_in 2 · age 4678d · last touched 334d
+scaffolding</title></rect>
+<rect x="598" y="645" width="20" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-nested-ternary.js
+lines 39 · fan_in 2 · age 4645d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="621" y="645" width="25" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-new-func.js
+lines 80 · fan_in 2 · age 4795d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="649" y="645" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-new-object.js
+lines 63 · fan_in 2 · age 4788d · last touched 334d
+scaffolding</title></rect>
+<rect x="675" y="645" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-new-wrappers.js
+lines 50 · fan_in 2 · age 4797d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="700" y="645" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-new.js
+lines 35 · fan_in 2 · age 4796d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="722" y="645" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-obj-calls.js
+lines 90 · fan_in 2 · age 4791d · last touched 163d
+scaffolding</title></rect>
+<rect x="751" y="645" width="21" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-octal-escape.js
+lines 44 · fan_in 2 · age 4755d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="775" y="645" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-octal.js
+lines 35 · fan_in 2 · age 4799d · last touched 385d
+flooded_basement
+scaffolding</title></rect>
+<rect x="797" y="645" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-plusplus.js
+lines 86 · fan_in 2 · age 4790d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="826" y="645" width="20" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-proto.js
+lines 36 · fan_in 2 · age 4772d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="849" y="645" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-redeclare.js
+lines 147 · fan_in 2 · age 4756d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="884" y="645" width="35" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-regex-spaces.js
+lines 191 · fan_in 2 · age 4788d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="922" y="645" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-return-assign.js
+lines 72 · fan_in 2 · age 4791d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="949" y="645" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-script-url.js
+lines 57 · fan_in 2 · age 4772d · last touched 61d
+scaffolding</title></rect>
+<rect x="975" y="645" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-self-compare.js
+lines 66 · fan_in 2 · age 4786d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1002" y="645" width="27" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-shadow-restricted-names.js
+lines 99 · fan_in 2 · age 4662d · last touched 300d
+scaffolding</title></rect>
+<rect x="1032" y="645" width="56" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/no-shadow.js
+lines 599 · fan_in 2 · age 4771d · last touched 61d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="1091" y="645" width="27" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-spaced-func.js
+lines 93 · fan_in 2 · age 4691d · last touched 290d
+scaffolding</title></rect>
+<rect x="1121" y="645" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-sync.js
+lines 72 · fan_in 2 · age 4783d · last touched 334d
+scaffolding</title></rect>
+<rect x="1148" y="645" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-ternary.js
+lines 31 · fan_in 2 · age 4788d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1170" y="645" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-undef-init.js
+lines 85 · fan_in 2 · age 4799d · last touched 427d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1199" y="645" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-undef.js
+lines 71 · fan_in 2 · age 4787d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="598" y="626" width="45" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-underscore-dangle.js
+lines 351 · fan_in 2 · age 4783d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="646" y="626" width="39" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>lib/rules/no-unreachable.js
+lines 247 · fan_in 2 · age 4800d · last touched 3d
+crack [decorative]
+lit_room
+scaffolding</title></rect>
+<rect x="688" y="626" width="36" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/no-unused-expressions.js
+lines 209 · fan_in 2 · age 4716d · last touched 120d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="727" y="626" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>lib/rules/no-unused-vars.js
+lines 1605 · fan_in 2 · age 4778d · last touched 38d
+crack [decorative]
+lit_room
+scaffolding</title></rect>
+<rect x="794" y="626" width="47" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/no-use-before-define.js
+lines 392 · fan_in 2 · age 4759d · last touched 120d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="844" y="626" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-with.js
+lines 35 · fan_in 2 · age 4814d · last touched 85d
+scaffolding</title></rect>
+<rect x="866" y="626" width="59" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/one-var.js
+lines 656 · fan_in 2 · age 4778d · last touched 121d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="928" y="626" width="46" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/quote-props.js
+lines 362 · fan_in 2 · age 4807d · last touched 347d
+scaffolding</title></rect>
+<rect x="977" y="626" width="46" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>lib/rules/quotes.js
+lines 371 · fan_in 2 · age 4792d · last touched 44d
+crack [decorative]
+lit_room
+scaffolding</title></rect>
+<rect x="1026" y="626" width="34" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/radix.js
+lines 175 · fan_in 2 · age 4799d · last touched 63d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="1063" y="626" width="49" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/semi.js
+lines 427 · fan_in 2 · age 4800d · last touched 347d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1115" y="626" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/sort-vars.js
+lines 123 · fan_in 2 · age 4641d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1148" y="626" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/space-infix-ops.js
+lines 219 · fan_in 2 · age 4653d · last touched 290d
+scaffolding</title></rect>
+<rect x="1188" y="626" width="41" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/strict.js
+lines 288 · fan_in 2 · age 4695d · last touched 220d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="598" y="607" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/use-isnan.js
+lines 237 · fan_in 2 · age 4799d · last touched 63d
+scaffolding</title></rect>
+<rect x="639" y="607" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/wrap-iife.js
+lines 208 · fan_in 2 · age 4786d · last touched 347d
+scaffolding</title></rect>
+<rect x="678" y="607" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/wrap-regex.js
+lines 81 · fan_in 2 · age 4716d · last touched 347d
+scaffolding</title></rect>
+<line x1="594" y1="720" x2="1247" y2="720" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="598" y="578" width="43" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/cli-engine/formatters/html.js
+lines 317 · fan_in 1 · age 4028d · last touched 43d
+lit_room
+scaffolding</title></rect>
+<rect x="644" y="578" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/cli-engine/formatters/json.js
+lines 11 · fan_in 1 · age 4054d · last touched 533d
+dark_room
+scaffolding</title></rect>
+<rect x="661" y="578" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/cli-engine/formatters/stylish.js
+lines 135 · fan_in 2 · age 4613d · last touched 266d
+scaffolding</title></rect>
+<rect x="695" y="578" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:1 0"><title>lib/languages/js/source-code/source-code.js
+lines 1014 · fan_in 2 · age 4033d · last touched 0d
+crack [decorative]
+hub (position: hub)
+lit_room
+scaffolding</title></rect>
+<rect x="762" y="578" width="34" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>lib/linter/timing.js
+lines 174 · fan_in 4 · age 4321d · last touched 315d
+foundation (position: high-load hub)
+scaffolding</title></rect>
+<rect x="799" y="578" width="64" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/rule-tester/rule-tester.js
+lines 1800 · fan_in 293 · age 4062d · last touched 227d
+crack [decorative]
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="866" y="578" width="44" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/rules/accessor-pairs.js
+lines 330 · fan_in 2 · age 4136d · last touched 37d
+lit_room
+scaffolding</title></rect>
+<rect x="913" y="578" width="41" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/array-bracket-spacing.js
+lines 275 · fan_in 2 · age 4102d · last touched 290d
+scaffolding</title></rect>
+<rect x="957" y="578" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/arrow-parens.js
+lines 212 · fan_in 2 · age 4082d · last touched 347d
+scaffolding</title></rect>
+<rect x="997" y="578" width="33" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/arrow-spacing.js
+lines 168 · fan_in 2 · age 4082d · last touched 347d
+scaffolding</title></rect>
+<rect x="1033" y="578" width="34" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/block-spacing.js
+lines 179 · fan_in 2 · age 4040d · last touched 290d
+scaffolding</title></rect>
+<rect x="1070" y="578" width="35" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/callback-return.js
+lines 189 · fan_in 2 · age 4091d · last touched 334d
+scaffolding</title></rect>
+<rect x="1108" y="578" width="47" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/comma-dangle.js
+lines 382 · fan_in 2 · age 4200d · last touched 347d
+scaffolding</title></rect>
+<rect x="1158" y="578" width="34" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/comma-spacing.js
+lines 181 · fan_in 2 · age 4356d · last touched 290d
+scaffolding</title></rect>
+<rect x="1195" y="578" width="45" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/comma-style.js
+lines 359 · fan_in 2 · age 4358d · last touched 347d
+scaffolding</title></rect>
+<rect x="598" y="559" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/computed-property-spacing.js
+lines 228 · fan_in 2 · age 4105d · last touched 290d
+scaffolding</title></rect>
+<rect x="639" y="559" width="34" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/consistent-return.js
+lines 182 · fan_in 2 · age 4604d · last touched 88d
+scaffolding</title></rect>
+<rect x="676" y="559" width="47" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/constructor-super.js
+lines 388 · fan_in 2 · age 4104d · last touched 524d
+scaffolding</title></rect>
+<rect x="726" y="559" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/default-case.js
+lines 85 · fan_in 2 · age 4519d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="755" y="559" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/dot-location.js
+lines 122 · fan_in 2 · age 4137d · last touched 347d
+scaffolding</title></rect>
+<rect x="788" y="559" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/eol-last.js
+lines 123 · fan_in 2 · age 4459d · last touched 347d
+scaffolding</title></rect>
+<rect x="821" y="559" width="34" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/func-names.js
+lines 177 · fan_in 2 · age 4591d · last touched 194d
+scaffolding</title></rect>
+<rect x="858" y="559" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/generator-star-spacing.js
+lines 218 · fan_in 2 · age 4196d · last touched 61d
+scaffolding</title></rect>
+<rect x="898" y="559" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/global-require.js
+lines 102 · fan_in 2 · age 4045d · last touched 334d
+scaffolding</title></rect>
+<rect x="929" y="559" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/handle-callback-err.js
+lines 107 · fan_in 2 · age 4577d · last touched 334d
+scaffolding</title></rect>
+<rect x="960" y="559" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/id-length.js
+lines 196 · fan_in 2 · age 4095d · last touched 524d
+scaffolding</title></rect>
+<rect x="999" y="559" width="43" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>lib/rules/id-match.js
+lines 322 · fan_in 2 · age 4060d · last touched 38d
+crack [decorative]
+lit_room
+scaffolding</title></rect>
+<rect x="1045" y="559" width="64" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/indent.js
+lines 2110 · fan_in 2 · age 4242d · last touched 61d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="1112" y="559" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/init-declarations.js
+lines 149 · fan_in 2 · age 4085d · last touched 120d
+scaffolding</title></rect>
+<rect x="1147" y="559" width="62" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>lib/rules/key-spacing.js
+lines 751 · fan_in 2 · age 4354d · last touched 44d
+crack [decorative]
+lit_room
+scaffolding</title></rect>
+<rect x="1212" y="559" width="29" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/linebreak-style.js
+lines 116 · fan_in 2 · age 4167d · last touched 347d
+scaffolding</title></rect>
+<rect x="598" y="540" width="53" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/lines-around-comment.js
+lines 524 · fan_in 2 · age 4125d · last touched 347d
+scaffolding</title></rect>
+<rect x="654" y="540" width="40" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/newline-after-var.js
+lines 271 · fan_in 2 · age 4190d · last touched 347d
+scaffolding</title></rect>
+<rect x="697" y="540" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-class-assign.js
+lines 55 · fan_in 2 · age 4105d · last touched 524d
+scaffolding</title></rect>
+<rect x="722" y="540" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-const-assign.js
+lines 60 · fan_in 2 · age 4105d · last touched 427d
+scaffolding</title></rect>
+<rect x="748" y="540" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-constant-condition.js
+lines 155 · fan_in 2 · age 4578d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="783" y="540" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-continue.js
+lines 31 · fan_in 2 · age 4178d · last touched 524d
+scaffolding</title></rect>
+<rect x="805" y="540" width="25" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-dupe-args.js
+lines 79 · fan_in 2 · age 4206d · last touched 194d
+scaffolding</title></rect>
+<rect x="833" y="540" width="27" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-dupe-class-members.js
+lines 96 · fan_in 2 · age 4037d · last touched 120d
+scaffolding</title></rect>
+<rect x="863" y="540" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-duplicate-case.js
+lines 65 · fan_in 2 · age 4193d · last touched 524d
+scaffolding</title></rect>
+<rect x="890" y="540" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-empty-character-class.js
+lines 68 · fan_in 2 · age 4132d · last touched 524d
+scaffolding</title></rect>
+<rect x="917" y="540" width="36" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/rules/no-extra-bind.js
+lines 204 · fan_in 2 · age 4394d · last touched 6d
+lit_room
+scaffolding</title></rect>
+<rect x="956" y="540" width="46" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/no-extra-boolean-cast.js
+lines 369 · fan_in 2 · age 4597d · last touched 73d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="1005" y="540" width="48" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/no-implicit-coercion.js
+lines 419 · fan_in 2 · age 4071d · last touched 63d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="1056" y="540" width="27" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-inline-comments.js
+lines 98 · fan_in 2 · age 4337d · last touched 524d
+scaffolding</title></rect>
+<rect x="1086" y="540" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-inner-declarations.js
+lines 123 · fan_in 2 · age 4510d · last touched 524d
+scaffolding</title></rect>
+<rect x="1119" y="540" width="32" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/no-invalid-this.js
+lines 151 · fan_in 2 · age 4090d · last touched 120d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="1154" y="540" width="40" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-irregular-whitespace.js
+lines 258 · fan_in 2 · age 4365d · last touched 385d
+scaffolding</title></rect>
+<rect x="1197" y="540" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-labels.js
+lines 136 · fan_in 2 · age 4597d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="598" y="521" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-lone-blocks.js
+lines 121 · fan_in 2 · age 4598d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="631" y="521" width="29" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-lonely-if.js
+lines 113 · fan_in 2 · age 4521d · last touched 524d
+scaffolding</title></rect>
+<rect x="663" y="521" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-mixed-spaces-and-tabs.js
+lines 129 · fan_in 2 · age 4454d · last touched 61d
+scaffolding</title></rect>
+<rect x="696" y="521" width="33" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-multi-spaces.js
+lines 159 · fan_in 2 · age 4355d · last touched 347d
+scaffolding</title></rect>
+<rect x="732" y="521" width="35" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-multiple-empty-lines.js
+lines 190 · fan_in 2 · age 4355d · last touched 347d
+scaffolding</title></rect>
+<rect x="770" y="521" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-new-require.js
+lines 59 · fan_in 2 · age 4496d · last touched 334d
+scaffolding</title></rect>
+<rect x="796" y="521" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-param-reassign.js
+lines 220 · fan_in 2 · age 4193d · last touched 517d
+scaffolding</title></rect>
+<rect x="836" y="521" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-path-concat.js
+lines 69 · fan_in 2 · age 4604d · last touched 334d
+scaffolding</title></rect>
+<rect x="863" y="521" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-process-env.js
+lines 60 · fan_in 2 · age 4363d · last touched 334d
+scaffolding</title></rect>
+<rect x="889" y="521" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-process-exit.js
+lines 59 · fan_in 2 · age 4597d · last touched 334d
+scaffolding</title></rect>
+<rect x="915" y="521" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-restricted-modules.js
+lines 222 · fan_in 2 · age 4513d · last touched 334d
+scaffolding</title></rect>
+<rect x="955" y="521" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-sequences.js
+lines 137 · fan_in 2 · age 4526d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="989" y="521" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-sparse-arrays.js
+lines 55 · fan_in 2 · age 4596d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1014" y="521" width="43" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-this-before-super.js
+lines 317 · fan_in 2 · age 4099d · last touched 168d
+scaffolding</title></rect>
+<rect x="1060" y="521" width="20" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-throw-literal.js
+lines 42 · fan_in 2 · age 4219d · last touched 73d
+scaffolding</title></rect>
+<rect x="1083" y="521" width="35" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-trailing-spaces.js
+lines 195 · fan_in 2 · age 4459d · last touched 347d
+scaffolding</title></rect>
+<rect x="1121" y="521" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-undefined.js
+lines 72 · fan_in 2 · age 4453d · last touched 194d
+scaffolding</title></rect>
+<rect x="1148" y="521" width="29" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/rules/no-unexpected-multiline.js
+lines 112 · fan_in 2 · age 4135d · last touched 0d
+lit_room
+scaffolding</title></rect>
+<rect x="1180" y="521" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-unneeded-ternary.js
+lines 210 · fan_in 2 · age 4147d · last touched 524d
+scaffolding</title></rect>
+<rect x="1219" y="521" width="25" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-useless-call.js
+lines 80 · fan_in 2 · age 4072d · last touched 524d
+scaffolding</title></rect>
+<rect x="598" y="502" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-useless-concat.js
+lines 102 · fan_in 2 · age 4026d · last touched 130d
+scaffolding</title></rect>
+<rect x="629" y="502" width="49" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>lib/rules/no-var.js
+lines 431 · fan_in 3 · age 4254d · last touched 19d
+crack [decorative]
+lit_room
+scaffolding</title></rect>
+<rect x="681" y="502" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-void.js
+lines 60 · fan_in 2 · age 4454d · last touched 524d
+scaffolding</title></rect>
+<rect x="707" y="502" width="34" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-warning-comments.js
+lines 180 · fan_in 2 · age 4560d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="744" y="502" width="44" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/object-curly-spacing.js
+lines 328 · fan_in 2 · age 4132d · last touched 290d
+scaffolding</title></rect>
+<rect x="791" y="502" width="56" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/object-shorthand.js
+lines 590 · fan_in 2 · age 4166d · last touched 121d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="850" y="502" width="39" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/operator-assignment.js
+lines 243 · fan_in 2 · age 4325d · last touched 524d
+scaffolding</title></rect>
+<rect x="892" y="502" width="42" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/operator-linebreak.js
+lines 289 · fan_in 2 · age 4176d · last touched 347d
+scaffolding</title></rect>
+<rect x="937" y="502" width="44" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/padded-blocks.js
+lines 330 · fan_in 2 · age 4358d · last touched 347d
+scaffolding</title></rect>
+<rect x="984" y="502" width="47" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/prefer-arrow-callback.js
+lines 390 · fan_in 2 · age 4041d · last touched 99d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="1034" y="502" width="51" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/prefer-const.js
+lines 477 · fan_in 2 · age 4114d · last touched 194d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="1088" y="502" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/prefer-reflect.js
+lines 137 · fan_in 2 · age 4067d · last touched 512d
+scaffolding</title></rect>
+<rect x="1122" y="502" width="25" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/prefer-spread.js
+lines 77 · fan_in 2 · age 4073d · last touched 524d
+scaffolding</title></rect>
+<rect x="1150" y="502" width="43" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/rules/prefer-template.js
+lines 314 · fan_in 2 · age 4042d · last touched 24d
+lit_room
+scaffolding</title></rect>
+<rect x="1196" y="502" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/require-yield.js
+lines 71 · fan_in 2 · age 4087d · last touched 293d
+scaffolding</title></rect>
+<rect x="598" y="483" width="40" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/semi-spacing.js
+lines 267 · fan_in 2 · age 4207d · last touched 290d
+scaffolding</title></rect>
+<rect x="641" y="483" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/space-before-blocks.js
+lines 209 · fan_in 2 · age 4354d · last touched 290d
+scaffolding</title></rect>
+<rect x="680" y="483" width="34" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/space-before-function-paren.js
+lines 181 · fan_in 2 · age 4188d · last touched 290d
+scaffolding</title></rect>
+<rect x="717" y="483" width="44" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/space-in-parens.js
+lines 334 · fan_in 2 · age 4442d · last touched 290d
+scaffolding</title></rect>
+<rect x="764" y="483" width="46" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/space-unary-ops.js
+lines 371 · fan_in 2 · age 4341d · last touched 347d
+scaffolding</title></rect>
+<rect x="813" y="483" width="48" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/spaced-comment.js
+lines 405 · fan_in 2 · age 4111d · last touched 347d
+scaffolding</title></rect>
+<rect x="864" y="483" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:1 0"><title>lib/rules/utils/ast-utils.js
+lines 2673 · fan_in 193 · age 4057d · last touched 37d
+crack [decorative]
+foundation (position: high-load hub)
+hub (position: hub)
+lit_room
+scaffolding</title></rect>
+<rect x="931" y="483" width="24" height="16" style="fill:url(#water);stroke:#2b2b2b;stroke-width:3;opacity:0.45"><title>lib/rules/utils/keywords.js
+lines 66 · fan_in 3 · age 4083d · last touched 533d
+dark_room
+flooded_basement
+foundation (position: high-load hub)</title></rect>
+<rect x="958" y="483" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/valid-typeof.js
+lines 152 · fan_in 2 · age 4533d · last touched 524d
+scaffolding</title></rect>
+<rect x="993" y="483" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/vars-on-top.js
+lines 146 · fan_in 2 · age 4387d · last touched 524d
+flooded_basement
+scaffolding</title></rect>
+<rect x="1028" y="483" width="43" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/yoda.js
+lines 320 · fan_in 2 · age 4472d · last touched 385d
+scaffolding</title></rect>
+<line x1="594" y1="596" x2="1247" y2="596" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="598" y="454" width="18" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3;opacity:0.45"><title>lib/cli-engine/hash.js
+lines 27 · fan_in 3 · age 3827d · last touched 533d
+dark_room
+foundation (position: high-load hub)
+scaffolding</title></rect>
+<rect x="619" y="454" width="22" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/languages/js/source-code/token-store/backward-token-comment-cursor.js
+lines 54 · fan_in 1 · age 3494d · last touched 533d
+dark_room</title></rect>
+<rect x="644" y="454" width="22" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/languages/js/source-code/token-store/backward-token-cursor.js
+lines 50 · fan_in 1 · age 3494d · last touched 533d
+dark_room</title></rect>
+<rect x="669" y="454" width="24" height="16" style="fill:#c7b894;stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/languages/js/source-code/token-store/cursor.js
+lines 69 · fan_in 5 · age 3494d · last touched 533d
+dark_room
+foundation (position: high-load hub)
+hub (position: hub)</title></rect>
+<rect x="696" y="454" width="28" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/languages/js/source-code/token-store/cursors.js
+lines 109 · fan_in 1 · age 3494d · last touched 533d
+dark_room</title></rect>
+<rect x="727" y="454" width="19" height="16" style="fill:#c7b894;stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/languages/js/source-code/token-store/decorative-cursor.js
+lines 31 · fan_in 3 · age 3494d · last touched 533d
+dark_room
+foundation (position: high-load hub)
+hub (position: hub)</title></rect>
+<rect x="749" y="454" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/languages/js/source-code/token-store/filter-cursor.js
+lines 36 · fan_in 1 · age 3494d · last touched 533d
+dark_room</title></rect>
+<rect x="772" y="454" width="23" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/languages/js/source-code/token-store/forward-token-comment-cursor.js
+lines 58 · fan_in 1 · age 3494d · last touched 533d
+dark_room</title></rect>
+<rect x="798" y="454" width="22" height="16" style="fill:#c7b894;stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/languages/js/source-code/token-store/forward-token-cursor.js
+lines 54 · fan_in 3 · age 3494d · last touched 533d
+dark_room
+hub (position: hub)</title></rect>
+<rect x="823" y="454" width="58" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/languages/js/source-code/token-store/index.js
+lines 649 · fan_in 2 · age 3494d · last touched 290d
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="884" y="454" width="19" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/languages/js/source-code/token-store/limit-cursor.js
+lines 34 · fan_in 1 · age 3494d · last touched 533d
+dark_room</title></rect>
+<rect x="906" y="454" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/languages/js/source-code/token-store/padded-token-cursor.js
+lines 41 · fan_in 1 · age 3494d · last touched 533d
+dark_room</title></rect>
+<rect x="929" y="454" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/languages/js/source-code/token-store/skip-cursor.js
+lines 36 · fan_in 1 · age 3494d · last touched 533d
+dark_room</title></rect>
+<rect x="952" y="454" width="29" height="16" style="fill:#c7b894;stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/languages/js/source-code/token-store/utils.js
+lines 118 · fan_in 5 · age 3494d · last touched 168d
+foundation (position: high-load hub)
+hub (position: hub)</title></rect>
+<rect x="984" y="454" width="61" height="16" style="fill:#c7b894;stroke:#f2c14e;stroke-width:2;stroke-dasharray:1 0"><title>lib/linter/code-path-analysis/code-path-analyzer.js
+lines 722 · fan_in 1 · age 3946d · last touched 0d
+hub (position: hub)
+lit_room</title></rect>
+<rect x="1048" y="454" width="38" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/linter/code-path-analysis/code-path-segment.js
+lines 228 · fan_in 4 · age 3946d · last touched 533d
+dark_room
+flooded_basement
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="1089" y="454" width="64" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>lib/linter/code-path-analysis/code-path-state.js
+lines 2097 · fan_in 1 · age 3946d · last touched 105d
+no named feature</title></rect>
+<rect x="1156" y="454" width="42" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/linter/code-path-analysis/code-path.js
+lines 297 · fan_in 2 · age 3946d · last touched 144d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="1201" y="454" width="36" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:1 0"><title>lib/linter/code-path-analysis/debug-helpers.js
+lines 200 · fan_in 3 · age 3946d · last touched 0d
+foundation (position: high-load hub)
+hub (position: hub)
+lit_room
+scaffolding</title></rect>
+<rect x="598" y="435" width="44" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/linter/code-path-analysis/fork-context.js
+lines 335 · fan_in 2 · age 3946d · last touched 533d
+dark_room
+scaffolding</title></rect>
+<rect x="645" y="435" width="20" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/linter/code-path-analysis/id-generator.js
+lines 36 · fan_in 3 · age 3946d · last touched 137d
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="668" y="435" width="34" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>lib/linter/rule-fixer.js
+lines 169 · fan_in 3 · age 4019d · last touched 298d
+foundation (position: high-load hub)
+scaffolding</title></rect>
+<rect x="705" y="435" width="30" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/linter/source-code-fixer.js
+lines 132 · fan_in 4 · age 4019d · last touched 517d
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="738" y="435" width="42" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/linter/source-code-traverser.js
+lines 291 · fan_in 2 · age 4014d · last touched 307d
+scaffolding</title></rect>
+<rect x="783" y="435" width="50" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/array-callback-return.js
+lines 443 · fan_in 2 · age 3924d · last touched 94d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="836" y="435" width="47" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/arrow-body-style.js
+lines 382 · fan_in 2 · age 3977d · last touched 524d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="886" y="435" width="41" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/capitalized-comments.js
+lines 282 · fan_in 2 · age 3569d · last touched 121d
+scaffolding</title></rect>
+<rect x="930" y="435" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/class-methods-use-this.js
+lines 223 · fan_in 2 · age 3669d · last touched 48d
+scaffolding</title></rect>
+<rect x="970" y="435" width="40" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/func-call-spacing.js
+lines 258 · fan_in 2 · age 3678d · last touched 337d
+scaffolding</title></rect>
+<rect x="1013" y="435" width="43" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/func-name-matching.js
+lines 310 · fan_in 2 · age 3615d · last touched 61d
+scaffolding</title></rect>
+<rect x="1059" y="435" width="36" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/rules/id-denylist.js
+lines 198 · fan_in 2 · age 3887d · last touched 38d
+lit_room
+scaffolding</title></rect>
+<rect x="1098" y="435" width="29" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/jsx-quotes.js
+lines 114 · fan_in 2 · age 4015d · last touched 347d
+scaffolding</title></rect>
+<rect x="1130" y="435" width="57" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/keyword-spacing.js
+lines 622 · fan_in 2 · age 3905d · last touched 290d
+scaffolding</title></rect>
+<rect x="1190" y="435" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/line-comment-position.js
+lines 141 · fan_in 2 · age 3656d · last touched 347d
+scaffolding</title></rect>
+<rect x="598" y="416" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/lines-around-directive.js
+lines 221 · fan_in 2 · age 3656d · last touched 347d
+scaffolding</title></rect>
+<rect x="638" y="416" width="33" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/max-lines.js
+lines 162 · fan_in 2 · age 3737d · last touched 121d
+scaffolding</title></rect>
+<rect x="674" y="416" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/max-statements-per-line.js
+lines 203 · fan_in 2 · age 3831d · last touched 347d
+scaffolding</title></rect>
+<rect x="713" y="416" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/multiline-ternary.js
+lines 235 · fan_in 2 · age 3710d · last touched 347d
+scaffolding</title></rect>
+<rect x="754" y="416" width="37" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/rules/newline-before-return.js
+lines 211 · fan_in 2 · age 3847d · last touched 347d
+crack [decorative]
+scaffolding</title></rect>
+<rect x="794" y="416" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/newline-per-chained-call.js
+lines 141 · fan_in 2 · age 3884d · last touched 347d
+scaffolding</title></rect>
+<rect x="828" y="416" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-await-in-loop.js
+lines 101 · fan_in 2 · age 3555d · last touched 414d
+scaffolding</title></rect>
+<rect x="859" y="416" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-case-declarations.js
+lines 71 · fan_in 2 · age 3963d · last touched 524d
+scaffolding</title></rect>
+<rect x="886" y="416" width="29" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-confusing-arrow.js
+lines 113 · fan_in 2 · age 3918d · last touched 347d
+scaffolding</title></rect>
+<rect x="918" y="416" width="44" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/rules/no-duplicate-imports.js
+lines 334 · fan_in 2 · age 3837d · last touched 32d
+lit_room
+scaffolding</title></rect>
+<rect x="965" y="416" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-empty-function.js
+lines 208 · fan_in 2 · age 3858d · last touched 120d
+scaffolding</title></rect>
+<rect x="1004" y="416" width="25" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-empty-pattern.js
+lines 74 · fan_in 2 · age 3992d · last touched 524d
+scaffolding</title></rect>
+<rect x="1032" y="416" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-extra-label.js
+lines 150 · fan_in 2 · age 3869d · last touched 524d
+scaffolding</title></rect>
+<rect x="1067" y="416" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-global-assign.js
+lines 88 · fan_in 2 · age 3685d · last touched 517d
+scaffolding</title></rect>
+<rect x="1096" y="416" width="33" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-implicit-globals.js
+lines 166 · fan_in 2 · age 3925d · last touched 462d
+scaffolding</title></rect>
+<rect x="1132" y="416" width="44" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-magic-numbers.js
+lines 333 · fan_in 2 · age 3990d · last touched 120d
+scaffolding</title></rect>
+<rect x="1179" y="416" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-mixed-operators.js
+lines 230 · fan_in 2 · age 3738d · last touched 347d
+scaffolding</title></rect>
+<rect x="1220" y="416" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-multi-assign.js
+lines 56 · fan_in 2 · age 3513d · last touched 524d
+scaffolding</title></rect>
+<rect x="598" y="397" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-negated-condition.js
+lines 89 · fan_in 2 · age 4004d · last touched 524d
+scaffolding</title></rect>
+<rect x="627" y="397" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-new-symbol.js
+lines 63 · fan_in 2 · age 3893d · last touched 334d
+scaffolding</title></rect>
+<rect x="653" y="397" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-prototype-builtins.js
+lines 156 · fan_in 2 · age 3760d · last touched 524d
+scaffolding</title></rect>
+<rect x="688" y="397" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-restricted-globals.js
+lines 232 · fan_in 2 · age 3844d · last touched 120d
+scaffolding</title></rect>
+<rect x="729" y="397" width="64" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-restricted-imports.js
+lines 823 · fan_in 2 · age 3929d · last touched 120d
+scaffolding</title></rect>
+<rect x="796" y="397" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-restricted-properties.js
+lines 212 · fan_in 2 · age 3653d · last touched 121d
+scaffolding</title></rect>
+<rect x="836" y="397" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-restricted-syntax.js
+lines 67 · fan_in 2 · age 4025d · last touched 121d
+scaffolding</title></rect>
+<rect x="863" y="397" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-return-await.js
+lines 141 · fan_in 2 · age 3584d · last touched 512d
+scaffolding</title></rect>
+<rect x="897" y="397" width="33" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-self-assign.js
+lines 163 · fan_in 2 · age 3870d · last touched 524d
+scaffolding</title></rect>
+<rect x="933" y="397" width="27" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-tabs.js
+lines 99 · fan_in 2 · age 3688d · last touched 347d
+scaffolding</title></rect>
+<rect x="963" y="397" width="20" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-template-curly-in-string.js
+lines 38 · fan_in 2 · age 3678d · last touched 524d
+scaffolding</title></rect>
+<rect x="986" y="397" width="44" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>lib/rules/no-unmodified-loop-condition.js
+lines 333 · fan_in 2 · age 3925d · last touched 24d
+crack [decorative]
+lit_room
+scaffolding</title></rect>
+<rect x="1033" y="397" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-unsafe-finally.js
+lines 106 · fan_in 2 · age 3782d · last touched 524d
+scaffolding</title></rect>
+<rect x="1064" y="397" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-unsafe-negation.js
+lines 133 · fan_in 2 · age 3684d · last touched 524d
+scaffolding</title></rect>
+<rect x="1098" y="397" width="32" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/rules/no-unused-labels.js
+lines 152 · fan_in 2 · age 3873d · last touched 28d
+lit_room
+scaffolding</title></rect>
+<rect x="1133" y="397" width="34" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-useless-computed-key.js
+lines 175 · fan_in 2 · age 3788d · last touched 524d
+scaffolding</title></rect>
+<rect x="1170" y="397" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-useless-constructor.js
+lines 235 · fan_in 2 · age 3907d · last touched 120d
+scaffolding</title></rect>
+<rect x="598" y="378" width="46" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>lib/rules/no-useless-escape.js
+lines 365 · fan_in 2 · age 3819d · last touched 26d
+crack [decorative]
+lit_room
+scaffolding</title></rect>
+<rect x="647" y="378" width="34" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-useless-rename.js
+lines 175 · fan_in 2 · age 3752d · last touched 524d
+scaffolding</title></rect>
+<rect x="684" y="378" width="44" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-useless-return.js
+lines 342 · fan_in 2 · age 3597d · last touched 94d
+scaffolding</title></rect>
+<rect x="731" y="378" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-whitespace-before-property.js
+lines 131 · fan_in 2 · age 3906d · last touched 290d
+scaffolding</title></rect>
+<rect x="764" y="378" width="45" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/object-curly-newline.js
+lines 344 · fan_in 2 · age 3744d · last touched 347d
+scaffolding</title></rect>
+<rect x="812" y="378" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/object-property-newline.js
+lines 136 · fan_in 2 · age 3776d · last touched 347d
+scaffolding</title></rect>
+<rect x="846" y="378" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/one-var-declaration-per-line.js
+lines 103 · fan_in 2 · age 3879d · last touched 347d
+scaffolding</title></rect>
+<rect x="877" y="378" width="42" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/prefer-destructuring.js
+lines 298 · fan_in 2 · age 3548d · last touched 414d
+scaffolding</title></rect>
+<rect x="922" y="378" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/prefer-numeric-literals.js
+lines 139 · fan_in 2 · age 3651d · last touched 63d
+scaffolding</title></rect>
+<rect x="956" y="378" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/prefer-promise-reject-errors.js
+lines 143 · fan_in 2 · age 3513d · last touched 74d
+scaffolding</title></rect>
+<rect x="990" y="378" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/prefer-rest-params.js
+lines 105 · fan_in 2 · age 3938d · last touched 194d
+scaffolding</title></rect>
+<rect x="1021" y="378" width="33" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/require-await.js
+lines 163 · fan_in 2 · age 3570d · last touched 128d
+scaffolding</title></rect>
+<rect x="1057" y="378" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/rest-spread-spacing.js
+lines 136 · fan_in 2 · age 3746d · last touched 290d
+scaffolding</title></rect>
+<rect x="1091" y="378" width="42" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/sort-imports.js
+lines 293 · fan_in 2 · age 3903d · last touched 524d
+scaffolding</title></rect>
+<rect x="1136" y="378" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/sort-keys.js
+lines 235 · fan_in 2 · age 3675d · last touched 524d
+scaffolding</title></rect>
+<rect x="1177" y="378" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/symbol-description.js
+lines 59 · fan_in 2 · age 3664d · last touched 524d
+scaffolding</title></rect>
+<rect x="1203" y="378" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/template-curly-spacing.js
+lines 147 · fan_in 2 · age 3869d · last touched 347d
+scaffolding</title></rect>
+<rect x="598" y="359" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/template-tag-spacing.js
+lines 109 · fan_in 2 · age 3507d · last touched 290d
+scaffolding</title></rect>
+<rect x="629" y="359" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/unicode-bom.js
+lines 64 · fan_in 2 · age 3755d · last touched 524d
+scaffolding</title></rect>
+<rect x="656" y="359" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/yield-star-spacing.js
+lines 143 · fan_in 2 · age 3937d · last touched 290d
+scaffolding</title></rect>
+<rect x="690" y="359" width="19" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/shared/logging.js
+lines 33 · fan_in 3 · age 3968d · last touched 533d
+dark_room
+flooded_basement
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="712" y="359" width="34" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/shared/traverser.js
+lines 177 · fan_in 7 · age 3829d · last touched 533d
+dark_room
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<line x1="594" y1="472" x2="1247" y2="472" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="598" y="330" width="15" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/cli-engine/formatters/json-with-metadata.js
+lines 14 · fan_in 1 · age 2715d · last touched 533d
+dark_room
+scaffolding</title></rect>
+<rect x="616" y="330" width="37" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/cli-engine/lint-result-cache.js
+lines 212 · fan_in 3 · age 2976d · last touched 0d
+foundation (position: high-load hub)
+lit_room
+scaffolding</title></rect>
+<rect x="656" y="330" width="24" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/config/default-config.js
+lines 66 · fan_in 4 · age 1896d · last touched 533d
+dark_room
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="683" y="330" width="35" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/config/flat-config-array.js
+lines 192 · fan_in 5 · age 1896d · last touched 434d
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="721" y="330" width="53" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/config/flat-config-schema.js
+lines 523 · fan_in 4 · age 1896d · last touched 147d
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="777" y="330" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:1 0"><title>lib/eslint/eslint.js
+lines 1230 · fan_in 5 · age 2323d · last touched 0d
+crack [decorative]
+foundation (position: high-load hub)
+hub (position: hub)
+lit_room
+scaffolding</title></rect>
+<rect x="844" y="330" width="12" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/eslint/index.js
+lines 5 · fan_in 2 · age 2323d · last touched 295d
+scaffolding</title></rect>
+<rect x="859" y="330" width="12" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/languages/js/source-code/index.js
+lines 5 · fan_in 8 · age 2662d · last touched 533d
+dark_room
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="874" y="330" width="53" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/linter/apply-disable-directives.js
+lines 522 · fan_in 2 · age 3284d · last touched 299d
+scaffolding</title></rect>
+<rect x="930" y="330" width="54" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/linter/file-report.js
+lines 531 · fan_in 2 · age 3292d · last touched 299d
+scaffolding</title></rect>
+<rect x="987" y="330" width="13" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/linter/index.js
+lines 8 · fan_in 9 · age 2662d · last touched 533d
+dark_room
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="1003" y="330" width="20" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/linter/interpolate.js
+lines 41 · fan_in 3 · age 3162d · last touched 385d
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="1026" y="330" width="12" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/rule-tester/index.js
+lines 5 · fan_in 6 · age 2662d · last touched 533d
+dark_room
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="1041" y="330" width="40" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/array-bracket-newline.js
+lines 262 · fan_in 2 · age 3425d · last touched 347d
+scaffolding</title></rect>
+<rect x="1084" y="330" width="44" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/array-element-newline.js
+lines 329 · fan_in 2 · age 3392d · last touched 347d
+scaffolding</title></rect>
+<rect x="1131" y="330" width="20" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/default-case-last.js
+lines 42 · fan_in 2 · age 2421d · last touched 524d
+scaffolding</title></rect>
+<rect x="1154" y="330" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/default-param-last.js
+lines 66 · fan_in 2 · age 2553d · last touched 120d
+scaffolding</title></rect>
+<rect x="1181" y="330" width="35" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/for-direction.js
+lines 190 · fan_in 2 · age 3399d · last touched 116d
+scaffolding</title></rect>
+<rect x="598" y="311" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/function-call-argument-newline.js
+lines 148 · fan_in 2 · age 2573d · last touched 347d
+scaffolding</title></rect>
+<rect x="633" y="311" width="44" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/function-paren-newline.js
+lines 333 · fan_in 2 · age 3289d · last touched 347d
+scaffolding</title></rect>
+<rect x="680" y="311" width="33" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/rules/getter-return.js
+lines 163 · fan_in 2 · age 3355d · last touched 37d
+lit_room
+scaffolding</title></rect>
+<rect x="716" y="311" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/grouped-accessor-pairs.js
+lines 238 · fan_in 2 · age 2477d · last touched 378d
+scaffolding</title></rect>
+<rect x="757" y="311" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/id-blacklist.js
+lines 215 · fan_in 2 · age 2243d · last touched 334d
+scaffolding</title></rect>
+<rect x="797" y="311" width="29" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/implicit-arrow-linebreak.js
+lines 114 · fan_in 2 · age 3204d · last touched 347d
+scaffolding</title></rect>
+<rect x="829" y="311" width="64" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/indent-legacy.js
+lines 1221 · fan_in 2 · age 3437d · last touched 347d
+scaffolding</title></rect>
+<rect x="896" y="311" width="44" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/rules/index.js
+lines 328 · fan_in 12 · age 2662d · last touched 367d
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="943" y="311" width="44" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/lines-between-class-members.js
+lines 330 · fan_in 2 · age 3258d · last touched 347d
+scaffolding</title></rect>
+<rect x="990" y="311" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/max-classes-per-file.js
+lines 87 · fan_in 2 · age 3037d · last touched 76d
+scaffolding</title></rect>
+<rect x="1019" y="311" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/max-lines-per-function.js
+lines 210 · fan_in 2 · age 2995d · last touched 85d
+scaffolding</title></rect>
+<rect x="1058" y="311" width="56" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>lib/rules/multiline-comment-style.js
+lines 585 · fan_in 3 · age 3246d · last touched 347d
+foundation (position: high-load hub)
+scaffolding</title></rect>
+<rect x="1117" y="311" width="21" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-async-promise-executor.js
+lines 44 · fan_in 2 · age 2961d · last touched 146d
+scaffolding</title></rect>
+<rect x="1141" y="311" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-buffer-constructor.js
+lines 66 · fan_in 2 · age 3438d · last touched 334d
+scaffolding</title></rect>
+<rect x="1168" y="311" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-compare-neg-zero.js
+lines 136 · fan_in 2 · age 3476d · last touched 64d
+scaffolding</title></rect>
+<rect x="598" y="292" width="58" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-constant-binary-expression.js
+lines 631 · fan_in 2 · age 1596d · last touched 71d
+scaffolding</title></rect>
+<rect x="659" y="292" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-constructor-return.js
+lines 51 · fan_in 2 · age 2479d · last touched 524d
+scaffolding</title></rect>
+<rect x="684" y="292" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-dupe-else-if.js
+lines 123 · fan_in 2 · age 2481d · last touched 524d
+scaffolding</title></rect>
+<rect x="717" y="292" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-import-assign.js
+lines 197 · fan_in 2 · age 2547d · last touched 524d
+scaffolding</title></rect>
+<rect x="756" y="292" width="37" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/rules/no-loss-of-precision.js
+lines 221 · fan_in 2 · age 2298d · last touched 10d
+lit_room
+scaffolding</title></rect>
+<rect x="796" y="292" width="53" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-misleading-character-class.js
+lines 524 · fan_in 2 · age 2958d · last touched 354d
+scaffolding</title></rect>
+<rect x="852" y="292" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-nonoctal-decimal-escape.js
+lines 154 · fan_in 2 · age 2114d · last touched 517d
+scaffolding</title></rect>
+<rect x="887" y="292" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-promise-executor-return.js
+lines 228 · fan_in 2 · age 2267d · last touched 61d
+scaffolding</title></rect>
+<rect x="928" y="292" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-restricted-exports.js
+lines 201 · fan_in 2 · age 2446d · last touched 121d
+scaffolding</title></rect>
+<rect x="967" y="292" width="29" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/rules/no-setter-return.js
+lines 115 · fan_in 2 · age 2489d · last touched 37d
+lit_room
+scaffolding</title></rect>
+<rect x="999" y="292" width="32" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/rules/no-unreachable-loop.js
+lines 151 · fan_in 2 · age 2274d · last touched 45d
+lit_room
+scaffolding</title></rect>
+<rect x="1034" y="292" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-unsafe-optional-chaining.js
+lines 208 · fan_in 2 · age 2099d · last touched 524d
+scaffolding</title></rect>
+<rect x="1073" y="292" width="46" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-unused-private-class-members.js
+lines 366 · fan_in 2 · age 1778d · last touched 128d
+scaffolding</title></rect>
+<rect x="1122" y="292" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-useless-backreference.js
+lines 227 · fan_in 2 · age 2429d · last touched 524d
+scaffolding</title></rect>
+<rect x="1163" y="292" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-useless-catch.js
+lines 50 · fan_in 2 · age 3114d · last touched 524d
+scaffolding</title></rect>
+<rect x="1188" y="292" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/nonblock-statement-body-position.js
+lines 147 · fan_in 2 · age 3476d · last touched 347d
+scaffolding</title></rect>
+<rect x="598" y="273" width="55" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/padding-line-between-statements.js
+lines 553 · fan_in 2 · age 3399d · last touched 168d
+scaffolding</title></rect>
+<rect x="656" y="273" width="39" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/prefer-exponentiation-operator.js
+lines 242 · fan_in 2 · age 2498d · last touched 72d
+scaffolding</title></rect>
+<rect x="698" y="273" width="34" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/prefer-named-capture-group.js
+lines 172 · fan_in 2 · age 2743d · last touched 479d
+scaffolding</title></rect>
+<rect x="735" y="273" width="30" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/rules/prefer-object-has-own.js
+lines 130 · fan_in 2 · age 1728d · last touched 2d
+lit_room
+scaffolding</title></rect>
+<rect x="768" y="273" width="42" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/rules/prefer-object-spread.js
+lines 289 · fan_in 2 · age 3037d · last touched 47d
+lit_room
+scaffolding</title></rect>
+<rect x="813" y="273" width="54" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/prefer-regex-literals.js
+lines 539 · fan_in 2 · age 2547d · last touched 385d
+scaffolding</title></rect>
+<rect x="870" y="273" width="43" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/require-atomic-updates.js
+lines 314 · fan_in 2 · age 2961d · last touched 524d
+scaffolding</title></rect>
+<rect x="916" y="273" width="41" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/require-unicode-regexp.js
+lines 282 · fan_in 2 · age 2955d · last touched 354d
+scaffolding</title></rect>
+<rect x="960" y="273" width="35" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/semi-style.js
+lines 194 · fan_in 2 · age 3394d · last touched 347d
+scaffolding</title></rect>
+<rect x="998" y="273" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/switch-colon-spacing.js
+lines 145 · fan_in 2 · age 3402d · last touched 290d
+scaffolding</title></rect>
+<rect x="1033" y="273" width="28" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/rules/utils/fix-tracker.js
+lines 109 · fan_in 6 · age 3476d · last touched 517d
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="1064" y="273" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/utils/lazy-loading-rule-map.js
+lines 105 · fan_in 2 · age 2673d · last touched 494d
+scaffolding</title></rect>
+<rect x="1095" y="273" width="15" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/rules/utils/unicode/index.js
+lines 14 · fan_in 1 · age 2958d · last touched 533d
+dark_room</title></rect>
+<rect x="1113" y="273" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/utils/unicode/is-combining-character.js
+lines 12 · fan_in 2 · age 2958d · last touched 181d
+scaffolding</title></rect>
+<rect x="1130" y="273" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/rules/utils/unicode/is-emoji-modifier.js
+lines 12 · fan_in 2 · age 2958d · last touched 533d
+dark_room
+scaffolding</title></rect>
+<rect x="1147" y="273" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/rules/utils/unicode/is-regional-indicator-symbol.js
+lines 12 · fan_in 2 · age 2958d · last touched 533d
+dark_room
+scaffolding</title></rect>
+<rect x="1164" y="273" width="15" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/rules/utils/unicode/is-surrogate-pair.js
+lines 13 · fan_in 2 · age 2958d · last touched 533d
+dark_room
+scaffolding</title></rect>
+<rect x="1182" y="273" width="18" height="16" style="fill:#d9cfb8;stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/shared/ajv.js
+lines 28 · fan_in 2 · age 3346d · last touched 533d
+dark_room
+hub (position: hub)</title></rect>
+<rect x="1203" y="273" width="18" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/shared/ast-utils.js
+lines 27 · fan_in 7 · age 2662d · last touched 533d
+dark_room
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="598" y="254" width="27" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/shared/naming.js
+lines 94 · fan_in 4 · age 3228d · last touched 194d
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="628" y="254" width="17" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/shared/relative-module-resolver.js
+lines 23 · fan_in 2 · age 2709d · last touched 450d
+scaffolding</title></rect>
+<rect x="648" y="254" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/shared/runtime-info.js
+lines 149 · fan_in 2 · age 2535d · last touched 443d
+scaffolding</title></rect>
+<rect x="683" y="254" width="21" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/shared/string-utils.js
+lines 47 · fan_in 8 · age 1931d · last touched 533d
+dark_room
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="707" y="254" width="16" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/unsupported-api.js
+lines 16 · fan_in 1 · age 1855d · last touched 220d
+scaffolding</title></rect>
+<line x1="594" y1="348" x2="1247" y2="348" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="598" y="225" width="15" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>lib/config-api.js
+lines 15 · fan_in 3 · age 545d · last touched 119d
+foundation (position: high-load hub)
+scaffolding</title></rect>
+<rect x="616" y="225" width="55" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>lib/config/config-loader.js
+lines 575 · fan_in 4 · age 709d · last touched 0d
+foundation (position: high-load hub)
+lit_room
+scaffolding</title></rect>
+<rect x="674" y="225" width="60" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:1 0"><title>lib/config/config.js
+lines 676 · fan_in 6 · age 738d · last touched 40d
+foundation (position: high-load hub)
+hub (position: hub)
+lit_room
+scaffolding</title></rect>
+<rect x="737" y="225" width="64" height="16" style="fill:#e8e2d3;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>lib/eslint/eslint-helpers.js
+lines 1287 · fan_in 3 · age 1495d · last touched 0d
+crack [decorative]
+foundation (position: high-load hub)
+lit_room
+toothpick_wing [decorative]</title></rect>
+<rect x="804" y="225" width="31" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>lib/eslint/worker.js
+lines 140 · fan_in 0 · age 385d · last touched 315d
+no named feature</title></rect>
+<rect x="838" y="225" width="42" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:1 0"><title>lib/languages/js/index.js
+lines 293 · fan_in 6 · age 812d · last touched 40d
+foundation (position: high-load hub)
+hub (position: hub)
+lit_room
+scaffolding</title></rect>
+<rect x="883" y="225" width="34" height="16" style="fill:#e8e2d3;stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/languages/js/validate-language-options.js
+lines 170 · fan_in 1 · age 812d · last touched 533d
+dark_room
+hub (position: hub)</title></rect>
+<rect x="920" y="225" width="41" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/linter/esquery.js
+lines 287 · fan_in 2 · age 495d · last touched 337d
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="964" y="225" width="25" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/linter/file-context.js
+lines 77 · fan_in 2 · age 735d · last touched 293d
+scaffolding</title></rect>
+<rect x="992" y="225" width="24" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>lib/linter/source-code-visitor.js
+lines 70 · fan_in 3 · age 456d · last touched 456d
+foundation (position: high-load hub)
+scaffolding</title></rect>
+<rect x="1019" y="225" width="27" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:1 0"><title>lib/linter/vfile.js
+lines 99 · fan_in 4 · age 812d · last touched 44d
+foundation (position: high-load hub)
+hub (position: hub)
+lit_room
+scaffolding</title></rect>
+<rect x="1049" y="225" width="57" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/logical-assignment-operators.js
+lines 620 · fan_in 2 · age 1448d · last touched 121d
+scaffolding</title></rect>
+<rect x="1109" y="225" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-empty-static-block.js
+lines 64 · fan_in 2 · age 1398d · last touched 366d
+scaffolding</title></rect>
+<rect x="1136" y="225" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-new-native-nonconstructor.js
+lines 57 · fan_in 2 · age 1398d · last touched 524d
+scaffolding</title></rect>
+<rect x="1162" y="225" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-object-constructor.js
+lines 104 · fan_in 2 · age 1081d · last touched 524d
+scaffolding</title></rect>
+<rect x="1193" y="225" width="25" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-unassigned-vars.js
+lines 73 · fan_in 2 · age 484d · last touched 120d
+scaffolding</title></rect>
+<rect x="598" y="206" width="56" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/no-useless-assignment.js
+lines 592 · fan_in 2 · age 969d · last touched 185d
+scaffolding</title></rect>
+<rect x="657" y="206" width="57" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/preserve-caught-error.js
+lines 613 · fan_in 2 · age 367d · last touched 49d
+scaffolding</title></rect>
+<rect x="717" y="206" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/rules/utils/char-source.js
+lines 213 · fan_in 2 · age 913d · last touched 385d
+scaffolding</title></rect>
+<rect x="757" y="206" width="16" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/rules/utils/code-path-utils.js
+lines 18 · fan_in 8 · age 94d · last touched 94d
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="776" y="206" width="22" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/rules/utils/regular-expressions.js
+lines 50 · fan_in 4 · age 1255d · last touched 533d
+dark_room
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="801" y="206" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/services/parser-service.js
+lines 55 · fan_in 2 · age 742d · last touched 299d
+scaffolding</title></rect>
+<rect x="826" y="206" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>lib/services/processor-service.js
+lines 84 · fan_in 2 · age 715d · last touched 299d
+scaffolding</title></rect>
+<rect x="855" y="206" width="40" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>lib/services/suppressions-service.js
+lines 259 · fan_in 4 · age 527d · last touched 171d
+foundation (position: high-load hub)
+scaffolding</title></rect>
+<rect x="898" y="206" width="25" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/services/warning-service.js
+lines 78 · fan_in 8 · age 471d · last touched 217d
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="926" y="206" width="16" height="16" style="fill:#e8e2d3;stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/shared/assert.js
+lines 18 · fan_in 5 · age 660d · last touched 533d
+dark_room
+foundation (position: high-load hub)
+hub (position: hub)</title></rect>
+<rect x="945" y="206" width="22" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/shared/deep-merge-arrays.js
+lines 52 · fan_in 3 · age 657d · last touched 533d
+dark_room
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="970" y="206" width="15" height="16" style="fill:#e8e2d3;stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/shared/directives.js
+lines 14 · fan_in 2 · age 1328d · last touched 533d
+dark_room
+hub (position: hub)</title></rect>
+<rect x="988" y="206" width="25" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>lib/shared/flags.js
+lines 79 · fan_in 2 · age 801d · last touched 300d
+no named feature</title></rect>
+<rect x="1016" y="206" width="20" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/shared/message-counts.js
+lines 41 · fan_in 3 · age 171d · last touched 171d
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="1039" y="206" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/shared/option-utils.js
+lines 54 · fan_in 2 · age 595d · last touched 533d
+dark_room
+scaffolding</title></rect>
+<rect x="1064" y="206" width="25" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:1 0"><title>lib/shared/serialization.js
+lines 74 · fan_in 2 · age 957d · last touched 48d
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="1092" y="206" width="21" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/shared/severity.js
+lines 45 · fan_in 4 · age 994d · last touched 533d
+dark_room
+foundation (position: high-load hub)
+hub (position: hub)
+scaffolding</title></rect>
+<rect x="1116" y="206" width="18" height="16" style="fill:#e8e2d3;stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>lib/shared/stats.js
+lines 26 · fan_in 2 · age 892d · last touched 533d
+dark_room
+hub (position: hub)</title></rect>
+<rect x="1137" y="206" width="23" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/shared/text-table.js
+lines 60 · fan_in 1 · age 668d · last touched 533d
+dark_room</title></rect>
+<rect x="1163" y="206" width="35" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>lib/shared/translate-cli-options.js
+lines 193 · fan_in 1 · age 385d · last touched 47d
+lit_room</title></rect>
+<rect x="1201" y="206" width="13" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>lib/universal.js
+lines 7 · fan_in 0 · age 715d · last touched 715d
+dark_room</title></rect>
+<line x1="594" y1="243" x2="1247" y2="243" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="1275" y="144" font-weight="bold" fill="#333">messages</text>
+<line x1="1271" y1="720" x2="1447" y2="720" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="1271" y1="596" x2="1447" y2="596" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="1275" y="454" width="14" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>messages/no-config-found.js
+lines 10 · fan_in 0 · age 3719d · last touched 533d
+dark_room</title></rect>
+<line x1="1271" y1="472" x2="1447" y2="472" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="1275" y="330" width="14" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>messages/extend-config-missing.js
+lines 9 · fan_in 0 · age 1931d · last touched 533d
+dark_room</title></rect>
+<rect x="1292" y="330" width="13" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>messages/failed-to-read-json.js
+lines 8 · fan_in 0 · age 1931d · last touched 533d
+dark_room</title></rect>
+<rect x="1308" y="330" width="13" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>messages/file-not-found.js
+lines 8 · fan_in 0 · age 1931d · last touched 533d
+dark_room</title></rect>
+<rect x="1324" y="330" width="15" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>messages/plugin-conflict.js
+lines 15 · fan_in 0 · age 1931d · last touched 533d
+dark_room</title></rect>
+<rect x="1342" y="330" width="14" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>messages/plugin-invalid.js
+lines 11 · fan_in 0 · age 1931d · last touched 533d
+dark_room</title></rect>
+<rect x="1359" y="330" width="14" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>messages/plugin-missing.js
+lines 12 · fan_in 0 · age 1931d · last touched 533d
+dark_room</title></rect>
+<rect x="1376" y="330" width="13" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>messages/whitespace-found.js
+lines 8 · fan_in 0 · age 1931d · last touched 533d
+dark_room</title></rect>
+<line x1="1271" y1="348" x2="1447" y2="348" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="1275" y="225" width="15" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>messages/all-matched-files-ignored.js
+lines 14 · fan_in 0 · age 819d · last touched 217d
+no named feature</title></rect>
+<rect x="1293" y="225" width="14" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>messages/config-file-missing.js
+lines 12 · fan_in 0 · age 839d · last touched 17d
+lit_room</title></rect>
+<rect x="1310" y="225" width="14" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>messages/config-plugin-missing.js
+lines 10 · fan_in 0 · age 561d · last touched 533d
+dark_room</title></rect>
+<rect x="1327" y="225" width="18" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>messages/config-serialize-function.js
+lines 25 · fan_in 0 · age 580d · last touched 533d
+dark_room</title></rect>
+<rect x="1348" y="225" width="25" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>messages/eslintrc-incompat.js
+lines 79 · fan_in 0 · age 1142d · last touched 217d
+no named feature</title></rect>
+<rect x="1376" y="225" width="16" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>messages/eslintrc-plugins.js
+lines 20 · fan_in 0 · age 1136d · last touched 217d
+no named feature</title></rect>
+<rect x="1395" y="225" width="14" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>messages/invalid-rule-options.js
+lines 11 · fan_in 0 · age 1218d · last touched 217d
+no named feature</title></rect>
+<rect x="1412" y="225" width="14" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>messages/invalid-rule-severity.js
+lines 9 · fan_in 0 · age 1218d · last touched 217d
+no named feature</title></rect>
+<rect x="1429" y="225" width="15" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>messages/rule-unsupported-language.js
+lines 15 · fan_in 0 · age 161d · last touched 161d
+no named feature</title></rect>
+<rect x="1275" y="206" width="16" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>messages/shared.js
+lines 20 · fan_in 2 · age 1218d · last touched 533d
+dark_room</title></rect>
+<line x1="1271" y1="243" x2="1447" y2="243" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="1475" y="144" font-weight="bold" fill="#333">packages</text>
+<rect x="1475" y="702" width="25" height="16" style="fill:#7e6f52;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>packages/js/src/configs/eslint-recommended.js
+lines 74 · fan_in 1 · age 4814d · last touched 287d
+crack [decorative]</title></rect>
+<line x1="1471" y1="720" x2="1634" y2="720" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="1471" y1="596" x2="1634" y2="596" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="1475" y="454" width="16" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>packages/eslint-config-eslint/index.js
+lines 17 · fan_in 0 · age 3978d · last touched 533d
+dark_room</title></rect>
+<line x1="1471" y1="472" x2="1634" y2="472" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="1471" y1="348" x2="1634" y2="348" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="1475" y="225" width="43" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/eslint-config-eslint/base.js
+lines 315 · fan_in 2 · age 1151d · last touched 166d
+no named feature</title></rect>
+<rect x="1521" y="225" width="13" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>packages/eslint-config-eslint/cjs.js
+lines 7 · fan_in 0 · age 1151d · last touched 533d
+dark_room</title></rect>
+<rect x="1537" y="225" width="31" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>packages/eslint-config-eslint/formatting.js
+lines 136 · fan_in 0 · age 819d · last touched 533d
+dark_room</title></rect>
+<rect x="1571" y="225" width="21" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>packages/eslint-config-eslint/nodejs.js
+lines 44 · fan_in 2 · age 1151d · last touched 533d
+dark_room</title></rect>
+<rect x="1595" y="225" width="36" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/js/src/configs/eslint-all.js
+lines 209 · fan_in 1 · age 1288d · last touched 287d
+no named feature</title></rect>
+<rect x="1475" y="206" width="16" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45;stroke-dasharray:1 0"><title>packages/js/src/index.js
+lines 19 · fan_in 4 · age 1288d · last touched 533d
+dark_room
+hub (position: hub)
+scaffolding</title></rect>
+<line x1="1471" y1="243" x2="1634" y2="243" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="1662" y="144" font-weight="bold" fill="#333">tools</text>
+<line x1="1658" y1="720" x2="1853" y2="720" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="1658" y1="596" x2="1853" y2="596" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="1662" y="454" width="49" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>tools/config-rule.js
+lines 429 · fan_in 3 · age 3943d · last touched 56d
+foundation (position: high-load hub)
+scaffolding</title></rect>
+<rect x="1714" y="454" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>tools/internal-rules/no-invalid-meta.js
+lines 121 · fan_in 1 · age 3704d · last touched 533d
+dark_room
+scaffolding</title></rect>
+<rect x="1747" y="454" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>tools/update-eslint-all.js
+lines 36 · fan_in 0 · age 3739d · last touched 287d
+no named feature</title></rect>
+<line x1="1658" y1="472" x2="1853" y2="472" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="1662" y="330" width="40" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>tools/code-sample-minimizer.js
+lines 263 · fan_in 2 · age 2672d · last touched 120d
+scaffolding</title></rect>
+<rect x="1705" y="330" width="39" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>tools/eslint-fuzzer.js
+lines 255 · fan_in 2 · age 3343d · last touched 310d
+scaffolding</title></rect>
+<rect x="1747" y="330" width="25" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>tools/fuzzer-runner.js
+lines 73 · fan_in 1 · age 3343d · last touched 408d
+no named feature</title></rect>
+<rect x="1775" y="330" width="16" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>tools/internal-rules/index.js
+lines 18 · fan_in 1 · age 2739d · last touched 533d
+dark_room</title></rect>
+<rect x="1794" y="330" width="18" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>tools/internal-rules/multiline-comment-style.js
+lines 29 · fan_in 1 · age 3232d · last touched 293d
+scaffolding</title></rect>
+<rect x="1815" y="330" width="28" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>tools/update-readme.js
+lines 110 · fan_in 0 · age 2761d · last touched 332d
+no named feature</title></rect>
+<line x1="1658" y1="348" x2="1853" y2="348" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="1662" y="225" width="30" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>tools/check-emfile-handling.js
+lines 121 · fan_in 0 · age 870d · last touched 0d
+lit_room</title></rect>
+<rect x="1695" y="225" width="43" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>tools/check-rule-examples.js
+lines 308 · fan_in 0 · age 1019d · last touched 251d
+no named feature</title></rect>
+<rect x="1741" y="225" width="15" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>tools/commit-readme.sh
+lines 14 · fan_in 0 · age 1345d · last touched 533d
+dark_room</title></rect>
+<rect x="1759" y="225" width="27" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>tools/fetch-docs-links.js
+lines 91 · fan_in 0 · age 1567d · last touched 298d
+no named feature</title></rect>
+<rect x="1789" y="225" width="27" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>tools/generate-formatter-examples.js
+lines 96 · fan_in 0 · age 402d · last touched 402d
+no named feature</title></rect>
+<rect x="1819" y="225" width="31" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>tools/internal-rules/no-debug-template-literals.js
+lines 133 · fan_in 1 · age 0d · last touched 0d
+lit_room
+scaffolding</title></rect>
+<rect x="1662" y="206" width="22" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>tools/test-ecosystem/build-failure-summary.js
+lines 53 · fan_in 0 · age 31d · last touched 31d
+lit_room</title></rect>
+<rect x="1687" y="206" width="24" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>tools/test-ecosystem/data.mjs
+lines 70 · fan_in 2 · age 130d · last touched 130d
+no named feature</title></rect>
+<rect x="1714" y="206" width="33" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>tools/test-ecosystem/index.mjs
+lines 168 · fan_in 0 · age 130d · last touched 0d
+lit_room</title></rect>
+<rect x="1750" y="206" width="22" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>tools/test-ecosystem/sync-ecosystem-issue.js
+lines 49 · fan_in 0 · age 31d · last touched 31d
+lit_room</title></rect>
+<rect x="1775" y="206" width="26" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>tools/test-ecosystem/update.mjs
+lines 81 · fan_in 0 · age 130d · last touched 130d
+no named feature</title></rect>
+<rect x="1804" y="206" width="21" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>tools/update-eslint-recommended.js
+lines 44 · fan_in 0 · age 320d · last touched 287d
+no named feature</title></rect>
+<rect x="1662" y="187" width="43" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>tools/update-rule-type-headers.js
+lines 311 · fan_in 0 · age 595d · last touched 385d
+no named feature</title></rect>
+<line x1="1658" y1="243" x2="1853" y2="243" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="24" y="764" fill="#333">diagnostic: dark_room×83, flooded_basement×48, foundation×48, hub×50, lit_room×48, scaffolding×371   ·   decorative: 49 instance(s) of crack, toothpick_wing   ·   648 diagnostic instance(s) in total</text>
+</svg>

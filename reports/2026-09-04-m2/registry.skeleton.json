@@ -1,0 +1,6922 @@
+{
+ "archetype": null,
+ "features": [
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.9197
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/config/index.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.9128
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/db/connection.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.8596
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/db/repository/base-repository.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.8106
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/db/repository/index.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.9074
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/middleware/auth.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.846
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/middleware/rate-limit.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.9044
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/routes/v1/schemas.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.8923
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/schemas/definition/provenance.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.7898
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/schemas/definition/types.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.9217
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/schemas/enums.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.8403
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/schemas/user/schema.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.8087
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/services/analytics/analytics-service.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.8545
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/services/definition-renderer/index.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.8196
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/services/safety/analyzer-version.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.8297
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/services/safety/deep-analysis-queue.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.811
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/services/safety/definition-scanner.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.9393
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/services/safety/types.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.8384
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/services/safety/yaml-walker.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.8001
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/terminal/styles.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.8472
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/utils/async-handler.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.9629
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/utils/errors.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.7935
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/utils/hash.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.8478
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/utils/logger.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.7986
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/utils/read-through-cache.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.8586
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/utils/singleton.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.9113
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/utils/uuid.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.872
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "node": "src/utils/validated-request.ts",
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "signals": {
+    "load_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= p90": 0.7895599999999999
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9513
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/config/database.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9963
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/config/index.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9813
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/db/connection.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9588
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/base-repository.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9288
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/index.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9625
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/middleware/auth.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9476
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/routes/v1/schemas.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9663
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/schemas/definition/provenance.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9438
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/schemas/definition/schema.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 1.0
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/schemas/enums.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9064
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/schemas/fork/schema.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9326
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/schemas/model/schema.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9139
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/schemas/reference/schema.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9925
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/schemas/user/schema.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9026
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/schemas/validation/schema.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9139
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/services/definition-renderer/index.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9251
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/definition-scanner.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.97
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/types.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9363
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/yaml-walker.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9401
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/terminal/styles.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9213
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/utils/async-handler.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9888
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/utils/errors.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.985
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/utils/logger.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9775
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/utils/request-context.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9551
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/utils/singleton.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9738
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/utils/uuid.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "centrality": 0.9139
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "node": "src/utils/validated-request.ts",
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "signals": {
+    "centrality": "asserted"
+   },
+   "thresholds": {
+    "centrality >= p90": 0.9003800000000001
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.1766,
+    "neglect_index": 0.8697
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "knexfile.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.1187,
+    "neglect_index": 0.9865
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "scripts/run-seed.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.7048,
+    "neglect_index": 0.8697
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/config/database.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.1878,
+    "neglect_index": 0.9258
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/001_create_definitions.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.1657,
+    "neglect_index": 0.9258
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/002_create_definition_versions.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.1581,
+    "neglect_index": 0.9258
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/003_create_definition_forks.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.164,
+    "neglect_index": 0.9258
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/004_create_definition_references.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.1493,
+    "neglect_index": 0.9258
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/005_create_providers.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.1678,
+    "neglect_index": 0.9258
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/006_create_models.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.1567,
+    "neglect_index": 0.9258
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/007_create_model_aliases.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.1455,
+    "neglect_index": 0.8652
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/20260119222852_alter_hash_column_size.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.2234,
+    "neglect_index": 0.8652
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/routes/index.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.7898,
+    "neglect_index": 0.8794
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/schemas/definition/types.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.1824,
+    "neglect_index": 0.8794
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/schemas/fork/index.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.6726,
+    "neglect_index": 0.8794
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/schemas/fork/types.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.1917,
+    "neglect_index": 0.8794
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/schemas/model/index.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.7238,
+    "neglect_index": 0.8794
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/schemas/model/types.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.1882,
+    "neglect_index": 0.8794
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/schemas/reference/index.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.6821,
+    "neglect_index": 0.8794
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/schemas/reference/schema.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.4774,
+    "neglect_index": 0.8794
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/schemas/reference/transforms.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.687,
+    "neglect_index": 0.8794
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/schemas/reference/types.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.1897,
+    "neglect_index": 0.8794
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/schemas/validation/index.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.5973,
+    "neglect_index": 0.8794
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/schemas/validation/types.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.2835,
+    "neglect_index": 0.8794
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/schemas/version/index.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.5701,
+    "neglect_index": 0.8794
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/schemas/version/types.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.8472,
+    "neglect_index": 0.9551
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/utils/async-handler.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.5817,
+    "neglect_index": 0.9258
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/utils/cycle-detection.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "load_index": 0.8586,
+    "neglect_index": 0.9865
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "node": "src/utils/singleton.ts",
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "signals": {
+    "load_index": "asserted",
+    "neglect_index": "asserted"
+   },
+   "thresholds": {
+    "load_index >= 0.1": 0.1,
+    "neglect_index >= p90": 0.8652
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.906
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/config/database.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/config/index.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/controllers/analytics-controller.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/controllers/definition-analytics-controller.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/controllers/definition-controller.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/controllers/dependency-controller.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/controllers/execution-controller.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/controllers/fork-controller.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/controllers/model-controller.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/controllers/org-controller.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/controllers/org-profile-controller.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/controllers/star-controller.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/controllers/translation-controller.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/controllers/user-controller.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/controllers/validation-controller.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/controllers/version-controller.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/controllers/webhook-controller.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9925
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/db/connection.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/alias-repository.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/analytics-repository.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/base-repository.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.906
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/definition-repository.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/fork-repository.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9361
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/index.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/model-repository.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/provider-repository.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/reference-repository.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9361
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/tracker-repository.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/user-repository.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9361
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/version-repository.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9361
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/index.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.985
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/middleware/auth.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/middleware/correlation-id.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/middleware/degradation-header.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9624
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/middleware/error-handler.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/middleware/index.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/middleware/metrics.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/middleware/parse-version.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/middleware/pool-pressure.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/middleware/rate-limit.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/middleware/request-logger.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/middleware/service-key.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/middleware/tier-gate.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/middleware/type-guard.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/middleware/username-gate.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/middleware/validate.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/routes/v1/definitions.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/routes/v1/index.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/routes/v1/models.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/routes/v1/render.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9361
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/routes/v1/schemas.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/cdl/types.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/definition/provenance.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9361
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/definition/schema.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/definition/transforms.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9756
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/definition/types.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/enums.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/fork/schema.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/fork/transforms.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/fork/types.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/model/schema.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/model/transforms.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/model/types.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/reference/schema.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/reference/transforms.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/reference/types.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/user/index.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9624
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/user/schema.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/user/transforms.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/validation/schema.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/validation/types.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/version/schema.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/version/transforms.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/version/types.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/schemas/wdl/types.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9361
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/analytics/analytics-service.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/analytics/composition-lift.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/analytics/definition-analytics-service.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/analytics/health.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/analytics/recomputation-service.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/analytics/types.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9624
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/definition-renderer/index.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/definition/index.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/definition/lifecycle.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/definition/mutations.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/definition/queries.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/definition/quota.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/definition/status-machine.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/dependency/index.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/executions/index.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/fork/index.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.906
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/model/index.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9756
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/analyzer-version.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/capabilities.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/decode.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9624
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/deep-analysis-queue.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/deep-analysis-worker.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9624
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/definition-scanner.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/fork-diff.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/index.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/publish-gate.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/risk-calculator.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/section-classifier.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.906
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/signals.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9887
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/types.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9361
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/yaml-walker.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/star/index.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.906
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/translation/index.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9361
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/translation/translator.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/validation/index.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/validation/reference-validator.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/services/version-service.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/shutdown.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.906
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/analytics-helpers.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/async-handler.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/circuit-breaker.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/cycle-detection.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/definition-metadata.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/definition-response.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 1.0
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/errors.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/fork-identity.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/format-definition-id.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.906
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/hash.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/json.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9812
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/logger.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/platform-version-gate.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.8459
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/read-through-cache.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/request-context.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/resolve-author.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/retry.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/singleton.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.9962
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/uuid.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "reinforcement_index": 0.6504
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "node": "src/utils/validated-request.ts",
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "signals": {
+    "reinforcement_index": "asserted"
+   },
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9981
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "scripts/run-seed.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9794
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/001_create_definitions.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9794
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/002_create_definition_versions.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9794
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/003_create_definition_forks.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9794
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/004_create_definition_references.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9794
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/005_create_providers.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9794
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/006_create_models.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9794
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/007_create_model_aliases.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9007
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/013_relax_delete_constraints.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9195
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/014_create_definition_languages.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9139
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/015_create_definition_stars.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9082
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/016_add_fulltext_search_index.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9607
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/20260119222852_alter_hash_column_size.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9607
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/routes/index.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9007
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/routes/v1/render.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9438
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/terminal/banner.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9438
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/terminal/index.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9438
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/terminal/sections/database.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9438
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/terminal/sections/environment.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9438
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/terminal/sections/index.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9082
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/terminal/sections/server.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9438
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/terminal/startup.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9438
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/terminal/styles.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9195
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/utils/async-handler.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9794
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/utils/cycle-detection.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.927
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/utils/format-definition-id.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.927
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/utils/retry.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.9981
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "node": "src/utils/singleton.ts",
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 0.9007
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0075
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/controllers/definition-controller.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0225
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/controllers/dependency-controller.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.1255
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/controllers/fork-controller.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0936
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/controllers/model-controller.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.1255
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/controllers/translation-controller.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0936
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/controllers/user-controller.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0075
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/db/connection.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0599
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/042_create_definition_lineages.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.1255
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/db/migrations/052_repoint_anthropic_aliases.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.1255
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/alias-repository.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0599
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/definition-repository.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0599
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/lineage-repository.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.1255
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/db/repository/version-repository.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.1255
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/db/seeds/003_aliases.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0075
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/index.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0599
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/middleware/validate.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0225
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/routes/v1/definitions.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.1255
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/routes/v1/index.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.1255
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/routes/v1/schemas.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0599
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/schemas/enums.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.1255
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/schemas/validation/schema.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.1255
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/schemas/version/schema.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0599
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/analytics/analytics-service.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0599
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/analytics/health.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0599
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/analytics/types.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0599
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/definition/lifecycle.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0599
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/definition/queries.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0225
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/definition/quota.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.1255
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/definition/types.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0225
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/dependency/index.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0599
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/fork/index.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0936
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/model/index.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0225
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/capabilities.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0599
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/deep-analysis-queue.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0599
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/safety/publish-gate.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.1255
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/translation/index.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0599
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/translation/translator.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.1255
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/validation/index.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.1255
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/services/version-service.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": false,
+   "decorative_reason": null,
+   "degraded": false,
+   "diagnostic": true,
+   "evidence": {
+    "last_touched_days": 0.0599
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "node": "src/utils/definition-response.ts",
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "signals": {
+    "last_touched_days": "asserted"
+   },
+   "thresholds": {
+    "last_touched_days <= p10": 0.1255
+   },
+   "validation_status": "asserted"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.7807
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/config/index.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.8491
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/controllers/definition-controller.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.7815
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/controllers/fork-controller.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.7522
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/controllers/model-controller.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.8257
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/db/connection.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.8367
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/db/repository/definition-repository.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.773
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/db/repository/version-repository.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.8453
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/index.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.767
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/middleware/auth.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.7676
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/middleware/rate-limit.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.8348
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/routes/v1/definitions.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.7964
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/routes/v1/index.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.818
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/routes/v1/schemas.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.7646
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/schemas/definition/schema.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.7631
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/schemas/definition/transforms.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.7946
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/schemas/enums.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.833
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/services/analytics/analytics-service.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.8021
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/services/analytics/health.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.818
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/services/definition/lifecycle.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.809
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/services/definition/mutations.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.8058
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/services/definition/queries.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.7655
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/services/definition/types.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.7749
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/services/dependency/index.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.8199
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/services/fork/index.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.8178
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/services/model/index.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.7815
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/services/translation/index.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  },
+  {
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "degraded": false,
+   "diagnostic": false,
+   "evidence": {
+    "bug_pressure_index": 0.7927
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "node": "src/services/version-service.ts",
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "signals": {
+    "bug_pressure_index": "unvalidated"
+   },
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.75124
+   },
+   "validation_status": "unvalidated"
+  }
+ ],
+ "gate": {
+  "graph_degraded": false,
+  "signals": {
+   "bug_pressure_index": "unvalidated",
+   "centrality": "asserted",
+   "last_touched_days": "asserted",
+   "load_index": "asserted",
+   "neglect_index": "asserted",
+   "reinforcement_index": "asserted"
+  }
+ },
+ "mapped_at": "2026-09-05T03:09:00+00:00",
+ "mapper_version": "0.2.2",
+ "overlays": [],
+ "profile": {
+  "name": "maintainability",
+  "version": "0.1.0"
+ },
+ "repo": {
+  "head_sha": "f7414cc7bbec62ba80068af4b045667064d1d59e",
+  "name": "uluops-registry-api"
+ },
+ "ruleset": {
+  "name": "maintainability",
+  "source": "rulesets/maintainability.toml",
+  "version": "0.1.0"
+ },
+ "schema_version": "0.1",
+ "skeleton_hash": "26bbf9f9cf8871823078adf4b20c2e73157e6ecc3591dba9ec664a148a91eabc",
+ "strata": {
+  "bands": 5,
+  "by_node": {
+   "eslint.config.js": 0,
+   "eslint.deprecated.config.js": 4,
+   "knexfile.ts": 0,
+   "scripts/backfill-deep-analysis.ts": 3,
+   "scripts/backfill-definition-tags.ts": 4,
+   "scripts/backfill-fork-parents.ts": 3,
+   "scripts/backfill-is-latest.ts": 4,
+   "scripts/backfill-missing-risk-profiles.ts": 4,
+   "scripts/backfill-normalize-hashes.ts": 4,
+   "scripts/backfill-references.ts": 2,
+   "scripts/backfill-risk-scalars.ts": 4,
+   "scripts/backfill-stale-risk-profiles.ts": 4,
+   "scripts/backfill-stale-runtime-md.ts": 4,
+   "scripts/backfill-unique-execution-count.ts": 4,
+   "scripts/backfill-version-stamping.ts": 3,
+   "scripts/backup-db.sh": 2,
+   "scripts/calibration-gate.ts": 3,
+   "scripts/check-optionalauth-nonget.ts": 4,
+   "scripts/cron/deep-analysis.sh": 4,
+   "scripts/cron/executions-retention.sh": 4,
+   "scripts/cron/models-sync.sh": 4,
+   "scripts/lineage-consistency-check.ts": 4,
+   "scripts/list-pre-a1-versions.ts": 3,
+   "scripts/measure-risk-profile-staleness.ts": 4,
+   "scripts/provision-test-db.sh": 4,
+   "scripts/requeue-deep-stale.ts": 4,
+   "scripts/retranslate-corpus.ts": 4,
+   "scripts/run-deep-analysis.ts": 4,
+   "scripts/run-seed.ts": 0,
+   "scripts/setup-test-auth-db.ts": 2,
+   "scripts/time-recompute-all.ts": 4,
+   "scripts/undeclared-query-params.py": 4,
+   "scripts/verify-hash-parity.ts": 4,
+   "src/config/database.ts": 0,
+   "src/config/index.ts": 0,
+   "src/controllers/analytics-controller.ts": 3,
+   "src/controllers/deep-analysis-controller.ts": 3,
+   "src/controllers/definition-analytics-controller.ts": 3,
+   "src/controllers/definition-controller.ts": 1,
+   "src/controllers/definition-language-controller.ts": 2,
+   "src/controllers/dependency-controller.ts": 2,
+   "src/controllers/execution-controller.ts": 2,
+   "src/controllers/fork-controller.ts": 1,
+   "src/controllers/index.ts": 1,
+   "src/controllers/model-controller.ts": 1,
+   "src/controllers/org-controller.ts": 2,
+   "src/controllers/org-profile-controller.ts": 2,
+   "src/controllers/star-controller.ts": 2,
+   "src/controllers/translation-controller.ts": 2,
+   "src/controllers/user-controller.ts": 2,
+   "src/controllers/validation-controller.ts": 1,
+   "src/controllers/version-controller.ts": 1,
+   "src/controllers/webhook-controller.ts": 3,
+   "src/db/connection.ts": 0,
+   "src/db/migrations/001_create_definitions.ts": 0,
+   "src/db/migrations/002_create_definition_versions.ts": 0,
+   "src/db/migrations/003_create_definition_forks.ts": 0,
+   "src/db/migrations/004_create_definition_references.ts": 0,
+   "src/db/migrations/005_create_providers.ts": 0,
+   "src/db/migrations/006_create_models.ts": 0,
+   "src/db/migrations/007_create_model_aliases.ts": 0,
+   "src/db/migrations/011_extend_models_table.ts": 2,
+   "src/db/migrations/012_create_definition_executions.ts": 2,
+   "src/db/migrations/013_relax_delete_constraints.ts": 2,
+   "src/db/migrations/014_create_definition_languages.ts": 2,
+   "src/db/migrations/015_create_definition_stars.ts": 2,
+   "src/db/migrations/016_add_fulltext_search_index.ts": 2,
+   "src/db/migrations/017_update_admin_definitions_to_pro_tier.ts": 2,
+   "src/db/migrations/018_add_min_subscription.ts": 2,
+   "src/db/migrations/019_rename_community_tier_to_public.ts": 2,
+   "src/db/migrations/020_add_check_constraints.ts": 2,
+   "src/db/migrations/021_add_org_id_column.ts": 2,
+   "src/db/migrations/022_enforce_org_id_not_null.ts": 2,
+   "src/db/migrations/023_add_catalogue_fields.ts": 2,
+   "src/db/migrations/024_sync_visibility_across_versions.ts": 2,
+   "src/db/migrations/025_create_definition_metrics.ts": 3,
+   "src/db/migrations/026_preserve_fork_lineage.ts": 3,
+   "src/db/migrations/027_add_archived_status.ts": 3,
+   "src/db/migrations/028_rename_tier_public_to_org.ts": 3,
+   "src/db/migrations/029_add_weight_version.ts": 3,
+   "src/db/migrations/030_add_prompt_hash_column.ts": 3,
+   "src/db/migrations/031_add_provenance.ts": 3,
+   "src/db/migrations/032_rename_schema_version.ts": 3,
+   "src/db/migrations/033_add_org_id_foreign_key.ts": 3,
+   "src/db/migrations/034_convert_user_ids_to_binary.ts": 3,
+   "src/db/migrations/035_scope_execution_run_id_to_definition.ts": 3,
+   "src/db/migrations/036_add_risk_profile_to_definition_versions.ts": 3,
+   "src/db/migrations/037_add_deep_analysis_columns.ts": 3,
+   "src/db/migrations/038_add_inherited_health_baseline.ts": 3,
+   "src/db/migrations/039_definitions_org_type_status_fork_idx.ts": 4,
+   "src/db/migrations/040_sync_fragmented_visibility.ts": 4,
+   "src/db/migrations/041_recompute_lineage_counters.ts": 4,
+   "src/db/migrations/042_create_definition_lineages.ts": 4,
+   "src/db/migrations/043_min_subscription_all_free.ts": 4,
+   "src/db/migrations/044_retire_lineage_property_copies.ts": 4,
+   "src/db/migrations/045_restore_definitions_foreign_keys.ts": 4,
+   "src/db/migrations/046_definitions_type_name_version_idx.ts": 4,
+   "src/db/migrations/047_add_trusted_execution_count.ts": 4,
+   "src/db/migrations/048_add_is_latest_to_definitions.ts": 4,
+   "src/db/migrations/049_backfill_google_structured_output_with_tools.ts": 4,
+   "src/db/migrations/050_add_fork_source_snapshot.ts": 4,
+   "src/db/migrations/051_repoint_grok_alias.ts": 4,
+   "src/db/migrations/052_repoint_anthropic_aliases.ts": 4,
+   "src/db/migrations/20260119222852_alter_hash_column_size.ts": 1,
+   "src/db/migrations/20260624120000_repoint_stale_model_aliases.ts": 4,
+   "src/db/migrations/20260628000000_rename_trusted_to_unique_execution_count.ts": 4,
+   "src/db/migrations/20260712000000_add_risk_scalars_to_definitions.ts": 4,
+   "src/db/migrations/20260718000000_add_analyzer_version_to_definitions.ts": 4,
+   "src/db/migrations/20260726000000_add_cost_last_updated_to_models.ts": 4,
+   "src/db/repository/alias-repository.ts": 0,
+   "src/db/repository/analytics-repository.ts": 3,
+   "src/db/repository/base-repository.ts": 0,
+   "src/db/repository/definition-repository.ts": 0,
+   "src/db/repository/execution-repository.ts": 2,
+   "src/db/repository/fork-repository.ts": 0,
+   "src/db/repository/index.ts": 0,
+   "src/db/repository/lineage-repository.ts": 4,
+   "src/db/repository/model-repository.ts": 0,
+   "src/db/repository/provider-repository.ts": 0,
+   "src/db/repository/reference-repository.ts": 0,
+   "src/db/repository/star-repository.ts": 2,
+   "src/db/repository/tracker-repository.ts": 3,
+   "src/db/repository/user-repository.ts": 2,
+   "src/db/repository/version-repository.ts": 0,
+   "src/db/seeds/001_providers.ts": 0,
+   "src/db/seeds/002_models.ts": 0,
+   "src/db/seeds/003_aliases.ts": 0,
+   "src/db/seeds/utils.ts": 3,
+   "src/index.ts": 0,
+   "src/middleware/auth.ts": 2,
+   "src/middleware/correlation-id.ts": 2,
+   "src/middleware/degradation-header.ts": 2,
+   "src/middleware/error-handler.ts": 0,
+   "src/middleware/index.ts": 0,
+   "src/middleware/metrics.ts": 2,
+   "src/middleware/parse-version.ts": 1,
+   "src/middleware/pool-pressure.ts": 2,
+   "src/middleware/rate-limit.ts": 1,
+   "src/middleware/request-logger.ts": 0,
+   "src/middleware/service-key.ts": 3,
+   "src/middleware/tier-gate.ts": 3,
+   "src/middleware/type-guard.ts": 1,
+   "src/middleware/username-gate.ts": 2,
+   "src/middleware/validate.ts": 1,
+   "src/routes/index.ts": 1,
+   "src/routes/v1/analytics.ts": 3,
+   "src/routes/v1/deep-analysis.ts": 3,
+   "src/routes/v1/definitions.ts": 1,
+   "src/routes/v1/index.ts": 1,
+   "src/routes/v1/languages.ts": 2,
+   "src/routes/v1/maintenance.ts": 4,
+   "src/routes/v1/models.ts": 1,
+   "src/routes/v1/org-profile.ts": 2,
+   "src/routes/v1/render.ts": 1,
+   "src/routes/v1/schemas.ts": 1,
+   "src/routes/v1/users.ts": 2,
+   "src/routes/v1/validation.ts": 1,
+   "src/routes/v1/webhooks.ts": 3,
+   "src/schemas/cdl/index.ts": 1,
+   "src/schemas/cdl/types.ts": 1,
+   "src/schemas/definition/index.ts": 0,
+   "src/schemas/definition/provenance.ts": 3,
+   "src/schemas/definition/schema.ts": 0,
+   "src/schemas/definition/transforms.ts": 0,
+   "src/schemas/definition/types.ts": 0,
+   "src/schemas/enums.ts": 0,
+   "src/schemas/fork/index.ts": 0,
+   "src/schemas/fork/schema.ts": 0,
+   "src/schemas/fork/transforms.ts": 0,
+   "src/schemas/fork/types.ts": 0,
+   "src/schemas/index.ts": 0,
+   "src/schemas/model/index.ts": 0,
+   "src/schemas/model/schema.ts": 0,
+   "src/schemas/model/transforms.ts": 0,
+   "src/schemas/model/types.ts": 0,
+   "src/schemas/reference/index.ts": 0,
+   "src/schemas/reference/schema.ts": 0,
+   "src/schemas/reference/transforms.ts": 0,
+   "src/schemas/reference/types.ts": 0,
+   "src/schemas/user/index.ts": 2,
+   "src/schemas/user/schema.ts": 2,
+   "src/schemas/user/transforms.ts": 2,
+   "src/schemas/validation/index.ts": 0,
+   "src/schemas/validation/schema.ts": 0,
+   "src/schemas/validation/types.ts": 0,
+   "src/schemas/version/index.ts": 0,
+   "src/schemas/version/schema.ts": 0,
+   "src/schemas/version/transforms.ts": 0,
+   "src/schemas/version/types.ts": 0,
+   "src/schemas/wdl/context.ts": 1,
+   "src/schemas/wdl/index.ts": 1,
+   "src/schemas/wdl/types.ts": 1,
+   "src/services/analytics/analytics-service.ts": 3,
+   "src/services/analytics/composition-lift.ts": 3,
+   "src/services/analytics/definition-analytics-service.ts": 3,
+   "src/services/analytics/health.ts": 3,
+   "src/services/analytics/recomputation-service.ts": 3,
+   "src/services/analytics/types.ts": 3,
+   "src/services/definition-language/index.ts": 2,
+   "src/services/definition-renderer/index.ts": 1,
+   "src/services/definition/index.ts": 0,
+   "src/services/definition/lifecycle.ts": 0,
+   "src/services/definition/mutations.ts": 0,
+   "src/services/definition/queries.ts": 0,
+   "src/services/definition/quota.ts": 4,
+   "src/services/definition/status-machine.ts": 3,
+   "src/services/definition/types.ts": 0,
+   "src/services/dependency/index.ts": 2,
+   "src/services/executions/index.ts": 2,
+   "src/services/fork/index.ts": 1,
+   "src/services/index.ts": 0,
+   "src/services/model/index.ts": 2,
+   "src/services/safety/analyzer-version.ts": 4,
+   "src/services/safety/capabilities.ts": 3,
+   "src/services/safety/decode.ts": 4,
+   "src/services/safety/deep-analysis-queue.ts": 3,
+   "src/services/safety/deep-analysis-worker.ts": 3,
+   "src/services/safety/definition-scanner.ts": 3,
+   "src/services/safety/fork-diff.ts": 3,
+   "src/services/safety/index.ts": 3,
+   "src/services/safety/publish-gate.ts": 4,
+   "src/services/safety/risk-calculator.ts": 3,
+   "src/services/safety/section-classifier.ts": 4,
+   "src/services/safety/signals.ts": 3,
+   "src/services/safety/types.ts": 3,
+   "src/services/safety/yaml-walker.ts": 3,
+   "src/services/star/index.ts": 2,
+   "src/services/translation/index.ts": 1,
+   "src/services/translation/translator.ts": 1,
+   "src/services/validation/index.ts": 1,
+   "src/services/validation/reference-validator.ts": 1,
+   "src/services/version-service.ts": 0,
+   "src/shutdown.ts": 4,
+   "src/terminal/banner.ts": 2,
+   "src/terminal/index.ts": 2,
+   "src/terminal/sections/database.ts": 2,
+   "src/terminal/sections/environment.ts": 2,
+   "src/terminal/sections/index.ts": 2,
+   "src/terminal/sections/server.ts": 2,
+   "src/terminal/startup.ts": 2,
+   "src/terminal/styles.ts": 2,
+   "src/utils/analytics-helpers.ts": 3,
+   "src/utils/async-handler.ts": 0,
+   "src/utils/circuit-breaker.ts": 2,
+   "src/utils/cycle-detection.ts": 0,
+   "src/utils/definition-metadata.ts": 3,
+   "src/utils/definition-response.ts": 3,
+   "src/utils/empty-envelopes.ts": 4,
+   "src/utils/errors.ts": 0,
+   "src/utils/fork-identity.ts": 4,
+   "src/utils/format-definition-id.ts": 2,
+   "src/utils/hash.ts": 0,
+   "src/utils/index.ts": 0,
+   "src/utils/json.ts": 1,
+   "src/utils/logger.ts": 0,
+   "src/utils/platform-version-gate.ts": 4,
+   "src/utils/read-through-cache.ts": 2,
+   "src/utils/request-context.ts": 4,
+   "src/utils/resolve-author.ts": 3,
+   "src/utils/retry.ts": 2,
+   "src/utils/singleton.ts": 0,
+   "src/utils/uuid.ts": 0,
+   "src/utils/validated-request.ts": 1,
+   "stryker.config.mjs": 1,
+   "vitest.config.ts": 0,
+   "vitest.integration.config.ts": 0,
+   "vitest.unit.config.ts": 1
+  },
+  "signal": "age_days"
+ },
+ "substrate_config_fingerprint": "80b2a632f8b73997c59367c86ae88c727c3f6fbf90180e966b9601600b3db92c",
+ "substrate_seed": "c576e0759dc911cc96dd805c584bf32c943ac411106c06b4e24432ce64d2380a",
+ "summary": {
+  "decorative_count": 27,
+  "decorative_features": [
+   "crack"
+  ],
+  "degraded_count": 0,
+  "diagnostic_count": 283,
+  "feature_counts": {
+   "crack": 27,
+   "dark_room": 28,
+   "flooded_basement": 28,
+   "foundation": 27,
+   "hub": 27,
+   "lit_room": 40,
+   "scaffolding": 133
+  },
+  "population": 267
+ },
+ "validation_config_fingerprint": "cb320f19185242be4855065300532b3b652be40847a9d2cf1a72bda6da71985b"
+}

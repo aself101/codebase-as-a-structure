@@ -2,7 +2,7 @@
 
 *A single git repository rendered as a building you can read. The picture is diagnostic, not decorative: every visual feature is a function of a measured signal, and a feature may not render unless its signal has earned it.*
 
-**Package:** `repo-substrate` (C1 + the validation gate). **Status (2026-09-04):** M1 complete (D-015). The substrate and the gate are built, reviewed by six lenses, hardened, and run: both predictive indices are `unvalidated` on the pre-registered test set; twenty-one descriptive signals are `asserted`. Nothing renders yet; M2 (C3 + cutaway) is next.
+**Package:** `repo-substrate` (C1 + the validation gate). **Status (2026-09-04):** M1 complete (D-015). The substrate and the gate are built, reviewed by six lenses, hardened, and run: both predictive indices are `unvalidated` on the pre-registered test set; twenty-one descriptive signals are `asserted`. M2 has its first consumer (D-016): C3 applies `rulesets/maintainability.toml` under the gate and the cutaway renders it; first pictures in `reports/2026-09-04-m2/`.
 
 ## What is new here, exactly
 
@@ -23,7 +23,8 @@ That claim is defensible only insofar as the gate can fail and the report shows 
 | `DECISIONS.md` | Append-only decision log, D-001 onward. Why the artifact is shaped this way |
 | `checklists/` | Testable contracts per spec, each pointing at the test that covers it |
 | `blind/` | Sealed recognition rankings per reference repo (n = 1, non-gating, provenance stated in-file) |
-| `src/repo_substrate/` | The package: `substrate extract` and `substrate-validate run \| tune` |
+| `src/repo_substrate/` | The package: `substrate extract \| map \| render` and `substrate-validate run \| tune` |
+| `rulesets/` | C3 rulesets (TOML): the maintainability profile v0.1.0 |
 | `tests/` | 62 tests incl. a scripted synthetic repository, verdict-path tests, and integrity checks |
 | `docs/` | Review history: the June tribunal, the archived prototype, notes |
 
@@ -35,6 +36,9 @@ uv run substrate extract <repo> -o out/x.substrate.json --report out/x.report.md
 uv run substrate-validate tune --repo <tuning-repo> --repo <tuning-repo> --out config/
 uv run substrate-validate run --test-repo <a> --test-repo <b> --tuning-repo <c> --tuning-repo <d> \
     --config config/tuned.toml --out out/validation
+uv run substrate map out/x.substrate.json --validation out/validation/validation.json \
+    --ruleset rulesets/maintainability.toml -o out/x.skeleton.json
+uv run substrate render out/x.skeleton.json out/x.substrate.json -o out/x.cutaway.svg
 uv run pytest -q
 ```
 

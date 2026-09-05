@@ -1,0 +1,75 @@
+# Structural mapper ruleset — maintainability profile (structural-mapper-spec §4, D-016).
+#
+# Every feature reads signals from substrate.json and is admitted only if validation.json
+# marks each of them `validated` or `asserted`, or the feature is `decorative = true` with a
+# decorative_reason. Thresholds `pNN` are percentiles of that signal across the population.
+#
+# Register discipline (validation §2.1.1, D-004 Q3): every feature here rests on `asserted`
+# signals and therefore denotes a present structural position. A feature whose name
+# colloquially implies a consequence carries name_implies_consequence = true and a
+# position_name; the renderer and any narrative must disclose that the name denotes
+# position, not a forecast. No feature in this profile voices "will break" or "ripples".
+
+[ruleset]
+name = "maintainability"
+version = "0.1.0"
+profile = "maintainability"
+description = "v0 maintainability lens: load, neglect, reinforcement, activity — over asserted signals only; the two pressure indices are unvalidated (D-015) and appear only as decorative features."
+strata_signal = "age_days"
+wing_depth = 1
+
+[[feature]]
+name = "foundation"
+predicate = "load_index >= p90"
+graph_dependent = true
+name_implies_consequence = true
+position_name = "high-load hub"
+note = "Top decile of the load blend (fan_in_nonzero, centrality, inverse fan_out, size). A description of import-graph position; not a claim about what breaks if it changes."
+
+[[feature]]
+name = "hub"
+predicate = "centrality >= p90"
+graph_dependent = true
+position_name = "hub"
+note = "Top-decile PageRank over the import graph. Pure position name."
+
+[[feature]]
+name = "flooded_basement"
+predicate = "neglect_index >= p90 and load_index >= 0.10"
+graph_dependent = true
+name_implies_consequence = false
+note = "Old, long-untouched, and still imported. neglect_index is cross-modally corroborated against blame age (G3); load_index is a G4 blend of checked measurements. Present-tense: this is where the water is, not a prediction that it rises."
+
+[[feature]]
+name = "scaffolding"
+predicate = "reinforcement_index >= 0.5"
+graph_dependent = true
+note = "At least one test file imports the node (import-graph reading of reinforcement, D-011)."
+
+[[feature]]
+name = "dark_room"
+predicate = "last_touched_days >= p90"
+note = "Top decile of time since last edit. Lighting, not judgment: a finished utility is dark too (stance disclosure, system spec)."
+
+[[feature]]
+name = "lit_room"
+predicate = "last_touched_days <= p10"
+note = "Bottom decile of time since last edit — occupied now."
+
+[[feature]]
+name = "toothpick_wing"
+predicate = "load_index >= p90 and bug_pressure_index >= p90 and reinforcement_index <= 0.0"
+graph_dependent = true
+decorative = true
+decorative_reason = "bug_pressure_index is unvalidated on the pre-registered test set (D-015): its tuned weights assign zero to fix history and it does not beat busyness by the margin. The fragility half of this feature has no forecast to stand on; it renders as decorative, counted, and excluded from diagnostic claims until a reference repo validates the index."
+name_implies_consequence = true
+position_name = "unreinforced high-load node with high edit pressure"
+note = "The flagship June feature, kept on the page so its absence from the diagnosis is visible rather than silent."
+
+[[feature]]
+name = "crack"
+predicate = "bug_pressure_index >= p90"
+decorative = true
+decorative_reason = "bug_pressure_index is unvalidated (D-015)."
+name_implies_consequence = true
+position_name = "high edit-pressure node"

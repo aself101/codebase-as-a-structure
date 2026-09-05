@@ -1,8 +1,8 @@
-# Structural Mapper (C3) — Specification (v0, DRAFT skeleton)
+# Structural Mapper (C3) — Specification (v0.1 — the skeleton contracts, now built)
 
 *Component 3 of codebase-as-structure. This is the **diagnosis**: it takes the substrate's continuous signals and produces discrete, named structural facts — which nodes are foundation, where the wings attach, where stress concentrates, what archetype the whole resolves to. C1 measures; C3 names. Everything visual downstream (C4/C5/C6) reads from C3's output and adds nothing the skeleton doesn't license.*
 
-*This document is a **skeleton**: it pins the contracts that the rest of the corpus depends on — the anti-horoscope gate, multi-profile semantics, graph-dependent gating, and the `skeleton.json` shape — and defers the full feature-by-feature ruleset to its own build (system spec Phase 0). Where it says "the ruleset," that ruleset is the thing authored and tuned later.*
+*This document pins the contracts the rest of the corpus depends on — the anti-horoscope gate, multi-profile semantics, graph-dependent gating, and the `skeleton.json` shape. As of 2026-09-04 (D-016) they are implemented in `src/repo_substrate/mapper/` and the first ruleset is `rulesets/maintainability.toml` (TOML rather than YAML: standard-library parse, no new dependency, same diffability). The ruleset grammar is a conjunction of `signal op value` terms with `pNN` percentile or absolute thresholds; no disjunction, no negation. A `decorative` rule must carry `decorative_reason` or the ruleset does not load. The archetype (§7 Q1) is emitted as `null` and not claimed.*
 
 *Input: `substrate.json` (`repo-substrate-spec.md`), optionally `signal.json` (C2), and a mapping profile. Output: `skeleton.json`. Determinism: deterministic given its versioned ruleset and profile.*
 
