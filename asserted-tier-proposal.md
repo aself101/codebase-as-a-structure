@@ -1,6 +1,8 @@
 # Proposal — Operationalizing the asserted tier (resolving the tribunal's root finding)
 
-*Status: DRAFT for review. Not yet folded into the live specs — it walks back a doctrine the corpus currently asserts in four places, so it needs sign-off first.*
+> **Status: ADOPTED with one substitution, 2026-09-04 — see `DECISIONS.md` D-004.** Parts 1, 3, and 4 were folded into the live specs as proposed. Part 2's blind human panel (2b) was replaced by cross-modal corroboration (`validation-spec.md` §2.4.2) because a single-developer project cannot field three blind rankers; the developer's sealed n=1 ranking is kept as a recorded, non-gating check (§2.4.3). This file is retained as the review-history record of the proposal as it stood on June 19 and must not be edited independently.
+
+*Original status line: DRAFT for review. Not yet folded into the live specs — it walks back a doctrine the corpus currently asserts in four places, so it needs sign-off first.*
 
 ## The problem the tribunal found
 

@@ -30,6 +30,10 @@
 - [ ] `[ALG]` `nodes[]` is exactly the **post-exclude file inventory at HEAD** (or `--rev`/`--truncate-at`); a file deleted before HEAD has history but is **not** a node. *(§5)* `(unit)`
 - [ ] `[ALG]` All Tier-1 raw metrics are emitted per node: `size_loc`, `age_days` (rename-followed first-touch), `last_touched_days`, `commit_count`, `churn_lines`, `fix_count`, `revert_count`, `author_count`, `fan_in`, `fan_out`, `is_test`, `has_sibling_test`, `introduced_idx`. *(§5)* `(unit)`
 - [ ] `[SCH]` Raw metrics are always emitted even when percentiles/indices are `null`. *(§4)* `(unit)`
+- [ ] `[ALG]` `cochange_degree` = distinct other files co-occurring in ≥ `cochange_min` (2) non-merge commits touching ≤ `cochange_max_files` (30) files, rename-followed, reading only `nodes_touched`. *(§5)* `(unit)`
+- [ ] `[ALG]` `blame_age_median` = median age in days of the file's non-blank surviving lines at HEAD via `git blame -w`; `null` for an empty file; cached by `(sha, path)`. *(§5)* `(unit)`
+- [ ] `[GATE]` Orphan node (HEAD file with no history) → static metrics emitted, history metrics `null`, `history_missing: true`, excluded from the population, `summary.orphan_nodes` incremented, listed in report caveats. *(§5)* `(unit)`
+- [ ] `[SCH]` Every `summary` field is computed per its §4 pinned definition (`population_size` excludes tests and orphans; `authorship_gini` over non-merge commits; `dep_graph_density` over `n(n−1)`). *(§4)* `(unit)`
 
 ## D. Percentiles (§6.1)
 
@@ -47,7 +51,7 @@
 - [ ] `[ALG]` `load_index` and `bug_pressure_index` consume the `_nonzero` inputs per the §6.2.1 formulas. *(§6.1, §6.2.1)* `(unit)`
 - [ ] `[ALG]` v0 weights match §6.2.1 and live in config (feeding `config_fingerprint`); within-index weights sum to 1.0. *(§6.2.1)* `(unit)`
 - [ ] `[ALG]` `reinforcement_index` is the documented exception — composed from normalized discrete test signals (1.0 sibling / 0.5 proximity / 0.0 none), still bounded. *(§6.2)* `(unit)`
-- [ ] `[ALG]` Pinned input definitions honored: `centrality` = PageRank (damping 0.85, fixed iterations/tolerance); `nesting_proxy` = normalized max indent depth; `recent_commit_share` = timeline-relative (not wall-clock); test-proximity tiers per §6.2.2. *(§6.2.2)* `(unit)`
+- [ ] `[ALG]` Pinned input definitions honored: `centrality` = `networkx.pagerank` (alpha 0.85, max_iter 100, tol 1e-6, uniform dangling, pure-Python backend, 4 dp before ranking); `nesting_proxy` = normalized max indent depth with the §6.2.2 edge cases (modal width, tie → smaller, no-spaces → 1, no-indent → 0, oversize → null); `recent_commit_share` = timeline-relative (not wall-clock); test-proximity tiers per §6.2.2. *(§6.2.2)* `(unit)`
 - [ ] `[DET]` Method choices in §6.2.2 are recorded in config and feed `config_fingerprint`. *(§6.2.2)* `(golden)`
 
 ## F. Graph fallback — quality, not just presence (§6.3)

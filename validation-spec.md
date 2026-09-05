@@ -10,11 +10,11 @@
 
 The substrate claims only **"deterministic structural signals derived from repo history and static topology"** — never "architectural truth." Validity is established empirically and is allowed to fail. A failing result is not a bug; it is a finding that constrains C3. The whole point is that the test *can* come back negative and we will honor it.
 
-Validation has a hard boundary: it can only falsify signals that make a **predictive claim about the future**. The protocol below validates exactly those (`validated`). Present-tense *descriptive* signals are confirmed on a different basis — recognition and stability (`asserted`, §2.1) — which is a different kind of truth, not a weaker one.
+Validation has a hard boundary: it can only falsify signals that make a **predictive claim about the future**. The protocol below validates exactly those (`validated`). Present-tense *descriptive* signals are confirmed on a different basis — stability and cross-modal corroboration (`asserted`, §2.1, operationalized in §2.4). That is a different **kind** of grounding, and, as currently operationalized, a **weaker** one: a `validated` signal's falsifier is a held-out forecast that can come back negative; an `asserted` signal's falsifier is a second present-tense measurement that can disagree. Both can fail; only the first fails against the future. The ordering matters for what a feature may claim (§2.1.1) and is the ordering the C3 min-operator encodes (`structural-mapper-spec.md` §5). *(Revised 2026-09-04, D-004: the earlier "not a weaker one" wording was withdrawn after the June 19 tribunal showed it was contradicted by the mapper's own operator and had no falsifier.)*
 
 ## 2. Scope — which signals this gates
 
-`validation_status` is a property of **any signal that can feed a named feature** — a composite index, a bare percentile, or a raw metric — not of indices alone. This matters because the v0-default predicate strategy is the in-repo *percentile* (substrate §6.1), and several named features (flooded basement, foundation) can be written directly over percentiles with no index in the path. If status attached only to indices, such a feature would slip the gate (§5) entirely. So the rule is: **every signal a feature reads carries a status, and the holdout can confer `validated` only on the two predictive indices.** Every other signal is descriptive and is confirmed as `asserted` (§2.1) — a different kind of grounding, not a lower rung.
+`validation_status` is a property of **any signal that can feed a named feature** — a composite index, a bare percentile, or a raw metric — not of indices alone. This matters because the v0-default predicate strategy is the in-repo *percentile* (substrate §6.1), and several named features (flooded basement, foundation) can be written directly over percentiles with no index in the path. If status attached only to indices, such a feature would slip the gate (§5) entirely. So the rule is: **every signal a feature reads carries a status, and the holdout can confer `validated` only on the two predictive indices.** Every other signal is descriptive and is confirmed as `asserted` (§2.1) — a different kind of grounding, held to its own falsifier (§2.4).
 
 ### 2.0 The two falsifiable indices
 
@@ -35,17 +35,18 @@ The two predictive indices now face **two** falsifiable tests: the temporal hold
 
 The four non-predictive indices describe **present-tense structural facts** — load-bearingness, neglect, test support, intricacy. They make no claim about the future, so the holdout has nothing to test. That is a **difference in kind, not a deficiency**: you do not falsify "this file is load-bearing *now*" with a fix-prediction test any more than you falsify a thermometer with a weather forecast. They are confirmed on a different basis:
 
-- **Recognition.** Run the substrate report (`repo-substrate-spec.md` §9) on repos the developer knows; the sorted lists must produce recognition. This cannot *predict*, but it does *confirm a description* — the test of a good map is that the people who know the territory recognize it.
-- **Stability.** A small code change must not move the index much — quantified in the system spec's mapping-stability open question. An unstable description is a bad description even when "correct," so stability is a real, objective bar these signals must clear.
+- **Stability.** A small code change must not move the signal much. An unstable description is a bad description even when "correct." Operationalized as a numeric budget in §2.4.1.
+- **Cross-modal corroboration.** The signal must agree with a second measurement of the *same present-tense property* taken from a modality that does not appear in its formula. Operationalized in §2.4.2. This replaces the "recognition" basis of earlier drafts: the June 19 tribunal showed that developer recognition of a list built from `fan_in` is assent to `fan_in`, not a test of it.
+- **Recognition (recorded, not gating).** The developer's sealed blind ranking is reported beside the mechanical check (§2.4.3).
 
-A signal confirmed this way carries `validation_status: "asserted"` — **a distinct mode of truth, not a failed `validated`.** The two are different epistemic claims, and neither subsumes the other:
+A signal confirmed this way carries `validation_status: "asserted"`. The two statuses are different epistemic claims:
 
 - `validated` = "**predicts** where defects land, confirmed against held-out data." A claim about the future.
-- `asserted` = "**describes** a real structural fact of the present, confirmed by recognition and stability." A claim about what is.
+- `asserted` = "**describes** a real structural fact of the present, confirmed by stability and a second modality." A claim about what is.
 
-`asserted` is therefore not a lower grade on one scale; it is a different scale. It *is* empirically grounded — in measured topology and history — it is simply not *predictively* validated, and provenance records which basis a signal rests on so C5 can speak in the right register (a description, not a forecast). What `asserted` is **not** is falsifiable by the holdout, and the spec says so plainly. It carries no implication of "unearned."
+`asserted` is empirically grounded — in measured topology and history — and it is not a failed `validated`, because a `kind: descriptive` signal was never eligible for the holdout (§3.8). But it is the weaker of the two groundings for the purpose of what a feature may *say*: an `asserted` signal licenses a description of the present and nothing more (§2.1.1). Provenance records which basis a signal rests on so C5 speaks in the right register.
 
-#### 2.1.1 The line `asserted` may not cross (the descriptive/predictive boundary)
+#### 2.1.1 The line `asserted` may not cross (the descriptive/predictive boundary — referred to elsewhere as "the A2 boundary")
 
 The thermometer analogy is only honest if the descriptive claim stays **synchronic** — about the present graph, not its counterfactual future. The danger is a word like "load-bearing," which colloquially means *"if this changed, much would break"* — a counterfactual about propagation, i.e. a prediction in descriptive clothing. If an `asserted` signal were allowed to carry that meaning, it would be an unfalsifiable forecast exempted from the holdout — the horoscope move, relocated above the gate. So the boundary is drawn explicitly:
 
@@ -67,6 +68,43 @@ The effect: routing a diagnosis through a raw percentile no longer dodges the ga
 ### 2.3 Promoting a description to a forecast — `blast_radius_index` (future)
 
 The propagation/consequence claim that `asserted` may not smuggle (§2.1.1) is not forbidden — it is **deferred until it can be earned.** "Changes to this file ripple into others" is directly testable against history: the substrate already carries `cochange_degree` (repo-substrate §5.2 — files that change in the same commit), and the holdout can label whether edits to a high-`cochange` file co-occurred with edits elsewhere in the holdout window. A future **`blast_radius_index`** built on that signal would be a *third predictive index* (§2.0), validated like the other two — at which point the load-bearing-*consequence* claim graduates from forbidden-at-`asserted` to honestly `validated`. This is the resolution of the smuggled-prediction problem: don't exempt the forecast, **promote** it through the gate. Until `blast_radius_index` exists and passes, no feature may voice a propagation consequence as a diagnostic claim. (A future `blast_radius_index` is also corroborable by the §3A mechanism — co-change issues that span files supply a review-modality label for the same propagation claim.)
+
+### 2.4 Operationalizing the `asserted` bar
+
+*Resolves system-spec open question #3 and mapper open question #3 (the stability budget), and the June 19 tribunal's remediation items #5 and #6. Decision record: `DECISIONS.md` D-004.*
+
+A `kind: descriptive` signal earns `asserted` only by passing **both** gates below on **≥ `M_asserted` reference repos** (config, default 2). Either alone is insufficient: stability alone certifies a constant (`load_index ≡ 0.5` never moves), and a correctness check alone certifies noise that happened to correlate once.
+
+#### 2.4.1 Stability budget (robustness)
+
+Recompute the substrate at HEAD with the last **K** commits removed (config `stability_perturbation_k`, default `5`) and measure, per node, each signal's percentile movement against the unperturbed run.
+
+Pass iff `median(|Δpercentile|) ≤ stability_eps` (default `0.05`) **and** `max(|Δpercentile|) ≤ stability_delta` (default `0.15`) over the eligible population. Nodes born inside the removed window are excluded from the comparison (they have no unperturbed value). A signal that swings past budget on a small edit is `untested` with reason `unstable` — never `asserted`.
+
+This proves the description is *stable*, not *correct*. That is why 2.4.2 is mandatory.
+
+#### 2.4.2 Cross-modal corroboration (correctness)
+
+The signal must rank-correlate with a measurement of the **same present-tense property** taken from a **different modality that does not appear in the signal's formula**. Pass iff Kendall τ-b between the signal and its counterpart has a **bootstrap lower CI bound** ≥ `tau_asserted` (default `0.30`) on that repo. The pairing is fixed per signal, recorded in the validation config, and feeds the fingerprint:
+
+| Descriptive signal(s) | Modality of the signal | Cross-modal counterpart (not in the formula) |
+|---|---|---|
+| `load_index`, `fan_in`, `fan_in_nonzero`, `centrality` | static import topology | `cochange_degree` — history-derived coupling (`repo-substrate-spec.md` §5, promoted to Tier 1) |
+| `neglect_index`, `age_days`, `last_touched_days` | commit timestamps | `blame_age_median` — median age of the file's surviving lines at HEAD, from `git blame` (`repo-substrate-spec.md` §5, Tier 1) |
+| `reinforcement_index`, `has_sibling_test` | path convention | line coverage from a coverage report when one is present in the repo; else `untested` with reason `no_counterpart` |
+| `complexity_proxy_index`, `nesting_proxy`, `size_loc` | indentation / line count | cyclomatic complexity from a real parser on languages where one is cheap (JS/TS via a pinned tool); else `untested` with reason `no_counterpart` |
+
+**Why this and not a human panel.** The June 19 proposal specified blind, pre-registered rankings from three or more developers who know the repo. That removes confirmation bias but is unavailable to a single-developer project, and a gate that cannot run leaves the whole tier unreachable. A second modality absent from the formula removes the bias mechanically and is reproducible. It is weaker than a panel in one way (both modalities are machine-derived from the same repository) and stronger in another (it cannot be flattered). It can return negative — co-change coupling and import topology can disagree — and when it does the signal is `untested` with reason `cross_modal_fail`, and that is a finding for the report.
+
+#### 2.4.3 Recorded recognition (not gating)
+
+The developer's sealed blind ranking (`blind/<repo>.md`, committed by hash before the first substrate run on that repo) is compared to each descriptive signal's top-K and reported as τ-b with `n` stated. At `n = 1` it carries no gate. It is the human sanity check the report shows beside the mechanical one, and the place a reviewer looks first when 2.4.2 passes on a repo the developer knows well.
+
+#### 2.4.4 The gate
+
+`asserted` ≝ passed 2.4.1 ∧ 2.4.2 on ≥ `M_asserted` repos. The `validation.json` `grounding` block records both results plus the recognition comparison (§6.1). Failing either gate yields `untested` with the specific reason (`unstable`, `cross_modal_fail`, `no_counterpart`), never a silent `asserted`.
+
+**Known limit (on the page).** If on every reference repo the counterpart correlates with the signal so strongly that 2.4.2 cannot fail, it is not a falsifier and a third modality is needed. The holdout report (§6.2 section 4) prints the τ distribution across repos so this is checked, not assumed.
 
 ## 3. The temporal-holdout protocol (primary, falsifiable)
 
@@ -130,7 +168,11 @@ An index is `validated` iff, on **≥2 reference repos** (UluOps Registry and mc
 2. `index_PR_AUC ≥ 1.20 × best_baseline_PR_AUC`, **and**
 3. `eligible coverage (§3.3) ≥ 0.50` on that repo (else the repo's verdict is "insufficient coverage," not a pass or fail).
 
+4. the **best baseline's PR-AUC ≥ `signal_floor_mult` × the positive base rate** (default `1.5×`) on that repo — else the repo's verdict is **`insufficient signal`** (§4), neither pass nor fail.
+
 Both numeric thresholds (`0.05`, `1.20`) are config values that feed the report fingerprint, so a future tightening is itself versioned and auditable. They are deliberately modest for v0 — the bar is "demonstrably better than trivial," not "excellent."
+
+**Why the margins are relative, and why clause 4 exists (the label-noise ceiling).** §3.4.1 concedes the fix-edit label is noisy, which caps the achievable AUC of *every* ranker — index and baseline alike. An absolute bar could therefore be unpassable on a noisy repo; a bar relative to the strongest baseline is not, because the ceiling compresses both sides. The one margin that does get harder under compression is the multiplicative PR-AUC clause: as PR-AUC approaches the base rate, `1.20×` of a near-noise number is still near noise and the comparison is meaningless. Clause 4 guards that: if even the best baseline cannot lift PR-AUC to 1.5× the base rate, the label carries too little signal on that repo to distinguish any ranker, and the repo is excluded from the verdict rather than counted as a fail. *(Added 2026-09-04; tribunal remediation item #8.)*
 
 ### 3.8 Verdict values
 
@@ -138,7 +180,7 @@ Each signal (index, percentile, or raw metric) ends with one of:
 
 - `validated` — a predictive index that passed §3.7 on the reference set. A confirmed **forecast** — specifically of fix-*activity* (the declared §3.4.1 proxy), read in those terms, not of defect *origin*.
 - `unvalidated` — a predictive index that ran the protocol and failed §3.7. **A real finding.** Per §5, this constrains C3.
-- `asserted` — a present-tense **descriptive** signal (non-predictive index, percentile, or raw metric) confirmed by recognition and stability (§2.1). A different kind of grounding from `validated`, not a lower one.
+- `asserted` — a present-tense **descriptive** signal (non-predictive index, percentile, or raw metric) that passed the stability budget and the cross-modal check (§2.4). A different kind of grounding from `validated`, and the weaker one for the purpose of what a feature may claim (§1, §2.1.1).
 - `untested` — the protocol could not run (§4), or it does not apply to this signal (a descriptive signal with no recorded §2.1 grounding). Treated as ungated by the gate (§5).
 
 **Legal status is constrained by `kind` — this is what stops a failed predictor laundering itself into `asserted`.** A signal's `kind` (`predictive` / `descriptive`) determines which statuses it may hold:
@@ -363,8 +405,9 @@ The protocol must refuse to run rather than fabricate a verdict when:
 - `population_size < N_min` (substrate §6.1) — the repo is too small to split meaningfully.
 - The holdout window contains **zero** `fix`-type commits — no positives, nothing to predict; AUC is undefined.
 - Eligible coverage `< 0.50` on every reference repo — the partition is dominated by holdout-born files.
+- The best baseline's PR-AUC is below `signal_floor_mult` × the base rate on a repo (§3.7 clause 4) — the label is too close to noise to distinguish rankers; that repo is `insufficient signal`. If true on every reference repo, the index is `untested` with reason `insufficient_signal`.
 
-In all three, affected indices ship with `validation_status: "untested"` and an explicit reason. **`untested` is never rendered as validated** anywhere downstream. A repo that cannot be validated does not get to claim its diagnosis is empirically grounded.
+In all four, affected indices ship with `validation_status: "untested"` and an explicit reason. **`untested` is never rendered as validated** anywhere downstream. A repo that cannot be validated does not get to claim its diagnosis is empirically grounded.
 
 The corroboration test has its own parallel refuse-to-run list (§3A.9) — zero eligible issues, below the positive-set floor, insufficient coverage, unpinned snapshot — emitting the §3A.10 corroboration-outcome vocabulary rather than a `validation_status`. The same discipline holds across both: a test that cannot run never reports as if it passed.
 
@@ -412,22 +455,48 @@ This is the interface the C3 anti-horoscope gate reads (`structural-mapper-spec.
         "per_repo": [ { "name": "uluops-registry", "roc_auc": 0.80, "pr_auc": 0.43, "passed": true } ]
       }
     },
+    "change_pressure_index": {
+      "status": "unvalidated",
+      "kind": "predictive",
+      "holdout": {
+        "roc_auc": 0.69, "pr_auc": 0.31,
+        "precision_at_k": { "10": 0.40, "20": 0.40, "p05": 0.38 },
+        "recall_at_k":    { "10": 0.17, "20": 0.30, "p05": 0.35 },
+        "baselines": {
+          "recency":  { "roc_auc": 0.66, "pr_auc": 0.30 },
+          "busyness": { "roc_auc": 0.71, "pr_auc": 0.33 }
+        },
+        "per_repo": [
+          { "name": "uluops-registry", "roc_auc": 0.69, "pr_auc": 0.31, "passed": false,
+            "failed_clauses": ["roc_margin", "pr_auc_mult"], "best_baseline": "busyness" }
+        ]
+      }
+    },
     "load_index": {
       "status": "asserted",
       "kind": "descriptive",
-      "grounding": { "recognition_ref": "notes/recognition-2026-06.md#load", "stability": 0.93 }
+      "grounding": {
+        "stability":   { "k": 5, "eps": 0.05, "delta": 0.15, "median_abs_delta": 0.02, "max_abs_delta": 0.09, "passed": true },
+        "cross_modal": { "counterpart": "cochange_degree", "tau_b": 0.41, "tau_b_ci": [0.34, 0.48], "tau_floor": 0.30, "passed": true },
+        "recognition": { "ref": "blind/uluops-registry-api.md", "sealed_sha": "…", "list": "load_bearing", "tau_b_top10": 0.33, "n": 1 },
+        "repos_passed": ["uluops-registry-api", "mcp-secure-server"]
+      }
     },
-    "fan_in_nonzero": {
-      "status": "asserted",
+    "reinforcement_index": {
+      "status": "untested",
       "kind": "descriptive",
-      "grounding": { "recognition_ref": "notes/recognition-2026-06.md#fanin", "stability": 0.95 }
+      "reason": "no_counterpart",
+      "grounding": {
+        "stability":   { "k": 5, "eps": 0.05, "delta": 0.15, "median_abs_delta": 0.00, "max_abs_delta": 0.00, "passed": true },
+        "cross_modal": { "counterpart": "line_coverage", "passed": null, "note": "no coverage report present in either reference repo" }
+      }
     }
   }
 }
 ```
 
-- `status` ∈ {`validated`, `unvalidated`, `asserted`, `untested`} (§3.8). `kind` ∈ {`predictive`, `descriptive`} — records which basis the signal rests on (§2), so C3/C5 read the right register without re-deriving it.
-- **Predictive** signals carry a `holdout` block (the §3.6 metrics + §3.5 baselines + per-repo pass/fail). **Descriptive** signals carry a `grounding` block (a reference to the recorded recognition check + the stability score, §2.1) instead — never a `holdout` block.
+- `status` ∈ {`validated`, `unvalidated`, `asserted`, `untested`} (§3.8). `kind` ∈ {`predictive`, `descriptive`} — records which basis the signal rests on (§2), so C3/C5 read the right register without re-deriving it. An `untested` entry carries a `reason` (`unstable`, `cross_modal_fail`, `no_counterpart`, `population_too_small`, `no_holdout_positives`, `insufficient_coverage`, `insufficient_signal`).
+- **Predictive** signals carry a `holdout` block (the §3.6 metrics + §3.5 baselines + per-repo pass/fail with the failed clauses named). **Descriptive** signals carry a `grounding` block — the §2.4.1 `stability` result, the §2.4.2 `cross_modal` result, and the §2.4.3 `recognition` comparison — instead; never a `holdout` block.
 - **Predictive** signals MAY *additionally* carry an `issue_corroboration` block (§3A.14) beside — never instead of — the `holdout` block. It records the §3A corroboration outcome, is keyed by the same signal name, and never alters the signal's `status`/`kind`. Its `outcome` enum (§3A.10) is distinct from `validation_status`.
 - `validated_at` is excluded from both fingerprints so re-runs are byte-identical (mirrors substrate `extracted_at`).
 
@@ -437,7 +506,7 @@ Per the substrate's standing mandate, it **writes down where the indices lie**. 
 1. **Verdict table** — each predictive signal: status, ROC-AUC / PR-AUC vs. the stronger baseline, on each reference repo.
 2. **Where it failed** — for every `unvalidated` signal: by how much, on which repo, against which baseline.
 3. **Coverage caveats** — eligible-population coverage per repo (§3.3), and any `untested` signals with their reason (§4).
-4. **Descriptive signals** — each `asserted` signal with its recognition/stability grounding, explicitly marked non-predictive.
+4. **Descriptive signals** — each descriptive signal with its stability numbers, its cross-modal τ-b and CI against the named counterpart, the recognition comparison against the sealed ranking, and the resulting status; plus the τ distribution across repos so the §2.4 known limit (a counterpart that cannot fail) is visible.
 5. **Cross-source corroboration** (§3A) — per predictive signal: the corroboration `outcome` (§3A.10), τ-b with CI and permutation-p, lift over the `load_index` and busyness baselines (lower CI bound), coverage, `n_post_T_positives`, and **any divergence from the §3 verdict** (§3A.8). Results are stated in the §3A.7 narrowed terms ("adds ranking signal beyond busyness and centrality"), with the §3A.13.0 independence precondition status shown.
 
 Those lies (section 2) are the documented input to the C3 spec's feature design.
@@ -456,3 +525,6 @@ Those lies (section 2) are the documented input to the C3 spec's feature design.
 5. **Corroboration independence precondition (blocking, §3A.13.0).** Does any issue-logging cognitive-lens agent use git-derived signals (churn, recency, co-change) to prioritize which files to examine? A positive answer collapses the §3A label's independence into autocorrelation with `bug_pressure`. This is a factual question for the cognitive-lens agent owner and **blocks** promotion of §3A to a co-equal falsifier until resolved.
 6. **Corroboration reference-issue corpus (§3A.13.2).** Which projects supply issues, how the snapshot is frozen (§3A.11–§3A.12), and the separation-of-duties rule that keeps label-producing agents distinct from index-tuning agents (§3A.13.1).
 7. **Corroboration threshold defaults.** `N_min_issue_positives` (15), `τ_corr` (0.30), `τ_margin` (+0.10), `pk_mult` (1.20×), and `divergence_margin` (0.20) are first guesses; tune once real corroboration numbers exist, recording each as a config diff (parallel to #2).
+8. **Asserted-bar defaults (§2.4).** `stability_perturbation_k` (5), `stability_eps` (0.05), `stability_delta` (0.15), `tau_asserted` (0.30), `M_asserted` (2), and `signal_floor_mult` (1.5) are placeholders accepted under D-004 Q4; tune after the first real run.
+9. **Cross-modal independence.** Whether `cochange_degree` and import topology are independent enough on real repos for §2.4.2 to be a falsifier. Answered by the τ distribution in the first holdout report; if it cannot fail, a third modality is required.
+10. **Reference-repo set (revised).** Two same-org repos is near n=1 (tribunal A5). D-005 adds two public JS/TS repos; the chosen repos and their SHAs are recorded in `reference_repos` and in `DECISIONS.md` once cloned and sized.

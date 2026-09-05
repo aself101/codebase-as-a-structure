@@ -18,8 +18,12 @@
 
 ## B. The descriptive/predictive boundary (§2.1, §2.1.1, §2.2, §2.3)
 
-- [ ] `[HOR]` A `kind: descriptive` signal reaches `asserted` only with a recorded recognition-ref **and** a stability score; without grounding it is `untested`, not `asserted`. *(§2.1, §6.1)* `(unit)`
-- [ ] `[ALG]` Stability is measured: a small code change must not move the signal beyond the configured budget; an unstable signal fails the `asserted` bar even if "correct." *(§2.1)* `(fixture)`
+- [ ] `[HOR]` A `kind: descriptive` signal reaches `asserted` only by passing **both** the stability budget (§2.4.1) **and** the cross-modal check (§2.4.2) on ≥ `M_asserted` repos; failing either yields `untested` with a specific reason (`unstable`, `cross_modal_fail`, `no_counterpart`), never a silent `asserted`. *(§2.4.4, §6.1)* `(unit)`
+- [ ] `[ALG]` Stability budget: substrate recomputed with the last K=5 commits removed; pass iff `median(|Δpctile|) ≤ 0.05` and `max(|Δpctile|) ≤ 0.15` over the eligible population, holdout-born nodes excluded. *(§2.4.1)* `(fixture)`
+- [ ] `[ALG]` Cross-modal: Kendall τ-b between the signal and its pinned counterpart (`load`↔`cochange_degree`, `neglect`↔`blame_age_median`, `reinforcement`↔coverage, `complexity`↔cyclomatic) with **bootstrap lower CI bound ≥ 0.30**; the counterpart must not appear in the signal's formula. *(§2.4.2)* `(unit, fixture)`
+- [ ] `[HOR]` A constant signal passes stability and fails cross-modal — the gate cannot be satisfied by `load_index ≡ 0.5`. *(§2.4)* `(unit)`
+- [ ] `[PROV]` The sealed blind ranking (`blind/<repo>.md`, committed by hash before the first run) is compared and reported as τ-b with `n` stated; it never gates. *(§2.4.3)* `(golden, review)`
+- [ ] `[HOR]` The τ distribution across repos is printed in the report so a counterpart that cannot fail is visible. *(§2.4 known limit, §6.2)* `(golden)`
 - [ ] `[HOR]` An `asserted` signal may carry only a **present structural position** claim; any consequence/forecast phrasing ("changes here break much") is rejected at this tier. *(§2.1.1)* `(unit, review)`
 - [ ] `[SCH]` A bare percentile / raw metric can **never** be `validated` (the holdout does not apply); it is `asserted` (with grounding) or `untested`. *(§2.2)* `(unit)`
 - [ ] `[SCH]` `untested` and `unvalidated` are distinct and not conflated: `unvalidated` = ran the holdout and failed §3.7; `untested` = holdout could not/does not apply. *(§2.2, §3.8)* `(unit)`
@@ -40,7 +44,7 @@
 
 ## D. Pass criteria & verdicts (§3.7, §3.8)
 
-- [ ] `[GATE]` `validated` requires, on **≥2 reference repos**: ROC-AUC ≥ best-baseline + `0.05`, PR-AUC ≥ `1.20×` best-baseline, and eligible coverage ≥ `0.50` on that repo. *(§3.7)* `(fixture)`
+- [ ] `[GATE]` `validated` requires, on **≥2 reference repos**: ROC-AUC ≥ best-baseline + `0.05`, PR-AUC ≥ `1.20×` best-baseline, eligible coverage ≥ `0.50`, and best-baseline PR-AUC ≥ `1.5×` base rate on that repo (else `insufficient signal`). *(§3.7)* `(fixture)`
 - [ ] `[DET]` Both thresholds (`0.05`, `1.20`) are config values feeding the report fingerprint. *(§3.7, §7)* `(golden)`
 - [ ] `[SCH]` Verdict ∈ {`validated`, `unvalidated`, `asserted`, `untested`}, each emitted with the meaning fixed in §3.8. *(§3.8)* `(unit)`
 - [ ] `[GATE]` A `kind: predictive` signal may hold **only** `validated`/`unvalidated`/`untested` — never `asserted`. *(§3.8)* `(unit)`
