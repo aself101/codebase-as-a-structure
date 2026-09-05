@@ -95,6 +95,13 @@ def parse_predicate(text: str) -> tuple[Term, ...]:
 
 def load_ruleset(path: Path) -> Ruleset:
     raw = tomllib.loads(Path(path).read_text(encoding="utf-8"))
+    # D-019: a ruleset names per-node features and nothing else. An `[archetype]` table (or
+    # any other whole-repo claim) has no reader here and must not ride along silently.
+    unknown = sorted(set(raw) - {"ruleset", "feature"})
+    if unknown:
+        raise RulesetError(
+            f"unknown top-level table(s) {unknown}; a ruleset carries [ruleset] and [[feature]] only"
+        )
     hdr = raw.get("ruleset") or {}
     for key in ("name", "version", "profile"):
         if not hdr.get(key):

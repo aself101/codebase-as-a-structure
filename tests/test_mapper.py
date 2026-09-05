@@ -310,6 +310,20 @@ def test_touched_since_reads_the_after_timeline_through_renames():
     assert touched_since(sub, "zzz") is None
 
 
+def test_archetype_is_not_claimed_and_cannot_be_smuggled_in(sub, tmp_path):
+    """D-019: the skeleton's archetype is null in v0, and a ruleset carrying an
+    [archetype] table (or any table the mapper does not read) is refused, not ignored."""
+    base = load_ruleset(RULESET)
+    assert map_skeleton(sub, _all_asserted(base), base)["archetype"] is None
+    p = tmp_path / "arch.toml"
+    p.write_text(
+        RULESET.read_text(encoding="utf-8") + '\n[archetype]\nlabel = "cathedral"\n',
+        encoding="utf-8",
+    )
+    with pytest.raises(RulesetError, match="unknown top-level table.*archetype"):
+        load_ruleset(p)
+
+
 def test_html_wrapper_has_overlay_toggles(sub):
     from repo_substrate.cutaway import render_html
 

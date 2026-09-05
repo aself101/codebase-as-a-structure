@@ -233,7 +233,7 @@ def map_skeleton(
         "substrate_config_fingerprint": substrate["repo"]["config_fingerprint"],
         "validation_config_fingerprint": validation.get("validation_config_fingerprint"),
         "repo": {"name": substrate["repo"]["name"], "head_sha": substrate["repo"]["head_sha"]},
-        "archetype": None,  # mapper §7 Q1: unresolved in v0 — and therefore not claimed
+        "archetype": None,  # D-019: not claimed in v0 — a whole-building label is corpus-relative (Phase 3)
         "gate": {"signals": dict(sorted(statuses.items())), "graph_degraded": graph_degraded},
         "geometry": {"name": geometry, "wing_depth": ruleset.wing_depth},
         "strata": {

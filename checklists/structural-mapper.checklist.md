@@ -34,7 +34,7 @@
 
 ## D. Output — `skeleton.json` (§5)
 
-- [ ] `[NOW][SCH]` Skeleton carries: `schema_version`, `mapper_version`, `ruleset_version`, `profile{name,version}`, `substrate_seed`, `archetype`, `features[]`, `overlays[]`. *(§5)* `(unit)`
+- [ ] `[NOW][SCH]` Skeleton carries: `schema_version`, `mapper_version`, `ruleset_version`, `profile{name,version}`, `substrate_seed`, `archetype` (`null` in v0, D-019), `features[]`, `overlays[]`. *(§5)* `(unit)`
 - [ ] `[NOW][PROV]` Each feature carries `predicate`, `evidence` (the substrate values), `validation_status`, `decorative`, `degraded`. *(§5)* `(unit)`
 - [ ] `[NOW][HOR]` Feature `validation_status` = most conservative across **all** signals read: (1) any `untested`/`unvalidated` → feature fails the gate; (2) else `validated` only if *all* signals are `validated`, else `asserted`. *(§5)* `(unit)`
 - [ ] `[NOW][HOR]` Flagship hybrids (toothpick) resolve to `asserted` because they mix a description (`load_index`) with a forecast (`bug_pressure_index`) — `asserted` names the *kind*, not a doubt level. *(§5)* `(unit, review)`
@@ -49,7 +49,7 @@
 
 ## F. Open questions — deferred, tracked (§7)
 
-- [ ] `[RULESET]` **Archetype resolution** — how per-node features + `summary` aggregates resolve to one archetype label, and whether that label is itself gated (archetype on `unvalidated` signals → `decorative`). *(§7 Q1)* `(unit)`
+- [x] `[NOW][HOR]` **Archetype resolution** — not claimed in v0: `archetype` is `null` and a ruleset with an `[archetype]` table is refused (D-019; corpus-relative, Phase 3). *(§7 Q1)* `(unit: test_archetype_is_not_claimed_and_cannot_be_smuggled_in)`
 - [ ] `[RULESET]` **Predicate threshold defaults** — `p`/`q` cutoffs for conjunctive features, set per-profile, interacting with the substrate percentile distribution (start from substrate §9 `p=0.90`, `q=0.10`). *(§7 Q2)* `(fixture)`
 - [x] `[NOW][DET]` **Stability budget** — untouched feature churn ≤ 0.05 and untouched strata movement ≤ 0.05 per comparison, floors ≥ 30 untouched / ≤ 0.5 touched; verdict `untested` without a touched set, never a silent pass (D-018). *(§7 Q3)* `(unit: test_skeleton_budget_is_judged_over_the_untouched_population, test_skeleton_budget_floors_refuse_to_get_easier; fixture: reports/2026-09-05-m2/skeleton-budget.md)`
 - [ ] `[RULESET]` **C2 (signal) coupling** — which features may read `signal.json` and which become unavailable when C2 is skipped (C2 optional in v0). *(§7 Q4)* `(unit)`

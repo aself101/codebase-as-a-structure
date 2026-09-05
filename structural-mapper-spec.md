@@ -2,7 +2,7 @@
 
 *Component 3 of codebase-as-structure. This is the **diagnosis**: it takes the substrate's continuous signals and produces discrete, named structural facts — which nodes are foundation, where the wings attach, where stress concentrates, what archetype the whole resolves to. C1 measures; C3 names. Everything visual downstream (C4/C5/C6) reads from C3's output and adds nothing the skeleton doesn't license.*
 
-*This document pins the contracts the rest of the corpus depends on — the anti-horoscope gate, multi-profile semantics, graph-dependent gating, and the `skeleton.json` shape. As of 2026-09-04 (D-016) they are implemented in `src/repo_substrate/mapper/` and the first ruleset is `rulesets/maintainability.toml` (TOML rather than YAML: standard-library parse, no new dependency, same diffability). The ruleset grammar is a conjunction of `signal op value` terms with `pNN` percentile or absolute thresholds; no disjunction, no negation. A `decorative` rule must carry `decorative_reason` or the ruleset does not load. The archetype (§7 Q1) is emitted as `null` and not claimed. The skeleton-level stability budget (§7 Q3) is pinned at one room in twenty over the untouched population (D-018) and enforced by `substrate skeleton-diff`.*
+*This document pins the contracts the rest of the corpus depends on — the anti-horoscope gate, multi-profile semantics, graph-dependent gating, and the `skeleton.json` shape. As of 2026-09-04 (D-016) they are implemented in `src/repo_substrate/mapper/` and the first ruleset is `rulesets/maintainability.toml` (TOML rather than YAML: standard-library parse, no new dependency, same diffability). The ruleset grammar is a conjunction of `signal op value` terms with `pNN` percentile or absolute thresholds; no disjunction, no negation. A `decorative` rule must carry `decorative_reason` or the ruleset does not load. The archetype (§7 Q1) is emitted as `null` and not claimed in v0 (D-019: a corpus-relative claim, Phase 3). The skeleton-level stability budget (§7 Q3) is pinned at one room in twenty over the untouched population (D-018) and enforced by `substrate skeleton-diff`.*
 
 *Input: `substrate.json` (`repo-substrate-spec.md`), optionally `signal.json` (C2), and a mapping profile. Output: `skeleton.json`. Determinism: deterministic given its versioned ruleset and profile.*
 
@@ -18,7 +18,7 @@ C3 is the **only** component allowed to emit a discrete, named structural claim.
 
 ## 2. Scope & determinism
 
-- **In scope (v0).** Apply a versioned `(feature → predicate over substrate)` ruleset under one profile to produce a typed feature set plus a single archetype resolution, each with evidence and validation status.
+- **In scope (v0).** Apply a versioned `(feature → predicate over substrate)` ruleset under one profile to produce a typed feature set, each feature with evidence and validation status. *No archetype in v0* (D-019, §7 Q1): a whole-building label is a corpus-relative claim and is deferred to Phase 3 with the calibration it needs.
 - **Determinism.** `skeleton.json` is a pure function of `(substrate.json, signal.json?, ruleset_version, profile_version)`. No randomness here — stochastic form is C4's job, seeded by the substrate's content hash. C3 is repeatable so the time-lapse (system spec §8) is continuous.
 - **Out of scope.** Geometry, style, render (C4–C6); cross-repo corpus calibration (Phase 3).
 
@@ -65,7 +65,7 @@ Each feature carries enough to trace the whole chain back to a number *and* a va
   "ruleset_version": "string",
   "profile": { "name": "maintainability", "version": "string" },
   "substrate_seed": "<from substrate.json>",
-  "archetype": { "label": "string", "evidence": { "...": 0 }, "validation_status": "asserted" },
+  "archetype": null,
   "features": [
     {
       "feature": "toothpick",
@@ -102,7 +102,7 @@ Running several profiles over one repo produces overlapping skeletons of the **s
 
 ## 7. Open questions
 
-1. **Archetype resolution.** How the per-node features and `summary` aggregates resolve to a single archetype label, and whether that label is itself gated (an archetype grounded only on `unvalidated` indices should be `decorative` too).
+1. **Archetype resolution.** *Resolved — not claimed in v0 (D-019, 2026-09-05).* `archetype` is emitted as `null`; a ruleset carrying an `[archetype]` table is refused by `mapper/ruleset.py::load_ruleset`. A whole-building label ("cathedral," "shantytown") is a claim about this repository *relative to other buildings*, and v0 calibrates in-repo only (system spec §5.3): within one repo every distribution has a top decile, so no aggregate of per-node features can say what kind of building this is. It also has no second modality (validation §2.4.2) at the repo level, so it could never reach `asserted`, and a `decorative` one-word label on the banner is the horoscope the gate exists to refuse. Reopens with Phase 3 corpus calibration, where the reference class exists; the label will then be a repo-level feature under the same gate plus a repo-level stability check (does the label flip at K = 5?).
 2. **Predicate threshold defaults.** The `p`/`q` cutoffs in conjunctive features (toothpick = `load ≥ p ∧ stress ≥ q`) need v0 defaults; they interact with the substrate's percentile distribution and should be set per-profile.
 3. **Stability budget — skeleton level.** *Resolved (D-018, 2026-09-05).* Between two skeletons of one repository, **untouched feature churn ≤ 0.05 and untouched strata movement ≤ 0.05**, with the signal-level floors (≥ 30 untouched common nodes, ≤ 0.5 of the common population touched). "Untouched" means not edited by the commits between the two revisions, read from the after-substrate's timeline through its renames map — the same discipline as `validation-spec.md` §2.4.1: an edited node may change (the skeleton reporting the edit); an unedited node that changes moved by ripple, and ripple is what the budget bounds. Instrument and enforcement: `substrate skeleton-diff` / `mapper/diff.py::skeleton_diff` (`SKELETON_BUDGET`), which reports the whole-population and untouched-population numbers side by side and a verdict `within_budget | over_budget | untested(reason)`. Read at K = 5 on all four reference repos, both geometries: untouched churn 0.005–0.014, untouched strata 0–0.032 (`reports/2026-09-05-m2/skeleton-budget.md`). A skeleton over budget is a defect of the ruleset or geometry, not a finding about the repository. Layer geometry is the less stable geometry; a geometry-specific ceiling is a Phase 1 question.
 4. **Signal (C2) coupling.** *Resolved — none in v0 (D-005).* C2 is removed from Phase 0; no v0 feature reads `signal.json`. Reopens with Phase 2.

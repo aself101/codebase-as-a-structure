@@ -285,3 +285,16 @@ No weight vector in either grid reaches the pre-registered bar on the tuning set
 
 **Observed on the way (recorded, not gating).** Feature churn is geometry-invariant, as it must be. `uluops-registry-api`'s window touched no source node and the skeleton still moved 1.1%: the age signals are measured from HEAD's timestamp, so removing commits moves the clock — age geometry drifts under time alone. Layer geometry is the less stable geometry (longest-path depth propagates to every importer); whether it needs its own ceiling is deferred to Phase 1, where the time-lapse will read it at every checkpoint.
 
+## D-019 · 2026-09-05 · No archetype in v0; the label is a corpus-relative claim
+
+**Decision.** Mapper §7 Q1 is resolved by not claiming. `skeleton.json` carries `archetype: null`; the mapper spec's scope no longer promises "a single archetype resolution"; the cutaway banner names the repository, the profile, and the geometry, never a kind of building. Enforcement: `mapper/engine.py` emits `None`, and `mapper/ruleset.py::load_ruleset` now refuses any top-level table other than `[ruleset]` and `[[feature]]`, so an `[archetype]` table cannot ride along unread (test `test_archetype_is_not_claimed_and_cannot_be_smuggled_in`). Reopens with Phase 3.
+
+**Why.** Three reasons, in order of weight.
+1. *Calibration.* "Cathedral," "shantytown," "bunker" are claims about this repository relative to other buildings. v0 calibrates in-repo (system spec §5.3): within one repo every signal has a top decile, and an aggregate of per-node features ("40% of rooms are scaffolding") has no reference class to be read against. The reference class is what Phase 3's corpus provides. This is not a hard problem deferred; it is a claim whose grounding does not exist yet.
+2. *The asserted bar.* A repo-level label has no second modality (validation §2.4.2) — nothing in v0 measures "what kind of building" independently of the features it would aggregate. It could therefore never reach `asserted`, only `decorative`, and a decorative one-word label on the banner is precisely the horoscope the gate refuses (system spec §3). The substrate spec already forbids a quality grade (§1); an archetype is a grade with a metaphor on it.
+3. *Position over consequence (D-004 Q3).* Archetype names are consequence names by construction. The ruleset's discipline of preferring position names has no analogue at the whole-building level: there is no "position" a building occupies.
+
+**Assumes.** The cutaway does not need a headline to be readable; the four reference renders (D-016, D-017) were read without one. If a headline is wanted, `summary.feature_counts` is the honest one — counts, not a noun.
+
+**Breaks if.** Phase 3 lands and the corpus is too small or too homogeneous to give the label a stable reference class; then the archetype stays `null` and the reason moves from "no corpus" to "corpus insufficient," recorded in `validation.json`.
+
