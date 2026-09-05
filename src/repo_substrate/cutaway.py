@@ -89,7 +89,8 @@ def render_cutaway(skeleton: dict[str, Any], substrate: dict[str, Any], wing_dep
         max(1, max(len(band_rows[(w, b)]) for w in wing_names)) * (ROOM_H + ROOM_GAP) + BAND_GAP
         for b in range(STRATA)
     ]
-    total_w = MARGIN * 2 + sum(wing_w[w] + WING_GAP for w in wing_names)
+    # the banner and legend need ~1750px; a narrow building must not clip its own gate line
+    total_w = max(1760, MARGIN * 2 + sum(wing_w[w] + WING_GAP for w in wing_names))
     header_h = 140
     total_h = header_h + sum(band_h) + MARGIN + 30
 

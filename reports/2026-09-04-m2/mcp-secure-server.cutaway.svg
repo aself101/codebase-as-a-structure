@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="916" height="605" viewBox="0 0 916 605" font-family="ui-monospace, Menlo, monospace" font-size="11">
+<svg xmlns="http://www.w3.org/2000/svg" width="1760" height="605" viewBox="0 0 1760 605" font-family="ui-monospace, Menlo, monospace" font-size="11">
 <defs><pattern id="water" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#9fc5e8"/><path d="M0 4 Q2 2 4 4 T8 4" stroke="#3d7ab8" fill="none"/></pattern><pattern id="scaffold" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="none"/><line x1="0" y1="0" x2="0" y2="8" stroke="#5c8a3a" stroke-width="2"/></pattern></defs>
-<rect width="916" height="605" fill="#faf8f3"/>
+<rect width="1760" height="605" fill="#faf8f3"/>
 <text x="24" y="26" font-size="16" font-weight="bold">mcp-secure-server @ ecb30716b8 — cutaway, profile maintainability</text>
 <text x="24" y="46">diagnostic features: 327 · <tspan fill="#c2185b" font-weight="bold">decorative (ungrounded, not a diagnosis): 25</tspan> · degraded (graph): 0 · population 202 files</text>
 <text x="24" y="64" fill="#555">gate: bug_pressure_index=unvalidated, centrality=asserted, last_touched_days=asserted, load_index=asserted, neglect_index=asserted, reinforcement_index=asserted</text>
