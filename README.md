@@ -2,7 +2,7 @@
 
 *A single git repository rendered as a building you can read. The picture is diagnostic, not decorative: every visual feature is a function of a measured signal, and a feature may not render unless its signal has earned it.*
 
-**Package:** `repo-substrate` (C1 + the validation gate). **Status (2026-09-04):** M1 complete (D-015). The substrate and the gate are built, reviewed by six lenses, hardened, and run: both predictive indices are `unvalidated` on the pre-registered test set; twenty-one descriptive signals are `asserted`. M2 has its first consumer (D-016): C3 applies `rulesets/maintainability.toml` under the gate and the cutaway renders it; first pictures in `reports/2026-09-04-m2/`.
+**Package:** `repo-substrate` (C1 + the validation gate). **Status (2026-09-04):** M1 complete (D-015). The substrate and the gate are built, reviewed by six lenses, hardened, and run: both predictive indices are `unvalidated` on the pre-registered test set; twenty-one descriptive signals are `asserted`. **M2 complete (2026-09-05, D-020):** C3 applies `rulesets/maintainability.toml` (+ `onboarding.toml` as an overlay) under the gate, the cutaway renders it in two geometries, `skeleton-diff` measures churn against a pinned budget (D-018), and no archetype is claimed (D-019); pictures and readings in `reports/2026-09-05-m2/`. Next: Phase 1 time-lapse, before the optional M3.
 
 ## What is new here, exactly
 

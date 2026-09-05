@@ -298,3 +298,15 @@ No weight vector in either grid reaches the pre-registered bar on the tuning set
 
 **Breaks if.** Phase 3 lands and the corpus is too small or too homogeneous to give the label a stable reference class; then the archetype stays `null` and the reason moves from "no corpus" to "corpus insufficient," recorded in `validation.json`.
 
+## D-020 · 2026-09-05 · M2 closed; Phase 1 (time-lapse) precedes the optional M3
+
+**Decision.** M2 as defined in D-003 — a minimal authored ruleset under the anti-horoscope gate producing `skeleton.json`, plus a deterministic 2D cutaway with C4 folded in, no LLM in the path — is complete. The two open questions the mapper spec carried into M2 are resolved (Q3 by D-018, Q1 by D-019); overlays, two geometries, and the diff instrument (D-017) exceed the definition. Ordering of what follows: **Phase 1, the evolution time-lapse (system spec §8), is built next, before M3.**
+
+**Why Phase 1 before M3.** D-003 makes M3 conditional: "built only if M2 proves the skeleton is worth narrating." A single frame cannot prove that; four reference renders were read (D-016 addendum) and read well, but reading well is recognition, n = 1, and the corpus has already refused recognition as a gate (D-004 Q2). The time-lapse is the test that can fail. If the named structure over a repository's history is mostly the budget's jitter, there is nothing to narrate and M3 is not built. If foundations are poured, wings bolted on, and basements flood at identifiable commits, the skeleton is worth a brief. Phase 1 is also deterministic, consumes only what M2 emits, and is the first real consumer of the D-018 budget — the same logic as D-013 rule 3: a consumer makes the instrument real. M3 puts an LLM in the path; every audit so far has pushed weight from the render toward the instrument, and this ordering keeps it there one phase longer.
+
+**Shape of Phase 1 (to be specified, not yet designed).** Checkpoints along the timeline (by commit count, the same reasoning as validation §3.1's split); a substrate and skeleton per checkpoint, cached by sha; adjacent-checkpoint `skeleton-diff` with the budget verdict per frame; a frame sequence the cutaway renders with stable node identity through renames; and the question the phase must answer in a report — what fraction of movement across the history is over-budget ripple versus structural change. The validation gate is not re-run per checkpoint; `validation.json` at HEAD governs every frame, and that limitation goes on the page.
+
+**Assumes.** Extraction cost scales: a full four-repo gate run is ~10 minutes cold, so twenty checkpoints on eslint is not free; the cache and `--truncate-at` carry it. Alex has not asked for the render first (D-003 "breaks if"), and can reverse this ordering.
+
+**Breaks if.** The time-lapse shows every repo's history as under-budget stasis with a few discontinuities at large refactors — then the budget is loose or the features are coarse, and that is a finding against M2, not a reason to proceed to M3.
+
