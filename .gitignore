@@ -1,6 +1,8 @@
-.DS_Store
-logs/
 __pycache__/
-*.pyc
+.DS_Store
 .venv/
+*.pyc
+logs/
+node_modules/
 out/
+reference/

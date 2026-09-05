@@ -1,0 +1,9 @@
+{
+  "name": "repo-substrate-tools",
+  "private": true,
+  "description": "Pinned Node toolchain for repo-substrate's JS/TS DependencyExtractor (D-006). Versions here are captured into toolchain_versions and hashed into config_fingerprint.",
+  "devDependencies": {
+    "dependency-cruiser": "18.2.0",
+    "typescript": "5.9.2"
+  }
+}
