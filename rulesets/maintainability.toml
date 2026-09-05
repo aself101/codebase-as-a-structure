@@ -15,7 +15,6 @@ name = "maintainability"
 version = "0.1.0"
 profile = "maintainability"
 description = "v0 maintainability lens: load, neglect, reinforcement, activity — over asserted signals only; the two pressure indices are unvalidated (D-015) and appear only as decorative features."
-strata_signal = "age_days"
 wing_depth = 1
 
 [[feature]]

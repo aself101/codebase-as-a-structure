@@ -1,0 +1,1065 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1760" height="604" viewBox="0 0 1760 604" font-family="ui-monospace, Menlo, monospace" font-size="11">
+<defs><pattern id="water" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#9fc5e8"/><path d="M0 4 Q2 2 4 4 T8 4" stroke="#3d7ab8" fill="none"/></pattern><pattern id="scaffold" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="none"/><line x1="0" y1="0" x2="0" y2="8" stroke="#5c8a3a" stroke-width="2"/></pattern></defs>
+<rect width="1760" height="604" fill="#faf8f3"/>
+<text x="24" y="26" font-size="16" font-weight="bold">uluops-registry-api @ f7414cc7bb — cutaway, profile maintainability + onboarding</text>
+<text x="24" y="46">diagnostic features: 283 · <tspan fill="#c2185b" font-weight="bold">decorative (ungrounded, not a diagnosis): 27</tspan> · degraded (graph): 0 · population 267 files · co-located across profiles: 31</text>
+<text x="24" y="64" fill="#555">gate: bug_pressure_index=unvalidated, centrality=asserted, fan_in=asserted, fan_out=asserted, last_touched_days=asserted, load_index=asserted, neglect_index=asserted, reinforcement_index=asserted</text>
+<text x="24" y="82" fill="#555">seed c576e0759dc9… · substrate fp 80b2a632f8b7… · validation fp cb320f191852… · ruleset maintainability@0.1.0 · skeleton f6af19b2bde4…</text>
+<text x="24" y="100" fill="#555">strata = dependency layers (longest import path to a leaf), leaves at the bottom · wings = top-level directory · room width ∝ √lines · material = age · every named feature denotes present structural position (validation §2.1.1)</text>
+<rect x="24" y="118" width="14" height="10" style="stroke:#2b2b2b;stroke-width:3;fill:#d9cfb8"/>
+<text x="42" y="127" fill="#333">foundation / high-load hub</text>
+<rect x="240" y="118" width="14" height="10" style="stroke:#8a4b00;stroke-width:2;fill:#d9cfb8"/>
+<text x="258" y="127" fill="#333">hub</text>
+<rect x="295" y="118" width="14" height="10" style="fill:url(#water);stroke:#888"/>
+<text x="313" y="127" fill="#333">flooded basement</text>
+<rect x="441" y="118" width="14" height="10" style="fill:url(#scaffold);stroke:#888"/>
+<text x="459" y="127" fill="#333">scaffolding</text>
+<rect x="552" y="118" width="14" height="10" style="fill:#d9cfb8;opacity:0.45;stroke:#888"/>
+<text x="570" y="127" fill="#333">dark room</text>
+<rect x="649" y="118" width="14" height="10" style="stroke:#f2c14e;stroke-width:2;fill:#d9cfb8"/>
+<text x="667" y="127" fill="#333">lit room</text>
+<rect x="739" y="118" width="14" height="10" style="stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3;fill:#d9cfb8"/>
+<text x="757" y="127" fill="#333">decorative (ungrounded)</text>
+<text x="24" y="145" fill="#333">overlays (corner badge per profile, shown side by side, never merged):</text>
+<polygon points="526,136 536,136 526,146" fill="#1f6f8b"/>
+<text x="540" y="145" fill="#333">onboarding: corridor, foundation</text>
+<g id="base" data-profile="maintainability">
+<text x="24" y="162" font-weight="bold" fill="#333">(root)</text>
+<rect x="24" y="530" width="25" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>eslint.config.js
+lines 79 · fan_in 0 · fan_out 0 · age 226d · last touched 30d
+no named feature</title></rect>
+<rect x="52" y="530" width="23" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>eslint.deprecated.config.js
+lines 62 · fan_in 0 · fan_out 0 · age 91d · last touched 30d
+no named feature</title></rect>
+<rect x="78" y="530" width="23" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>knexfile.ts
+lines 59 · fan_in 0 · fan_out 0 · age 226d · last touched 121d
+[maintainability] flooded_basement</title></rect>
+<rect x="104" y="530" width="22" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>stryker.config.mjs
+lines 51 · fan_in 0 · fan_out 0 · age 221d · last touched 92d
+no named feature</title></rect>
+<rect x="129" y="530" width="22" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>vitest.config.ts
+lines 53 · fan_in 0 · fan_out 0 · age 226d · last touched 77d
+no named feature</title></rect>
+<rect x="154" y="530" width="22" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>vitest.integration.config.ts
+lines 52 · fan_in 0 · fan_out 0 · age 225d · last touched 30d
+no named feature</title></rect>
+<rect x="24" y="511" width="22" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>vitest.unit.config.ts
+lines 53 · fan_in 0 · fan_out 0 · age 221d · last touched 52d
+no named feature</title></rect>
+<line x1="20" y1="548" x2="179" y2="548" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="20" y1="443" x2="179" y2="443" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="20" y1="414" x2="179" y2="414" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="20" y1="328" x2="179" y2="328" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="20" y1="242" x2="179" y2="242" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="207" y="162" font-weight="bold" fill="#333">scripts</text>
+<rect x="207" y="530" width="29" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>scripts/backup-db.sh
+lines 112 · fan_in 0 · fan_out 0 · age 189d · last touched 120d
+no named feature</title></rect>
+<rect x="239" y="530" width="32" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/check-optionalauth-nonget.ts
+lines 146 · fan_in 0 · fan_out 0 · age 10d · last touched 10d
+no named feature</title></rect>
+<rect x="274" y="530" width="21" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/cron/deep-analysis.sh
+lines 43 · fan_in 0 · fan_out 0 · age 48d · last touched 15d
+no named feature</title></rect>
+<rect x="298" y="530" width="21" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/cron/executions-retention.sh
+lines 45 · fan_in 0 · fan_out 0 · age 77d · last touched 15d
+no named feature</title></rect>
+<rect x="322" y="530" width="19" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/cron/models-sync.sh
+lines 33 · fan_in 0 · fan_out 0 · age 81d · last touched 15d
+no named feature</title></rect>
+<rect x="344" y="530" width="26" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/provision-test-db.sh
+lines 84 · fan_in 0 · fan_out 0 · age 78d · last touched 44d
+no named feature</title></rect>
+<rect x="373" y="530" width="43" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/retranslate-corpus.ts
+lines 323 · fan_in 0 · fan_out 0 · age 27d · last touched 16d
+no named feature</title></rect>
+<rect x="207" y="511" width="30" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>scripts/setup-test-auth-db.ts
+lines 122 · fan_in 0 · fan_out 0 · age 155d · last touched 120d
+no named feature</title></rect>
+<rect x="240" y="511" width="29" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/undeclared-query-params.py
+lines 111 · fan_in 0 · fan_out 0 · age 26d · last touched 26d
+no named feature</title></rect>
+<line x1="203" y1="548" x2="419" y2="548" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="203" y1="443" x2="419" y2="443" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="203" y1="414" x2="419" y2="414" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="207" y="310" width="24" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-deep-analysis.ts
+lines 71 · fan_in 0 · fan_out 1 · age 96d · last touched 96d
+no named feature</title></rect>
+<rect x="234" y="310" width="28" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-definition-tags.ts
+lines 100 · fan_in 0 · fan_out 3 · age 75d · last touched 75d
+no named feature</title></rect>
+<rect x="265" y="310" width="28" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-fork-parents.ts
+lines 110 · fan_in 0 · fan_out 5 · age 97d · last touched 50d
+no named feature</title></rect>
+<rect x="296" y="310" width="29" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-is-latest.ts
+lines 118 · fan_in 0 · fan_out 1 · age 79d · last touched 15d
+no named feature</title></rect>
+<rect x="328" y="310" width="32" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-missing-risk-profiles.ts
+lines 149 · fan_in 0 · fan_out 6 · age 82d · last touched 15d
+no named feature</title></rect>
+<rect x="363" y="310" width="30" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-normalize-hashes.ts
+lines 130 · fan_in 0 · fan_out 1 · age 78d · last touched 78d
+no named feature</title></rect>
+<rect x="207" y="291" width="34" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-risk-scalars.ts
+lines 178 · fan_in 0 · fan_out 1 · age 50d · last touched 15d
+no named feature</title></rect>
+<rect x="244" y="291" width="40" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>scripts/calibration-gate.ts
+lines 258 · fan_in 0 · fan_out 5 · age 96d · last touched 15d
+no named feature</title></rect>
+<rect x="287" y="291" width="38" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/lineage-consistency-check.ts
+lines 238 · fan_in 0 · fan_out 1 · age 82d · last touched 10d
+no named feature</title></rect>
+<rect x="328" y="291" width="29" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>scripts/list-pre-a1-versions.ts
+lines 112 · fan_in 0 · fan_out 1 · age 92d · last touched 15d
+no named feature</title></rect>
+<rect x="360" y="291" width="30" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/measure-risk-profile-staleness.ts
+lines 127 · fan_in 0 · fan_out 2 · age 82d · last touched 82d
+no named feature</title></rect>
+<rect x="393" y="291" width="17" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>scripts/run-seed.ts
+lines 22 · fan_in 0 · fan_out 1 · age 226d · last touched 226d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="207" y="272" width="34" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/verify-hash-parity.ts
+lines 175 · fan_in 0 · fan_out 1 · age 78d · last touched 78d
+no named feature</title></rect>
+<line x1="203" y1="328" x2="419" y2="328" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="207" y="224" width="22" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-references.ts
+lines 54 · fan_in 0 · fan_out 4 · age 167d · last touched 167d
+no named feature</title></rect>
+<rect x="232" y="224" width="37" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-stale-risk-profiles.ts
+lines 215 · fan_in 0 · fan_out 8 · age 82d · last touched 12d
+no named feature</title></rect>
+<rect x="272" y="224" width="39" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-stale-runtime-md.ts
+lines 245 · fan_in 0 · fan_out 7 · age 31d · last touched 31d
+no named feature</title></rect>
+<rect x="314" y="224" width="29" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-unique-execution-count.ts
+lines 117 · fan_in 0 · fan_out 2 · age 64d · last touched 64d
+no named feature</title></rect>
+<rect x="346" y="224" width="35" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>scripts/backfill-version-stamping.ts
+lines 187 · fan_in 0 · fan_out 5 · age 95d · last touched 95d
+no named feature</title></rect>
+<rect x="384" y="224" width="29" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/requeue-deep-stale.ts
+lines 120 · fan_in 0 · fan_out 3 · age 12d · last touched 12d
+no named feature</title></rect>
+<rect x="207" y="205" width="30" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/run-deep-analysis.ts
+lines 122 · fan_in 0 · fan_out 5 · age 74d · last touched 74d
+no named feature</title></rect>
+<rect x="240" y="205" width="19" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>scripts/time-recompute-all.ts
+lines 32 · fan_in 0 · fan_out 2 · age 55d · last touched 55d
+no named feature</title></rect>
+<line x1="203" y1="242" x2="419" y2="242" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="447" y="162" font-weight="bold" fill="#333">src</text>
+<rect x="447" y="530" width="33" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:4 3"><title>src/config/index.ts
+lines 157 · fan_in 15 · fan_out 0 · age 226d · last touched 15d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="483" y="530" width="26" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/db/migrations/001_create_definitions.ts
+lines 82 · fan_in 0 · fan_out 0 · age 225d · last touched 225d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="512" y="530" width="21" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/db/migrations/002_create_definition_versions.ts
+lines 47 · fan_in 0 · fan_out 0 · age 225d · last touched 225d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="536" y="530" width="20" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/db/migrations/003_create_definition_forks.ts
+lines 37 · fan_in 0 · fan_out 0 · age 225d · last touched 225d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="559" y="530" width="21" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/db/migrations/004_create_definition_references.ts
+lines 45 · fan_in 0 · fan_out 0 · age 225d · last touched 225d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="583" y="530" width="18" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/db/migrations/005_create_providers.ts
+lines 26 · fan_in 0 · fan_out 0 · age 225d · last touched 225d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="604" y="530" width="21" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/db/migrations/006_create_models.ts
+lines 48 · fan_in 0 · fan_out 0 · age 225d · last touched 225d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="628" y="530" width="20" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/db/migrations/007_create_model_aliases.ts
+lines 36 · fan_in 0 · fan_out 0 · age 225d · last touched 225d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="651" y="530" width="24" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/011_extend_models_table.ts
+lines 64 · fan_in 0 · fan_out 0 · age 217d · last touched 120d
+no named feature</title></rect>
+<rect x="678" y="530" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/012_create_definition_executions.ts
+lines 42 · fan_in 0 · fan_out 0 · age 216d · last touched 119d
+no named feature</title></rect>
+<rect x="701" y="530" width="24" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/db/migrations/013_relax_delete_constraints.ts
+lines 66 · fan_in 0 · fan_out 0 · age 196d · last touched 177d
+[maintainability] dark_room</title></rect>
+<rect x="728" y="530" width="32" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/db/migrations/014_create_definition_languages.ts
+lines 150 · fan_in 0 · fan_out 0 · age 196d · last touched 196d
+[maintainability] dark_room</title></rect>
+<rect x="763" y="530" width="19" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/db/migrations/015_create_definition_stars.ts
+lines 32 · fan_in 0 · fan_out 0 · age 195d · last touched 195d
+[maintainability] dark_room</title></rect>
+<rect x="785" y="530" width="15" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/db/migrations/016_add_fulltext_search_index.ts
+lines 15 · fan_in 0 · fan_out 0 · age 182d · last touched 182d
+[maintainability] dark_room</title></rect>
+<rect x="803" y="530" width="16" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/017_update_admin_definitions_to_pro_tier.ts
+lines 18 · fan_in 0 · fan_out 0 · age 171d · last touched 171d
+no named feature</title></rect>
+<rect x="822" y="530" width="18" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/018_add_min_subscription.ts
+lines 25 · fan_in 0 · fan_out 0 · age 171d · last touched 171d
+no named feature</title></rect>
+<rect x="843" y="530" width="16" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/019_rename_community_tier_to_public.ts
+lines 19 · fan_in 0 · fan_out 0 · age 171d · last touched 171d
+no named feature</title></rect>
+<rect x="862" y="530" width="19" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/020_add_check_constraints.ts
+lines 35 · fan_in 0 · fan_out 0 · age 167d · last touched 167d
+no named feature</title></rect>
+<rect x="884" y="530" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/021_add_org_id_column.ts
+lines 37 · fan_in 0 · fan_out 0 · age 158d · last touched 158d
+no named feature</title></rect>
+<rect x="907" y="530" width="23" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/022_enforce_org_id_not_null.ts
+lines 58 · fan_in 0 · fan_out 0 · age 158d · last touched 158d
+no named feature</title></rect>
+<rect x="933" y="530" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/023_add_catalogue_fields.ts
+lines 38 · fan_in 0 · fan_out 0 · age 157d · last touched 157d
+no named feature</title></rect>
+<rect x="447" y="511" width="23" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/024_sync_visibility_across_versions.ts
+lines 57 · fan_in 0 · fan_out 0 · age 152d · last touched 147d
+no named feature</title></rect>
+<rect x="473" y="511" width="21" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/025_create_definition_metrics.ts
+lines 47 · fan_in 0 · fan_out 0 · age 149d · last touched 120d
+no named feature</title></rect>
+<rect x="497" y="511" width="24" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/026_preserve_fork_lineage.ts
+lines 67 · fan_in 0 · fan_out 0 · age 146d · last touched 79d
+no named feature</title></rect>
+<rect x="524" y="511" width="18" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/027_add_archived_status.ts
+lines 26 · fan_in 0 · fan_out 0 · age 146d · last touched 135d
+no named feature</title></rect>
+<rect x="545" y="511" width="21" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/028_rename_tier_public_to_org.ts
+lines 47 · fan_in 0 · fan_out 0 · age 146d · last touched 140d
+no named feature</title></rect>
+<rect x="569" y="511" width="16" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/029_add_weight_version.ts
+lines 18 · fan_in 0 · fan_out 0 · age 145d · last touched 145d
+no named feature</title></rect>
+<rect x="588" y="511" width="17" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/030_add_prompt_hash_column.ts
+lines 22 · fan_in 0 · fan_out 0 · age 139d · last touched 139d
+no named feature</title></rect>
+<rect x="608" y="511" width="24" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/031_add_provenance.ts
+lines 71 · fan_in 0 · fan_out 0 · age 126d · last touched 126d
+no named feature</title></rect>
+<rect x="635" y="511" width="17" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/032_rename_schema_version.ts
+lines 21 · fan_in 0 · fan_out 0 · age 120d · last touched 120d
+no named feature</title></rect>
+<rect x="655" y="511" width="17" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/033_add_org_id_foreign_key.ts
+lines 23 · fan_in 0 · fan_out 0 · age 121d · last touched 121d
+no named feature</title></rect>
+<rect x="675" y="511" width="35" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/034_convert_user_ids_to_binary.ts
+lines 195 · fan_in 0 · fan_out 0 · age 121d · last touched 120d
+no named feature</title></rect>
+<rect x="713" y="511" width="18" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/035_scope_execution_run_id_to_definition.ts
+lines 26 · fan_in 0 · fan_out 0 · age 103d · last touched 15d
+no named feature</title></rect>
+<rect x="734" y="511" width="18" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/036_add_risk_profile_to_definition_versions.ts
+lines 26 · fan_in 0 · fan_out 0 · age 97d · last touched 15d
+no named feature</title></rect>
+<rect x="755" y="511" width="22" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/037_add_deep_analysis_columns.ts
+lines 53 · fan_in 0 · fan_out 0 · age 97d · last touched 15d
+no named feature</title></rect>
+<rect x="780" y="511" width="19" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/038_add_inherited_health_baseline.ts
+lines 31 · fan_in 0 · fan_out 0 · age 95d · last touched 95d
+no named feature</title></rect>
+<rect x="802" y="511" width="20" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/039_definitions_org_type_status_fork_idx.ts
+lines 37 · fan_in 0 · fan_out 0 · age 88d · last touched 88d
+no named feature</title></rect>
+<rect x="825" y="511" width="24" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/040_sync_fragmented_visibility.ts
+lines 72 · fan_in 0 · fan_out 0 · age 82d · last touched 82d
+no named feature</title></rect>
+<rect x="852" y="511" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/041_recompute_lineage_counters.ts
+lines 49 · fan_in 0 · fan_out 0 · age 82d · last touched 82d
+no named feature</title></rect>
+<rect x="877" y="511" width="34" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>src/db/migrations/042_create_definition_lineages.ts
+lines 170 · fan_in 0 · fan_out 0 · age 82d · last touched 7d
+[maintainability] lit_room</title></rect>
+<rect x="914" y="511" width="19" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/043_min_subscription_all_free.ts
+lines 35 · fan_in 0 · fan_out 0 · age 82d · last touched 82d
+no named feature</title></rect>
+<rect x="447" y="492" width="29" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/044_retire_lineage_property_copies.ts
+lines 120 · fan_in 0 · fan_out 0 · age 82d · last touched 82d
+no named feature</title></rect>
+<rect x="479" y="492" width="32" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/045_restore_definitions_foreign_keys.ts
+lines 151 · fan_in 0 · fan_out 0 · age 82d · last touched 82d
+no named feature</title></rect>
+<rect x="514" y="492" width="18" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/046_definitions_type_name_version_idx.ts
+lines 30 · fan_in 0 · fan_out 0 · age 81d · last touched 81d
+no named feature</title></rect>
+<rect x="535" y="492" width="20" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/047_add_trusted_execution_count.ts
+lines 39 · fan_in 0 · fan_out 0 · age 81d · last touched 81d
+no named feature</title></rect>
+<rect x="558" y="492" width="21" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/048_add_is_latest_to_definitions.ts
+lines 43 · fan_in 0 · fan_out 0 · age 79d · last touched 79d
+no named feature</title></rect>
+<rect x="582" y="492" width="19" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/049_backfill_google_structured_output_with_tools.ts
+lines 34 · fan_in 0 · fan_out 0 · age 77d · last touched 77d
+no named feature</title></rect>
+<rect x="604" y="492" width="21" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/050_add_fork_source_snapshot.ts
+lines 47 · fan_in 0 · fan_out 0 · age 77d · last touched 77d
+no named feature</title></rect>
+<rect x="628" y="492" width="25" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/051_repoint_grok_alias.ts
+lines 79 · fan_in 0 · fan_out 0 · age 10d · last touched 10d
+no named feature</title></rect>
+<rect x="656" y="492" width="27" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>src/db/migrations/052_repoint_anthropic_aliases.ts
+lines 93 · fan_in 0 · fan_out 0 · age 9d · last touched 9d
+[maintainability] lit_room</title></rect>
+<rect x="686" y="492" width="17" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/db/migrations/20260119222852_alter_hash_column_size.ts
+lines 22 · fan_in 0 · fan_out 0 · age 224d · last touched 224d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="706" y="492" width="25" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/20260624120000_repoint_stale_model_aliases.ts
+lines 78 · fan_in 0 · fan_out 0 · age 67d · last touched 67d
+no named feature</title></rect>
+<rect x="734" y="492" width="20" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/20260628000000_rename_trusted_to_unique_execution_count.ts
+lines 42 · fan_in 0 · fan_out 0 · age 64d · last touched 64d
+no named feature</title></rect>
+<rect x="757" y="492" width="24" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/20260712000000_add_risk_scalars_to_definitions.ts
+lines 67 · fan_in 0 · fan_out 0 · age 50d · last touched 15d
+no named feature</title></rect>
+<rect x="784" y="492" width="25" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/20260718000000_add_analyzer_version_to_definitions.ts
+lines 74 · fan_in 0 · fan_out 0 · age 44d · last touched 15d
+no named feature</title></rect>
+<rect x="812" y="492" width="20" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/db/migrations/20260726000000_add_cost_last_updated_to_models.ts
+lines 42 · fan_in 0 · fan_out 0 · age 36d · last touched 36d
+no named feature</title></rect>
+<rect x="835" y="492" width="43" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/schemas/cdl/types.ts
+lines 318 · fan_in 3 · fan_out 0 · age 224d · last touched 175d
+[maintainability] scaffolding</title></rect>
+<rect x="881" y="492" width="32" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/schemas/definition/provenance.ts
+lines 144 · fan_in 12 · fan_out 0 · age 126d · last touched 120d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="916" y="492" width="27" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/schemas/fork/schema.ts
+lines 92 · fan_in 4 · fan_out 0 · age 225d · last touched 76d
+[maintainability] hub (position: hub)
+[maintainability] scaffolding</title></rect>
+<rect x="447" y="473" width="26" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/schemas/user/schema.ts
+lines 88 · fan_in 8 · fan_out 0 · age 217d · last touched 142d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="476" y="473" width="27" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/schemas/validation/schema.ts
+lines 94 · fan_in 4 · fan_out 0 · age 225d · last touched 9d
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="506" y="473" width="48" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/schemas/wdl/types.ts
+lines 413 · fan_in 4 · fan_out 0 · age 222d · last touched 170d
+[maintainability] scaffolding</title></rect>
+<rect x="557" y="473" width="23" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/services/analytics/health.ts
+lines 57 · fan_in 4 · fan_out 0 · age 149d · last touched 7d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="583" y="473" width="27" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/services/safety/analyzer-version.ts
+lines 99 · fan_in 10 · fan_out 0 · age 44d · last touched 12d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="613" y="473" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/services/safety/section-classifier.ts
+lines 63 · fan_in 2 · fan_out 0 · age 67d · last touched 67d
+[maintainability] scaffolding</title></rect>
+<rect x="639" y="473" width="41" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/services/safety/types.ts
+lines 283 · fan_in 23 · fan_out 0 · age 97d · last touched 12d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="683" y="473" width="31" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/services/safety/yaml-walker.ts
+lines 134 · fan_in 8 · fan_out 0 · age 92d · last touched 92d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="717" y="473" width="30" height="16" style="fill:#c7b894;stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>src/terminal/styles.ts
+lines 132 · fan_in 6 · fan_out 0 · age 218d · last touched 218d
+[maintainability] dark_room
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="750" y="473" width="20" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>src/utils/async-handler.ts
+lines 36 · fan_in 16 · fan_out 0 · age 226d · last touched 196d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="773" y="473" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/utils/cycle-detection.ts
+lines 145 · fan_in 3 · fan_out 0 · age 225d · last touched 225d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="808" y="473" width="39" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/utils/errors.ts
+lines 254 · fan_in 56 · fan_out 0 · age 226d · last touched 10d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="850" y="473" width="17" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/utils/format-definition-id.ts
+lines 21 · fan_in 10 · fan_out 0 · age 213d · last touched 213d
+[maintainability] dark_room
+[maintainability] scaffolding</title></rect>
+<rect x="870" y="473" width="16" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/utils/hash.ts
+lines 20 · fan_in 11 · fan_out 0 · age 226d · last touched 78d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="889" y="473" width="29" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/utils/json.ts
+lines 119 · fan_in 5 · fan_out 0 · age 223d · last touched 120d
+[maintainability] scaffolding</title></rect>
+<rect x="921" y="473" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/utils/platform-version-gate.ts
+lines 83 · fan_in 2 · fan_out 0 · age 61d · last touched 61d
+[maintainability] scaffolding</title></rect>
+<rect x="447" y="454" width="23" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/utils/request-context.ts
+lines 62 · fan_in 5 · fan_out 0 · age 67d · last touched 67d
+[maintainability] hub (position: hub)
+[maintainability] scaffolding</title></rect>
+<rect x="473" y="454" width="19" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>src/utils/singleton.ts
+lines 34 · fan_in 18 · fan_out 0 · age 226d · last touched 226d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="495" y="454" width="26" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/utils/uuid.ts
+lines 81 · fan_in 36 · fan_out 0 · age 226d · last touched 55d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="524" y="454" width="26" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/utils/validated-request.ts
+lines 86 · fan_in 15 · fan_out 0 · age 224d · last touched 140d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<line x1="443" y1="548" x2="961" y2="548" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="443" y1="443" x2="961" y2="443" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="447" y="396" width="31" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/config/database.ts
+lines 141 · fan_in 4 · fan_out 1 · age 226d · last touched 121d
+[maintainability] flooded_basement
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="481" y="396" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/controllers/org-controller.ts
+lines 56 · fan_in 2 · fan_out 1 · age 157d · last touched 120d
+[maintainability] scaffolding</title></rect>
+<rect x="506" y="396" width="47" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/db/connection.ts
+lines 383 · fan_in 45 · fan_out 3 · age 226d · last touched 3d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="556" y="396" width="37" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/db/seeds/002_models.ts
+lines 223 · fan_in 0 · fan_out 1 · age 225d · last touched 44d
+no named feature</title></rect>
+<rect x="596" y="396" width="18" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/db/seeds/utils.ts
+lines 27 · fan_in 2 · fan_out 1 · age 96d · last touched 96d
+no named feature</title></rect>
+<rect x="617" y="396" width="47" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:4 3"><title>src/middleware/auth.ts
+lines 393 · fan_in 29 · fan_out 2 · age 217d · last touched 40d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="667" y="396" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/middleware/correlation-id.ts
+lines 66 · fan_in 3 · fan_out 1 · age 214d · last touched 67d
+[maintainability] scaffolding</title></rect>
+<rect x="694" y="396" width="46" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/middleware/error-handler.ts
+lines 371 · fan_in 7 · fan_out 3 · age 226d · last touched 120d
+[maintainability] scaffolding</title></rect>
+<rect x="743" y="396" width="42" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/middleware/metrics.ts
+lines 301 · fan_in 2 · fan_out 1 · age 194d · last touched 50d
+[maintainability] scaffolding</title></rect>
+<rect x="788" y="396" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/middleware/parse-version.ts
+lines 87 · fan_in 2 · fan_out 1 · age 223d · last touched 156d
+[maintainability] scaffolding</title></rect>
+<rect x="817" y="396" width="41" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3;stroke-dasharray:4 3"><title>src/middleware/rate-limit.ts
+lines 277 · fan_in 13 · fan_out 2 · age 224d · last touched 15d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="861" y="396" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/middleware/request-logger.ts
+lines 57 · fan_in 2 · fan_out 1 · age 226d · last touched 25d
+[maintainability] scaffolding</title></rect>
+<rect x="887" y="396" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/middleware/service-key.ts
+lines 103 · fan_in 6 · fan_out 2 · age 97d · last touched 61d
+[maintainability] scaffolding</title></rect>
+<rect x="918" y="396" width="17" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/middleware/tier-gate.ts
+lines 24 · fan_in 2 · fan_out 2 · age 143d · last touched 117d
+[maintainability] scaffolding</title></rect>
+<rect x="447" y="377" width="21" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/middleware/type-guard.ts
+lines 43 · fan_in 5 · fan_out 2 · age 224d · last touched 176d
+[maintainability] scaffolding</title></rect>
+<rect x="471" y="377" width="31" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/middleware/validate.ts
+lines 133 · fan_in 10 · fan_out 1 · age 224d · last touched 7d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="505" y="377" width="54" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/routes/v1/schemas.ts
+lines 530 · fan_in 25 · fan_out 2 · age 224d · last touched 9d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="562" y="377" width="21" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/schemas/cdl/index.ts
+lines 47 · fan_in 1 · fan_out 1 · age 224d · last touched 176d
+no named feature</title></rect>
+<rect x="586" y="377" width="43" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:4 3"><title>src/schemas/definition/schema.ts
+lines 317 · fan_in 6 · fan_out 2 · age 225d · last touched 26d
+[maintainability] crack [decorative]
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="632" y="377" width="31" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/schemas/enums.ts
+lines 141 · fan_in 48 · fan_out 1 · age 225d · last touched 7d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="666" y="377" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/schemas/fork/transforms.ts
+lines 59 · fan_in 3 · fan_out 2 · age 225d · last touched 76d
+[maintainability] scaffolding</title></rect>
+<rect x="692" y="377" width="16" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/schemas/fork/types.ts
+lines 18 · fan_in 6 · fan_out 1 · age 225d · last touched 176d
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="711" y="377" width="34" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/schemas/model/schema.ts
+lines 169 · fan_in 4 · fan_out 1 · age 225d · last touched 36d
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="748" y="377" width="28" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/schemas/reference/schema.ts
+lines 107 · fan_in 4 · fan_out 1 · age 225d · last touched 176d
+[maintainability] flooded_basement
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="779" y="377" width="16" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/schemas/user/index.ts
+lines 17 · fan_in 4 · fan_out 2 · age 217d · last touched 176d
+[maintainability] scaffolding</title></rect>
+<rect x="798" y="377" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/schemas/user/transforms.ts
+lines 58 · fan_in 2 · fan_out 2 · age 217d · last touched 169d
+[maintainability] scaffolding</title></rect>
+<rect x="824" y="377" width="16" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/schemas/validation/index.ts
+lines 17 · fan_in 1 · fan_out 2 · age 225d · last touched 176d
+[maintainability] flooded_basement</title></rect>
+<rect x="843" y="377" width="17" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/schemas/validation/types.ts
+lines 24 · fan_in 4 · fan_out 1 · age 225d · last touched 176d
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="863" y="377" width="30" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/schemas/version/schema.ts
+lines 124 · fan_in 4 · fan_out 2 · age 225d · last touched 9d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="896" y="377" width="44" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/schemas/wdl/context.ts
+lines 329 · fan_in 1 · fan_out 1 · age 222d · last touched 176d
+no named feature</title></rect>
+<rect x="447" y="358" width="27" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/schemas/wdl/index.ts
+lines 98 · fan_in 1 · fan_out 2 · age 222d · last touched 176d
+no named feature</title></rect>
+<rect x="477" y="358" width="21" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/services/analytics/types.ts
+lines 48 · fan_in 6 · fan_out 1 · age 146d · last touched 7d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="501" y="358" width="30" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/services/definition-language/index.ts
+lines 125 · fan_in 2 · fan_out 2 · age 196d · last touched 95d
+no named feature</title></rect>
+<rect x="534" y="358" width="40" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/services/definition-renderer/index.ts
+lines 265 · fan_in 11 · fan_out 1 · age 224d · last touched 27d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="577" y="358" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/services/definition/status-machine.ts
+lines 101 · fan_in 4 · fan_out 2 · age 145d · last touched 140d
+[maintainability] scaffolding</title></rect>
+<rect x="608" y="358" width="25" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/services/safety/capabilities.ts
+lines 78 · fan_in 2 · fan_out 2 · age 97d · last touched 6d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="636" y="358" width="33" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/services/safety/decode.ts
+lines 163 · fan_in 3 · fan_out 1 · age 42d · last touched 41d
+[maintainability] scaffolding</title></rect>
+<rect x="672" y="358" width="33" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/services/safety/fork-diff.ts
+lines 160 · fan_in 2 · fan_out 1 · age 97d · last touched 50d
+[maintainability] scaffolding</title></rect>
+<rect x="708" y="358" width="31" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/services/safety/publish-gate.ts
+lines 143 · fan_in 3 · fan_out 1 · age 67d · last touched 7d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="742" y="358" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/services/safety/risk-calculator.ts
+lines 82 · fan_in 7 · fan_out 1 · age 97d · last touched 12d
+[maintainability] scaffolding</title></rect>
+<rect x="771" y="358" width="63" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/services/safety/signals.ts
+lines 759 · fan_in 5 · fan_out 4 · age 97d · last touched 41d
+[maintainability] scaffolding</title></rect>
+<rect x="837" y="358" width="38" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/services/translation/translator.ts
+lines 229 · fan_in 6 · fan_out 3 · age 220d · last touched 7d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="878" y="358" width="52" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/services/validation/reference-validator.ts
+lines 504 · fan_in 3 · fan_out 4 · age 221d · last touched 15d
+[maintainability] scaffolding</title></rect>
+<rect x="933" y="358" width="25" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/shutdown.ts
+lines 80 · fan_in 2 · fan_out 1 · age 48d · last touched 48d
+[maintainability] scaffolding</title></rect>
+<rect x="447" y="339" width="18" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/terminal/banner.ts
+lines 29 · fan_in 2 · fan_out 1 · age 218d · last touched 218d
+[maintainability] dark_room</title></rect>
+<rect x="468" y="339" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/terminal/sections/database.ts
+lines 37 · fan_in 3 · fan_out 1 · age 218d · last touched 218d
+[maintainability] dark_room</title></rect>
+<rect x="491" y="339" width="22" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/terminal/sections/environment.ts
+lines 54 · fan_in 3 · fan_out 1 · age 218d · last touched 218d
+[maintainability] dark_room</title></rect>
+<rect x="516" y="339" width="12" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/terminal/sections/index.ts
+lines 6 · fan_in 0 · fan_out 3 · age 218d · last touched 218d
+[maintainability] dark_room</title></rect>
+<rect x="531" y="339" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/terminal/sections/server.ts
+lines 41 · fan_in 3 · fan_out 1 · age 218d · last touched 182d
+[maintainability] dark_room</title></rect>
+<rect x="554" y="339" width="25" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/terminal/startup.ts
+lines 74 · fan_in 1 · fan_out 5 · age 218d · last touched 218d
+[maintainability] dark_room</title></rect>
+<rect x="582" y="339" width="41" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/utils/circuit-breaker.ts
+lines 283 · fan_in 3 · fan_out 2 · age 214d · last touched 48d
+[maintainability] scaffolding</title></rect>
+<rect x="626" y="339" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/utils/fork-identity.ts
+lines 68 · fan_in 2 · fan_out 1 · age 74d · last touched 74d
+[maintainability] scaffolding</title></rect>
+<rect x="653" y="339" width="20" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/utils/logger.ts
+lines 37 · fan_in 39 · fan_out 2 · age 226d · last touched 67d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="676" y="339" width="36" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/utils/read-through-cache.ts
+lines 210 · fan_in 8 · fan_out 1 · age 198d · last touched 48d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="715" y="339" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/utils/retry.ts
+lines 155 · fan_in 3 · fan_out 1 · age 214d · last touched 213d
+[maintainability] dark_room
+[maintainability] scaffolding</title></rect>
+<line x1="443" y1="414" x2="961" y2="414" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="447" y="310" width="21" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/controllers/definition-language-controller.ts
+lines 45 · fan_in 2 · fan_out 4 · age 196d · last touched 95d
+no named feature</title></rect>
+<rect x="471" y="310" width="23" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/controllers/user-controller.ts
+lines 60 · fan_in 3 · fan_out 6 · age 208d · last touched 8d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="497" y="310" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/controllers/validation-controller.ts
+lines 61 · fan_in 3 · fan_out 6 · age 221d · last touched 146d
+[maintainability] scaffolding</title></rect>
+<rect x="523" y="310" width="39" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/db/repository/alias-repository.ts
+lines 241 · fan_in 2 · fan_out 4 · age 225d · last touched 9d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="565" y="310" width="42" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/db/repository/analytics-repository.ts
+lines 306 · fan_in 7 · fan_out 2 · age 149d · last touched 82d
+[maintainability] scaffolding</title></rect>
+<rect x="610" y="310" width="39" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/db/repository/base-repository.ts
+lines 241 · fan_in 15 · fan_out 4 · age 225d · last touched 157d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="652" y="310" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/db/repository/definition-repository.ts
+lines 1349 · fan_in 7 · fan_out 7 · age 225d · last touched 7d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="719" y="310" width="39" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/db/repository/execution-repository.ts
+lines 241 · fan_in 2 · fan_out 1 · age 216d · last touched 77d
+no named feature</title></rect>
+<rect x="761" y="310" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/db/repository/fork-repository.ts
+lines 140 · fan_in 3 · fan_out 3 · age 225d · last touched 77d
+[maintainability] scaffolding</title></rect>
+<rect x="795" y="310" width="26" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/db/repository/index.ts
+lines 87 · fan_in 20 · fan_out 11 · age 225d · last touched 95d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="824" y="310" width="39" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>src/db/repository/lineage-repository.ts
+lines 248 · fan_in 4 · fan_out 2 · age 82d · last touched 7d
+[maintainability] lit_room</title></rect>
+<rect x="866" y="310" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/db/repository/model-repository.ts
+lines 142 · fan_in 2 · fan_out 3 · age 225d · last touched 157d
+[maintainability] scaffolding</title></rect>
+<rect x="900" y="310" width="21" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/db/repository/provider-repository.ts
+lines 48 · fan_in 2 · fan_out 3 · age 225d · last touched 157d
+[maintainability] scaffolding</title></rect>
+<rect x="447" y="291" width="40" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/db/repository/reference-repository.ts
+lines 258 · fan_in 4 · fan_out 4 · age 225d · last touched 157d
+[maintainability] scaffolding</title></rect>
+<rect x="490" y="291" width="31" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/db/repository/star-repository.ts
+lines 137 · fan_in 2 · fan_out 1 · age 195d · last touched 82d
+no named feature</title></rect>
+<rect x="524" y="291" width="52" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/db/repository/tracker-repository.ts
+lines 484 · fan_in 8 · fan_out 4 · age 120d · last touched 40d
+[maintainability] scaffolding</title></rect>
+<rect x="579" y="291" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/db/repository/user-repository.ts
+lines 86 · fan_in 5 · fan_out 4 · age 217d · last touched 121d
+[maintainability] scaffolding</title></rect>
+<rect x="608" y="291" width="50" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/db/repository/version-repository.ts
+lines 449 · fan_in 9 · fan_out 6 · age 225d · last touched 9d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="661" y="291" width="22" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/db/seeds/001_providers.ts
+lines 51 · fan_in 0 · fan_out 1 · age 225d · last touched 96d
+no named feature</title></rect>
+<rect x="686" y="291" width="21" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2"><title>src/db/seeds/003_aliases.ts
+lines 48 · fan_in 0 · fan_out 1 · age 225d · last touched 9d
+[maintainability] lit_room</title></rect>
+<rect x="710" y="291" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/middleware/pool-pressure.ts
+lines 126 · fan_in 3 · fan_out 3 · age 214d · last touched 48d
+[maintainability] scaffolding</title></rect>
+<rect x="743" y="291" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/middleware/username-gate.ts
+lines 60 · fan_in 2 · fan_out 3 · age 157d · last touched 77d
+[maintainability] scaffolding</title></rect>
+<rect x="769" y="291" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/routes/v1/languages.ts
+lines 41 · fan_in 1 · fan_out 5 · age 196d · last touched 95d
+no named feature</title></rect>
+<rect x="792" y="291" width="21" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/routes/v1/users.ts
+lines 43 · fan_in 1 · fan_out 5 · age 208d · last touched 171d
+no named feature</title></rect>
+<rect x="816" y="291" width="20" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/routes/v1/validation.ts
+lines 40 · fan_in 1 · fan_out 6 · age 221d · last touched 146d
+no named feature</title></rect>
+<rect x="839" y="291" width="21" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/schemas/definition/index.ts
+lines 48 · fan_in 8 · fan_out 4 · age 225d · last touched 119d
+no named feature</title></rect>
+<rect x="863" y="291" width="47" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/schemas/definition/transforms.ts
+lines 382 · fan_in 4 · fan_out 6 · age 225d · last touched 44d
+[maintainability] crack [decorative]
+[maintainability] scaffolding</title></rect>
+<rect x="913" y="291" width="17" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/schemas/definition/types.ts
+lines 24 · fan_in 13 · fan_out 1 · age 225d · last touched 176d
+[maintainability] flooded_basement
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="933" y="291" width="16" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/schemas/fork/index.ts
+lines 18 · fan_in 1 · fan_out 3 · age 225d · last touched 176d
+[maintainability] flooded_basement</title></rect>
+<rect x="447" y="272" width="36" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/schemas/index.ts
+lines 201 · fan_in 0 · fan_out 10 · age 225d · last touched 15d
+no named feature</title></rect>
+<rect x="486" y="272" width="18" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/schemas/model/index.ts
+lines 28 · fan_in 1 · fan_out 3 · age 225d · last touched 176d
+[maintainability] flooded_basement</title></rect>
+<rect x="507" y="272" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/schemas/model/transforms.ts
+lines 152 · fan_in 5 · fan_out 3 · age 225d · last touched 77d
+[maintainability] scaffolding</title></rect>
+<rect x="542" y="272" width="18" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/schemas/model/types.ts
+lines 30 · fan_in 7 · fan_out 1 · age 225d · last touched 176d
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="563" y="272" width="17" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/schemas/reference/index.ts
+lines 24 · fan_in 1 · fan_out 3 · age 225d · last touched 176d
+[maintainability] flooded_basement</title></rect>
+<rect x="583" y="272" width="21" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/schemas/reference/transforms.ts
+lines 47 · fan_in 3 · fan_out 2 · age 225d · last touched 176d
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="607" y="272" width="18" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/schemas/reference/types.ts
+lines 27 · fan_in 6 · fan_out 1 · age 225d · last touched 176d
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="628" y="272" width="16" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/schemas/version/index.ts
+lines 19 · fan_in 2 · fan_out 3 · age 225d · last touched 176d
+[maintainability] flooded_basement</title></rect>
+<rect x="647" y="272" width="29" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/schemas/version/transforms.ts
+lines 117 · fan_in 3 · fan_out 5 · age 225d · last touched 40d
+[maintainability] scaffolding</title></rect>
+<rect x="679" y="272" width="16" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/schemas/version/types.ts
+lines 18 · fan_in 4 · fan_out 1 · age 225d · last touched 176d
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="698" y="272" width="29" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/services/definition/quota.ts
+lines 114 · fan_in 4 · fan_out 4 · age 82d · last touched 6d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="730" y="272" width="43" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/services/definition/types.ts
+lines 310 · fan_in 5 · fan_out 3 · age 225d · last touched 9d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="776" y="272" width="50" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/services/dependency/index.ts
+lines 457 · fan_in 7 · fan_out 10 · age 217d · last touched 6d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="829" y="272" width="54" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/services/safety/deep-analysis-queue.ts
+lines 537 · fan_in 12 · fan_out 5 · age 97d · last touched 7d
+[maintainability] foundation (position: high-load hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="886" y="272" width="33" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/services/safety/definition-scanner.ts
+lines 160 · fan_in 12 · fan_out 8 · age 97d · last touched 12d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="447" y="253" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/services/safety/index.ts
+lines 216 · fan_in 4 · fan_out 8 · age 97d · last touched 50d
+[maintainability] scaffolding</title></rect>
+<rect x="487" y="253" width="40" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/services/validation/index.ts
+lines 260 · fan_in 9 · fan_out 3 · age 221d · last touched 9d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="530" y="253" width="19" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/terminal/index.ts
+lines 32 · fan_in 1 · fan_out 6 · age 218d · last touched 218d
+[maintainability] dark_room</title></rect>
+<rect x="552" y="253" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/utils/definition-metadata.ts
+lines 144 · fan_in 3 · fan_out 3 · age 121d · last touched 75d
+[maintainability] scaffolding</title></rect>
+<rect x="587" y="253" width="35" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/utils/definition-response.ts
+lines 186 · fan_in 2 · fan_out 4 · age 121d · last touched 7d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="625" y="253" width="23" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/utils/index.ts
+lines 57 · fan_in 1 · fan_out 8 · age 226d · last touched 120d
+no named feature</title></rect>
+<rect x="651" y="253" width="15" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/utils/resolve-author.ts
+lines 15 · fan_in 3 · fan_out 1 · age 147d · last touched 147d
+[maintainability] scaffolding</title></rect>
+<line x1="443" y1="328" x2="961" y2="328" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="447" y="224" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/controllers/analytics-controller.ts
+lines 68 · fan_in 3 · fan_out 6 · age 149d · last touched 81d
+[maintainability] scaffolding</title></rect>
+<rect x="474" y="224" width="23" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/controllers/deep-analysis-controller.ts
+lines 57 · fan_in 1 · fan_out 5 · age 97d · last touched 26d
+no named feature</title></rect>
+<rect x="500" y="224" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/controllers/definition-analytics-controller.ts
+lines 110 · fan_in 3 · fan_out 6 · age 148d · last touched 26d
+[maintainability] scaffolding</title></rect>
+<rect x="531" y="224" width="59" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/controllers/definition-controller.ts
+lines 658 · fan_in 4 · fan_out 18 · age 224d · last touched 3d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="593" y="224" width="28" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/controllers/dependency-controller.ts
+lines 100 · fan_in 3 · fan_out 4 · age 217d · last touched 6d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="624" y="224" width="29" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/controllers/execution-controller.ts
+lines 116 · fan_in 4 · fan_out 4 · age 216d · last touched 42d
+[maintainability] scaffolding</title></rect>
+<rect x="656" y="224" width="39" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/controllers/fork-controller.ts
+lines 253 · fan_in 3 · fan_out 9 · age 220d · last touched 9d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="698" y="224" width="22" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/controllers/index.ts
+lines 56 · fan_in 0 · fan_out 14 · age 224d · last touched 134d
+no named feature</title></rect>
+<rect x="723" y="224" width="32" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/controllers/model-controller.ts
+lines 154 · fan_in 3 · fan_out 4 · age 224d · last touched 8d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="758" y="224" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/controllers/org-profile-controller.ts
+lines 124 · fan_in 2 · fan_out 3 · age 157d · last touched 61d
+[maintainability] scaffolding</title></rect>
+<rect x="791" y="224" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/controllers/star-controller.ts
+lines 65 · fan_in 3 · fan_out 5 · age 195d · last touched 146d
+[maintainability] scaffolding</title></rect>
+<rect x="818" y="224" width="29" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/controllers/translation-controller.ts
+lines 114 · fan_in 3 · fan_out 9 · age 215d · last touched 9d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="850" y="224" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/controllers/version-controller.ts
+lines 105 · fan_in 3 · fan_out 7 · age 224d · last touched 40d
+[maintainability] scaffolding</title></rect>
+<rect x="881" y="224" width="39" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/controllers/webhook-controller.ts
+lines 244 · fan_in 3 · fan_out 8 · age 148d · last touched 40d
+[maintainability] scaffolding</title></rect>
+<rect x="447" y="205" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/index.ts
+lines 795 · fan_in 4 · fan_out 14 · age 226d · last touched 3d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="514" y="205" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/middleware/degradation-header.ts
+lines 85 · fan_in 2 · fan_out 4 · age 214d · last touched 52d
+[maintainability] scaffolding</title></rect>
+<rect x="543" y="205" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/middleware/index.ts
+lines 57 · fan_in 2 · fan_out 10 · age 226d · last touched 15d
+[maintainability] scaffolding</title></rect>
+<rect x="569" y="205" width="16" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/routes/index.ts
+lines 19 · fan_in 1 · fan_out 1 · age 224d · last touched 224d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="588" y="205" width="23" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/routes/v1/analytics.ts
+lines 62 · fan_in 1 · fan_out 7 · age 149d · last touched 15d
+no named feature</title></rect>
+<rect x="614" y="205" width="17" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/routes/v1/deep-analysis.ts
+lines 22 · fan_in 1 · fan_out 5 · age 97d · last touched 26d
+no named feature</title></rect>
+<rect x="634" y="205" width="52" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/routes/v1/definitions.ts
+lines 491 · fan_in 2 · fan_out 15 · age 224d · last touched 6d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="689" y="205" width="28" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/routes/v1/index.ts
+lines 102 · fan_in 2 · fan_out 11 · age 224d · last touched 9d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="720" y="205" width="19" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/routes/v1/maintenance.ts
+lines 34 · fan_in 1 · fan_out 3 · age 77d · last touched 61d
+no named feature</title></rect>
+<rect x="742" y="205" width="25" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/routes/v1/models.ts
+lines 79 · fan_in 2 · fan_out 6 · age 224d · last touched 81d
+[maintainability] scaffolding</title></rect>
+<rect x="770" y="205" width="22" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/routes/v1/org-profile.ts
+lines 52 · fan_in 1 · fan_out 5 · age 157d · last touched 61d
+no named feature</title></rect>
+<rect x="795" y="205" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/routes/v1/render.ts
+lines 33 · fan_in 3 · fan_out 6 · age 224d · last touched 177d
+[maintainability] dark_room
+[maintainability] scaffolding</title></rect>
+<rect x="817" y="205" width="16" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/routes/v1/webhooks.ts
+lines 17 · fan_in 1 · fan_out 2 · age 148d · last touched 120d
+no named feature</title></rect>
+<rect x="836" y="205" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/services/analytics/analytics-service.ts
+lines 1133 · fan_in 11 · fan_out 11 · age 149d · last touched 7d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="903" y="205" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/services/analytics/composition-lift.ts
+lines 203 · fan_in 2 · fan_out 5 · age 148d · last touched 55d
+[maintainability] scaffolding</title></rect>
+<rect x="447" y="186" width="52" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/services/analytics/definition-analytics-service.ts
+lines 506 · fan_in 3 · fan_out 12 · age 148d · last touched 55d
+[maintainability] scaffolding</title></rect>
+<rect x="502" y="186" width="44" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/services/analytics/recomputation-service.ts
+lines 324 · fan_in 3 · fan_out 7 · age 148d · last touched 40d
+[maintainability] scaffolding</title></rect>
+<rect x="549" y="186" width="25" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/services/definition/index.ts
+lines 76 · fan_in 11 · fan_out 6 · age 225d · last touched 50d
+[maintainability] scaffolding</title></rect>
+<rect x="577" y="186" width="50" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/services/definition/lifecycle.ts
+lines 456 · fan_in 3 · fan_out 19 · age 225d · last touched 7d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="630" y="186" width="53" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/services/definition/mutations.ts
+lines 514 · fan_in 2 · fan_out 15 · age 225d · last touched 10d
+[maintainability] crack [decorative]
+[maintainability] scaffolding</title></rect>
+<rect x="686" y="186" width="39" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/services/definition/queries.ts
+lines 255 · fan_in 3 · fan_out 6 · age 225d · last touched 7d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="728" y="186" width="44" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/services/executions/index.ts
+lines 334 · fan_in 5 · fan_out 10 · age 216d · last touched 42d
+[maintainability] scaffolding</title></rect>
+<rect x="775" y="186" width="56" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/services/fork/index.ts
+lines 596 · fan_in 5 · fan_out 19 · age 220d · last touched 7d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="834" y="186" width="30" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/services/index.ts
+lines 124 · fan_in 0 · fan_out 10 · age 225d · last touched 95d
+no named feature</title></rect>
+<rect x="867" y="186" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/services/model/index.ts
+lines 1167 · fan_in 6 · fan_out 9 · age 217d · last touched 8d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="447" y="167" width="60" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/services/safety/deep-analysis-worker.ts
+lines 701 · fan_in 5 · fan_out 10 · age 97d · last touched 12d
+[maintainability] scaffolding</title></rect>
+<rect x="510" y="167" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/services/star/index.ts
+lines 139 · fan_in 3 · fan_out 10 · age 195d · last touched 69d
+[maintainability] scaffolding</title></rect>
+<rect x="544" y="167" width="48" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/services/translation/index.ts
+lines 410 · fan_in 9 · fan_out 11 · age 220d · last touched 9d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="595" y="167" width="50" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/services/version-service.ts
+lines 461 · fan_in 4 · fan_out 6 · age 225d · last touched 9d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="648" y="167" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/utils/analytics-helpers.ts
+lines 106 · fan_in 6 · fan_out 5 · age 148d · last touched 40d
+[maintainability] scaffolding</title></rect>
+<rect x="679" y="167" width="27" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/utils/empty-envelopes.ts
+lines 92 · fan_in 2 · fan_out 2 · age 84d · last touched 55d
+no named feature</title></rect>
+<line x1="443" y1="242" x2="961" y2="242" stroke="#bbb" stroke-dasharray="2 4"/>
+</g>
+<g class="overlay" id="overlay-0" data-profile="onboarding">
+<polygon points="447,530 454,530 447,537" fill="#1f6f8b"/>
+<polygon points="881,492 888,492 881,499" fill="#1f6f8b"/>
+<polygon points="447,473 454,473 447,480" fill="#1f6f8b"/>
+<polygon points="583,473 590,473 583,480" fill="#1f6f8b"/>
+<polygon points="639,473 646,473 639,480" fill="#1f6f8b"/>
+<polygon points="683,473 690,473 683,480" fill="#1f6f8b"/>
+<polygon points="717,473 724,473 717,480" fill="#1f6f8b"/>
+<polygon points="750,473 757,473 750,480" fill="#1f6f8b"/>
+<polygon points="808,473 815,473 808,480" fill="#1f6f8b"/>
+<polygon points="870,473 877,473 870,480" fill="#1f6f8b"/>
+<polygon points="473,454 480,454 473,461" fill="#1f6f8b"/>
+<polygon points="495,454 502,454 495,461" fill="#1f6f8b"/>
+<polygon points="524,454 531,454 524,461" fill="#1f6f8b"/>
+<polygon points="447,396 454,396 447,403" fill="#1f6f8b"/>
+<polygon points="506,396 513,396 506,403" fill="#1f6f8b"/>
+<polygon points="617,396 624,396 617,403" fill="#1f6f8b"/>
+<polygon points="817,396 824,396 817,403" fill="#1f6f8b"/>
+<polygon points="505,377 512,377 505,384" fill="#1f6f8b"/>
+<polygon points="586,377 593,377 586,384" fill="#1f6f8b"/>
+<polygon points="632,377 639,377 632,384" fill="#1f6f8b"/>
+<polygon points="711,377 718,377 711,384" fill="#1f6f8b"/>
+<polygon points="748,377 755,377 748,384" fill="#1f6f8b"/>
+<polygon points="534,358 541,358 534,365" fill="#1f6f8b"/>
+<polygon points="653,339 660,339 653,346" fill="#1f6f8b"/>
+<polygon points="676,339 683,339 676,346" fill="#1f6f8b"/>
+<polygon points="610,310 617,310 610,317" fill="#1f6f8b"/>
+<polygon points="795,310 802,310 795,317" fill="#1f6f8b"/>
+<polygon points="913,291 920,291 913,298" fill="#1f6f8b"/>
+<polygon points="829,272 836,272 829,279" fill="#1f6f8b"/>
+<polygon points="886,272 893,272 886,279" fill="#1f6f8b"/>
+<polygon points="836,205 843,205 836,212" fill="#1f6f8b"/>
+</g>
+<text x="24" y="592" fill="#333">diagnostic: dark_room×28, flooded_basement×28, foundation×27, hub×27, lit_room×40, scaffolding×133   ·   decorative: 27 instance(s) of crack   ·   onboarding: corridor×13, foundation×27</text>
+</svg>

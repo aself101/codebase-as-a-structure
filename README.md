@@ -24,7 +24,7 @@ That claim is defensible only insofar as the gate can fail and the report shows 
 | `checklists/` | Testable contracts per spec, each pointing at the test that covers it |
 | `blind/` | Sealed recognition rankings per reference repo (n = 1, non-gating, provenance stated in-file) |
 | `src/repo_substrate/` | The package: `substrate extract \| map \| render` and `substrate-validate run \| tune` |
-| `rulesets/` | C3 rulesets (TOML): the maintainability profile v0.1.0 |
+| `rulesets/` | C3 rulesets (TOML): maintainability v0.1.0 (base) and onboarding v0.1.0 (overlay) |
 | `tests/` | 62 tests incl. a scripted synthetic repository, verdict-path tests, and integrity checks |
 | `docs/` | Review history: the June tribunal, the archived prototype, notes |
 
@@ -37,8 +37,10 @@ uv run substrate-validate tune --repo <tuning-repo> --repo <tuning-repo> --out c
 uv run substrate-validate run --test-repo <a> --test-repo <b> --tuning-repo <c> --tuning-repo <d> \
     --config config/tuned.toml --out out/validation
 uv run substrate map out/x.substrate.json --validation out/validation/validation.json \
-    --ruleset rulesets/maintainability.toml -o out/x.skeleton.json
-uv run substrate render out/x.skeleton.json out/x.substrate.json -o out/x.cutaway.svg
+    --ruleset rulesets/maintainability.toml --overlay rulesets/onboarding.toml \
+    --geometry layer -o out/x.skeleton.json          # geometry: age | layer
+uv run substrate render out/x.skeleton.json out/x.substrate.json -o out/x.cutaway.svg --html out/x.cutaway.html
+uv run substrate skeleton-diff out/x.before.skeleton.json out/x.skeleton.json --renames out/x.substrate.json
 uv run pytest -q
 ```
 

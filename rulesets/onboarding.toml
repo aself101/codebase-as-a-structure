@@ -1,0 +1,42 @@
+# Structural mapper ruleset — onboarding profile (system spec §5.4, D-017).
+#
+# The onboarding lens foregrounds where a newcomer enters and what everything routes
+# through: entrances, corridors, foundations, strata. It is an OVERLAY: applied with the
+# maintainability base, it changes which rooms are marked and nothing about where they are
+# (mapper §6 — layering, never unification). Every feature rests on asserted signals and
+# denotes present structural position.
+
+[ruleset]
+name = "onboarding"
+version = "0.1.0"
+profile = "onboarding"
+description = "Where to start reading: entrances (import much, imported by nothing), corridors (high centrality and high fan-out — everything routes through), foundations. Position names throughout."
+
+[[feature]]
+name = "entrance"
+predicate = "fan_in == 0 and fan_out >= p75"
+graph_dependent = true
+position_name = "import-graph root"
+note = "Imported by no in-repo file and importing more than most: a place execution enters. fan_in and fan_out are G2 instrument-checked."
+
+[[feature]]
+name = "corridor"
+predicate = "centrality >= p90 and fan_out >= p50"
+graph_dependent = true
+position_name = "high-centrality, high-fan-out junction"
+note = "High PageRank AND imports many: traffic passes through rather than terminating here. Distinct from foundation (high load, typically low fan-out)."
+
+[[feature]]
+name = "foundation"
+predicate = "load_index >= p90"
+graph_dependent = true
+name_implies_consequence = true
+position_name = "high-load hub"
+note = "Shared with the maintainability profile so a co-located finding is visible: the same room marked by two lenses is shown twice, never averaged."
+
+[[feature]]
+name = "leaf_utility"
+predicate = "fan_out == 0 and fan_in >= p75"
+graph_dependent = true
+position_name = "imported leaf"
+note = "Imports nothing in-repo and is imported by many: read these first; they have no prerequisites."

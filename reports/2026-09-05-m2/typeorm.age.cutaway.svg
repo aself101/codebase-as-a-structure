@@ -1,0 +1,2208 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1760" height="794" viewBox="0 0 1760 794" font-family="ui-monospace, Menlo, monospace" font-size="11">
+<defs><pattern id="water" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#9fc5e8"/><path d="M0 4 Q2 2 4 4 T8 4" stroke="#3d7ab8" fill="none"/></pattern><pattern id="scaffold" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="none"/><line x1="0" y1="0" x2="0" y2="8" stroke="#5c8a3a" stroke-width="2"/></pattern></defs>
+<rect width="1760" height="794" fill="#faf8f3"/>
+<text x="24" y="26" font-size="16" font-weight="bold">typeorm @ ac41823b9e — cutaway, profile maintainability + onboarding</text>
+<text x="24" y="46">diagnostic features: 475 · <tspan fill="#c2185b" font-weight="bold">decorative (ungrounded, not a diagnosis): 61</tspan> · degraded (graph): 0 · population 583 files · co-located across profiles: 69</text>
+<text x="24" y="64" fill="#555">gate: bug_pressure_index=unvalidated, centrality=asserted, fan_in=asserted, fan_out=asserted, last_touched_days=asserted, load_index=asserted, neglect_index=asserted, reinforcement_index=asserted</text>
+<text x="24" y="82" fill="#555">seed 33fbe1cfaa1a… · substrate fp 80b2a632f8b7… · validation fp cb320f191852… · ruleset maintainability@0.1.0 · skeleton 517364ea2ebb…</text>
+<text x="24" y="100" fill="#555">strata = age_days percentile bands, oldest at the bottom · wings = top-level directory · room width ∝ √lines · material = age · every named feature denotes present structural position (validation §2.1.1)</text>
+<rect x="24" y="118" width="14" height="10" style="stroke:#2b2b2b;stroke-width:3;fill:#d9cfb8"/>
+<text x="42" y="127" fill="#333">foundation / high-load hub</text>
+<rect x="240" y="118" width="14" height="10" style="stroke:#8a4b00;stroke-width:2;fill:#d9cfb8"/>
+<text x="258" y="127" fill="#333">hub</text>
+<rect x="295" y="118" width="14" height="10" style="fill:url(#water);stroke:#888"/>
+<text x="313" y="127" fill="#333">flooded basement</text>
+<rect x="441" y="118" width="14" height="10" style="fill:url(#scaffold);stroke:#888"/>
+<text x="459" y="127" fill="#333">scaffolding</text>
+<rect x="552" y="118" width="14" height="10" style="fill:#d9cfb8;opacity:0.45;stroke:#888"/>
+<text x="570" y="127" fill="#333">dark room</text>
+<rect x="649" y="118" width="14" height="10" style="stroke:#f2c14e;stroke-width:2;fill:#d9cfb8"/>
+<text x="667" y="127" fill="#333">lit room</text>
+<rect x="739" y="118" width="14" height="10" style="stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3;fill:#d9cfb8"/>
+<text x="757" y="127" fill="#333">decorative (ungrounded)</text>
+<text x="24" y="145" fill="#333">overlays (corner badge per profile, shown side by side, never merged):</text>
+<polygon points="526,136 536,136 526,146" fill="#1f6f8b"/>
+<text x="540" y="145" fill="#333">onboarding: corridor, foundation</text>
+<g id="base" data-profile="maintainability">
+<text x="24" y="162" font-weight="bold" fill="#333">(root)</text>
+<rect x="24" y="720" width="29" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>gulpfile.ts
+lines 120 · fan_in 0 · fan_out 0 · age 3846d · last touched 57d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<line x1="20" y1="738" x2="104" y2="738" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="20" y1="614" x2="104" y2="614" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="20" y1="509" x2="104" y2="509" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="24" y="386" width="14" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>.prettierrc.js
+lines 9 · fan_in 1 · fan_out 0 · age 1629d · last touched 222d
+no named feature</title></rect>
+<line x1="20" y1="404" x2="104" y2="404" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="24" y="281" width="29" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>eslint.config.mjs
+lines 117 · fan_in 0 · fan_out 0 · age 611d · last touched 54d
+[maintainability] lit_room</title></rect>
+<line x1="20" y1="299" x2="104" y2="299" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="132" y="162" font-weight="bold" fill="#333">docker</text>
+<line x1="128" y1="738" x2="212" y2="738" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="128" y1="614" x2="212" y2="614" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="128" y1="509" x2="212" y2="509" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="128" y1="404" x2="212" y2="404" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="132" y="281" width="14" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docker/oracle/startup/01_init.sql
+lines 12 · fan_in 0 · fan_out 0 · age 524d · last touched 524d
+no named feature</title></rect>
+<line x1="128" y1="299" x2="212" y2="299" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="240" y="162" font-weight="bold" fill="#333">docs</text>
+<line x1="236" y1="738" x2="384" y2="738" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="236" y1="614" x2="384" y2="614" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="236" y1="509" x2="384" y2="509" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="236" y1="404" x2="384" y2="404" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="240" y="281" width="40" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/docusaurus.config.ts
+lines 266 · fan_in 0 · fan_out 1 · age 452d · last touched 105d
+no named feature</title></rect>
+<rect x="283" y="281" width="32" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/redirects.ts
+lines 144 · fan_in 1 · fan_out 0 · age 452d · last touched 145d
+no named feature</title></rect>
+<rect x="318" y="281" width="27" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/sidebars.ts
+lines 99 · fan_in 0 · fan_out 0 · age 452d · last touched 145d
+no named feature</title></rect>
+<rect x="348" y="281" width="15" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/src/components/icons/github-icon.tsx
+lines 13 · fan_in 1 · fan_out 0 · age 152d · last touched 152d
+no named feature</title></rect>
+<rect x="366" y="281" width="15" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/src/components/icons/linkedin-icon.tsx
+lines 13 · fan_in 1 · fan_out 0 · age 152d · last touched 152d
+no named feature</title></rect>
+<rect x="240" y="262" width="23" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/src/components/tabs/database-tabs.tsx
+lines 62 · fan_in 0 · fan_out 0 · age 142d · last touched 142d
+no named feature</title></rect>
+<rect x="266" y="262" width="21" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/src/constants/databases.ts
+lines 45 · fan_in 0 · fan_out 0 · age 142d · last touched 142d
+no named feature</title></rect>
+<rect x="290" y="262" width="47" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/src/pages/index.tsx
+lines 381 · fan_in 0 · fan_out 0 · age 452d · last touched 137d
+no named feature</title></rect>
+<rect x="340" y="262" width="28" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>docs/src/pages/maintainers.tsx
+lines 106 · fan_in 0 · fan_out 2 · age 181d · last touched 152d
+no named feature</title></rect>
+<line x1="236" y1="299" x2="384" y2="299" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="412" y="162" font-weight="bold" fill="#333">extra</text>
+<line x1="408" y1="738" x2="493" y2="738" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="412" y="596" width="37" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>extra/typeorm-class-transformer-shim.js
+lines 216 · fan_in 0 · fan_out 0 · age 3516d · last touched 174d
+no named feature</title></rect>
+<rect x="452" y="596" width="38" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>extra/typeorm-model-shim.js
+lines 235 · fan_in 0 · fan_out 0 · age 3556d · last touched 174d
+no named feature</title></rect>
+<line x1="408" y1="614" x2="493" y2="614" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="408" y1="509" x2="493" y2="509" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="408" y1="404" x2="493" y2="404" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="408" y1="299" x2="493" y2="299" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="521" y="162" font-weight="bold" fill="#333">packages</text>
+<line x1="517" y1="738" x2="822" y2="738" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="517" y1="614" x2="822" y2="614" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="517" y1="509" x2="822" y2="509" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="517" y1="404" x2="822" y2="404" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="521" y="281" width="10" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/.prettierrc.js
+lines 2 · fan_in 0 · fan_out 1 · age 159d · last touched 159d
+no named feature</title></rect>
+<rect x="534" y="281" width="20" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>packages/codemod/eslint.config.mjs
+lines 37 · fan_in 0 · fan_out 0 · age 159d · last touched 54d
+[maintainability] lit_room</title></rect>
+<rect x="557" y="281" width="18" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/cli/list-transforms.ts
+lines 26 · fan_in 3 · fan_out 2 · age 159d · last touched 159d
+[maintainability] scaffolding</title></rect>
+<rect x="578" y="281" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/cli/parse-args.ts
+lines 52 · fan_in 2 · fan_out 0 · age 159d · last touched 159d
+[maintainability] scaffolding</title></rect>
+<rect x="603" y="281" width="16" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/cli/print-guide.ts
+lines 16 · fan_in 1 · fan_out 3 · age 159d · last touched 152d
+no named feature</title></rect>
+<rect x="622" y="281" width="27" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/cli/print-summary.ts
+lines 96 · fan_in 1 · fan_out 4 · age 159d · last touched 135d
+no named feature</title></rect>
+<rect x="652" y="281" width="13" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/cli/print-todos.ts
+lines 8 · fan_in 1 · fan_out 1 · age 159d · last touched 159d
+no named feature</title></rect>
+<rect x="668" y="281" width="18" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/cli/print-usage.ts
+lines 27 · fan_in 1 · fan_out 2 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="689" y="281" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/cli/run-dependencies.ts
+lines 53 · fan_in 1 · fan_out 4 · age 159d · last touched 159d
+no named feature</title></rect>
+<rect x="714" y="281" width="43" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/cli/run-transforms.ts
+lines 311 · fan_in 2 · fan_out 4 · age 159d · last touched 133d
+[maintainability] scaffolding</title></rect>
+<rect x="760" y="281" width="19" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/cli/run.ts
+lines 33 · fan_in 1 · fan_out 4 · age 159d · last touched 159d
+no named feature</title></rect>
+<rect x="782" y="281" width="16" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/dependencies/config.ts
+lines 18 · fan_in 3 · fan_out 0 · age 159d · last touched 159d
+no named feature</title></rect>
+<rect x="801" y="281" width="18" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/dependencies/find-package-json.ts
+lines 26 · fan_in 2 · fan_out 0 · age 159d · last touched 159d
+[maintainability] scaffolding</title></rect>
+<rect x="521" y="262" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/dependencies/index.ts
+lines 10 · fan_in 2 · fan_out 4 · age 159d · last touched 159d
+[maintainability] scaffolding</title></rect>
+<rect x="538" y="262" width="34" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/dependencies/upgrade.ts
+lines 176 · fan_in 2 · fan_out 1 · age 159d · last touched 159d
+[maintainability] scaffolding</title></rect>
+<rect x="575" y="262" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/dependencies/v1.ts
+lines 57 · fan_in 3 · fan_out 1 · age 159d · last touched 134d
+[maintainability] scaffolding</title></rect>
+<rect x="601" y="262" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/index.ts
+lines 50 · fan_in 0 · fan_out 7 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="626" y="262" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/lib/colors.ts
+lines 10 · fan_in 11 · fan_out 0 · age 159d · last touched 159d
+[maintainability] scaffolding</title></rect>
+<rect x="643" y="262" width="12" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/lib/error.ts
+lines 6 · fan_in 3 · fan_out 1 · age 159d · last touched 159d
+[maintainability] scaffolding</title></rect>
+<rect x="658" y="262" width="12" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/lib/format-time.ts
+lines 6 · fan_in 4 · fan_out 0 · age 159d · last touched 159d
+[maintainability] scaffolding</title></rect>
+<rect x="673" y="262" width="11" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/lib/highlight.ts
+lines 3 · fan_in 3 · fan_out 1 · age 159d · last touched 159d
+[maintainability] scaffolding</title></rect>
+<rect x="687" y="262" width="20" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/lib/spinner.ts
+lines 36 · fan_in 2 · fan_out 1 · age 159d · last touched 159d
+no named feature</title></rect>
+<rect x="710" y="262" width="64" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>packages/codemod/src/transforms/ast-helpers.ts
+lines 1333 · fan_in 34 · fan_out 0 · age 159d · last touched 130d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="777" y="262" width="14" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/index.ts
+lines 10 · fan_in 5 · fan_out 2 · age 159d · last touched 152d
+no named feature</title></rect>
+<rect x="794" y="262" width="18" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/resolve.ts
+lines 28 · fan_in 2 · fan_out 3 · age 159d · last touched 159d
+[maintainability] scaffolding</title></rect>
+<rect x="521" y="243" width="21" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>packages/codemod/src/transforms/stats.ts
+lines 46 · fan_in 21 · fan_out 0 · age 159d · last touched 133d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="545" y="243" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/todo.ts
+lines 54 · fan_in 18 · fan_out 0 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="570" y="243" width="17" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/transformer.ts
+lines 23 · fan_in 3 · fan_out 1 · age 159d · last touched 159d
+[maintainability] scaffolding</title></rect>
+<rect x="590" y="243" width="27" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/column-readonly.ts
+lines 96 · fan_in 1 · fan_out 1 · age 159d · last touched 130d
+no named feature</title></rect>
+<rect x="620" y="243" width="23" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/column-unsigned-numeric.ts
+lines 62 · fan_in 1 · fan_out 1 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="646" y="243" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/column-width-zerofill.ts
+lines 49 · fan_in 1 · fan_out 1 · age 159d · last touched 130d
+no named feature</title></rect>
+<rect x="671" y="243" width="27" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/connection-manager.ts
+lines 93 · fan_in 1 · fan_out 3 · age 137d · last touched 135d
+no named feature</title></rect>
+<rect x="701" y="243" width="39" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/connection-options-reader.ts
+lines 252 · fan_in 1 · fan_out 3 · age 135d · last touched 134d
+no named feature</title></rect>
+<rect x="743" y="243" width="64" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/connection-to-datasource.ts
+lines 1360 · fan_in 1 · fan_out 1 · age 159d · last touched 131d
+no named feature</title></rect>
+<rect x="521" y="224" width="25" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/datasource-expo.ts
+lines 78 · fan_in 1 · fan_out 1 · age 134d · last touched 132d
+no named feature</title></rect>
+<rect x="549" y="224" width="31" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/datasource-mongodb.ts
+lines 141 · fan_in 1 · fan_out 3 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="583" y="224" width="30" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/datasource-mssql.ts
+lines 132 · fan_in 1 · fan_out 3 · age 158d · last touched 133d
+no named feature</title></rect>
+<rect x="616" y="224" width="21" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/datasource-mysql-connector.ts
+lines 45 · fan_in 1 · fan_out 1 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="640" y="224" width="23" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/datasource-name.ts
+lines 59 · fan_in 1 · fan_out 1 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="666" y="224" width="26" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/datasource-sap.ts
+lines 83 · fan_in 1 · fan_out 1 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="695" y="224" width="24" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/datasource-sqlite-options.ts
+lines 66 · fan_in 1 · fan_out 1 · age 159d · last touched 130d
+no named feature</title></rect>
+<rect x="722" y="224" width="20" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/datasource-sqlite-type.ts
+lines 42 · fan_in 1 · fan_out 1 · age 159d · last touched 137d
+no named feature</title></rect>
+<rect x="745" y="224" width="34" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/file-logger.ts
+lines 172 · fan_in 1 · fan_out 3 · age 137d · last touched 132d
+no named feature</title></rect>
+<rect x="782" y="224" width="25" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/find-options-join.ts
+lines 79 · fan_in 1 · fan_out 3 · age 135d · last touched 135d
+no named feature</title></rect>
+<rect x="521" y="205" width="27" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/find-options-lock-modes.ts
+lines 95 · fan_in 1 · fan_out 1 · age 159d · last touched 135d
+no named feature</title></rect>
+<rect x="551" y="205" width="33" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/find-options-string-relations.ts
+lines 165 · fan_in 1 · fan_out 3 · age 159d · last touched 132d
+no named feature</title></rect>
+<rect x="587" y="205" width="29" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/find-options-string-select.ts
+lines 119 · fan_in 1 · fan_out 3 · age 159d · last touched 132d
+no named feature</title></rect>
+<rect x="619" y="205" width="38" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/global-functions.ts
+lines 227 · fan_in 1 · fan_out 3 · age 159d · last touched 132d
+no named feature</title></rect>
+<rect x="660" y="205" width="26" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/index.ts
+lines 86 · fan_in 1 · fan_out 37 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="689" y="205" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/migrations-get-all.ts
+lines 50 · fan_in 1 · fan_out 2 · age 159d · last touched 135d
+no named feature</title></rect>
+<rect x="714" y="205" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/mongodb-stats.ts
+lines 54 · fan_in 1 · fan_out 3 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="739" y="205" width="34" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>packages/codemod/src/transforms/v1/mongodb-types.ts
+lines 180 · fan_in 1 · fan_out 0 · age 159d · last touched 0d
+[maintainability] lit_room</title></rect>
+<rect x="776" y="205" width="16" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/query-builder-native-parameters.ts
+lines 19 · fan_in 1 · fan_out 1 · age 159d · last touched 137d
+no named feature</title></rect>
+<rect x="795" y="205" width="24" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/query-builder-on-conflict.ts
+lines 64 · fan_in 1 · fan_out 3 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="521" y="186" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/query-builder-or-update.ts
+lines 49 · fan_in 1 · fan_out 1 · age 159d · last touched 137d
+no named feature</title></rect>
+<rect x="546" y="186" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/query-builder-print-sql.ts
+lines 50 · fan_in 1 · fan_out 3 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="571" y="186" width="20" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/query-builder-replace-property-names.ts
+lines 39 · fan_in 1 · fan_out 3 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="594" y="186" width="23" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/query-builder-where-expression.ts
+lines 62 · fan_in 1 · fan_out 1 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="620" y="186" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/query-runner-loaded-tables-views.ts
+lines 50 · fan_in 1 · fan_out 2 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="645" y="186" width="29" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/relation-count.ts
+lines 116 · fan_in 1 · fan_out 3 · age 159d · last touched 134d
+no named feature</title></rect>
+<rect x="677" y="186" width="39" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/repository-abstract.ts
+lines 247 · fan_in 1 · fan_out 3 · age 159d · last touched 132d
+no named feature</title></rect>
+<rect x="719" y="186" width="19" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/repository-exist.ts
+lines 32 · fan_in 1 · fan_out 1 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="741" y="186" width="30" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/repository-find-by-ids.ts
+lines 127 · fan_in 1 · fan_out 1 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="774" y="186" width="23" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/repository-find-one-by-id.ts
+lines 58 · fan_in 1 · fan_out 1 · age 159d · last touched 133d
+no named feature</title></rect>
+<rect x="521" y="167" width="28" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/codemod/src/transforms/v1/use-container.ts
+lines 109 · fan_in 1 · fan_out 3 · age 159d · last touched 132d
+no named feature</title></rect>
+<rect x="552" y="167" width="18" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/legacy-naming-strategies/eslint.config.mjs
+lines 27 · fan_in 0 · fan_out 0 · age 120d · last touched 120d
+no named feature</title></rect>
+<rect x="573" y="167" width="10" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>packages/legacy-naming-strategies/src/index.ts
+lines 2 · fan_in 0 · fan_out 2 · age 120d · last touched 120d
+no named feature</title></rect>
+<rect x="586" y="167" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>packages/legacy-naming-strategies/src/legacy-oracle-naming-strategy.ts
+lines 56 · fan_in 2 · fan_out 1 · age 1303d · last touched 120d
+[maintainability] scaffolding</title></rect>
+<rect x="611" y="167" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>packages/legacy-naming-strategies/src/naming-strategy-v03.ts
+lines 9 · fan_in 3 · fan_out 0 · age 120d · last touched 120d
+[maintainability] scaffolding</title></rect>
+<line x1="517" y1="299" x2="822" y2="299" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="850" y="162" font-weight="bold" fill="#333">playground</text>
+<line x1="846" y1="738" x2="930" y2="738" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="846" y1="614" x2="930" y2="614" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="846" y1="509" x2="930" y2="509" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="846" y1="404" x2="930" y2="404" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="850" y="281" width="15" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>playground/src/entity/User.ts
+lines 14 · fan_in 2 · fan_out 0 · age 487d · last touched 131d
+no named feature</title></rect>
+<rect x="868" y="281" width="17" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>playground/src/index.ts
+lines 24 · fan_in 0 · fan_out 2 · age 487d · last touched 131d
+no named feature</title></rect>
+<rect x="888" y="281" width="14" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>playground/src/ormconfig.ts
+lines 9 · fan_in 1 · fan_out 1 · age 487d · last touched 131d
+no named feature</title></rect>
+<line x1="846" y1="299" x2="930" y2="299" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="958" y="162" font-weight="bold" fill="#333">src</text>
+<rect x="958" y="720" width="12" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>src/common/ObjectLiteral.ts
+lines 6 · fan_in 97 · fan_out 0 · age 3737d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="973" y="720" width="12" height="16" style="fill:url(#water);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>src/common/ObjectType.ts
+lines 4 · fan_in 7 · fan_out 0 · age 3817d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] hub (position: hub)</title></rect>
+<rect x="988" y="720" width="33" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/decorator/Index.ts
+lines 166 · fan_in 38 · fan_out 4 · age 3819d · last touched 144d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1024" y="720" width="38" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/decorator/columns/Column.ts
+lines 233 · fan_in 768 · fan_out 15 · age 3819d · last touched 144d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1065" y="720" width="16" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/columns/CreateDateColumn.ts
+lines 20 · fan_in 8 · fan_out 3 · age 3819d · last touched 144d
+[maintainability] scaffolding</title></rect>
+<rect x="1084" y="720" width="27" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/decorator/columns/PrimaryColumn.ts
+lines 97 · fan_in 209 · fan_out 7 · age 3819d · last touched 144d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1114" y="720" width="16" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/columns/UpdateDateColumn.ts
+lines 19 · fan_in 14 · fan_out 3 · age 3819d · last touched 144d
+[maintainability] scaffolding</title></rect>
+<rect x="1133" y="720" width="16" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/columns/VersionColumn.ts
+lines 20 · fan_in 12 · fan_out 3 · age 3775d · last touched 144d
+[maintainability] scaffolding</title></rect>
+<rect x="1152" y="720" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/decorator/listeners/AfterInsert.ts
+lines 15 · fan_in 1 · fan_out 3 · age 3815d · last touched 183d
+[maintainability] flooded_basement</title></rect>
+<rect x="1170" y="720" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/decorator/listeners/AfterLoad.ts
+lines 15 · fan_in 1 · fan_out 3 · age 3815d · last touched 183d
+[maintainability] flooded_basement</title></rect>
+<rect x="1188" y="720" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/decorator/listeners/AfterRemove.ts
+lines 15 · fan_in 1 · fan_out 3 · age 3815d · last touched 183d
+[maintainability] flooded_basement</title></rect>
+<rect x="1206" y="720" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/decorator/listeners/AfterUpdate.ts
+lines 15 · fan_in 1 · fan_out 3 · age 3815d · last touched 183d
+[maintainability] flooded_basement</title></rect>
+<rect x="1224" y="720" width="15" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/listeners/BeforeInsert.ts
+lines 15 · fan_in 4 · fan_out 3 · age 3815d · last touched 183d
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="1242" y="720" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/decorator/listeners/BeforeRemove.ts
+lines 15 · fan_in 1 · fan_out 3 · age 3815d · last touched 183d
+[maintainability] flooded_basement</title></rect>
+<rect x="1260" y="720" width="15" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/listeners/BeforeUpdate.ts
+lines 15 · fan_in 5 · fan_out 3 · age 3815d · last touched 183d
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="1278" y="720" width="15" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/listeners/EventSubscriber.ts
+lines 13 · fan_in 6 · fan_out 2 · age 3791d · last touched 183d
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="1296" y="720" width="33" height="16" style="fill:#7e6f52;stroke:#8a4b00;stroke-width:2"><title>src/decorator/options/ColumnOptions.ts
+lines 158 · fan_in 13 · fan_out 3 · age 3846d · last touched 155d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1332" y="720" width="21" height="16" style="fill:#7e6f52;stroke:#8a4b00;stroke-width:2"><title>src/decorator/options/EntityOptions.ts
+lines 47 · fan_in 2 · fan_out 1 · age 3749d · last touched 155d
+[maintainability] hub (position: hub)</title></rect>
+<rect x="1356" y="720" width="24" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/decorator/options/IndexOptions.ts
+lines 64 · fan_in 2 · fan_out 1 · age 3775d · last touched 183d
+no named feature</title></rect>
+<rect x="1383" y="720" width="16" height="16" style="fill:#7e6f52;stroke:#8a4b00;stroke-width:2"><title>src/decorator/options/JoinColumnOptions.ts
+lines 17 · fan_in 5 · fan_out 0 · age 3780d · last touched 135d
+[maintainability] hub (position: hub)</title></rect>
+<rect x="1402" y="720" width="19" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/decorator/options/JoinTableOptions.ts
+lines 35 · fan_in 4 · fan_out 1 · age 3780d · last touched 183d
+no named feature</title></rect>
+<rect x="1424" y="720" width="24" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2"><title>src/decorator/options/RelationOptions.ts
+lines 67 · fan_in 8 · fan_out 3 · age 3846d · last touched 54d
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="1451" y="720" width="22" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/decorator/relations/JoinColumn.ts
+lines 50 · fan_in 71 · fan_out 3 · age 3780d · last touched 144d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1476" y="720" width="23" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/decorator/relations/JoinTable.ts
+lines 57 · fan_in 77 · fan_out 4 · age 3780d · last touched 144d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1502" y="720" width="26" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/decorator/relations/ManyToMany.ts
+lines 82 · fan_in 111 · fan_out 5 · age 3819d · last touched 144d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1531" y="720" width="26" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/decorator/relations/ManyToOne.ts
+lines 82 · fan_in 119 · fan_out 5 · age 3819d · last touched 144d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1560" y="720" width="21" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/decorator/relations/OneToMany.ts
+lines 48 · fan_in 76 · fan_out 4 · age 3819d · last touched 144d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1584" y="720" width="25" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/decorator/relations/OneToOne.ts
+lines 79 · fan_in 70 · fan_out 5 · age 3819d · last touched 144d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1612" y="720" width="18" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/relations/RelationId.ts
+lines 28 · fan_in 10 · fan_out 3 · age 3734d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="1633" y="720" width="20" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/decorator/tree/TreeChildren.ts
+lines 38 · fan_in 21 · fan_out 3 · age 3766d · last touched 54d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="1656" y="720" width="15" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/tree/TreeLevelColumn.ts
+lines 15 · fan_in 3 · fan_out 2 · age 3766d · last touched 183d
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="958" y="701" width="20" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/tree/TreeParent.ts
+lines 37 · fan_in 21 · fan_out 4 · age 3766d · last touched 144d
+[maintainability] scaffolding</title></rect>
+<rect x="981" y="701" width="40" height="16" style="fill:#7e6f52;stroke:#8a4b00;stroke-width:2"><title>src/driver/Driver.ts
+lines 257 · fan_in 23 · fan_out 23 · age 3846d · last touched 143d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1024" y="701" width="39" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:4 3"><title>src/driver/DriverUtils.ts
+lines 255 · fan_in 91 · fan_out 3 · age 3659d · last touched 139d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1066" y="701" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/driver/mysql/MysqlDriver.ts
+lines 1224 · fan_in 8 · fan_out 31 · age 3846d · last touched 7d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="1133" y="701" width="64" height="16" style="fill:#7e6f52;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/driver/mysql/MysqlQueryRunner.ts
+lines 3271 · fan_in 1 · fan_out 30 · age 3656d · last touched 130d
+[maintainability] crack [decorative]</title></rect>
+<rect x="1200" y="701" width="64" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/driver/oracle/OracleDriver.ts
+lines 1029 · fan_in 5 · fan_out 32 · age 3650d · last touched 139d
+[maintainability] crack [decorative]
+[maintainability] scaffolding</title></rect>
+<rect x="1267" y="701" width="64" height="16" style="fill:#7e6f52;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/driver/oracle/OracleQueryRunner.ts
+lines 3096 · fan_in 1 · fan_out 28 · age 3650d · last touched 143d
+[maintainability] crack [decorative]</title></rect>
+<rect x="1334" y="701" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/driver/postgres/PostgresDriver.ts
+lines 1736 · fan_in 12 · fan_out 35 · age 3739d · last touched 7d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="1401" y="701" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/driver/postgres/PostgresQueryRunner.ts
+lines 4796 · fan_in 5 · fan_out 32 · age 3656d · last touched 6d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="1468" y="701" width="64" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/driver/sqlserver/SqlServerDriver.ts
+lines 1190 · fan_in 8 · fan_out 33 · age 3650d · last touched 139d
+[maintainability] crack [decorative]
+[maintainability] scaffolding</title></rect>
+<rect x="1535" y="701" width="64" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/driver/sqlserver/SqlServerQueryRunner.ts
+lines 4052 · fan_in 2 · fan_out 32 · age 3650d · last touched 106d
+[maintainability] crack [decorative]
+[maintainability] scaffolding</title></rect>
+<rect x="1602" y="701" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/entity-manager/EntityManager.ts
+lines 1474 · fan_in 15 · fan_out 34 · age 3812d · last touched 0d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="958" y="682" width="17" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/entity-manager/EntityManagerFactory.ts
+lines 24 · fan_in 1 · fan_out 5 · age 3754d · last touched 155d
+no named feature</title></rect>
+<rect x="978" y="682" width="13" height="16" style="fill:url(#water);stroke:#8a4b00;stroke-width:2"><title>src/entity-schema/EntitySchema.ts
+lines 8 · fan_in 7 · fan_out 1 · age 3743d · last touched 183d
+[maintainability] flooded_basement
+[maintainability] hub (position: hub)</title></rect>
+<rect x="994" y="682" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/error/AlreadyHasActiveConnectionError.ts
+lines 12 · fan_in 2 · fan_out 1 · age 3679d · last touched 83d
+[maintainability] scaffolding</title></rect>
+<rect x="1011" y="682" width="14" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/error/CannotConnectAlreadyConnectedError.ts
+lines 11 · fan_in 1 · fan_out 1 · age 3780d · last touched 176d
+no named feature</title></rect>
+<rect x="1028" y="682" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/CannotGetEntityManagerNotConnectedError.ts
+lines 11 · fan_in 3 · fan_out 1 · age 3738d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="1045" y="682" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/ColumnTypeUndefinedError.ts
+lines 15 · fan_in 3 · fan_out 1 · age 3819d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1063" y="682" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/ConnectionIsNotSetError.ts
+lines 11 · fan_in 8 · fan_out 1 · age 3818d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1080" y="682" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/ConnectionNotFoundError.ts
+lines 9 · fan_in 1 · fan_out 1 · age 3846d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1097" y="682" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/DriverOptionNotSetError.ts
+lines 12 · fan_in 2 · fan_out 1 · age 3659d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1114" y="682" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/error/DriverPackageNotInstalledError.ts
+lines 11 · fan_in 12 · fan_out 1 · age 3659d · last touched 401d
+[maintainability] flooded_basement</title></rect>
+<rect x="1131" y="682" width="17" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/error/EntityMetadataNotFoundError.ts
+lines 23 · fan_in 1 · fan_out 4 · age 3780d · last touched 183d
+[maintainability] flooded_basement</title></rect>
+<rect x="1151" y="682" width="16" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/MetadataAlreadyExistsError.ts
+lines 18 · fan_in 1 · fan_out 1 · age 3846d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1170" y="682" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/MetadataWithSuchNameAlreadyExistsError.ts
+lines 12 · fan_in 1 · fan_out 1 · age 3846d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1187" y="682" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/MissingDriverError.ts
+lines 12 · fan_in 2 · fan_out 1 · age 3780d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1204" y="682" width="16" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/error/MissingJoinColumnError.ts
+lines 18 · fan_in 1 · fan_out 3 · age 3778d · last touched 183d
+[maintainability] flooded_basement</title></rect>
+<rect x="1223" y="682" width="16" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/error/MissingJoinTableError.ts
+lines 18 · fan_in 1 · fan_out 3 · age 3778d · last touched 183d
+[maintainability] flooded_basement</title></rect>
+<rect x="1242" y="682" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/error/MissingPrimaryColumnError.ts
+lines 10 · fan_in 2 · fan_out 2 · age 3778d · last touched 183d
+[maintainability] flooded_basement</title></rect>
+<rect x="1259" y="682" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/error/NoConnectionForRepositoryError.ts
+lines 12 · fan_in 2 · fan_out 1 · age 3780d · last touched 192d
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="1276" y="682" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/PrimaryColumnCannotBeNullableError.ts
+lines 11 · fan_in 2 · fan_out 1 · age 3819d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1293" y="682" width="12" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/QueryRunnerAlreadyReleasedError.ts
+lines 6 · fan_in 17 · fan_out 1 · age 3656d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1308" y="682" width="18" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/error/RepositoryNotTreeError.ts
+lines 26 · fan_in 1 · fan_out 4 · age 3754d · last touched 183d
+[maintainability] flooded_basement</title></rect>
+<rect x="1329" y="682" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/TransactionAlreadyStartedError.ts
+lines 11 · fan_in 2 · fan_out 1 · age 3659d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1346" y="682" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/TransactionNotStartedError.ts
+lines 11 · fan_in 11 · fan_out 1 · age 3659d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1363" y="682" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/error/UsingJoinColumnIsNotAllowedError.ts
+lines 11 · fan_in 1 · fan_out 3 · age 3778d · last touched 183d
+[maintainability] flooded_basement</title></rect>
+<rect x="1380" y="682" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/error/UsingJoinColumnOnlyOnOneSideAllowedError.ts
+lines 14 · fan_in 1 · fan_out 3 · age 3778d · last touched 183d
+[maintainability] flooded_basement</title></rect>
+<rect x="1398" y="682" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/error/UsingJoinTableIsNotAllowedError.ts
+lines 12 · fan_in 1 · fan_out 3 · age 3778d · last touched 183d
+[maintainability] flooded_basement</title></rect>
+<rect x="1415" y="682" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/error/UsingJoinTableOnlyOnOneSideAllowedError.ts
+lines 14 · fan_in 1 · fan_out 3 · age 3778d · last touched 183d
+[maintainability] flooded_basement</title></rect>
+<rect x="1433" y="682" width="47" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/find-options/FindOptionsUtils.ts
+lines 389 · fan_in 5 · fan_out 9 · age 3813d · last touched 155d
+no named feature</title></rect>
+<rect x="1483" y="682" width="35" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/index.ts
+lines 183 · fan_in 1374 · fan_out 174 · age 3846d · last touched 6d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1521" y="682" width="27" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/logger/Logger.ts
+lines 92 · fan_in 16 · fan_out 2 · age 3659d · last touched 54d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1551" y="682" width="12" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/logger/LoggerOptions.ts
+lines 5 · fan_in 5 · fan_out 1 · age 3659d · last touched 139d
+no named feature</title></rect>
+<rect x="1566" y="682" width="18" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/metadata-args/ColumnMetadataArgs.ts
+lines 25 · fan_in 15 · fan_out 2 · age 3778d · last touched 183d
+[maintainability] flooded_basement
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1587" y="682" width="18" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/metadata-args/EmbeddedMetadataArgs.ts
+lines 26 · fan_in 4 · fan_out 0 · age 3750d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1608" y="682" width="16" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/metadata-args/EntityListenerMetadataArgs.ts
+lines 18 · fan_in 13 · fan_out 1 · age 3753d · last touched 183d
+no named feature</title></rect>
+<rect x="1627" y="682" width="14" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>src/metadata-args/EntitySubscriberMetadataArgs.ts
+lines 9 · fan_in 3 · fan_out 0 · age 3753d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] hub (position: hub)
+[maintainability] scaffolding</title></rect>
+<rect x="1644" y="682" width="25" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/metadata-args/IndexMetadataArgs.ts
+lines 80 · fan_in 4 · fan_out 1 · age 3753d · last touched 183d
+no named feature</title></rect>
+<rect x="958" y="663" width="18" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/metadata-args/JoinColumnMetadataArgs.ts
+lines 26 · fan_in 5 · fan_out 0 · age 3753d · last touched 1586d
+[maintainability] flooded_basement</title></rect>
+<rect x="979" y="663" width="21" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/metadata-args/JoinTableMetadataArgs.ts
+lines 43 · fan_in 4 · fan_out 1 · age 3753d · last touched 183d
+no named feature</title></rect>
+<rect x="1003" y="663" width="47" height="16" style="fill:#7e6f52;stroke:#8a4b00;stroke-width:2"><title>src/metadata-args/MetadataArgsStorage.ts
+lines 392 · fan_in 3 · fan_out 22 · age 3846d · last touched 155d
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="1053" y="663" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/metadata-args/NamingStrategyMetadataArgs.ts
+lines 13 · fan_in 1 · fan_out 0 · age 3753d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1071" y="663" width="18" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/metadata-args/RelationIdMetadataArgs.ts
+lines 28 · fan_in 4 · fan_out 1 · age 3753d · last touched 183d
+no named feature</title></rect>
+<rect x="1092" y="663" width="23" height="16" style="fill:url(#water);stroke:#8a4b00;stroke-width:2"><title>src/metadata-args/RelationMetadataArgs.ts
+lines 57 · fan_in 9 · fan_out 4 · age 3778d · last touched 183d
+[maintainability] flooded_basement
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="1118" y="663" width="24" height="16" style="fill:url(#water);stroke:#8a4b00;stroke-width:2"><title>src/metadata-args/TableMetadataArgs.ts
+lines 66 · fan_in 7 · fan_out 4 · age 3753d · last touched 183d
+[maintainability] flooded_basement
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="1145" y="663" width="33" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/metadata-builder/ClosureJunctionEntityMetadataBuilder.ts
+lines 168 · fan_in 1 · fan_out 6 · age 3750d · last touched 69d
+no named feature</title></rect>
+<rect x="1181" y="663" width="64" height="16" style="fill:#7e6f52;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/metadata-builder/EntityMetadataBuilder.ts
+lines 1192 · fan_in 1 · fan_out 23 · age 3846d · last touched 144d
+[maintainability] crack [decorative]</title></rect>
+<rect x="1248" y="663" width="42" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/metadata-builder/EntityMetadataValidator.ts
+lines 298 · fan_in 5 · fan_out 11 · age 3778d · last touched 145d
+[maintainability] scaffolding</title></rect>
+<rect x="1293" y="663" width="47" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/metadata-builder/JunctionEntityMetadataBuilder.ts
+lines 399 · fan_in 1 · fan_out 9 · age 3750d · last touched 43d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="1343" y="663" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/metadata/ColumnMetadata.ts
+lines 893 · fan_in 48 · fan_out 14 · age 3846d · last touched 41d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1410" y="663" width="41" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/metadata/EmbeddedMetadata.ts
+lines 283 · fan_in 8 · fan_out 10 · age 3750d · last touched 155d
+no named feature</title></rect>
+<rect x="1454" y="663" width="30" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/metadata/EntityListenerMetadata.ts
+lines 127 · fan_in 3 · fan_out 5 · age 3815d · last touched 155d
+no named feature</title></rect>
+<rect x="1487" y="663" width="64" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:4 3"><title>src/metadata/EntityMetadata.ts
+lines 1014 · fan_in 70 · fan_out 25 · age 3846d · last touched 139d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1554" y="663" width="29" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/metadata/ForeignKeyMetadata.ts
+lines 112 · fan_in 9 · fan_out 6 · age 3846d · last touched 144d
+[maintainability] scaffolding</title></rect>
+<rect x="1586" y="663" width="40" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/metadata/IndexMetadata.ts
+lines 259 · fan_in 15 · fan_out 7 · age 3846d · last touched 54d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="958" y="644" width="56" height="16" style="fill:#7e6f52;stroke:#2b2b2b;stroke-width:3"><title>src/metadata/RelationMetadata.ts
+lines 597 · fan_in 31 · fan_out 15 · age 3846d · last touched 144d
+[maintainability] foundation (position: high-load hub)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1017" y="644" width="19" height="16" style="fill:url(#water);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>src/metadata/types/EventListenerTypes.ts
+lines 31 · fan_in 14 · fan_out 0 · age 3815d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1039" y="644" width="12" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2"><title>src/metadata/types/RelationTypes.ts
+lines 5 · fan_in 3 · fan_out 0 · age 3846d · last touched 54d
+[maintainability] lit_room</title></rect>
+<rect x="1054" y="644" width="34" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/naming-strategy/DefaultNamingStrategy.ts
+lines 173 · fan_in 7 · fan_out 3 · age 3846d · last touched 120d
+[maintainability] crack [decorative]
+[maintainability] scaffolding</title></rect>
+<rect x="1091" y="644" width="32" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/naming-strategy/NamingStrategyInterface.ts
+lines 149 · fan_in 14 · fan_out 2 · age 3846d · last touched 120d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1126" y="644" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/query-builder/QueryBuilder.ts
+lines 1559 · fan_in 12 · fan_out 29 · age 3846d · last touched 55d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="1193" y="644" width="34" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/query-builder/transformer/PlainObjectToDatabaseEntityTransformer.ts
+lines 169 · fan_in 1 · fan_out 5 · age 3840d · last touched 144d
+no named feature</title></rect>
+<rect x="1230" y="644" width="30" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/query-builder/transformer/PlainObjectToNewEntityTransformer.ts
+lines 132 · fan_in 1 · fan_out 3 · age 3840d · last touched 155d
+no named feature</title></rect>
+<rect x="1263" y="644" width="56" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/query-builder/transformer/RawSqlResultsToEntityTransformer.ts
+lines 598 · fan_in 1 · fan_out 13 · age 3844d · last touched 5d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="1322" y="644" width="53" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;stroke-dasharray:4 3"><title>src/query-runner/QueryRunner.ts
+lines 508 · fan_in 72 · fan_out 17 · age 3657d · last touched 132d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1378" y="644" width="63" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/repository/Repository.ts
+lines 770 · fan_in 7 · fan_out 20 · age 3846d · last touched 54d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="1444" y="644" width="48" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/repository/TreeRepository.ts
+lines 415 · fan_in 4 · fan_out 8 · age 3766d · last touched 69d
+[maintainability] crack [decorative]
+[maintainability] scaffolding</title></rect>
+<rect x="1495" y="644" width="15" height="16" style="fill:url(#water);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/schema-builder/SchemaBuilder.ts
+lines 14 · fan_in 3 · fan_out 1 · age 3846d · last touched 183d
+[maintainability] crack [decorative]
+[maintainability] flooded_basement</title></rect>
+<rect x="1513" y="644" width="48" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/schema-builder/table/Table.ts
+lines 410 · fan_in 43 · fan_out 10 · age 3658d · last touched 144d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1564" y="644" width="64" height="16" style="fill:#7e6f52;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/subscriber/Broadcaster.ts
+lines 964 · fan_in 18 · fan_out 8 · age 3846d · last touched 132d
+[maintainability] crack [decorative]</title></rect>
+<rect x="1631" y="644" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/subscriber/EntitySubscriberInterface.ts
+lines 105 · fan_in 9 · fan_out 10 · age 3846d · last touched 162d
+[maintainability] scaffolding</title></rect>
+<rect x="1662" y="644" width="16" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/subscriber/event/InsertEvent.ts
+lines 20 · fan_in 3 · fan_out 3 · age 3846d · last touched 162d
+[maintainability] scaffolding</title></rect>
+<rect x="958" y="625" width="17" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/subscriber/event/RemoveEvent.ts
+lines 24 · fan_in 4 · fan_out 2 · age 3846d · last touched 162d
+no named feature</title></rect>
+<rect x="978" y="625" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/subscriber/event/UpdateEvent.ts
+lines 34 · fan_in 3 · fan_out 5 · age 3846d · last touched 162d
+[maintainability] scaffolding</title></rect>
+<rect x="1000" y="625" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/util/DirectoryExportedClassesLoader.ts
+lines 70 · fan_in 2 · fan_out 5 · age 3825d · last touched 139d
+[maintainability] scaffolding</title></rect>
+<rect x="1027" y="625" width="59" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/util/OrmUtils.ts
+lines 660 · fan_in 42 · fan_out 7 · age 3846d · last touched 7d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<line x1="954" y1="738" x2="1686" y2="738" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="958" y="596" width="20" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/cli.ts
+lines 42 · fan_in 2 · fan_out 14 · age 3639d · last touched 264d
+[maintainability] flooded_basement</title></rect>
+<rect x="981" y="596" width="29" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/commands/CommandUtils.ts
+lines 120 · fan_in 17 · fan_out 4 · age 3372d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="1013" y="596" width="22" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/commands/EntityCreateCommand.ts
+lines 54 · fan_in 1 · fan_out 2 · age 3638d · last touched 155d
+no named feature</title></rect>
+<rect x="1038" y="596" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/commands/MigrationCreateCommand.ts
+lines 127 · fan_in 2 · fan_out 3 · age 3552d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="1071" y="596" width="43" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/commands/MigrationGenerateCommand.ts
+lines 315 · fan_in 4 · fan_out 4 · age 3362d · last touched 50d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="1117" y="596" width="25" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/commands/MigrationRevertCommand.ts
+lines 76 · fan_in 1 · fan_out 3 · age 3551d · last touched 145d
+no named feature</title></rect>
+<rect x="1145" y="596" width="25" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/commands/MigrationRunCommand.ts
+lines 80 · fan_in 1 · fan_out 3 · age 3552d · last touched 145d
+no named feature</title></rect>
+<rect x="1173" y="596" width="24" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/commands/QueryCommand.ts
+lines 71 · fan_in 1 · fan_out 4 · age 3638d · last touched 145d
+no named feature</title></rect>
+<rect x="1200" y="596" width="21" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/commands/SchemaDropCommand.ts
+lines 48 · fan_in 1 · fan_out 3 · age 3638d · last touched 145d
+no named feature</title></rect>
+<rect x="1224" y="596" width="25" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/commands/SchemaLogCommand.ts
+lines 76 · fan_in 1 · fan_out 3 · age 3345d · last touched 183d
+no named feature</title></rect>
+<rect x="1252" y="596" width="21" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/commands/SchemaSyncCommand.ts
+lines 48 · fan_in 1 · fan_out 3 · age 3638d · last touched 145d
+no named feature</title></rect>
+<rect x="1276" y="596" width="22" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/commands/SubscriberCreateCommand.ts
+lines 56 · fan_in 1 · fan_out 2 · age 3550d · last touched 155d
+no named feature</title></rect>
+<rect x="1301" y="596" width="15" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/common/DeepPartial.ts
+lines 14 · fan_in 6 · fan_out 0 · age 3483d · last touched 264d
+[maintainability] scaffolding</title></rect>
+<rect x="1319" y="596" width="29" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/connection/ConnectionMetadataBuilder.ts
+lines 114 · fan_in 5 · fan_out 11 · age 3372d · last touched 54d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="1351" y="596" width="36" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/connection/ConnectionOptionsReader.ts
+lines 199 · fan_in 3 · fan_out 5 · age 3372d · last touched 54d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="1390" y="596" width="17" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/Generated.ts
+lines 24 · fan_in 24 · fan_out 2 · age 3338d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="1410" y="596" width="17" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/decorator/columns/ObjectIdColumn.ts
+lines 24 · fan_in 1 · fan_out 3 · age 3489d · last touched 144d
+no named feature</title></rect>
+<rect x="1430" y="596" width="29" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/decorator/columns/PrimaryGeneratedColumn.ts
+lines 118 · fan_in 494 · fan_out 7 · age 3634d · last touched 54d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1462" y="596" width="22" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/decorator/entity/Entity.ts
+lines 51 · fan_in 738 · fan_out 4 · age 3519d · last touched 144d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1487" y="596" width="18" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/entity/TableInheritance.ts
+lines 26 · fan_in 7 · fan_out 3 · age 3643d · last touched 144d
+[maintainability] scaffolding</title></rect>
+<rect x="1508" y="596" width="23" height="16" style="fill:#a99a75;stroke:#8a4b00;stroke-width:2"><title>src/decorator/options/ColumnCommonOptions.ts
+lines 57 · fan_in 2 · fan_out 1 · age 3367d · last touched 183d
+[maintainability] hub (position: hub)</title></rect>
+<rect x="1534" y="596" width="16" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/decorator/options/ColumnEmbeddedOptions.ts
+lines 16 · fan_in 1 · fan_out 0 · age 3367d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1553" y="596" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/decorator/options/ColumnEnumOptions.ts
+lines 13 · fan_in 1 · fan_out 0 · age 3367d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1571" y="596" width="15" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/decorator/options/ColumnNumericOptions.ts
+lines 15 · fan_in 1 · fan_out 0 · age 3367d · last touched 177d
+no named feature</title></rect>
+<rect x="1589" y="596" width="14" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/decorator/options/ColumnWithLengthOptions.ts
+lines 10 · fan_in 1 · fan_out 0 · age 3367d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1606" y="596" width="19" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/decorator/options/JoinTableMultipleColumnsOptions.ts
+lines 35 · fan_in 3 · fan_out 1 · age 3418d · last touched 183d
+no named feature</title></rect>
+<rect x="1628" y="596" width="18" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/decorator/options/PrimaryGeneratedColumnNumericOptions.ts
+lines 26 · fan_in 1 · fan_out 1 · age 3343d · last touched 181d
+no named feature</title></rect>
+<rect x="1649" y="596" width="16" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/decorator/options/PrimaryGeneratedColumnUUIDOptions.ts
+lines 17 · fan_in 1 · fan_out 0 · age 3338d · last touched 1586d
+no named feature</title></rect>
+<rect x="958" y="577" width="27" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/driver/DriverFactory.ts
+lines 93 · fan_in 1 · fan_out 20 · age 3373d · last touched 155d
+no named feature</title></rect>
+<rect x="988" y="577" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/driver/mongodb/MongoDataSourceOptions.ts
+lines 205 · fan_in 3 · fan_out 2 · age 3372d · last touched 175d
+[maintainability] scaffolding</title></rect>
+<rect x="1027" y="577" width="54" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/driver/mongodb/MongoDriver.ts
+lines 540 · fan_in 4 · fan_out 28 · age 3489d · last touched 143d
+[maintainability] crack [decorative]
+[maintainability] scaffolding</title></rect>
+<rect x="1084" y="577" width="64" height="16" style="fill:#a99a75;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/driver/mongodb/MongoQueryRunner.ts
+lines 1430 · fan_in 4 · fan_out 17 · age 3489d · last touched 144d
+[maintainability] crack [decorative]</title></rect>
+<rect x="1151" y="577" width="64" height="16" style="fill:#a99a75;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/driver/mongodb/typings.ts
+lines 8461 · fan_in 13 · fan_out 2 · age 3392d · last touched 75d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] toothpick_wing [decorative]
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1218" y="577" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/driver/mysql/MysqlDataSourceOptions.ts
+lines 134 · fan_in 4 · fan_out 3 · age 3372d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="1252" y="577" width="22" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/driver/oracle/OracleDataSourceOptions.ts
+lines 52 · fan_in 2 · fan_out 2 · age 3372d · last touched 183d
+no named feature</title></rect>
+<rect x="1277" y="577" width="27" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/driver/postgres/PostgresDataSourceOptions.ts
+lines 94 · fan_in 6 · fan_out 3 · age 3372d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="1307" y="577" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/driver/sqlserver/MssqlParameter.ts
+lines 56 · fan_in 8 · fan_out 0 · age 3346d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="1332" y="577" width="40" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/driver/sqlserver/SqlServerDataSourceOptions.ts
+lines 271 · fan_in 4 · fan_out 4 · age 3372d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="1375" y="577" width="37" height="16" style="fill:#a99a75;stroke:#8a4b00;stroke-width:2"><title>src/driver/types/ColumnTypes.ts
+lines 216 · fan_in 35 · fan_out 0 · age 3367d · last touched 170d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1415" y="577" width="13" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/driver/types/DataTypeDefaults.ts
+lines 7 · fan_in 12 · fan_out 0 · age 3350d · last touched 181d
+no named feature</title></rect>
+<rect x="1431" y="577" width="17" height="16" style="fill:#a99a75;stroke:#8a4b00;stroke-width:2"><title>src/driver/types/DatabaseType.ts
+lines 22 · fan_in 4 · fan_out 0 · age 3372d · last touched 190d
+[maintainability] hub (position: hub)</title></rect>
+<rect x="1451" y="577" width="29" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/driver/types/MappedColumnTypes.ts
+lines 112 · fan_in 12 · fan_out 1 · age 3367d · last touched 183d
+no named feature</title></rect>
+<rect x="1483" y="577" width="64" height="16" style="fill:#a99a75;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/entity-manager/MongoEntityManager.ts
+lines 1405 · fan_in 8 · fan_out 22 · age 3489d · last touched 54d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="1550" y="577" width="46" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/entity-schema/EntitySchemaTransformer.ts
+lines 373 · fan_in 2 · fan_out 21 · age 3414d · last touched 144d
+[maintainability] scaffolding</title></rect>
+<rect x="1599" y="577" width="14" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/error/CannotExecuteNotConnectedError.ts
+lines 11 · fan_in 1 · fan_out 1 · age 3372d · last touched 176d
+no named feature</title></rect>
+<rect x="1616" y="577" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/CircularRelationsError.ts
+lines 12 · fan_in 2 · fan_out 1 · age 3605d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1633" y="577" width="16" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/error/DataTypeNotSupportedError.ts
+lines 16 · fan_in 2 · fan_out 4 · age 3347d · last touched 183d
+no named feature</title></rect>
+<rect x="1652" y="577" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/LockNotSupportedOnGivenDriverError.ts
+lines 9 · fan_in 2 · fan_out 1 · age 3470d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="958" y="558" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/NoNeedToReleaseEntityManagerError.ts
+lines 13 · fan_in 2 · fan_out 1 · age 3634d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="976" y="558" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/NoVersionOrUpdateDateColumnError.ts
+lines 9 · fan_in 2 · fan_out 1 · age 3470d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="993" y="558" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/OptimisticLockCanNotBeUsedError.ts
+lines 9 · fan_in 2 · fan_out 1 · age 3470d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1010" y="558" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/OptimisticLockVersionMismatchError.ts
+lines 15 · fan_in 2 · fan_out 1 · age 3470d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1028" y="558" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/PersistedEntityNotFoundError.ts
+lines 11 · fan_in 1 · fan_out 1 · age 3605d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1045" y="558" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/PessimisticLockTransactionRequiredError.ts
+lines 9 · fan_in 2 · fan_out 1 · age 3470d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1062" y="558" width="18" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/error/QueryFailedError.ts
+lines 30 · fan_in 16 · fan_out 3 · age 3324d · last touched 132d
+[maintainability] scaffolding</title></rect>
+<rect x="1083" y="558" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/QueryRunnerProviderAlreadyReleasedError.ts
+lines 12 · fan_in 2 · fan_out 1 · age 3633d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1100" y="558" width="14" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/error/TreeRepositoryNotSupportedError.ts
+lines 9 · fan_in 1 · fan_out 2 · age 3343d · last touched 183d
+no named feature</title></rect>
+<rect x="1117" y="558" width="15" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/find-options/FindManyOptions.ts
+lines 14 · fan_in 9 · fan_out 1 · age 3489d · last touched 183d
+no named feature</title></rect>
+<rect x="1135" y="558" width="25" height="16" style="fill:#a99a75;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/find-options/FindOneOptions.ts
+lines 79 · fan_in 8 · fan_out 4 · age 3489d · last touched 54d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="1163" y="558" width="16" height="16" style="fill:#a99a75;stroke:#8a4b00;stroke-width:2"><title>src/find-options/OrderByCondition.ts
+lines 18 · fan_in 10 · fan_out 0 · age 3634d · last touched 155d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1182" y="558" width="24" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/logger/AdvancedConsoleLogger.ts
+lines 64 · fan_in 2 · fan_out 4 · age 3324d · last touched 155d
+no named feature</title></rect>
+<rect x="1209" y="558" width="28" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/logger/FileLogger.ts
+lines 107 · fan_in 2 · fan_out 5 · age 3324d · last touched 139d
+no named feature</title></rect>
+<rect x="1240" y="558" width="21" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/logger/LoggerFactory.ts
+lines 46 · fan_in 2 · fan_out 8 · age 3372d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="1264" y="558" width="23" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/logger/SimpleConsoleLogger.ts
+lines 58 · fan_in 2 · fan_out 3 · age 3324d · last touched 155d
+no named feature</title></rect>
+<rect x="1290" y="558" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/metadata-args/DiscriminatorValueMetadataArgs.ts
+lines 13 · fan_in 2 · fan_out 0 · age 3643d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1308" y="558" width="16" height="16" style="fill:#a99a75;stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>src/metadata-args/GeneratedMetadataArgs.ts
+lines 17 · fan_in 6 · fan_out 0 · age 3338d · last touched 1629d
+[maintainability] dark_room
+[maintainability] hub (position: hub)</title></rect>
+<rect x="1327" y="558" width="16" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/metadata-args/InheritanceMetadataArgs.ts
+lines 18 · fan_in 3 · fan_out 1 · age 3643d · last touched 183d
+no named feature</title></rect>
+<rect x="1346" y="558" width="16" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/metadata-args/TransactionEntityMetadataArgs.ts
+lines 17 · fan_in 1 · fan_out 0 · age 3518d · last touched 191d
+no named feature</title></rect>
+<rect x="1365" y="558" width="18" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/metadata-args/TransactionRepositoryMetadataArgs.ts
+lines 25 · fan_in 1 · fan_out 0 · age 3295d · last touched 191d
+no named feature</title></rect>
+<rect x="1386" y="558" width="16" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/metadata-args/types/ColumnMode.ts
+lines 18 · fan_in 2 · fan_out 0 · age 3396d · last touched 1442d
+no named feature</title></rect>
+<rect x="1405" y="558" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/metadata-builder/MetadataUtils.ts
+lines 50 · fan_in 3 · fan_out 0 · age 3407d · last touched 145d
+[maintainability] scaffolding</title></rect>
+<rect x="1430" y="558" width="40" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/metadata-builder/RelationJoinColumnBuilder.ts
+lines 263 · fan_in 1 · fan_out 9 · age 3396d · last touched 144d
+no named feature</title></rect>
+<rect x="1473" y="558" width="28" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/metadata/RelationIdMetadata.ts
+lines 106 · fan_in 4 · fan_out 6 · age 3434d · last touched 155d
+no named feature</title></rect>
+<rect x="1504" y="558" width="12" height="16" style="fill:#a99a75;stroke:#f2c14e;stroke-width:2"><title>src/metadata/types/OnDeleteType.ts
+lines 5 · fan_in 9 · fan_out 0 · age 3396d · last touched 54d
+[maintainability] lit_room</title></rect>
+<rect x="1519" y="558" width="12" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/metadata/types/PropertyTypeInFunction.ts
+lines 4 · fan_in 3 · fan_out 0 · age 3396d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1534" y="558" width="12" height="16" style="fill:#a99a75;stroke:#f2c14e;stroke-width:2"><title>src/metadata/types/RelationTypeInFunction.ts
+lines 6 · fan_in 2 · fan_out 1 · age 3396d · last touched 54d
+[maintainability] lit_room</title></rect>
+<rect x="1549" y="558" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/metadata/types/TableTypes.ts
+lines 10 · fan_in 3 · fan_out 0 · age 3637d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1566" y="558" width="21" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/migration/Migration.ts
+lines 46 · fan_in 7 · fan_out 1 · age 3551d · last touched 183d
+[maintainability] scaffolding</title></rect>
+<rect x="1590" y="558" width="60" height="16" style="fill:#a99a75;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/migration/MigrationExecutor.ts
+lines 681 · fan_in 2 · fan_out 9 · age 3551d · last touched 144d
+[maintainability] crack [decorative]</title></rect>
+<rect x="1653" y="558" width="18" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/migration/MigrationInterface.ts
+lines 25 · fan_in 17 · fan_out 1 · age 3552d · last touched 183d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="958" y="539" width="42" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/persistence/Subject.ts
+lines 302 · fan_in 16 · fan_out 9 · age 3605d · last touched 144d
+no named feature</title></rect>
+<rect x="1003" y="539" width="64" height="16" style="fill:#a99a75;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/persistence/SubjectExecutor.ts
+lines 1012 · fan_in 1 · fan_out 18 · age 3583d · last touched 90d
+[maintainability] crack [decorative]</title></rect>
+<rect x="1070" y="539" width="37" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/platform/PlatformTools.ts
+lines 214 · fan_in 57 · fan_out 1 · age 3560d · last touched 57d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1110" y="539" width="20" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/query-builder/Alias.ts
+lines 38 · fan_in 4 · fan_out 3 · age 3463d · last touched 144d
+no named feature</title></rect>
+<rect x="1133" y="539" width="41" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/query-builder/DeleteQueryBuilder.ts
+lines 288 · fan_in 5 · fan_out 10 · age 3360d · last touched 155d
+no named feature</title></rect>
+<rect x="1177" y="539" width="64" height="16" style="fill:#a99a75;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/query-builder/InsertQueryBuilder.ts
+lines 1526 · fan_in 4 · fan_out 23 · age 3360d · last touched 41d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="1244" y="539" width="38" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/query-builder/JoinAttribute.ts
+lines 229 · fan_in 2 · fan_out 9 · age 3463d · last touched 75d
+no named feature</title></rect>
+<rect x="1285" y="539" width="11" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/query-builder/JoinOptions.ts
+lines 3 · fan_in 0 · fan_out 0 · age 3564d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1299" y="539" width="18" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/query-builder/QueryBuilderUtils.ts
+lines 25 · fan_in 2 · fan_out 0 · age 3463d · last touched 155d
+no named feature</title></rect>
+<rect x="1320" y="539" width="51" height="16" style="fill:#a99a75;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/query-builder/QueryExpressionMap.ts
+lines 476 · fan_in 9 · fan_out 17 · age 3457d · last touched 109d
+[maintainability] crack [decorative]</title></rect>
+<rect x="1374" y="539" width="17" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/query-builder/QueryPartialEntity.ts
+lines 22 · fan_in 9 · fan_out 1 · age 3350d · last touched 183d
+no named feature</title></rect>
+<rect x="1394" y="539" width="34" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/query-builder/RelationQueryBuilder.ts
+lines 177 · fan_in 4 · fan_out 6 · age 3360d · last touched 155d
+no named feature</title></rect>
+<rect x="1431" y="539" width="12" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/query-builder/SelectQuery.ts
+lines 5 · fan_in 2 · fan_out 0 · age 3456d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1446" y="539" width="64" height="16" style="fill:#a99a75;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/query-builder/SelectQueryBuilder.ts
+lines 4304 · fan_in 25 · fan_out 46 · age 3360d · last touched 1d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[maintainability] toothpick_wing [decorative]
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1513" y="539" width="62" height="16" style="fill:#a99a75;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/query-builder/UpdateQueryBuilder.ts
+lines 745 · fan_in 4 · fan_out 23 · age 3360d · last touched 54d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="1578" y="539" width="30" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/query-builder/relation-id/RelationIdAttribute.ts
+lines 122 · fan_in 5 · fan_out 7 · age 3459d · last touched 139d
+no named feature</title></rect>
+<rect x="1611" y="539" width="12" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/query-builder/relation-id/RelationIdLoadResult.ts
+lines 5 · fan_in 2 · fan_out 1 · age 3434d · last touched 183d
+no named feature</title></rect>
+<rect x="1626" y="539" width="46" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/query-builder/relation-id/RelationIdLoader.ts
+lines 377 · fan_in 1 · fan_out 8 · age 3434d · last touched 120d
+no named feature</title></rect>
+<rect x="958" y="520" width="23" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/query-builder/relation-id/RelationIdMetadataToAttributeTransformer.ts
+lines 60 · fan_in 1 · fan_out 3 · age 3434d · last touched 183d
+no named feature</title></rect>
+<rect x="984" y="520" width="30" height="16" style="fill:#a99a75;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/query-builder/transformer/DocumentToEntityTransformer.ts
+lines 127 · fan_in 1 · fan_out 3 · age 3489d · last touched 75d
+[maintainability] crack [decorative]</title></rect>
+<rect x="1017" y="520" width="57" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/repository/BaseEntity.ts
+lines 614 · fan_in 18 · fan_out 20 · age 3393d · last touched 54d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="1077" y="520" width="56" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/repository/MongoRepository.ts
+lines 579 · fan_in 5 · fan_out 11 · age 3489d · last touched 54d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="1136" y="520" width="18" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/repository/RemoveOptions.ts
+lines 27 · fan_in 6 · fan_out 0 · age 3474d · last touched 1629d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="1157" y="520" width="19" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/repository/SaveOptions.ts
+lines 35 · fan_in 6 · fan_out 0 · age 3474d · last touched 381d
+no named feature</title></rect>
+<rect x="1179" y="520" width="25" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/schema-builder/MongoSchemaBuilder.ts
+lines 79 · fan_in 1 · fan_out 5 · age 3365d · last touched 183d
+no named feature</title></rect>
+<rect x="1207" y="520" width="64" height="16" style="fill:#a99a75;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/schema-builder/RdbmsSchemaBuilder.ts
+lines 1298 · fan_in 11 · fan_out 21 · age 3365d · last touched 54d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="1274" y="520" width="34" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/schema-builder/table/TableColumn.ts
+lines 181 · fan_in 30 · fan_out 1 · age 3648d · last touched 144d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1311" y="520" width="28" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/schema-builder/table/TableForeignKey.ts
+lines 109 · fan_in 29 · fan_out 3 · age 3648d · last touched 155d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1342" y="520" width="30" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/schema-builder/table/TableIndex.ts
+lines 121 · fan_in 21 · fan_out 3 · age 3648d · last touched 144d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1375" y="520" width="44" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3;stroke-dasharray:4 3"><title>src/util/DateUtils.ts
+lines 324 · fan_in 17 · fan_out 1 · age 3568d · last touched 155d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1422" y="520" width="39" height="16" style="fill:#a99a75;stroke:#8c8577;stroke-width:1"><title>src/util/DepGraph.ts
+lines 247 · fan_in 1 · fan_out 1 · age 3560d · last touched 155d
+no named feature</title></rect>
+<rect x="1464" y="520" width="35" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/util/RandomGenerator.ts
+lines 186 · fan_in 4 · fan_out 0 · age 3560d · last touched 57d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="1502" y="520" width="29" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/util/StringUtils.ts
+lines 111 · fan_in 9 · fan_out 1 · age 3560d · last touched 57d
+[maintainability] foundation (position: high-load hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<line x1="954" y1="614" x2="1686" y2="614" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="958" y="491" width="44" height="16" style="fill:#c7b894;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/cache/DbQueryResultCache.ts
+lines 342 · fan_in 1 · fan_out 8 · age 3277d · last touched 7d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="1005" y="491" width="21" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/cache/QueryResultCache.ts
+lines 48 · fan_in 7 · fan_out 2 · age 3277d · last touched 183d
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="1029" y="491" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/cache/QueryResultCacheFactory.ts
+lines 39 · fan_in 1 · fan_out 5 · age 3277d · last touched 183d
+no named feature</title></rect>
+<rect x="1052" y="491" width="18" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/cache/QueryResultCacheOptions.ts
+lines 26 · fan_in 6 · fan_out 0 · age 3277d · last touched 1235d
+[maintainability] hub (position: hub)
+[maintainability] scaffolding</title></rect>
+<rect x="1073" y="491" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/cache/RedisQueryResultCache.ts
+lines 212 · fan_in 3 · fan_out 6 · age 3277d · last touched 144d
+[maintainability] scaffolding</title></rect>
+<rect x="1113" y="491" width="22" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/commands/CacheClearCommand.ts
+lines 52 · fan_in 1 · fan_out 3 · age 3277d · last touched 145d
+no named feature</title></rect>
+<rect x="1138" y="491" width="60" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/commands/InitCommand.ts
+lines 693 · fan_in 1 · fan_out 3 · age 3275d · last touched 136d
+no named feature</title></rect>
+<rect x="1201" y="491" width="22" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/commands/VersionCommand.ts
+lines 54 · fan_in 1 · fan_out 0 · age 3275d · last touched 139d
+no named feature</title></rect>
+<rect x="1226" y="491" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/Check.ts
+lines 51 · fan_in 8 · fan_out 3 · age 3095d · last touched 144d
+[maintainability] scaffolding</title></rect>
+<rect x="1251" y="491" width="29" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/Unique.ts
+lines 114 · fan_in 13 · fan_out 4 · age 3227d · last touched 144d
+[maintainability] scaffolding</title></rect>
+<rect x="1283" y="491" width="17" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/entity/ChildEntity.ts
+lines 24 · fan_in 20 · fan_out 3 · age 3190d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="1303" y="491" width="14" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/decorator/options/ColumnHstoreOptions.ts
+lines 10 · fan_in 1 · fan_out 0 · age 3184d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1320" y="491" width="16" height="16" style="fill:#c7b894;stroke:#f2c14e;stroke-width:2"><title>src/decorator/options/SpatialColumnOptions.ts
+lines 20 · fan_in 2 · fan_out 1 · age 2986d · last touched 6d
+[maintainability] lit_room</title></rect>
+<rect x="1339" y="491" width="12" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/decorator/options/TransactionOptions.ts
+lines 5 · fan_in 0 · fan_out 1 · age 3005d · last touched 183d
+no named feature</title></rect>
+<rect x="1354" y="491" width="15" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>src/decorator/options/ValueTransformer.ts
+lines 13 · fan_in 13 · fan_out 0 · age 3274d · last touched 1629d
+[maintainability] dark_room
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1372" y="491" width="18" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/tree/Tree.ts
+lines 25 · fan_in 21 · fan_out 4 · age 3180d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="1393" y="491" width="13" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/driver/SqlInMemory.ts
+lines 8 · fan_in 6 · fan_out 1 · age 3256d · last touched 183d
+no named feature</title></rect>
+<rect x="1409" y="491" width="17" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/driver/cordova/CordovaDataSourceOptions.ts
+lines 24 · fan_in 2 · fan_out 1 · age 3284d · last touched 183d
+no named feature</title></rect>
+<rect x="1429" y="491" width="28" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/driver/cordova/CordovaDriver.ts
+lines 105 · fan_in 2 · fan_out 8 · age 3284d · last touched 143d
+no named feature</title></rect>
+<rect x="1460" y="491" width="35" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/driver/cordova/CordovaQueryRunner.ts
+lines 195 · fan_in 1 · fan_out 9 · age 3284d · last touched 132d
+no named feature</title></rect>
+<rect x="1498" y="491" width="17" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/driver/expo/ExpoDataSourceOptions.ts
+lines 21 · fan_in 2 · fan_out 1 · age 3019d · last touched 134d
+no named feature</title></rect>
+<rect x="1518" y="491" width="22" height="16" style="fill:#c7b894;stroke:#f2c14e;stroke-width:2"><title>src/driver/expo/ExpoDriver.ts
+lines 50 · fan_in 2 · fan_out 7 · age 3019d · last touched 57d
+[maintainability] lit_room</title></rect>
+<rect x="1543" y="491" width="27" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/driver/expo/ExpoQueryRunner.ts
+lines 95 · fan_in 1 · fan_out 9 · age 3019d · last touched 132d
+no named feature</title></rect>
+<rect x="1573" y="491" width="21" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/driver/mysql/MysqlConnectionCredentialsOptions.ts
+lines 44 · fan_in 2 · fan_out 0 · age 3281d · last touched 155d
+no named feature</title></rect>
+<rect x="1597" y="491" width="21" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/driver/nativescript/NativescriptDataSourceOptions.ts
+lines 45 · fan_in 2 · fan_out 1 · age 2990d · last touched 183d
+no named feature</title></rect>
+<rect x="1621" y="491" width="30" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/driver/nativescript/NativescriptDriver.ts
+lines 125 · fan_in 2 · fan_out 8 · age 2990d · last touched 144d
+no named feature</title></rect>
+<rect x="1654" y="491" width="29" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/driver/nativescript/NativescriptQueryRunner.ts
+lines 120 · fan_in 1 · fan_out 8 · age 2990d · last touched 132d
+no named feature</title></rect>
+<rect x="958" y="472" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/driver/oracle/OracleConnectionCredentialsOptions.ts
+lines 41 · fan_in 2 · fan_out 0 · age 3281d · last touched 604d
+no named feature</title></rect>
+<rect x="981" y="472" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/driver/postgres/PostgresConnectionCredentialsOptions.ts
+lines 39 · fan_in 2 · fan_out 0 · age 3281d · last touched 183d
+no named feature</title></rect>
+<rect x="1004" y="472" width="18" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/driver/react-native/ReactNativeDataSourceOptions.ts
+lines 28 · fan_in 2 · fan_out 1 · age 3147d · last touched 183d
+no named feature</title></rect>
+<rect x="1025" y="472" width="64" height="16" style="fill:#c7b894;stroke:#f2c14e;stroke-width:2"><title>src/driver/react-native/ReactNativeDriver.ts
+lines 943 · fan_in 5 · fan_out 26 · age 3147d · last touched 57d
+[maintainability] lit_room</title></rect>
+<rect x="1092" y="472" width="32" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/driver/react-native/ReactNativeQueryRunner.ts
+lines 155 · fan_in 1 · fan_out 9 · age 3147d · last touched 132d
+no named feature</title></rect>
+<rect x="1127" y="472" width="64" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/driver/sqlite-abstract/AbstractSqliteDriver.ts
+lines 936 · fan_in 12 · fan_out 25 · age 3282d · last touched 139d
+[maintainability] crack [decorative]
+[maintainability] scaffolding</title></rect>
+<rect x="1194" y="472" width="64" height="16" style="fill:#c7b894;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/driver/sqlite-abstract/AbstractSqliteQueryRunner.ts
+lines 2240 · fan_in 7 · fan_out 22 · age 3282d · last touched 139d
+[maintainability] crack [decorative]</title></rect>
+<rect x="1261" y="472" width="21" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/driver/sqljs/SqljsDataSourceOptions.ts
+lines 46 · fan_in 2 · fan_out 1 · age 3272d · last touched 183d
+no named feature</title></rect>
+<rect x="1285" y="472" width="42" height="16" style="fill:#c7b894;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/driver/sqljs/SqljsDriver.ts
+lines 295 · fan_in 3 · fan_out 13 · age 3272d · last touched 144d
+[maintainability] crack [decorative]</title></rect>
+<rect x="1330" y="472" width="33" height="16" style="fill:#c7b894;stroke:#f2c14e;stroke-width:2"><title>src/driver/sqljs/SqljsQueryRunner.ts
+lines 161 · fan_in 1 · fan_out 9 · age 3272d · last touched 6d
+[maintainability] lit_room</title></rect>
+<rect x="1366" y="472" width="22" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/driver/sqlserver/SqlServerConnectionCredentialsOptions.ts
+lines 51 · fan_in 2 · fan_out 8 · age 3281d · last touched 176d
+no named feature</title></rect>
+<rect x="1391" y="472" width="13" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/driver/types/IsolationLevel.ts
+lines 8 · fan_in 40 · fan_out 0 · age 3005d · last touched 158d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1407" y="472" width="21" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/entity-manager/SqljsEntityManager.ts
+lines 48 · fan_in 3 · fan_out 4 · age 3249d · last touched 155d
+no named feature</title></rect>
+<rect x="1431" y="472" width="14" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/entity-schema/EntitySchemaCheckOptions.ts
+lines 10 · fan_in 1 · fan_out 0 · age 3060d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1448" y="472" width="34" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/entity-schema/EntitySchemaColumnOptions.ts
+lines 170 · fan_in 3 · fan_out 4 · age 3266d · last touched 155d
+no named feature</title></rect>
+<rect x="1485" y="472" width="22" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/entity-schema/EntitySchemaIndexOptions.ts
+lines 51 · fan_in 2 · fan_out 0 · age 3266d · last touched 1603d
+no named feature</title></rect>
+<rect x="1510" y="472" width="29" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/entity-schema/EntitySchemaOptions.ts
+lines 118 · fan_in 13 · fan_out 15 · age 3108d · last touched 155d
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="1542" y="472" width="27" height="16" style="fill:#c7b894;stroke:#f2c14e;stroke-width:2"><title>src/entity-schema/EntitySchemaRelationOptions.ts
+lines 96 · fan_in 2 · fan_out 8 · age 3266d · last touched 54d
+[maintainability] lit_room</title></rect>
+<rect x="1572" y="472" width="15" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/entity-schema/EntitySchemaUniqueOptions.ts
+lines 15 · fan_in 1 · fan_out 1 · age 3060d · last touched 183d
+no named feature</title></rect>
+<rect x="1590" y="472" width="14" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/CannotAttachTreeChildrenEntityError.ts
+lines 12 · fan_in 2 · fan_out 1 · age 3180d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1607" y="472" width="17" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/error/CannotCreateEntityIdMapError.ts
+lines 24 · fan_in 2 · fan_out 3 · age 3189d · last touched 183d
+no named feature</title></rect>
+<rect x="1627" y="472" width="14" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/CannotDetermineEntityError.ts
+lines 12 · fan_in 2 · fan_out 1 · age 3240d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1644" y="472" width="15" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/CannotReflectMethodParameterTypeError.ts
+lines 14 · fan_in 1 · fan_out 1 · age 3115d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1662" y="472" width="20" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/error/EntityNotFoundError.ts
+lines 37 · fan_in 5 · fan_out 4 · age 3204d · last touched 183d
+[maintainability] scaffolding</title></rect>
+<rect x="958" y="453" width="16" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/FindRelationsNotFoundError.ts
+lines 18 · fan_in 1 · fan_out 1 · age 3197d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="977" y="453" width="16" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/error/InitializedRelationError.ts
+lines 17 · fan_in 3 · fan_out 2 · age 3185d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="996" y="453" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/InsertValuesMissingError.ts
+lines 12 · fan_in 3 · fan_out 1 · age 3226d · last touched 1629d
+[maintainability] dark_room
+[maintainability] scaffolding</title></rect>
+<rect x="1013" y="453" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/LimitOnUpdateNotSupportedError.ts
+lines 9 · fan_in 5 · fan_out 1 · age 3154d · last touched 1629d
+[maintainability] dark_room
+[maintainability] scaffolding</title></rect>
+<rect x="1030" y="453" width="14" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/MustBeEntityError.ts
+lines 11 · fan_in 2 · fan_out 1 · age 3240d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1047" y="453" width="14" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/NoConnectionOptionError.ts
+lines 12 · fan_in 2 · fan_out 1 · age 3185d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1064" y="453" width="15" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/OffsetWithoutLimitNotSupportedError.ts
+lines 13 · fan_in 3 · fan_out 1 · age 3207d · last touched 1629d
+[maintainability] dark_room
+[maintainability] scaffolding</title></rect>
+<rect x="1082" y="453" width="14" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/error/ReturningStatementNotSupportedError.ts
+lines 12 · fan_in 5 · fan_out 1 · age 3227d · last touched 476d
+no named feature</title></rect>
+<rect x="1099" y="453" width="15" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/error/SubjectRemovedAndUpdatedError.ts
+lines 13 · fan_in 2 · fan_out 2 · age 3220d · last touched 183d
+no named feature</title></rect>
+<rect x="1117" y="453" width="15" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/error/SubjectWithoutIdentifierError.ts
+lines 14 · fan_in 2 · fan_out 2 · age 3221d · last touched 183d
+no named feature</title></rect>
+<rect x="1135" y="453" width="31" height="16" style="fill:#c7b894;stroke:#8a4b00;stroke-width:2"><title>src/find-options/FindOperator.ts
+lines 135 · fan_in 25 · fan_out 5 · age 3079d · last touched 183d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1169" y="453" width="17" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/find-options/FindOperatorType.ts
+lines 23 · fan_in 2 · fan_out 0 · age 3079d · last touched 973d
+no named feature</title></rect>
+<rect x="1189" y="453" width="14" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/Any.ts
+lines 12 · fan_in 1 · fan_out 1 · age 3079d · last touched 155d
+no named feature</title></rect>
+<rect x="1206" y="453" width="16" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/Between.ts
+lines 16 · fan_in 1 · fan_out 1 · age 3079d · last touched 155d
+no named feature</title></rect>
+<rect x="1225" y="453" width="16" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/Equal.ts
+lines 17 · fan_in 2 · fan_out 2 · age 3079d · last touched 155d
+no named feature</title></rect>
+<rect x="1244" y="453" width="15" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/In.ts
+lines 14 · fan_in 2 · fan_out 1 · age 3079d · last touched 155d
+no named feature</title></rect>
+<rect x="1262" y="453" width="14" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/IsNull.ts
+lines 11 · fan_in 2 · fan_out 1 · age 3079d · last touched 155d
+no named feature</title></rect>
+<rect x="1279" y="453" width="14" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/LessThan.ts
+lines 12 · fan_in 1 · fan_out 1 · age 3079d · last touched 155d
+no named feature</title></rect>
+<rect x="1296" y="453" width="14" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/Like.ts
+lines 12 · fan_in 1 · fan_out 1 · age 3079d · last touched 155d
+no named feature</title></rect>
+<rect x="1313" y="453" width="14" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/MoreThan.ts
+lines 12 · fan_in 1 · fan_out 1 · age 3079d · last touched 155d
+no named feature</title></rect>
+<rect x="1330" y="453" width="15" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/Not.ts
+lines 13 · fan_in 1 · fan_out 1 · age 3079d · last touched 155d
+no named feature</title></rect>
+<rect x="1348" y="453" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/Raw.ts
+lines 52 · fan_in 2 · fan_out 2 · age 3079d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="1373" y="453" width="27" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/logger/DebugLogger.ts
+lines 91 · fan_in 1 · fan_out 3 · age 3192d · last touched 132d
+no named feature</title></rect>
+<rect x="1403" y="453" width="16" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/metadata-args/CheckMetadataArgs.ts
+lines 17 · fan_in 4 · fan_out 0 · age 3095d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1422" y="453" width="16" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/metadata-args/TreeMetadataArgs.ts
+lines 19 · fan_in 4 · fan_out 2 · age 3180d · last touched 183d
+no named feature</title></rect>
+<rect x="1441" y="453" width="17" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/metadata-args/UniqueMetadataArgs.ts
+lines 22 · fan_in 4 · fan_out 1 · age 3227d · last touched 183d
+no named feature</title></rect>
+<rect x="1461" y="453" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/metadata/CheckMetadata.ts
+lines 65 · fan_in 4 · fan_out 3 · age 3095d · last touched 144d
+[maintainability] scaffolding</title></rect>
+<rect x="1488" y="453" width="34" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/metadata/UniqueMetadata.ts
+lines 170 · fan_in 7 · fan_out 7 · age 3235d · last touched 54d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="1525" y="453" width="12" height="16" style="fill:#c7b894;stroke:#f2c14e;stroke-width:2"><title>src/metadata/types/OnUpdateType.ts
+lines 5 · fan_in 8 · fan_out 0 · age 3060d · last touched 54d
+[maintainability] lit_room</title></rect>
+<rect x="1540" y="453" width="12" height="16" style="fill:#c7b894;stroke:#f2c14e;stroke-width:2"><title>src/metadata/types/TreeTypes.ts
+lines 6 · fan_in 3 · fan_out 0 · age 3180d · last touched 54d
+[maintainability] lit_room</title></rect>
+<rect x="1555" y="453" width="35" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/persistence/EntityPersistExecutor.ts
+lines 193 · fan_in 1 · fan_out 15 · age 3240d · last touched 120d
+no named feature</title></rect>
+<rect x="1593" y="453" width="17" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/persistence/SubjectChangeMap.ts
+lines 23 · fan_in 1 · fan_out 3 · age 3233d · last touched 183d
+no named feature</title></rect>
+<rect x="1613" y="453" width="41" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/persistence/SubjectChangedColumnsComputer.ts
+lines 282 · fan_in 1 · fan_out 7 · age 3221d · last touched 114d
+no named feature</title></rect>
+<rect x="958" y="434" width="34" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/persistence/SubjectDatabaseEntityLoader.ts
+lines 173 · fan_in 1 · fan_out 6 · age 3233d · last touched 120d
+no named feature</title></rect>
+<rect x="995" y="434" width="36" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/persistence/SubjectTopologicalSorter.ts
+lines 210 · fan_in 1 · fan_out 3 · age 3229d · last touched 155d
+no named feature</title></rect>
+<rect x="1034" y="434" width="33" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/persistence/subject-builder/CascadesSubjectBuilder.ts
+lines 158 · fan_in 1 · fan_out 3 · age 3233d · last touched 145d
+no named feature</title></rect>
+<rect x="1070" y="434" width="40" height="16" style="fill:#c7b894;stroke:#f2c14e;stroke-width:2"><title>src/persistence/subject-builder/ManyToManySubjectBuilder.ts
+lines 271 · fan_in 1 · fan_out 4 · age 3233d · last touched 35d
+[maintainability] lit_room</title></rect>
+<rect x="1113" y="434" width="36" height="16" style="fill:#c7b894;stroke:#f2c14e;stroke-width:2"><title>src/persistence/subject-builder/OneToManySubjectBuilder.ts
+lines 205 · fan_in 1 · fan_out 5 · age 3233d · last touched 54d
+[maintainability] lit_room</title></rect>
+<rect x="1152" y="434" width="33" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/persistence/subject-builder/OneToOneInverseSideSubjectBuilder.ts
+lines 166 · fan_in 1 · fan_out 4 · age 3233d · last touched 155d
+no named feature</title></rect>
+<rect x="1188" y="434" width="44" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/persistence/tree/ClosureSubjectExecutor.ts
+lines 341 · fan_in 1 · fan_out 7 · age 3180d · last touched 144d
+no named feature</title></rect>
+<rect x="1235" y="434" width="33" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/persistence/tree/MaterializedPathSubjectExecutor.ts
+lines 164 · fan_in 1 · fan_out 7 · age 3180d · last touched 139d
+no named feature</title></rect>
+<rect x="1271" y="434" width="45" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/persistence/tree/NestedSetSubjectExecutor.ts
+lines 346 · fan_in 1 · fan_out 6 · age 3180d · last touched 144d
+no named feature</title></rect>
+<rect x="1319" y="434" width="16" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/query-builder/Brackets.ts
+lines 20 · fan_in 12 · fan_out 1 · age 3282d · last touched 155d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1338" y="434" width="62" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/query-builder/RelationIdLoader.ts
+lines 746 · fan_in 2 · fan_out 8 · age 3130d · last touched 155d
+no named feature</title></rect>
+<rect x="1403" y="434" width="52" height="16" style="fill:#c7b894;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/query-builder/RelationLoader.ts
+lines 493 · fan_in 1 · fan_out 7 · age 3270d · last touched 144d
+[maintainability] crack [decorative]</title></rect>
+<rect x="1458" y="434" width="33" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/query-builder/RelationRemover.ts
+lines 166 · fan_in 1 · fan_out 4 · age 3270d · last touched 155d
+no named feature</title></rect>
+<rect x="1494" y="434" width="34" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/query-builder/RelationUpdater.ts
+lines 173 · fan_in 1 · fan_out 5 · age 3270d · last touched 155d
+no named feature</title></rect>
+<rect x="1531" y="434" width="42" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/query-builder/ReturningResultsEntityUpdator.ts
+lines 291 · fan_in 3 · fan_out 7 · age 3218d · last touched 144d
+no named feature</title></rect>
+<rect x="1576" y="434" width="10" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/query-builder/SelectQueryBuilderOption.ts
+lines 1 · fan_in 2 · fan_out 0 · age 3079d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1589" y="434" width="30" height="16" style="fill:#c7b894;stroke:#8a4b00;stroke-width:2"><title>src/query-builder/WhereExpressionBuilder.ts
+lines 121 · fan_in 6 · fan_out 2 · age 3282d · last touched 180d
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="1622" y="434" width="17" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/query-builder/result/DeleteResult.ts
+lines 21 · fan_in 6 · fan_out 1 · age 3228d · last touched 183d
+no named feature</title></rect>
+<rect x="1642" y="434" width="18" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/query-builder/result/InsertResult.ts
+lines 26 · fan_in 7 · fan_out 2 · age 3228d · last touched 183d
+no named feature</title></rect>
+<rect x="1663" y="434" width="19" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/query-builder/result/UpdateResult.ts
+lines 32 · fan_in 9 · fan_out 2 · age 3228d · last touched 183d
+no named feature</title></rect>
+<rect x="958" y="415" width="62" height="16" style="fill:url(#scaffold);stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/query-runner/BaseQueryRunner.ts
+lines 730 · fan_in 10 · fan_out 21 · age 3235d · last touched 130d
+[maintainability] crack [decorative]
+[maintainability] scaffolding</title></rect>
+<rect x="1023" y="415" width="10" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/repository/EntityId.ts
+lines 2 · fan_in 0 · fan_out 1 · age 3217d · last touched 183d
+no named feature</title></rect>
+<rect x="1036" y="415" width="16" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/schema-builder/options/TableCheckOptions.ts
+lines 20 · fan_in 3 · fan_out 0 · age 3246d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1055" y="415" width="29" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/schema-builder/options/TableColumnOptions.ts
+lines 115 · fan_in 5 · fan_out 0 · age 3249d · last touched 181d
+no named feature</title></rect>
+<rect x="1087" y="415" width="21" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/schema-builder/options/TableForeignKeyOptions.ts
+lines 47 · fan_in 3 · fan_out 0 · age 3246d · last touched 1554d
+no named feature</title></rect>
+<rect x="1111" y="415" width="23" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/schema-builder/options/TableIndexOptions.ts
+lines 59 · fan_in 11 · fan_out 1 · age 3246d · last touched 183d
+no named feature</title></rect>
+<rect x="1137" y="415" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/schema-builder/options/TableOptions.ts
+lines 68 · fan_in 3 · fan_out 6 · age 3249d · last touched 183d
+[maintainability] scaffolding</title></rect>
+<rect x="1164" y="415" width="17" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/schema-builder/options/TableUniqueOptions.ts
+lines 21 · fan_in 3 · fan_out 0 · age 3246d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1184" y="415" width="23" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/schema-builder/table/TableCheck.ts
+lines 58 · fan_in 16 · fan_out 2 · age 3246d · last touched 155d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1210" y="415" width="23" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/schema-builder/table/TableUnique.ts
+lines 62 · fan_in 16 · fan_out 2 · age 3246d · last touched 155d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1236" y="415" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>src/schema-builder/util/TableUtils.ts
+lines 39 · fan_in 2 · fan_out 3 · age 3249d · last touched 181d
+no named feature</title></rect>
+<rect x="1259" y="415" width="17" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/subscriber/BroadcasterResult.ts
+lines 22 · fan_in 15 · fan_out 0 · age 3199d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1279" y="415" width="26" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/util/ObjectUtils.ts
+lines 85 · fan_in 40 · fan_out 1 · age 2974d · last touched 155d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<line x1="954" y1="509" x2="1686" y2="509" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="958" y="386" width="11" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/cli-ts-node-commonjs.ts
+lines 3 · fan_in 0 · fan_out 1 · age 1624d · last touched 1618d
+no named feature</title></rect>
+<rect x="972" y="386" width="17" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/cli-ts-node-esm.ts
+lines 21 · fan_in 0 · fan_out 1 · age 1624d · last touched 144d
+no named feature</title></rect>
+<rect x="992" y="386" width="21" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/commands/MigrationShowCommand.ts
+lines 44 · fan_in 1 · fan_out 3 · age 2660d · last touched 145d
+no named feature</title></rect>
+<rect x="1016" y="386" width="14" height="16" style="fill:#d9cfb8;stroke:#8a4b00;stroke-width:2"><title>src/common/EntityTarget.ts
+lines 10 · fan_in 18 · fan_out 2 · age 2181d · last touched 183d
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="1033" y="386" width="12" height="16" style="fill:#d9cfb8;stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>src/common/MixedList.ts
+lines 6 · fan_in 3 · fan_out 0 · age 1629d · last touched 1629d
+[maintainability] dark_room
+[maintainability] hub (position: hub)</title></rect>
+<rect x="1048" y="386" width="13" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/common/NonNever.ts
+lines 7 · fan_in 0 · fan_out 0 · age 1629d · last touched 191d
+no named feature</title></rect>
+<rect x="1064" y="386" width="16" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/common/RelationType.ts
+lines 16 · fan_in 1 · fan_out 0 · age 1674d · last touched 155d
+no named feature</title></rect>
+<rect x="1083" y="386" width="35" height="16" style="fill:#d9cfb8;stroke:#f2c14e;stroke-width:2"><title>src/data-source/BaseDataSourceOptions.ts
+lines 195 · fan_in 19 · fan_out 10 · age 1629d · last touched 53d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1121" y="386" width="60" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/data-source/DataSource.ts
+lines 696 · fan_in 621 · fan_out 38 · age 1629d · last touched 54d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1184" y="386" width="20" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/data-source/DataSourceOptions.ts
+lines 38 · fan_in 10 · fan_out 17 · age 1629d · last touched 183d
+[maintainability] scaffolding</title></rect>
+<rect x="1207" y="386" width="10" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/data-source/index.ts
+lines 2 · fan_in 18 · fan_out 2 · age 1629d · last touched 183d
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="1220" y="386" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/Exclusion.ts
+lines 63 · fan_in 8 · fan_out 4 · age 2929d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="1246" y="386" width="16" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/columns/DeleteDateColumn.ts
+lines 19 · fan_in 16 · fan_out 3 · age 2380d · last touched 144d
+[maintainability] scaffolding</title></rect>
+<rect x="1265" y="386" width="16" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/columns/ViewColumn.ts
+lines 18 · fan_in 10 · fan_out 3 · age 2714d · last touched 144d
+[maintainability] scaffolding</title></rect>
+<rect x="1284" y="386" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/decorator/entity-view/ViewEntity.ts
+lines 55 · fan_in 10 · fan_out 4 · age 2714d · last touched 144d
+[maintainability] scaffolding</title></rect>
+<rect x="1309" y="386" width="15" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/decorator/listeners/AfterRecover.ts
+lines 15 · fan_in 1 · fan_out 3 · age 1659d · last touched 183d
+no named feature</title></rect>
+<rect x="1327" y="386" width="15" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/decorator/listeners/AfterSoftRemove.ts
+lines 15 · fan_in 1 · fan_out 3 · age 1659d · last touched 183d
+no named feature</title></rect>
+<rect x="1345" y="386" width="15" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/decorator/listeners/BeforeRecover.ts
+lines 15 · fan_in 1 · fan_out 3 · age 1659d · last touched 183d
+no named feature</title></rect>
+<rect x="1363" y="386" width="15" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/decorator/listeners/BeforeSoftRemove.ts
+lines 15 · fan_in 1 · fan_out 3 · age 1659d · last touched 183d
+no named feature</title></rect>
+<rect x="1381" y="386" width="18" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/decorator/options/PrimaryGeneratedColumnIdentityOptions.ts
+lines 26 · fan_in 1 · fan_out 1 · age 1743d · last touched 183d
+no named feature</title></rect>
+<rect x="1402" y="386" width="14" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/decorator/options/UniqueOptions.ts
+lines 10 · fan_in 1 · fan_out 1 · age 1726d · last touched 183d
+no named feature</title></rect>
+<rect x="1419" y="386" width="15" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/decorator/options/ViewColumnOptions.ts
+lines 15 · fan_in 1 · fan_out 1 · age 2299d · last touched 183d
+no named feature</title></rect>
+<rect x="1437" y="386" width="20" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/decorator/options/ViewEntityOptions.ts
+lines 40 · fan_in 1 · fan_out 2 · age 2714d · last touched 183d
+no named feature</title></rect>
+<rect x="1460" y="386" width="14" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/Query.ts
+lines 10 · fan_in 12 · fan_out 0 · age 2709d · last touched 264d
+no named feature</title></rect>
+<rect x="1477" y="386" width="19" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/aurora-mysql/AuroraMysqlConnectionCredentialsOptions.ts
+lines 35 · fan_in 2 · fan_out 0 · age 2577d · last touched 155d
+no named feature</title></rect>
+<rect x="1499" y="386" width="19" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/aurora-mysql/AuroraMysqlDataSourceOptions.ts
+lines 31 · fan_in 2 · fan_out 2 · age 1629d · last touched 155d
+no named feature</title></rect>
+<rect x="1521" y="386" width="64" height="16" style="fill:#d9cfb8;stroke:#f2c14e;stroke-width:2"><title>src/driver/aurora-mysql/AuroraMysqlDriver.ts
+lines 1034 · fan_in 5 · fan_out 27 · age 1629d · last touched 7d
+[maintainability] lit_room</title></rect>
+<rect x="1588" y="386" width="64" height="16" style="fill:#d9cfb8;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/driver/aurora-mysql/AuroraMysqlQueryRunner.ts
+lines 2752 · fan_in 1 · fan_out 27 · age 1629d · last touched 132d
+[maintainability] crack [decorative]</title></rect>
+<rect x="1655" y="386" width="19" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/aurora-postgres/AuroraPostgresDataSourceOptions.ts
+lines 34 · fan_in 2 · fan_out 1 · age 1629d · last touched 183d
+no named feature</title></rect>
+<rect x="958" y="367" width="34" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/aurora-postgres/AuroraPostgresDriver.ts
+lines 177 · fan_in 2 · fan_out 10 · age 2167d · last touched 140d
+no named feature</title></rect>
+<rect x="995" y="367" width="36" height="16" style="fill:#d9cfb8;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/driver/aurora-postgres/AuroraPostgresQueryRunner.ts
+lines 204 · fan_in 1 · fan_out 13 · age 1629d · last touched 132d
+[maintainability] crack [decorative]</title></rect>
+<rect x="1034" y="367" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/driver/better-sqlite3/BetterSqlite3DataSourceOptions.ts
+lines 69 · fan_in 3 · fan_out 1 · age 2237d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="1061" y="367" width="35" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/better-sqlite3/BetterSqlite3Driver.ts
+lines 195 · fan_in 2 · fan_out 10 · age 2237d · last touched 144d
+no named feature</title></rect>
+<rect x="1099" y="367" width="36" height="16" style="fill:#d9cfb8;stroke:#f2c14e;stroke-width:2"><title>src/driver/better-sqlite3/BetterSqlite3QueryRunner.ts
+lines 196 · fan_in 1 · fan_out 9 · age 2237d · last touched 6d
+[maintainability] lit_room</title></rect>
+<rect x="1138" y="367" width="19" height="16" style="fill:#d9cfb8;stroke:#f2c14e;stroke-width:2"><title>src/driver/capacitor/CapacitorDataSourceOptions.ts
+lines 32 · fan_in 2 · fan_out 1 · age 1921d · last touched 54d
+[maintainability] lit_room</title></rect>
+<rect x="1160" y="367" width="27" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/capacitor/CapacitorDriver.ts
+lines 94 · fan_in 2 · fan_out 7 · age 1921d · last touched 144d
+no named feature</title></rect>
+<rect x="1190" y="367" width="29" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/capacitor/CapacitorQueryRunner.ts
+lines 114 · fan_in 1 · fan_out 8 · age 1921d · last touched 132d
+no named feature</title></rect>
+<rect x="1222" y="367" width="19" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/cockroachdb/CockroachConnectionCredentialsOptions.ts
+lines 34 · fan_in 2 · fan_out 0 · age 2765d · last touched 183d
+no named feature</title></rect>
+<rect x="1244" y="367" width="24" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/cockroachdb/CockroachDataSourceOptions.ts
+lines 65 · fan_in 3 · fan_out 3 · age 2765d · last touched 155d
+no named feature</title></rect>
+<rect x="1271" y="367" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/driver/cockroachdb/CockroachDriver.ts
+lines 1135 · fan_in 4 · fan_out 32 · age 2776d · last touched 7d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="1338" y="367" width="64" height="16" style="fill:#d9cfb8;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/driver/cockroachdb/CockroachQueryRunner.ts
+lines 4144 · fan_in 1 · fan_out 31 · age 2765d · last touched 6d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="1405" y="367" width="21" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/driver/sap/SapConnectionCredentialsOptions.ts
+lines 45 · fan_in 1 · fan_out 0 · age 2444d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1429" y="367" width="23" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/sap/SapDataSourceOptions.ts
+lines 60 · fan_in 2 · fan_out 2 · age 2444d · last touched 155d
+no named feature</title></rect>
+<rect x="1455" y="367" width="64" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/driver/sap/SapDriver.ts
+lines 850 · fan_in 5 · fan_out 28 · age 2444d · last touched 57d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="1522" y="367" width="64" height="16" style="fill:#d9cfb8;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/driver/sap/SapQueryRunner.ts
+lines 3527 · fan_in 1 · fan_out 31 · age 2444d · last touched 130d
+[maintainability] crack [decorative]</title></rect>
+<rect x="1589" y="367" width="18" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/spanner/SpannerConnectionCredentialsOptions.ts
+lines 30 · fan_in 1 · fan_out 0 · age 1603d · last touched 454d
+no named feature</title></rect>
+<rect x="1610" y="367" width="30" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/spanner/SpannerDataSourceOptions.ts
+lines 126 · fan_in 2 · fan_out 3 · age 1603d · last touched 155d
+no named feature</title></rect>
+<rect x="958" y="348" width="63" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/driver/spanner/SpannerDriver.ts
+lines 778 · fan_in 4 · fan_out 25 · age 1603d · last touched 57d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="1024" y="348" width="64" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/spanner/SpannerQueryRunner.ts
+lines 2332 · fan_in 1 · fan_out 29 · age 1603d · last touched 132d
+no named feature</title></rect>
+<rect x="1091" y="348" width="14" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/sqlserver/authentication/AzureActiveDirectoryAccessTokenAuthentication.ts
+lines 10 · fan_in 1 · fan_out 0 · age 1982d · last touched 1555d
+no named feature</title></rect>
+<rect x="1108" y="348" width="16" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/sqlserver/authentication/AzureActiveDirectoryMsiAppServiceAuthentication.ts
+lines 20 · fan_in 1 · fan_out 0 · age 1982d · last touched 1555d
+no named feature</title></rect>
+<rect x="1127" y="348" width="16" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/sqlserver/authentication/AzureActiveDirectoryMsiVmAuthentication.ts
+lines 16 · fan_in 1 · fan_out 0 · age 1982d · last touched 1555d
+no named feature</title></rect>
+<rect x="1146" y="348" width="16" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/sqlserver/authentication/AzureActiveDirectoryPasswordAuthentication.ts
+lines 17 · fan_in 1 · fan_out 0 · age 1982d · last touched 1555d
+no named feature</title></rect>
+<rect x="1165" y="348" width="16" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/driver/sqlserver/authentication/AzureActiveDirectoryServicePrincipalSecret.ts
+lines 17 · fan_in 1 · fan_out 0 · age 1982d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1184" y="348" width="15" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/driver/sqlserver/authentication/DefaultAuthentication.ts
+lines 13 · fan_in 1 · fan_out 0 · age 1982d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1202" y="348" width="16" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/driver/sqlserver/authentication/NtlmAuthentication.ts
+lines 19 · fan_in 1 · fan_out 0 · age 1982d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1221" y="348" width="16" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/driver/types/CteCapabilities.ts
+lines 18 · fan_in 13 · fan_out 0 · age 1623d · last touched 1623d
+[maintainability] scaffolding</title></rect>
+<rect x="1240" y="348" width="12" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/driver/types/MetadataTableType.ts
+lines 5 · fan_in 10 · fan_out 0 · age 1752d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1255" y="348" width="10" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3;opacity:0.45"><title>src/driver/types/ReplicationMode.ts
+lines 1 · fan_in 37 · fan_out 0 · age 2171d · last touched 1629d
+[maintainability] dark_room
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1268" y="348" width="12" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/driver/types/UpsertType.ts
+lines 5 · fan_in 15 · fan_out 0 · age 1757d · last touched 454d
+no named feature</title></rect>
+<rect x="1283" y="348" width="16" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/entity-schema/EntitySchemaEmbeddedColumnOptions.ts
+lines 18 · fan_in 2 · fan_out 1 · age 1657d · last touched 183d
+no named feature</title></rect>
+<rect x="1302" y="348" width="16" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/entity-schema/EntitySchemaEmbeddedError.ts
+lines 18 · fan_in 1 · fan_out 1 · age 1657d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1321" y="348" width="15" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/entity-schema/EntitySchemaExclusionOptions.ts
+lines 15 · fan_in 1 · fan_out 1 · age 2929d · last touched 183d
+no named feature</title></rect>
+<rect x="1339" y="348" width="16" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/entity-schema/EntitySchemaRelationIdOptions.ts
+lines 17 · fan_in 1 · fan_out 1 · age 1532d · last touched 183d
+no named feature</title></rect>
+<rect x="1358" y="348" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/error/EntityPropertyNotFoundError.ts
+lines 12 · fan_in 10 · fan_out 2 · age 1629d · last touched 183d
+[maintainability] scaffolding</title></rect>
+<rect x="1375" y="348" width="14" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/error/MissingDeleteDateColumnError.ts
+lines 9 · fan_in 5 · fan_out 2 · age 2380d · last touched 183d
+[maintainability] scaffolding</title></rect>
+<rect x="1392" y="348" width="12" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/NestedSetMultipleRootError.ts
+lines 6 · fan_in 2 · fan_out 1 · age 1932d · last touched 1629d
+[maintainability] dark_room
+[maintainability] scaffolding</title></rect>
+<rect x="1407" y="348" width="15" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>src/error/TypeORMError.ts
+lines 15 · fan_in 71 · fan_out 0 · age 1895d · last touched 1629d
+[maintainability] dark_room
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1425" y="348" width="13" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/error/UpdateValuesMissingError.ts
+lines 8 · fan_in 4 · fan_out 1 · age 2807d · last touched 1629d
+[maintainability] dark_room
+[maintainability] scaffolding</title></rect>
+<rect x="1441" y="348" width="23" height="16" style="fill:#d9cfb8;stroke:#8a4b00;stroke-width:2"><title>src/error/index.ts
+lines 59 · fan_in 64 · fan_out 59 · age 2031d · last touched 132d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1467" y="348" width="13" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/find-options/EqualOperator.ts
+lines 7 · fan_in 4 · fan_out 1 · age 1629d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1483" y="348" width="21" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/find-options/FindOptionsOrder.ts
+lines 48 · fan_in 3 · fan_out 1 · age 1629d · last touched 172d
+no named feature</title></rect>
+<rect x="1507" y="348" width="19" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/find-options/FindOptionsRelations.ts
+lines 34 · fan_in 3 · fan_out 1 · age 1629d · last touched 166d
+no named feature</title></rect>
+<rect x="1529" y="348" width="19" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/find-options/FindOptionsSelect.ts
+lines 34 · fan_in 4 · fan_out 1 · age 1629d · last touched 167d
+no named feature</title></rect>
+<rect x="1551" y="348" width="21" height="16" style="fill:#d9cfb8;stroke:#f2c14e;stroke-width:2"><title>src/find-options/FindOptionsWhere.ts
+lines 48 · fan_in 6 · fan_out 3 · age 1629d · last touched 54d
+[maintainability] lit_room</title></rect>
+<rect x="1575" y="348" width="15" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/find-options/FindTreeOptions.ts
+lines 13 · fan_in 3 · fan_out 0 · age 1854d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1593" y="348" width="16" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/find-options/mongodb/MongoFindManyOptions.ts
+lines 16 · fan_in 2 · fan_out 1 · age 1629d · last touched 183d
+no named feature</title></rect>
+<rect x="1612" y="348" width="15" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/find-options/mongodb/MongoFindOneOptions.ts
+lines 14 · fan_in 3 · fan_out 2 · age 1629d · last touched 183d
+no named feature</title></rect>
+<rect x="1630" y="348" width="15" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/ArrayContainedBy.ts
+lines 14 · fan_in 2 · fan_out 1 · age 1625d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="1648" y="348" width="15" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/ArrayContains.ts
+lines 14 · fan_in 2 · fan_out 1 · age 1625d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="1666" y="348" width="15" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/ArrayOverlap.ts
+lines 14 · fan_in 2 · fan_out 1 · age 1625d · last touched 155d
+[maintainability] scaffolding</title></rect>
+<rect x="958" y="329" width="14" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/ILike.ts
+lines 12 · fan_in 1 · fan_out 1 · age 2156d · last touched 155d
+no named feature</title></rect>
+<rect x="975" y="329" width="14" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/LessThanOrEqual.ts
+lines 12 · fan_in 1 · fan_out 1 · age 2795d · last touched 155d
+no named feature</title></rect>
+<rect x="992" y="329" width="14" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/MoreThanOrEqual.ts
+lines 12 · fan_in 1 · fan_out 1 · age 2795d · last touched 155d
+no named feature</title></rect>
+<rect x="1009" y="329" width="15" height="16" style="fill:#d9cfb8;stroke:#8a4b00;stroke-width:2"><title>src/globals.ts
+lines 15 · fan_in 45 · fan_out 2 · age 1890d · last touched 144d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1027" y="329" width="17" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/metadata-args/ExclusionMetadataArgs.ts
+lines 22 · fan_in 4 · fan_out 1 · age 2929d · last touched 183d
+no named feature</title></rect>
+<rect x="1047" y="329" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/metadata/ExclusionMetadata.ts
+lines 71 · fan_in 4 · fan_out 4 · age 2929d · last touched 144d
+[maintainability] scaffolding</title></rect>
+<rect x="1074" y="329" width="14" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/metadata/types/ClosureTreeOptions.ts
+lines 11 · fan_in 3 · fan_out 1 · age 2058d · last touched 69d
+no named feature</title></rect>
+<rect x="1091" y="329" width="12" height="16" style="fill:#d9cfb8;stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>src/metadata/types/DeferrableType.ts
+lines 4 · fan_in 14 · fan_out 0 · age 2716d · last touched 1629d
+[maintainability] dark_room
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1106" y="329" width="16" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/query-builder/InsertOrUpdateOptions.ts
+lines 18 · fan_in 2 · fan_out 3 · age 1652d · last touched 183d
+no named feature</title></rect>
+<rect x="1125" y="329" width="13" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/query-builder/NotBrackets.ts
+lines 8 · fan_in 4 · fan_out 1 · age 1690d · last touched 1629d
+[maintainability] dark_room
+[maintainability] scaffolding</title></rect>
+<rect x="1141" y="329" width="16" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/query-builder/QueryBuilderCte.ts
+lines 17 · fan_in 3 · fan_out 0 · age 1623d · last touched 1623d
+[maintainability] scaffolding</title></rect>
+<rect x="1160" y="329" width="55" height="16" style="fill:#d9cfb8;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/query-builder/SoftDeleteQueryBuilder.ts
+lines 554 · fan_in 3 · fan_out 17 · age 2380d · last touched 113d
+[maintainability] crack [decorative]</title></rect>
+<rect x="1218" y="329" width="19" height="16" style="fill:#d9cfb8;stroke:#f2c14e;stroke-width:2"><title>src/query-builder/WhereClause.ts
+lines 34 · fan_in 3 · fan_out 0 · age 1883d · last touched 54d
+[maintainability] lit_room</title></rect>
+<rect x="1240" y="329" width="17" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/query-runner/QueryLock.ts
+lines 23 · fan_in 2 · fan_out 0 · age 1877d · last touched 180d
+no named feature</title></rect>
+<rect x="1260" y="329" width="16" height="16" style="fill:#d9cfb8;stroke:#8a4b00;stroke-width:2"><title>src/query-runner/QueryResult.ts
+lines 17 · fan_in 21 · fan_out 0 · age 1882d · last touched 481d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1279" y="329" width="14" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/repository/FindTreesOptions.ts
+lines 9 · fan_in 1 · fan_out 0 · age 1755d · last touched 1629d
+[maintainability] dark_room</title></rect>
+<rect x="1296" y="329" width="17" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/repository/UpsertOptions.ts
+lines 24 · fan_in 5 · fan_out 3 · age 1757d · last touched 183d
+[maintainability] scaffolding</title></rect>
+<rect x="1316" y="329" width="17" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/schema-builder/options/TableExclusionOptions.ts
+lines 21 · fan_in 3 · fan_out 0 · age 2929d · last touched 233d
+no named feature</title></rect>
+<rect x="1336" y="329" width="18" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/schema-builder/options/ViewOptions.ts
+lines 30 · fan_in 2 · fan_out 2 · age 2714d · last touched 183d
+no named feature</title></rect>
+<rect x="1357" y="329" width="23" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/schema-builder/table/TableExclusion.ts
+lines 60 · fan_in 16 · fan_out 2 · age 2929d · last touched 155d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1383" y="329" width="19" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/schema-builder/util/ViewUtils.ts
+lines 32 · fan_in 1 · fan_out 1 · age 1771d · last touched 155d
+no named feature</title></rect>
+<rect x="1405" y="329" width="29" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>src/schema-builder/view/View.ts
+lines 111 · fan_in 30 · fan_out 6 · age 2714d · last touched 155d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1437" y="329" width="15" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/subscriber/event/LoadEvent.ts
+lines 15 · fan_in 4 · fan_out 2 · age 2657d · last touched 162d
+[maintainability] scaffolding</title></rect>
+<rect x="1455" y="329" width="12" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/subscriber/event/RecoverEvent.ts
+lines 5 · fan_in 3 · fan_out 1 · age 1659d · last touched 183d
+[maintainability] scaffolding</title></rect>
+<rect x="1470" y="329" width="12" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/subscriber/event/SoftRemoveEvent.ts
+lines 5 · fan_in 3 · fan_out 1 · age 1659d · last touched 183d
+[maintainability] scaffolding</title></rect>
+<rect x="1485" y="329" width="12" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/subscriber/event/TransactionCommitEvent.ts
+lines 5 · fan_in 2 · fan_out 1 · age 2129d · last touched 162d
+no named feature</title></rect>
+<rect x="1500" y="329" width="12" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/subscriber/event/TransactionRollbackEvent.ts
+lines 5 · fan_in 2 · fan_out 1 · age 2129d · last touched 162d
+no named feature</title></rect>
+<rect x="1515" y="329" width="12" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/subscriber/event/TransactionStartEvent.ts
+lines 5 · fan_in 2 · fan_out 1 · age 2129d · last touched 162d
+no named feature</title></rect>
+<rect x="1530" y="329" width="19" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3"><title>src/util/ApplyValueTransformers.ts
+lines 34 · fan_in 17 · fan_out 2 · age 2694d · last touched 173d
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1552" y="329" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/util/ImportUtils.ts
+lines 101 · fan_in 4 · fan_out 0 · age 1674d · last touched 139d
+[maintainability] scaffolding</title></rect>
+<rect x="1583" y="329" width="31" height="16" style="fill:#d9cfb8;stroke:#8a4b00;stroke-width:2"><title>src/util/InstanceChecker.ts
+lines 137 · fan_in 41 · fan_out 29 · age 1629d · last touched 183d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="1617" y="329" width="20" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/util/PathUtils.ts
+lines 36 · fan_in 4 · fan_out 1 · age 1658d · last touched 139d
+[maintainability] scaffolding</title></rect>
+<rect x="1640" y="329" width="29" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/util/TreeRepositoryUtils.ts
+lines 111 · fan_in 2 · fan_out 3 · age 1629d · last touched 144d
+no named feature</title></rect>
+<rect x="958" y="310" width="18" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/util/VersionUtils.ts
+lines 30 · fan_in 8 · fan_out 0 · age 2510d · last touched 46d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="979" y="310" width="12" height="16" style="fill:#d9cfb8;stroke:#8c8577;stroke-width:1"><title>src/util/escapeRegExp.ts
+lines 4 · fan_in 1 · fan_out 0 · age 1565d · last touched 139d
+no named feature</title></rect>
+<line x1="954" y1="404" x2="1686" y2="404" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="958" y="281" width="13" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/common/PickKeysByType.ts
+lines 7 · fan_in 3 · fan_out 0 · age 1302d · last touched 1302d
+no named feature</title></rect>
+<rect x="974" y="281" width="11" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>src/common/PrimitiveCriteria.ts
+lines 3 · fan_in 1 · fan_out 0 · age 483d · last touched 54d
+[maintainability] lit_room</title></rect>
+<rect x="988" y="281" width="28" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>src/decorator/ForeignKey.ts
+lines 109 · fan_in 1 · fan_out 5 · age 516d · last touched 54d
+[maintainability] lit_room</title></rect>
+<rect x="1019" y="281" width="25" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/decorator/columns/VirtualColumn.ts
+lines 74 · fan_in 1 · fan_out 5 · age 1442d · last touched 155d
+no named feature</title></rect>
+<rect x="1047" y="281" width="14" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/decorator/options/ColumnUnsignedOptions.ts
+lines 9 · fan_in 1 · fan_out 0 · age 350d · last touched 181d
+no named feature</title></rect>
+<rect x="1064" y="281" width="14" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/decorator/options/ExclusionOptions.ts
+lines 10 · fan_in 1 · fan_out 1 · age 233d · last touched 183d
+no named feature</title></rect>
+<rect x="1081" y="281" width="17" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/decorator/options/ForeignKeyOptions.ts
+lines 24 · fan_in 3 · fan_out 3 · age 516d · last touched 183d
+no named feature</title></rect>
+<rect x="1101" y="281" width="19" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/decorator/options/VirtualColumnOptions.ts
+lines 33 · fan_in 2 · fan_out 2 · age 1442d · last touched 155d
+no named feature</title></rect>
+<rect x="1123" y="281" width="64" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/driver/mongodb/bson.typings.ts
+lines 1695 · fan_in 1 · fan_out 0 · age 1236d · last touched 155d
+no named feature</title></rect>
+<rect x="1190" y="281" width="14" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/driver/sqlserver/authentication/AzureActiveDirectoryDefaultAuthentication.ts
+lines 12 · fan_in 1 · fan_out 0 · age 1109d · last touched 1109d
+no named feature</title></rect>
+<rect x="1207" y="281" width="28" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/driver/types/GeoJsonTypes.ts
+lines 104 · fan_in 2 · fan_out 0 · age 1337d · last touched 504d
+no named feature</title></rect>
+<rect x="1238" y="281" width="15" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/driver/types/InvalidFindOptionsWhereBehavior.ts
+lines 15 · fan_in 2 · fan_out 0 · age 81d · last touched 81d
+no named feature</title></rect>
+<rect x="1256" y="281" width="10" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/driver/types/ReturningType.ts
+lines 1 · fan_in 8 · fan_out 0 · age 162d · last touched 162d
+no named feature</title></rect>
+<rect x="1269" y="281" width="18" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/driver/validate-isolation-level.ts
+lines 25 · fan_in 12 · fan_out 2 · age 158d · last touched 143d
+no named feature</title></rect>
+<rect x="1290" y="281" width="14" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/entity-schema/EntitySchemaColumnForeignKeyOptions.ts
+lines 12 · fan_in 1 · fan_out 2 · age 516d · last touched 183d
+no named feature</title></rect>
+<rect x="1307" y="281" width="16" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/entity-schema/EntitySchemaForeignKeyOptions.ts
+lines 16 · fan_in 1 · fan_out 2 · age 516d · last touched 183d
+no named feature</title></rect>
+<rect x="1326" y="281" width="14" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/entity-schema/EntitySchemaInheritanceOptions.ts
+lines 11 · fan_in 1 · fan_out 1 · age 1245d · last touched 183d
+no named feature</title></rect>
+<rect x="1343" y="281" width="16" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/error/ForbiddenTransactionModeOverrideError.ts
+lines 17 · fan_in 2 · fan_out 2 · age 1368d · last touched 183d
+[maintainability] scaffolding</title></rect>
+<rect x="1362" y="281" width="14" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/error/NamedPlaceholdersNotSupportedError.ts
+lines 9 · fan_in 12 · fan_out 1 · age 132d · last touched 132d
+no named feature</title></rect>
+<rect x="1379" y="281" width="13" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/And.ts
+lines 8 · fan_in 1 · fan_out 1 · age 1368d · last touched 191d
+no named feature</title></rect>
+<rect x="1395" y="281" width="15" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/JsonContains.ts
+lines 14 · fan_in 2 · fan_out 1 · age 1303d · last touched 109d
+[maintainability] scaffolding</title></rect>
+<rect x="1413" y="281" width="13" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/find-options/operator/Or.ts
+lines 8 · fan_in 1 · fan_out 1 · age 973d · last touched 191d
+no named feature</title></rect>
+<rect x="1429" y="281" width="45" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>src/logger/AbstractLogger.ts
+lines 355 · fan_in 6 · fan_out 5 · age 1302d · last touched 54d
+[maintainability] lit_room</title></rect>
+<rect x="1477" y="281" width="24" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/logger/FormattedConsoleLogger.ts
+lines 71 · fan_in 2 · fan_out 4 · age 503d · last touched 155d
+no named feature</title></rect>
+<rect x="1504" y="281" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/metadata-args/ForeignKeyMetadataArgs.ts
+lines 54 · fan_in 3 · fan_out 5 · age 516d · last touched 183d
+no named feature</title></rect>
+<rect x="1529" y="281" width="12" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/query-builder/ReturningOption.ts
+lines 4 · fan_in 3 · fan_out 0 · age 233d · last touched 233d
+no named feature</title></rect>
+<rect x="1544" y="281" width="20" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/query-builder/index.ts
+lines 36 · fan_in 1 · fan_out 7 · age 977d · last touched 191d
+no named feature</title></rect>
+<rect x="1567" y="281" width="14" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/repository/UpdateOptions.ts
+lines 11 · fan_in 4 · fan_out 1 · age 233d · last touched 183d
+no named feature</title></rect>
+<rect x="1584" y="281" width="13" height="16" style="fill:#e8e2d3;stroke:#8a4b00;stroke-width:2"><title>src/schema-builder/options/TableIndexTypes.ts
+lines 7 · fan_in 7 · fan_out 0 · age 262d · last touched 262d
+[maintainability] hub (position: hub)</title></rect>
+<rect x="1600" y="281" width="18" height="16" style="fill:#e8e2d3;stroke:#8a4b00;stroke-width:2"><title>src/subscriber/event/BaseEvent.ts
+lines 28 · fan_in 8 · fan_out 3 · age 162d · last touched 155d
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="1621" y="281" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/subscriber/event/QueryEvent.ts
+lines 34 · fan_in 3 · fan_out 2 · age 974d · last touched 132d
+[maintainability] scaffolding</title></rect>
+<rect x="1643" y="281" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/util/SqlTagUtils.ts
+lines 60 · fan_in 5 · fan_out 1 · age 481d · last touched 183d
+[maintainability] scaffolding</title></rect>
+<rect x="958" y="262" width="21" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/util/Uint8ArrayUtils.ts
+lines 46 · fan_in 7 · fan_out 0 · age 172d · last touched 172d
+[maintainability] scaffolding</title></rect>
+<line x1="954" y1="299" x2="1686" y2="299" stroke="#bbb" stroke-dasharray="2 4"/>
+</g>
+<g class="overlay" id="overlay-0" data-profile="onboarding">
+<polygon points="710,262 717,262 710,269" fill="#1f6f8b"/>
+<polygon points="521,243 528,243 521,250" fill="#1f6f8b"/>
+<polygon points="958,720 965,720 958,727" fill="#1f6f8b"/>
+<polygon points="988,720 995,720 988,727" fill="#1f6f8b"/>
+<polygon points="1024,720 1031,720 1024,727" fill="#1f6f8b"/>
+<polygon points="1084,720 1091,720 1084,727" fill="#1f6f8b"/>
+<polygon points="1296,720 1303,720 1296,727" fill="#1f6f8b"/>
+<polygon points="1424,720 1431,720 1424,727" fill="#1f6f8b"/>
+<polygon points="1451,720 1458,720 1451,727" fill="#1f6f8b"/>
+<polygon points="1476,720 1483,720 1476,727" fill="#1f6f8b"/>
+<polygon points="1502,720 1509,720 1502,727" fill="#1f6f8b"/>
+<polygon points="1531,720 1538,720 1531,727" fill="#1f6f8b"/>
+<polygon points="1560,720 1567,720 1560,727" fill="#1f6f8b"/>
+<polygon points="1584,720 1591,720 1584,727" fill="#1f6f8b"/>
+<polygon points="981,701 988,701 981,708" fill="#1f6f8b"/>
+<polygon points="1024,701 1031,701 1024,708" fill="#1f6f8b"/>
+<polygon points="1602,701 1609,701 1602,708" fill="#1f6f8b"/>
+<polygon points="1483,682 1490,682 1483,689" fill="#1f6f8b"/>
+<polygon points="1521,682 1528,682 1521,689" fill="#1f6f8b"/>
+<polygon points="1566,682 1573,682 1566,689" fill="#1f6f8b"/>
+<polygon points="1003,663 1010,663 1003,670" fill="#1f6f8b"/>
+<polygon points="1092,663 1099,663 1092,670" fill="#1f6f8b"/>
+<polygon points="1118,663 1125,663 1118,670" fill="#1f6f8b"/>
+<polygon points="1343,663 1350,663 1343,670" fill="#1f6f8b"/>
+<polygon points="1487,663 1494,663 1487,670" fill="#1f6f8b"/>
+<polygon points="958,644 965,644 958,651" fill="#1f6f8b"/>
+<polygon points="1017,644 1024,644 1017,651" fill="#1f6f8b"/>
+<polygon points="1091,644 1098,644 1091,651" fill="#1f6f8b"/>
+<polygon points="1322,644 1329,644 1322,651" fill="#1f6f8b"/>
+<polygon points="1513,644 1520,644 1513,651" fill="#1f6f8b"/>
+<polygon points="1027,625 1034,625 1027,632" fill="#1f6f8b"/>
+<polygon points="1430,596 1437,596 1430,603" fill="#1f6f8b"/>
+<polygon points="1462,596 1469,596 1462,603" fill="#1f6f8b"/>
+<polygon points="1151,577 1158,577 1151,584" fill="#1f6f8b"/>
+<polygon points="1375,577 1382,577 1375,584" fill="#1f6f8b"/>
+<polygon points="1163,558 1170,558 1163,565" fill="#1f6f8b"/>
+<polygon points="1653,558 1660,558 1653,565" fill="#1f6f8b"/>
+<polygon points="1070,539 1077,539 1070,546" fill="#1f6f8b"/>
+<polygon points="1446,539 1453,539 1446,546" fill="#1f6f8b"/>
+<polygon points="1274,520 1281,520 1274,527" fill="#1f6f8b"/>
+<polygon points="1311,520 1318,520 1311,527" fill="#1f6f8b"/>
+<polygon points="1342,520 1349,520 1342,527" fill="#1f6f8b"/>
+<polygon points="1375,520 1382,520 1375,527" fill="#1f6f8b"/>
+<polygon points="1502,520 1509,520 1502,527" fill="#1f6f8b"/>
+<polygon points="1005,491 1012,491 1005,498" fill="#1f6f8b"/>
+<polygon points="1354,491 1361,491 1354,498" fill="#1f6f8b"/>
+<polygon points="1391,472 1398,472 1391,479" fill="#1f6f8b"/>
+<polygon points="1510,472 1517,472 1510,479" fill="#1f6f8b"/>
+<polygon points="1135,453 1142,453 1135,460" fill="#1f6f8b"/>
+<polygon points="1319,434 1326,434 1319,441" fill="#1f6f8b"/>
+<polygon points="1589,434 1596,434 1589,441" fill="#1f6f8b"/>
+<polygon points="1184,415 1191,415 1184,422" fill="#1f6f8b"/>
+<polygon points="1210,415 1217,415 1210,422" fill="#1f6f8b"/>
+<polygon points="1279,415 1286,415 1279,422" fill="#1f6f8b"/>
+<polygon points="1016,386 1023,386 1016,393" fill="#1f6f8b"/>
+<polygon points="1083,386 1090,386 1083,393" fill="#1f6f8b"/>
+<polygon points="1121,386 1128,386 1121,393" fill="#1f6f8b"/>
+<polygon points="1207,386 1214,386 1207,393" fill="#1f6f8b"/>
+<polygon points="1255,348 1262,348 1255,355" fill="#1f6f8b"/>
+<polygon points="1407,348 1414,348 1407,355" fill="#1f6f8b"/>
+<polygon points="1441,348 1448,348 1441,355" fill="#1f6f8b"/>
+<polygon points="1009,329 1016,329 1009,336" fill="#1f6f8b"/>
+<polygon points="1091,329 1098,329 1091,336" fill="#1f6f8b"/>
+<polygon points="1260,329 1267,329 1260,336" fill="#1f6f8b"/>
+<polygon points="1357,329 1364,329 1357,336" fill="#1f6f8b"/>
+<polygon points="1405,329 1412,329 1405,336" fill="#1f6f8b"/>
+<polygon points="1530,329 1537,329 1530,336" fill="#1f6f8b"/>
+<polygon points="1583,329 1590,329 1583,336" fill="#1f6f8b"/>
+<polygon points="1600,281 1607,281 1600,288" fill="#1f6f8b"/>
+</g>
+<text x="24" y="782" fill="#333">diagnostic: dark_room×70, flooded_basement×59, foundation×59, hub×60, lit_room×63, scaffolding×164   ·   decorative: 61 instance(s) of crack, toothpick_wing   ·   onboarding: corridor×37, foundation×59</text>
+</svg>

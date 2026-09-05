@@ -65,10 +65,9 @@ class Ruleset:
     description: str
     features: tuple[Feature, ...]
     source: str = ""
-    strata_signal: str = (
-        "age_days"  # what the cutaway stacks vertically (§6: geometry is profile-independent)
+    wing_depth: int = (
+        1  # directory depth that defines a wing (geometry; the same for every profile)
     )
-    wing_depth: int = 1  # directory depth that defines a wing
     _extra: dict = field(default_factory=dict, compare=False)
 
 
@@ -135,6 +134,5 @@ def load_ruleset(path: Path) -> Ruleset:
         description=str(hdr.get("description", "")),
         features=tuple(feats),
         source=str(path),
-        strata_signal=str(hdr.get("strata_signal", "age_days")),
         wing_depth=int(hdr.get("wing_depth", 1)),
     )

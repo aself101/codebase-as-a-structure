@@ -1,0 +1,924 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1760" height="623" viewBox="0 0 1760 623" font-family="ui-monospace, Menlo, monospace" font-size="11">
+<defs><pattern id="water" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#9fc5e8"/><path d="M0 4 Q2 2 4 4 T8 4" stroke="#3d7ab8" fill="none"/></pattern><pattern id="scaffold" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="none"/><line x1="0" y1="0" x2="0" y2="8" stroke="#5c8a3a" stroke-width="2"/></pattern></defs>
+<rect width="1760" height="623" fill="#faf8f3"/>
+<text x="24" y="26" font-size="16" font-weight="bold">mcp-secure-server @ ecb30716b8 — cutaway, profile maintainability + onboarding</text>
+<text x="24" y="46">diagnostic features: 327 · <tspan fill="#c2185b" font-weight="bold">decorative (ungrounded, not a diagnosis): 25</tspan> · degraded (graph): 0 · population 202 files · co-located across profiles: 30</text>
+<text x="24" y="64" fill="#555">gate: bug_pressure_index=unvalidated, centrality=asserted, fan_in=asserted, fan_out=asserted, last_touched_days=asserted, load_index=asserted, neglect_index=asserted, reinforcement_index=asserted</text>
+<text x="24" y="82" fill="#555">seed 2c7db66a25f4… · substrate fp 80b2a632f8b7… · validation fp cb320f191852… · ruleset maintainability@0.1.0 · skeleton 59db6d2a1e81…</text>
+<text x="24" y="100" fill="#555">strata = age_days percentile bands, oldest at the bottom · wings = top-level directory · room width ∝ √lines · material = age · every named feature denotes present structural position (validation §2.1.1)</text>
+<rect x="24" y="118" width="14" height="10" style="stroke:#2b2b2b;stroke-width:3;fill:#d9cfb8"/>
+<text x="42" y="127" fill="#333">foundation / high-load hub</text>
+<rect x="240" y="118" width="14" height="10" style="stroke:#8a4b00;stroke-width:2;fill:#d9cfb8"/>
+<text x="258" y="127" fill="#333">hub</text>
+<rect x="295" y="118" width="14" height="10" style="fill:url(#water);stroke:#888"/>
+<text x="313" y="127" fill="#333">flooded basement</text>
+<rect x="441" y="118" width="14" height="10" style="fill:url(#scaffold);stroke:#888"/>
+<text x="459" y="127" fill="#333">scaffolding</text>
+<rect x="552" y="118" width="14" height="10" style="fill:#d9cfb8;opacity:0.45;stroke:#888"/>
+<text x="570" y="127" fill="#333">dark room</text>
+<rect x="649" y="118" width="14" height="10" style="stroke:#f2c14e;stroke-width:2;fill:#d9cfb8"/>
+<text x="667" y="127" fill="#333">lit room</text>
+<rect x="739" y="118" width="14" height="10" style="stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3;fill:#d9cfb8"/>
+<text x="757" y="127" fill="#333">decorative (ungrounded)</text>
+<text x="24" y="145" fill="#333">overlays (corner badge per profile, shown side by side, never merged):</text>
+<polygon points="526,136 536,136 526,146" fill="#1f6f8b"/>
+<text x="540" y="145" fill="#333">onboarding: corridor, foundation</text>
+<g id="base" data-profile="maintainability">
+<text x="24" y="162" font-weight="bold" fill="#333">(root)</text>
+<rect x="24" y="549" width="26" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>eslint.config.js
+lines 84 · fan_in 0 · fan_out 0 · age 256d · last touched 224d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="53" y="549" width="20" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>vitest.config.js
+lines 38 · fan_in 0 · fan_out 0 · age 256d · last touched 246d
+no named feature</title></rect>
+<line x1="20" y1="567" x2="104" y2="567" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="20" y1="443" x2="104" y2="443" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="20" y1="414" x2="104" y2="414" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="20" y1="252" x2="104" y2="252" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="20" y1="223" x2="104" y2="223" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="132" y="162" font-weight="bold" fill="#333">cookbook</text>
+<rect x="132" y="549" width="43" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>cookbook/minimal-server/minimal-test-server.ts
+lines 320 · fan_in 0 · fan_out 1 · age 256d · last touched 227d
+no named feature</title></rect>
+<line x1="128" y1="567" x2="538" y2="567" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="128" y1="443" x2="538" y2="443" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="132" y="396" width="37" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/advanced-validation-server/src/index.ts
+lines 222 · fan_in 0 · fan_out 2 · age 252d · last touched 229d
+no named feature</title></rect>
+<rect x="172" y="396" width="27" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/advanced-validation-server/src/tools/api-call.ts
+lines 94 · fan_in 1 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="202" y="396" width="23" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/advanced-validation-server/src/tools/batch-process.ts
+lines 59 · fan_in 1 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="228" y="396" width="30" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/advanced-validation-server/src/tools/export-data.ts
+lines 131 · fan_in 1 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="261" y="396" width="27" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/advanced-validation-server/src/tools/financial-query.ts
+lines 97 · fan_in 1 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="291" y="396" width="18" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/advanced-validation-server/src/tools/index.ts
+lines 25 · fan_in 1 · fan_out 4 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="312" y="396" width="30" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/advanced-validation-server/src/validators/anomaly-detector.ts
+lines 129 · fan_in 1 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="345" y="396" width="27" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/advanced-validation-server/src/validators/business-hours.ts
+lines 91 · fan_in 1 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="375" y="396" width="28" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/advanced-validation-server/src/validators/egress-tracker.ts
+lines 108 · fan_in 1 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="406" y="396" width="26" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/advanced-validation-server/src/validators/geofencing.ts
+lines 87 · fan_in 1 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="435" y="396" width="20" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/advanced-validation-server/src/validators/index.ts
+lines 38 · fan_in 1 · fan_out 5 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="458" y="396" width="28" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/advanced-validation-server/src/validators/pii-detector.ts
+lines 109 · fan_in 1 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="489" y="396" width="30" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/api-wrapper-server/src/index.ts
+lines 132 · fan_in 0 · fan_out 1 · age 252d · last touched 229d
+no named feature</title></rect>
+<rect x="132" y="377" width="28" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/api-wrapper-server/src/tools/currency.ts
+lines 105 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="163" y="377" width="16" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/api-wrapper-server/src/tools/index.ts
+lines 18 · fan_in 2 · fan_out 3 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="182" y="377" width="28" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/api-wrapper-server/src/tools/news.ts
+lines 106 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="213" y="377" width="32" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/api-wrapper-server/src/tools/weather.ts
+lines 147 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="248" y="377" width="21" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/api-wrapper-server/src/utils/http.ts
+lines 48 · fan_in 1 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="272" y="377" width="12" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>cookbook/api-wrapper-server/src/utils/index.ts
+lines 5 · fan_in 4 · fan_out 2 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="287" y="377" width="18" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/api-wrapper-server/src/utils/validators.ts
+lines 25 · fan_in 1 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="308" y="377" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/api-wrapper-server/vitest.config.ts
+lines 14 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="326" y="377" width="26" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/cli-wrapper-server/examples/allowlist-validation.ts
+lines 90 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="355" y="377" width="23" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/cli-wrapper-server/examples/safe-execution.ts
+lines 60 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="381" y="377" width="35" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/cli-wrapper-server/src/index.ts
+lines 187 · fan_in 0 · fan_out 1 · age 252d · last touched 229d
+no named feature</title></rect>
+<rect x="419" y="377" width="40" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/cli-wrapper-server/src/tools/encode-video.ts
+lines 268 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="462" y="377" width="32" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/cli-wrapper-server/src/tools/git-status.ts
+lines 151 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="497" y="377" width="38" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/cli-wrapper-server/src/tools/image-resize.ts
+lines 240 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="132" y="358" width="18" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/cli-wrapper-server/src/tools/index.ts
+lines 27 · fan_in 1 · fan_out 4 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="153" y="358" width="37" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/cli-wrapper-server/src/tools/pdf-metadata.ts
+lines 213 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="193" y="358" width="37" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/cli-wrapper-server/src/utils/allowlist.ts
+lines 212 · fan_in 2 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="233" y="358" width="32" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/cli-wrapper-server/src/utils/command-executor.ts
+lines 150 · fan_in 1 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="268" y="358" width="17" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/cli-wrapper-server/src/utils/index.ts
+lines 24 · fan_in 4 · fan_out 3 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="288" y="358" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/cli-wrapper-server/src/utils/path-validator.ts
+lines 156 · fan_in 2 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="323" y="358" width="12" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/cli-wrapper-server/vitest.config.ts
+lines 6 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="338" y="358" width="21" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/database-server/examples/safe-query.ts
+lines 47 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="362" y="358" width="24" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/database-server/examples/transaction-example.ts
+lines 71 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="389" y="358" width="28" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/database-server/examples/validation-example.ts
+lines 102 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="420" y="358" width="45" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/database-server/src/index.ts
+lines 347 · fan_in 0 · fan_out 2 · age 252d · last touched 229d
+no named feature</title></rect>
+<rect x="468" y="358" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/database-server/src/tools/create-order.ts
+lines 90 · fan_in 2 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="497" y="358" width="36" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/database-server/src/tools/generate-report.ts
+lines 208 · fan_in 2 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="132" y="339" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/database-server/src/tools/health-check.ts
+lines 66 · fan_in 2 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="159" y="339" width="13" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/database-server/src/tools/index.ts
+lines 7 · fan_in 1 · fan_out 4 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="175" y="339" width="25" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/database-server/src/tools/query-users.ts
+lines 73 · fan_in 2 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="203" y="339" width="29" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/database-server/src/utils/database.ts
+lines 111 · fan_in 2 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="235" y="339" width="15" height="16" style="fill:url(#water);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>cookbook/database-server/src/utils/index.ts
+lines 15 · fan_in 5 · fan_out 2 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="253" y="339" width="27" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/database-server/src/utils/zod-errors.ts
+lines 91 · fan_in 1 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="283" y="339" width="13" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/database-server/vitest.config.ts
+lines 8 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="299" y="339" width="37" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/filesystem-server/src/index.ts
+lines 223 · fan_in 0 · fan_out 2 · age 252d · last touched 229d
+no named feature</title></rect>
+<rect x="339" y="339" width="16" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/filesystem-server/src/tools/index.ts
+lines 17 · fan_in 1 · fan_out 4 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="358" y="339" width="34" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/filesystem-server/src/tools/list-directory.ts
+lines 181 · fan_in 3 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="395" y="339" width="32" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/filesystem-server/src/tools/read-file.ts
+lines 154 · fan_in 3 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="430" y="339" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/filesystem-server/src/tools/search-files.ts
+lines 229 · fan_in 3 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="471" y="339" width="30" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/filesystem-server/src/tools/write-log.ts
+lines 126 · fan_in 2 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="504" y="339" width="16" height="16" style="fill:url(#water);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>cookbook/filesystem-server/src/utils/index.ts
+lines 17 · fan_in 5 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="132" y="320" width="34" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>cookbook/filesystem-server/src/utils/path-validator.ts
+lines 180 · fan_in 3 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="169" y="320" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/filesystem-server/vitest.config.ts
+lines 14 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="187" y="320" width="30" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/image-gen-server/src/index-debug.ts
+lines 128 · fan_in 0 · fan_out 2 · age 252d · last touched 248d
+no named feature</title></rect>
+<rect x="220" y="320" width="19" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/image-gen-server/src/index-minimal.ts
+lines 33 · fan_in 0 · fan_out 2 · age 252d · last touched 252d
+[maintainability] dark_room</title></rect>
+<rect x="242" y="320" width="29" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/image-gen-server/src/index.ts
+lines 111 · fan_in 0 · fan_out 4 · age 252d · last touched 229d
+no named feature</title></rect>
+<rect x="274" y="320" width="24" height="16" style="fill:url(#water);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>cookbook/image-gen-server/src/providers/bfl.ts
+lines 66 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="301" y="320" width="23" height="16" style="fill:url(#water);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>cookbook/image-gen-server/src/providers/google.ts
+lines 60 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="327" y="320" width="25" height="16" style="fill:url(#water);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>cookbook/image-gen-server/src/providers/ideogram.ts
+lines 79 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="355" y="320" width="26" height="16" style="fill:url(#water);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>cookbook/image-gen-server/src/providers/index.ts
+lines 86 · fan_in 9 · fan_out 5 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="384" y="320" width="26" height="16" style="fill:url(#water);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>cookbook/image-gen-server/src/providers/openai.ts
+lines 90 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="413" y="320" width="28" height="16" style="fill:url(#water);stroke:#8a4b00;stroke-width:2;opacity:0.45"><title>cookbook/image-gen-server/src/providers/stability.ts
+lines 101 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="444" y="320" width="31" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/image-gen-server/src/tools/edit.ts
+lines 139 · fan_in 4 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="478" y="320" width="31" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3;opacity:0.45"><title>cookbook/image-gen-server/src/tools/generate.ts
+lines 136 · fan_in 6 · fan_out 2 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="512" y="320" width="17" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/image-gen-server/src/tools/index.ts
+lines 24 · fan_in 0 · fan_out 4 · age 252d · last touched 252d
+[maintainability] dark_room</title></rect>
+<rect x="132" y="301" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/image-gen-server/src/tools/list-models.ts
+lines 84 · fan_in 5 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="161" y="301" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/image-gen-server/src/tools/upscale.ts
+lines 100 · fan_in 3 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="192" y="301" width="28" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/image-gen-server/src/utils.ts
+lines 106 · fan_in 2 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="223" y="301" width="12" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/image-gen-server/src/utils/index.ts
+lines 4 · fan_in 0 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room</title></rect>
+<rect x="238" y="301" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/image-gen-server/vitest.config.ts
+lines 14 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="256" y="301" width="29" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/kenpom-server/src/index.ts
+lines 112 · fan_in 0 · fan_out 5 · age 252d · last touched 229d
+no named feature</title></rect>
+<rect x="288" y="301" width="27" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/kenpom-server/src/tools/conference.ts
+lines 93 · fan_in 4 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="318" y="301" width="30" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/kenpom-server/src/tools/efficiency.ts
+lines 124 · fan_in 2 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="351" y="301" width="16" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/kenpom-server/src/tools/index.ts
+lines 20 · fan_in 0 · fan_out 5 · age 252d · last touched 252d
+[maintainability] dark_room</title></rect>
+<rect x="370" y="301" width="23" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/kenpom-server/src/tools/player.ts
+lines 63 · fan_in 4 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="396" y="301" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/kenpom-server/src/tools/ratings.ts
+lines 86 · fan_in 4 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="425" y="301" width="28" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/kenpom-server/src/tools/team.ts
+lines 100 · fan_in 4 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="456" y="301" width="12" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/kenpom-server/src/utils/index.ts
+lines 6 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="471" y="301" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/kenpom-server/vitest.config.ts
+lines 14 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="489" y="301" width="45" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/monitoring-server/src/index.ts
+lines 355 · fan_in 0 · fan_out 2 · age 252d · last touched 229d
+no named feature</title></rect>
+<rect x="132" y="282" width="36" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/monitoring-server/src/tools/configure-alerts.ts
+lines 205 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="171" y="282" width="34" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/monitoring-server/src/tools/export-metrics.ts
+lines 178 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="208" y="282" width="28" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/monitoring-server/src/tools/get-audit-log.ts
+lines 109 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="239" y="282" width="24" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/monitoring-server/src/tools/get-security-metrics.ts
+lines 68 · fan_in 1 · fan_out 1 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="266" y="282" width="18" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/monitoring-server/src/tools/index.ts
+lines 27 · fan_in 1 · fan_out 4 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="287" y="282" width="46" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3;opacity:0.45"><title>cookbook/monitoring-server/src/utils/alert-manager.ts
+lines 375 · fan_in 3 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="336" y="282" width="41" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/monitoring-server/src/utils/audit-logger.ts
+lines 274 · fan_in 2 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="380" y="282" width="22" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/monitoring-server/src/utils/index.ts
+lines 52 · fan_in 5 · fan_out 4 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="405" y="282" width="45" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3;opacity:0.45"><title>cookbook/monitoring-server/src/utils/metrics-collector.ts
+lines 350 · fan_in 3 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="453" y="282" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/monitoring-server/src/utils/prometheus-formatter.ts
+lines 228 · fan_in 2 · fan_out 2 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="494" y="282" width="12" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/monitoring-server/vitest.config.ts
+lines 6 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="132" y="263" width="30" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1"><title>cookbook/nba-server/src/index.ts
+lines 131 · fan_in 0 · fan_out 5 · age 252d · last touched 229d
+no named feature</title></rect>
+<rect x="165" y="263" width="29" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/nba-server/src/tools/game.ts
+lines 114 · fan_in 4 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="197" y="263" width="20" height="16" style="fill:#c7b894;stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/nba-server/src/tools/index.ts
+lines 37 · fan_in 0 · fan_out 5 · age 252d · last touched 252d
+[maintainability] dark_room</title></rect>
+<rect x="220" y="263" width="26" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/nba-server/src/tools/league.ts
+lines 86 · fan_in 2 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="249" y="263" width="27" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/nba-server/src/tools/live.ts
+lines 96 · fan_in 3 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="279" y="263" width="34" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/nba-server/src/tools/player.ts
+lines 174 · fan_in 4 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="316" y="263" width="27" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/nba-server/src/tools/team.ts
+lines 93 · fan_in 4 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="346" y="263" width="12" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/nba-server/src/utils/index.ts
+lines 6 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="361" y="263" width="15" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>cookbook/nba-server/vitest.config.ts
+lines 14 · fan_in 0 · fan_out 0 · age 252d · last touched 252d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<line x1="128" y1="414" x2="538" y2="414" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="128" y1="252" x2="538" y2="252" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="132" y="205" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/http-server/src/index.ts
+lines 53 · fan_in 0 · fan_out 2 · age 251d · last touched 229d
+no named feature</title></rect>
+<rect x="157" y="205" width="22" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>cookbook/http-server/src/tools/calculator.ts
+lines 55 · fan_in 3 · fan_out 0 · age 251d · last touched 251d
+[maintainability] scaffolding</title></rect>
+<rect x="182" y="205" width="19" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>cookbook/http-server/src/tools/echo.ts
+lines 31 · fan_in 3 · fan_out 0 · age 251d · last touched 251d
+[maintainability] scaffolding</title></rect>
+<rect x="204" y="205" width="10" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/http-server/src/tools/index.ts
+lines 2 · fan_in 0 · fan_out 2 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="217" y="205" width="13" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/http-server/vitest.config.ts
+lines 7 · fan_in 0 · fan_out 0 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="233" y="205" width="26" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/multi-endpoint-server/src/index.ts
+lines 83 · fan_in 0 · fan_out 2 · age 251d · last touched 248d
+no named feature</title></rect>
+<rect x="262" y="205" width="20" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>cookbook/multi-endpoint-server/src/servers/admin-server.ts
+lines 41 · fan_in 2 · fan_out 2 · age 251d · last touched 229d
+[maintainability] scaffolding</title></rect>
+<rect x="285" y="205" width="20" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>cookbook/multi-endpoint-server/src/servers/public-server.ts
+lines 42 · fan_in 2 · fan_out 2 · age 251d · last touched 229d
+[maintainability] scaffolding</title></rect>
+<rect x="308" y="205" width="24" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/multi-endpoint-server/src/tools/admin/system-stats.ts
+lines 71 · fan_in 2 · fan_out 0 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="335" y="205" width="20" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/multi-endpoint-server/src/tools/admin/user-management.ts
+lines 40 · fan_in 2 · fan_out 0 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="358" y="205" width="17" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/multi-endpoint-server/src/tools/index.ts
+lines 22 · fan_in 0 · fan_out 4 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="378" y="205" width="16" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/multi-endpoint-server/src/tools/public/health.ts
+lines 16 · fan_in 2 · fan_out 0 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="397" y="205" width="17" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/multi-endpoint-server/src/tools/public/status.ts
+lines 24 · fan_in 2 · fan_out 0 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="417" y="205" width="13" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/multi-endpoint-server/vitest.config.ts
+lines 7 · fan_in 0 · fan_out 0 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="433" y="205" width="49" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/tool-policies-server/src/index.ts
+lines 427 · fan_in 0 · fan_out 0 · age 229d · last touched 229d
+no named feature</title></rect>
+<rect x="485" y="205" width="12" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/tool-policies-server/vitest.config.ts
+lines 6 · fan_in 0 · fan_out 0 · age 229d · last touched 229d
+no named feature</title></rect>
+<rect x="132" y="186" width="39" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/index.ts
+lines 241 · fan_in 0 · fan_out 3 · age 251d · last touched 229d
+no named feature</title></rect>
+<rect x="174" y="186" width="28" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/tools/check-status.ts
+lines 105 · fan_in 1 · fan_out 2 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="205" y="186" width="26" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/tools/confirm-transaction.ts
+lines 90 · fan_in 1 · fan_out 1 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="234" y="186" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/tools/connect-session.ts
+lines 54 · fan_in 1 · fan_out 1 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="259" y="186" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/tools/disconnect-session.ts
+lines 54 · fan_in 1 · fan_out 1 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="284" y="186" width="31" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/tools/execute-transaction.ts
+lines 143 · fan_in 1 · fan_out 1 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="318" y="186" width="22" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/tools/index.ts
+lines 51 · fan_in 1 · fan_out 8 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="343" y="186" width="23" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/tools/list-accounts.ts
+lines 60 · fan_in 1 · fan_out 1 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="369" y="186" width="33" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/tools/prepare-transaction.ts
+lines 166 · fan_in 1 · fan_out 1 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="405" y="186" width="25" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/tools/select-account.ts
+lines 76 · fan_in 1 · fan_out 1 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="433" y="186" width="20" height="16" style="fill:url(#scaffold);stroke:#8a4b00;stroke-width:2"><title>cookbook/transaction-server/src/utils/index.ts
+lines 38 · fan_in 11 · fan_out 2 · age 251d · last touched 251d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="456" y="186" width="30" height="16" style="fill:#e8e2d3;stroke:#8a4b00;stroke-width:2"><title>cookbook/transaction-server/src/utils/mock-data.ts
+lines 127 · fan_in 2 · fan_out 0 · age 251d · last touched 251d
+[maintainability] hub (position: hub)</title></rect>
+<rect x="489" y="186" width="34" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/utils/session-store.ts
+lines 174 · fan_in 1 · fan_out 1 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="132" y="167" width="13" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/validators/index.ts
+lines 7 · fan_in 3 · fan_out 1 · age 251d · last touched 251d
+[maintainability] scaffolding</title></rect>
+<rect x="148" y="167" width="28" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/src/validators/workflow-state.ts
+lines 106 · fan_in 1 · fan_out 1 · age 251d · last touched 251d
+no named feature</title></rect>
+<rect x="179" y="167" width="13" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>cookbook/transaction-server/vitest.config.ts
+lines 8 · fan_in 0 · fan_out 0 · age 251d · last touched 251d
+no named feature</title></rect>
+<line x1="128" y1="223" x2="538" y2="223" stroke="#bbb" stroke-dasharray="2 4"/>
+<text x="566" y="162" font-weight="bold" fill="#333">src</text>
+<rect x="566" y="549" width="34" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/index.ts
+lines 169 · fan_in 2 · fan_out 2 · age 256d · last touched 224d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="603" y="549" width="23" height="16" style="fill:#7e6f52;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/security/constants.ts
+lines 63 · fan_in 6 · fan_out 0 · age 256d · last touched 37d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] lit_room
+[maintainability] toothpick_wing [decorative]
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="629" y="549" width="32" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/security/index.ts
+lines 154 · fan_in 1 · fan_out 5 · age 256d · last touched 224d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="664" y="549" width="28" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1"><title>src/security/layers/contextual-config-builder.ts
+lines 104 · fan_in 3 · fan_out 0 · age 256d · last touched 248d
+[maintainability] flooded_basement</title></rect>
+<rect x="695" y="549" width="35" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/security/layers/layer-utils/content/canonicalize.ts
+lines 183 · fan_in 4 · fan_out 2 · age 256d · last touched 229d
+[maintainability] scaffolding</title></rect>
+<rect x="733" y="549" width="16" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/security/layers/layer-utils/content/dangerous-patterns.ts
+lines 19 · fan_in 3 · fan_out 1 · age 256d · last touched 237d
+no named feature</title></rect>
+<rect x="752" y="549" width="15" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/security/layers/layer-utils/content/helper-utils.ts
+lines 14 · fan_in 4 · fan_out 1 · age 256d · last touched 256d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="770" y="549" width="42" height="16" style="fill:url(#scaffold);stroke:#2b2b2b;stroke-width:3;stroke-dasharray:4 3"><title>src/security/layers/layer-utils/content/patterns/index.ts
+lines 291 · fan_in 5 · fan_out 5 · age 256d · last touched 226d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="815" y="549" width="34" height="16" style="fill:#7e6f52;stroke:#8a4b00;stroke-width:2"><title>src/security/layers/layer-utils/content/patterns/injection.ts
+lines 172 · fan_in 4 · fan_out 1 · age 256d · last touched 229d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="566" y="530" width="30" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/security/layers/layer-utils/content/patterns/network.ts
+lines 126 · fan_in 1 · fan_out 1 · age 256d · last touched 233d
+no named feature</title></rect>
+<rect x="599" y="530" width="29" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/security/layers/layer-utils/content/patterns/overflow-validation.ts
+lines 117 · fan_in 1 · fan_out 1 · age 256d · last touched 229d
+no named feature</title></rect>
+<rect x="631" y="530" width="36" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/security/layers/layer-utils/content/patterns/path-traversal.ts
+lines 201 · fan_in 1 · fan_out 1 · age 256d · last touched 37d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="670" y="530" width="38" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/security/layers/layer-utils/content/unicode.ts
+lines 230 · fan_in 2 · fan_out 0 · age 256d · last touched 256d
+[maintainability] dark_room
+[maintainability] flooded_basement
+[maintainability] scaffolding</title></rect>
+<rect x="711" y="530" width="22" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/security/layers/layer-utils/content/utils/hash-utils.ts
+lines 54 · fan_in 2 · fan_out 0 · age 256d · last touched 224d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="736" y="530" width="14" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/security/layers/layer-utils/content/utils/index.ts
+lines 11 · fan_in 1 · fan_out 3 · age 256d · last touched 256d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="753" y="530" width="22" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2"><title>src/security/layers/layer-utils/content/utils/structural-analysis.ts
+lines 54 · fan_in 1 · fan_out 0 · age 256d · last touched 224d
+[maintainability] lit_room</title></rect>
+<rect x="778" y="530" width="36" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/security/layers/layer-utils/content/utils/text-decoding.ts
+lines 208 · fan_in 2 · fan_out 0 · age 256d · last touched 224d
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="817" y="530" width="37" height="16" style="fill:#7e6f52;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/security/layers/layer-utils/semantics/semantic-policies.ts
+lines 217 · fan_in 2 · fan_out 3 · age 256d · last touched 227d
+[maintainability] crack [decorative]</title></rect>
+<rect x="566" y="511" width="33" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/security/layers/layer-utils/semantics/semantic-quotas.ts
+lines 159 · fan_in 3 · fan_out 0 · age 256d · last touched 256d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="602" y="511" width="38" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2"><title>src/security/layers/layer1-structure.ts
+lines 238 · fan_in 1 · fan_out 2 · age 256d · last touched 37d
+[maintainability] lit_room</title></rect>
+<rect x="643" y="511" width="40" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/security/layers/layer2-content.ts
+lines 258 · fan_in 1 · fan_out 6 · age 256d · last touched 37d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="686" y="511" width="30" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/security/layers/layer2-validators/base64-css.ts
+lines 126 · fan_in 1 · fan_out 4 · age 256d · last touched 256d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="719" y="511" width="35" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2"><title>src/security/layers/layer2-validators/data-semantics.ts
+lines 184 · fan_in 1 · fan_out 5 · age 256d · last touched 37d
+[maintainability] lit_room</title></rect>
+<rect x="757" y="511" width="18" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/security/layers/layer2-validators/index.ts
+lines 29 · fan_in 1 · fan_out 3 · age 256d · last touched 229d
+no named feature</title></rect>
+<rect x="778" y="511" width="40" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/security/layers/layer2-validators/pattern-detection.ts
+lines 272 · fan_in 3 · fan_out 4 · age 256d · last touched 117d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="821" y="511" width="40" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/security/layers/layer3-behavior.ts
+lines 270 · fan_in 2 · fan_out 2 · age 256d · last touched 224d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="566" y="492" width="46" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/security/layers/layer4-semantics.ts
+lines 369 · fan_in 1 · fan_out 4 · age 256d · last touched 224d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="615" y="492" width="41" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/security/layers/layer5-contextual.ts
+lines 277 · fan_in 5 · fan_out 4 · age 256d · last touched 224d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="659" y="492" width="35" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/security/layers/validation-layer-base.ts
+lines 193 · fan_in 8 · fan_out 2 · age 256d · last touched 37d
+[maintainability] foundation (position: high-load hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="697" y="492" width="46" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/security/mcp-secure-server.ts
+lines 377 · fan_in 4 · fan_out 13 · age 256d · last touched 37d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="746" y="492" width="16" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/security/transport/index.ts
+lines 19 · fan_in 2 · fan_out 4 · age 256d · last touched 224d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="765" y="492" width="41" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/security/transport/secure-transport.ts
+lines 275 · fan_in 5 · fan_out 2 · age 256d · last touched 224d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="809" y="492" width="50" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/security/utils/error-sanitizer.ts
+lines 448 · fan_in 6 · fan_out 1 · age 256d · last touched 0d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="566" y="473" width="26" height="16" style="fill:#7e6f52;stroke:#8c8577;stroke-width:1"><title>src/security/utils/request-normalizer.ts
+lines 86 · fan_in 1 · fan_out 0 · age 256d · last touched 225d
+no named feature</title></rect>
+<rect x="595" y="473" width="52" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/security/utils/security-logger.ts
+lines 491 · fan_in 5 · fan_out 3 · age 256d · last touched 63d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="650" y="473" width="22" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/security/utils/tool-registry.ts
+lines 55 · fan_in 1 · fan_out 1 · age 256d · last touched 256d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="675" y="473" width="31" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2"><title>src/security/utils/validation-pipeline.ts
+lines 140 · fan_in 6 · fan_out 2 · age 256d · last touched 224d
+[maintainability] foundation (position: high-load hub)
+[maintainability] lit_room
+[maintainability] scaffolding
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="709" y="473" width="26" height="16" style="fill:#7e6f52;stroke:#8a4b00;stroke-width:2"><title>src/types/index.ts
+lines 85 · fan_in 16 · fan_out 5 · age 256d · last touched 226d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="738" y="473" width="35" height="16" style="fill:#7e6f52;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/types/layers.ts
+lines 184 · fan_in 3 · fan_out 3 · age 256d · last touched 37d
+[maintainability] crack [decorative]
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="776" y="473" width="29" height="16" style="fill:url(#water);stroke:#8c8577;stroke-width:1;opacity:0.45"><title>src/types/messages.ts
+lines 113 · fan_in 1 · fan_out 0 · age 256d · last touched 256d
+[maintainability] dark_room
+[maintainability] flooded_basement</title></rect>
+<rect x="808" y="473" width="32" height="16" style="fill:url(#water);stroke:#8a4b00;stroke-width:2"><title>src/types/policies.ts
+lines 147 · fan_in 3 · fan_out 0 · age 256d · last touched 248d
+[maintainability] flooded_basement
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="566" y="454" width="38" height="16" style="fill:#7e6f52;stroke:#8a4b00;stroke-width:2"><title>src/types/validation.ts
+lines 229 · fan_in 2 · fan_out 0 · age 256d · last touched 229d
+[maintainability] hub (position: hub)</title></rect>
+<line x1="562" y1="567" x2="864" y2="567" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="562" y1="443" x2="864" y2="443" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="562" y1="414" x2="864" y2="414" stroke="#bbb" stroke-dasharray="2 4"/>
+<line x1="562" y1="252" x2="864" y2="252" stroke="#bbb" stroke-dasharray="2 4"/>
+<rect x="566" y="205" width="19" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/security/config/index.ts
+lines 35 · fan_in 3 · fan_out 3 · age 229d · last touched 229d
+no named feature</title></rect>
+<rect x="588" y="205" width="32" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/security/config/pattern-categories.ts
+lines 148 · fan_in 1 · fan_out 1 · age 229d · last touched 229d
+no named feature</title></rect>
+<rect x="623" y="205" width="42" height="16" style="fill:#e8e2d3;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/security/config/tool-policies-config.ts
+lines 301 · fan_in 4 · fan_out 2 · age 229d · last touched 37d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[maintainability] toothpick_wing [decorative]
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="668" y="205" width="29" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>src/security/config/tool-policies.ts
+lines 111 · fan_in 4 · fan_out 1 · age 229d · last touched 37d
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<rect x="700" y="205" width="35" height="16" style="fill:#e8e2d3;stroke:#8a4b00;stroke-width:2"><title>src/security/config/tool-policy-validation.ts
+lines 190 · fan_in 1 · fan_out 1 · age 227d · last touched 227d
+[maintainability] hub (position: hub)
+[onboarding] corridor (position: high-centrality, high-fan-out junction)</title></rect>
+<rect x="738" y="205" width="36" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>src/security/layers/builtin-validators.ts
+lines 202 · fan_in 1 · fan_out 3 · age 227d · last touched 130d
+[maintainability] lit_room</title></rect>
+<rect x="777" y="205" width="26" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/security/layers/layer-utils/semantics/glob-utils.ts
+lines 81 · fan_in 3 · fan_out 0 · age 227d · last touched 226d
+[maintainability] scaffolding</title></rect>
+<rect x="806" y="205" width="27" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/security/layers/layer-utils/semantics/semantic-policies-types.ts
+lines 92 · fan_in 2 · fan_out 1 · age 227d · last touched 227d
+no named feature</title></rect>
+<rect x="566" y="186" width="34" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/security/layers/layer-utils/semantics/semantic-resource-validation.ts
+lines 174 · fan_in 1 · fan_out 3 · age 227d · last touched 227d
+no named feature</title></rect>
+<rect x="603" y="186" width="23" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>src/security/layers/layer5-contextual-types.ts
+lines 62 · fan_in 1 · fan_out 2 · age 224d · last touched 224d
+[maintainability] lit_room</title></rect>
+<rect x="629" y="186" width="36" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>src/security/presets.ts
+lines 202 · fan_in 4 · fan_out 2 · age 229d · last touched 37d
+[maintainability] lit_room</title></rect>
+<rect x="668" y="186" width="33" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>src/security/transport/error-rate-limiter.ts
+lines 157 · fan_in 2 · fan_out 1 · age 224d · last touched 224d
+[maintainability] lit_room</title></rect>
+<rect x="704" y="186" width="23" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/security/transport/http-body-parser.ts
+lines 61 · fan_in 1 · fan_out 0 · age 225d · last touched 225d
+no named feature</title></rect>
+<rect x="730" y="186" width="21" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/security/transport/http-server-types.ts
+lines 43 · fan_in 2 · fan_out 3 · age 225d · last touched 225d
+no named feature</title></rect>
+<rect x="754" y="186" width="43" height="16" style="fill:url(#scaffold);stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/security/transport/http-server.ts
+lines 312 · fan_in 2 · fan_out 6 · age 251d · last touched 224d
+[maintainability] crack [decorative]
+[maintainability] lit_room
+[maintainability] scaffolding</title></rect>
+<rect x="800" y="186" width="31" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>src/security/transport/http-transport-manager.ts
+lines 141 · fan_in 1 · fan_out 1 · age 225d · last touched 224d
+[maintainability] lit_room</title></rect>
+<rect x="834" y="186" width="27" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/security/transport/transport-validator.ts
+lines 96 · fan_in 1 · fan_out 6 · age 227d · last touched 225d
+no named feature</title></rect>
+<rect x="566" y="167" width="35" height="16" style="fill:#e8e2d3;stroke:#8c8577;stroke-width:1"><title>src/security/utils/log-formatters.ts
+lines 188 · fan_in 1 · fan_out 1 · age 227d · last touched 227d
+no named feature</title></rect>
+<rect x="604" y="167" width="25" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2;stroke-dasharray:4 3"><title>src/security/utils/pipeline-factory.ts
+lines 78 · fan_in 1 · fan_out 11 · age 226d · last touched 37d
+[maintainability] crack [decorative]
+[maintainability] lit_room</title></rect>
+<rect x="632" y="167" width="24" height="16" style="fill:url(#scaffold);stroke:#8c8577;stroke-width:1"><title>src/security/utils/response-validator.ts
+lines 68 · fan_in 2 · fan_out 2 · age 248d · last touched 248d
+[maintainability] scaffolding</title></rect>
+<rect x="659" y="167" width="26" height="16" style="fill:#e8e2d3;stroke:#f2c14e;stroke-width:2"><title>src/security/utils/security-logger-types.ts
+lines 88 · fan_in 3 · fan_out 0 · age 227d · last touched 63d
+[maintainability] lit_room</title></rect>
+<rect x="688" y="167" width="33" height="16" style="fill:#e8e2d3;stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3"><title>src/types/server.ts
+lines 164 · fan_in 6 · fan_out 6 · age 248d · last touched 37d
+[maintainability] crack [decorative]
+[maintainability] foundation (position: high-load hub)
+[maintainability] hub (position: hub)
+[maintainability] lit_room
+[maintainability] toothpick_wing [decorative]
+[onboarding] corridor (position: high-centrality, high-fan-out junction)
+[onboarding] foundation (position: high-load hub)</title></rect>
+<line x1="562" y1="223" x2="864" y2="223" stroke="#bbb" stroke-dasharray="2 4"/>
+</g>
+<g class="overlay" id="overlay-0" data-profile="onboarding">
+<polygon points="272,377 279,377 272,384" fill="#1f6f8b"/>
+<polygon points="235,339 242,339 235,346" fill="#1f6f8b"/>
+<polygon points="504,339 511,339 504,346" fill="#1f6f8b"/>
+<polygon points="132,320 139,320 132,327" fill="#1f6f8b"/>
+<polygon points="274,320 281,320 274,327" fill="#1f6f8b"/>
+<polygon points="301,320 308,320 301,327" fill="#1f6f8b"/>
+<polygon points="327,320 334,320 327,327" fill="#1f6f8b"/>
+<polygon points="355,320 362,320 355,327" fill="#1f6f8b"/>
+<polygon points="384,320 391,320 384,327" fill="#1f6f8b"/>
+<polygon points="413,320 420,320 413,327" fill="#1f6f8b"/>
+<polygon points="478,320 485,320 478,327" fill="#1f6f8b"/>
+<polygon points="287,282 294,282 287,289" fill="#1f6f8b"/>
+<polygon points="405,282 412,282 405,289" fill="#1f6f8b"/>
+<polygon points="433,186 440,186 433,193" fill="#1f6f8b"/>
+<polygon points="603,549 610,549 603,556" fill="#1f6f8b"/>
+<polygon points="770,549 777,549 770,556" fill="#1f6f8b"/>
+<polygon points="815,549 822,549 815,556" fill="#1f6f8b"/>
+<polygon points="615,492 622,492 615,499" fill="#1f6f8b"/>
+<polygon points="659,492 666,492 659,499" fill="#1f6f8b"/>
+<polygon points="765,492 772,492 765,499" fill="#1f6f8b"/>
+<polygon points="809,492 816,492 809,499" fill="#1f6f8b"/>
+<polygon points="595,473 602,473 595,480" fill="#1f6f8b"/>
+<polygon points="675,473 682,473 675,480" fill="#1f6f8b"/>
+<polygon points="709,473 716,473 709,480" fill="#1f6f8b"/>
+<polygon points="738,473 745,473 738,480" fill="#1f6f8b"/>
+<polygon points="808,473 815,473 808,480" fill="#1f6f8b"/>
+<polygon points="623,205 630,205 623,212" fill="#1f6f8b"/>
+<polygon points="668,205 675,205 668,212" fill="#1f6f8b"/>
+<polygon points="700,205 707,205 700,212" fill="#1f6f8b"/>
+<polygon points="688,167 695,167 688,174" fill="#1f6f8b"/>
+</g>
+<text x="24" y="611" fill="#333">diagnostic: dark_room×100, flooded_basement×97, foundation×21, hub×22, lit_room×34, scaffolding×53   ·   decorative: 25 instance(s) of crack, toothpick_wing   ·   onboarding: corridor×18, foundation×21</text>
+</svg>

@@ -163,3 +163,91 @@ def test_strata_are_five_age_bands_oldest_at_zero(sub):
     )
     # the youngest file (lowest age percentile) sits in the top band; the oldest in band 0
     assert bands[oldest] == 4 or bands["src/f0.js"] == 0
+
+
+# --- overlays, geometry, diff (D-017) --------------------------------------------------------------
+
+ONBOARDING = RULESET.parent / "onboarding.toml"
+
+
+def _all_asserted(*rulesets):
+    return _validation(**{s: "asserted" for rs in rulesets for f in rs.features for s in f.signals})
+
+
+def test_overlay_is_layered_not_merged(sub):
+    base, ov = load_ruleset(RULESET), load_ruleset(ONBOARDING)
+    v = _all_asserted(base, ov)
+    alone = map_skeleton(sub, v, base)
+    with_ov = map_skeleton(sub, v, base, (ov,))
+    assert alone["strata"] == with_ov["strata"]
+    assert [(f["feature"], f["node"]) for f in alone["features"]] == [
+        (f["feature"], f["node"]) for f in with_ov["features"]
+    ]
+    assert with_ov["overlays"][0]["profile"] == "onboarding"
+    assert with_ov["summary"]["overlay_profiles"] == ["onboarding"]
+    assert all(f["profile"] == "onboarding" for f in with_ov["overlays"][0]["features"])
+    assert "fan_out" in with_ov["gate"]["signals"]
+
+
+def test_duplicate_profile_refused(sub):
+    base = load_ruleset(RULESET)
+    with pytest.raises(RulesetError, match="duplicate profile"):
+        map_skeleton(sub, _all_asserted(base), base, (base,))
+
+
+def test_overlay_gate_applies_to_overlay_signals(sub):
+    base, ov = load_ruleset(RULESET), load_ruleset(ONBOARDING)
+    with pytest.raises(GateError, match="untested"):
+        map_skeleton(sub, _all_asserted(base), base, (ov,))
+
+
+def test_layer_geometry_puts_leaves_at_the_bottom():
+    from repo_substrate.mapper.geometry import dependency_layers
+
+    nodes = ["a", "b", "c", "d", "e", "f"]
+    edges = [
+        {"from": "a", "to": "b"},
+        {"from": "b", "to": "c"},
+        {"from": "d", "to": "c"},
+        {"from": "e", "to": "f"},
+        {"from": "f", "to": "e"},
+    ]
+    layers = dependency_layers(nodes, edges)
+    assert layers["c"] == 0 and layers["b"] == 1 and layers["a"] == 2 and layers["d"] == 1
+    assert layers["e"] == layers["f"] == 0
+
+
+def test_layer_geometry_on_substrate(sub):
+    base = load_ruleset(RULESET)
+    sk = map_skeleton(sub, _all_asserted(base), base, (), "layer")
+    assert sk["geometry"]["name"] == "layer" and sk["strata"]["geometry"] == "layer"
+    assert set(sk["strata"]["by_node"].values()) <= {0, 1, 2, 3, 4}
+    assert all(isinstance(v, int) for v in sk["strata"]["raw_by_node"].values())
+
+
+def test_skeleton_diff_measures_churn_on_common_nodes(sub):
+    from repo_substrate.mapper.diff import skeleton_diff
+
+    base = load_ruleset(RULESET)
+    a = map_skeleton(sub, _all_asserted(base), base)
+    d = skeleton_diff(a, a)
+    assert d["feature_churn"] == 0.0 and d["strata_moved"] == [] and d["born"] == 0
+    b = json.loads(json.dumps(a))
+    victim = next(f for f in b["features"] if f["diagnostic"])
+    b["features"] = [f for f in b["features"] if f is not victim]
+    d2 = skeleton_diff(a, b)
+    key = f"{victim['profile']}/{victim['feature']}"
+    assert d2["per_feature"][key]["removed"] == [victim["node"]]
+    assert d2["feature_churn"] > 0
+
+
+def test_html_wrapper_has_overlay_toggles(sub):
+    from repo_substrate.cutaway import render_html
+
+    base, ov = load_ruleset(RULESET), load_ruleset(ONBOARDING)
+    page = render_html(map_skeleton(sub, _all_asserted(base, ov), base, (ov,)), sub)
+    assert (
+        'data-target="overlay-0"' in page
+        and 'id="overlay-0"' in page
+        and "onboarding overlay" in page
+    )

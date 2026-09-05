@@ -46,6 +46,19 @@ def main(argv: list[str] | None = None) -> int:
     mp.add_argument("substrate", type=Path)
     mp.add_argument("--validation", type=Path, required=True)
     mp.add_argument("--ruleset", type=Path, required=True)
+    mp.add_argument(
+        "--overlay",
+        type=Path,
+        action="append",
+        default=[],
+        help="additional profile(s), layered as overlays, never merged",
+    )
+    mp.add_argument(
+        "--geometry",
+        choices=("age", "layer"),
+        default="age",
+        help="strata: age bands or dependency layers",
+    )
     mp.add_argument("-o", "--output", type=Path, required=True)
     rd = sub.add_parser(
         "render", help="C6: deterministic 2D cutaway SVG from skeleton.json + substrate.json"
@@ -53,15 +66,57 @@ def main(argv: list[str] | None = None) -> int:
     rd.add_argument("skeleton", type=Path)
     rd.add_argument("substrate", type=Path)
     rd.add_argument("-o", "--output", type=Path, required=True)
+    rd.add_argument(
+        "--html",
+        type=Path,
+        default=None,
+        help="also write a standalone HTML page with overlay toggles",
+    )
+    sd = sub.add_parser(
+        "skeleton-diff", help="feature churn between two skeletons of the same repo (mapper §7 Q3)"
+    )
+    sd.add_argument("before", type=Path)
+    sd.add_argument("after", type=Path)
+    sd.add_argument(
+        "--renames",
+        type=Path,
+        default=None,
+        help="substrate.json of the AFTER revision, for its renames map",
+    )
+    sd.add_argument("-o", "--output", type=Path, default=None)
     args = ap.parse_args(argv)
 
+    if args.cmd == "skeleton-diff":
+        from .mapper.diff import skeleton_diff
+
+        a = json.loads(args.before.read_text(encoding="utf-8"))
+        b = json.loads(args.after.read_text(encoding="utf-8"))
+        ren = (
+            json.loads(args.renames.read_text(encoding="utf-8")).get("renames", {})
+            if args.renames
+            else {}
+        )
+        d = skeleton_diff(a, b, ren)
+        text = json.dumps(d, indent=1, sort_keys=True, ensure_ascii=False, allow_nan=False) + "\n"
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(text, encoding="utf-8")
+        else:
+            sys.stdout.write(text)
+        print(
+            f"common={d['common_nodes']} born={d['born']} deleted={d['deleted']} "
+            f"feature_churn={d['feature_churn']:.3f} strata_moved={len(d['strata_moved'])} ({d['strata_moved_frac']:.3f})",
+            file=sys.stderr,
+        )
+        return 0
     if args.cmd == "map":
         from .mapper import load_ruleset, map_skeleton
 
         sub_doc = json.loads(args.substrate.read_text(encoding="utf-8"))
         val_doc = json.loads(args.validation.read_text(encoding="utf-8"))
         rs = load_ruleset(args.ruleset)
-        skel = map_skeleton(sub_doc, val_doc, rs)
+        ovs = tuple(load_ruleset(p) for p in args.overlay)
+        skel = map_skeleton(sub_doc, val_doc, rs, ovs, args.geometry)
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(
             json.dumps(skel, indent=1, sort_keys=True, ensure_ascii=False, allow_nan=False) + "\n",
@@ -75,12 +130,15 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 0
     if args.cmd == "render":
-        from .cutaway import render_cutaway
+        from .cutaway import render_cutaway, render_html
 
         skel = json.loads(args.skeleton.read_text(encoding="utf-8"))
         sub_doc = json.loads(args.substrate.read_text(encoding="utf-8"))
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(render_cutaway(skel, sub_doc), encoding="utf-8")
+        if args.html:
+            args.html.parent.mkdir(parents=True, exist_ok=True)
+            args.html.write_text(render_html(skel, sub_doc), encoding="utf-8")
         print(f"wrote {args.output}", file=sys.stderr)
         return 0
 

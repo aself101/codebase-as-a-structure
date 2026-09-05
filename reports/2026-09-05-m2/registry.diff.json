@@ -1,0 +1,93 @@
+{
+ "after": {
+  "geometry": "age",
+  "repo": {
+   "head_sha": "f7414cc7bbec62ba80068af4b045667064d1d59e",
+   "name": "uluops-registry-api"
+  },
+  "skeleton_hash": "fe5b7f5289970516e0a799e64752023feabbdfb94427761932bb3b9eefccc4ce"
+ },
+ "before": {
+  "geometry": "age",
+  "repo": {
+   "head_sha": "2ff7b5b7067efb387d211ab950e266616001e70b",
+   "name": "uluops-registry-api"
+  },
+  "skeleton_hash": "440c06d0aa7f9c47851e28390957ed19acce5610b4e7f7b5c5106a31b75edca5"
+ },
+ "born": 0,
+ "common_nodes": 267,
+ "deleted": 0,
+ "feature_churn": 0.012345679012345678,
+ "per_feature": {
+  "maintainability/dark_room": {
+   "added": [
+    "src/db/migrations/013_relax_delete_constraints.ts"
+   ],
+   "after": 28,
+   "before": 27,
+   "jaccard": 0.9642857142857143,
+   "removed": []
+  },
+  "maintainability/flooded_basement": {
+   "added": [
+    "src/db/migrations/20260119222852_alter_hash_column_size.ts",
+    "src/routes/index.ts"
+   ],
+   "after": 28,
+   "before": 27,
+   "jaccard": 0.896551724137931,
+   "removed": [
+    "src/schemas/cdl/index.ts"
+   ]
+  },
+  "maintainability/foundation": {
+   "added": [],
+   "after": 27,
+   "before": 27,
+   "jaccard": 1.0,
+   "removed": []
+  },
+  "maintainability/hub": {
+   "added": [],
+   "after": 27,
+   "before": 27,
+   "jaccard": 1.0,
+   "removed": []
+  },
+  "maintainability/lit_room": {
+   "added": [],
+   "after": 40,
+   "before": 40,
+   "jaccard": 1.0,
+   "removed": []
+  },
+  "maintainability/scaffolding": {
+   "added": [],
+   "after": 133,
+   "before": 133,
+   "jaccard": 1.0,
+   "removed": []
+  },
+  "onboarding/corridor": {
+   "added": [],
+   "after": 13,
+   "before": 13,
+   "jaccard": 1.0,
+   "removed": []
+  },
+  "onboarding/foundation": {
+   "added": [],
+   "after": 27,
+   "before": 27,
+   "jaccard": 1.0,
+   "removed": []
+  }
+ },
+ "strata_moved": [
+  "src/schemas/cdl/index.ts",
+  "src/schemas/cdl/types.ts",
+  "src/services/definition-renderer/index.ts"
+ ],
+ "strata_moved_frac": 0.011235955056179775
+}

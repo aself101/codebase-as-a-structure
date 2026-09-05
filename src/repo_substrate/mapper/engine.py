@@ -21,7 +21,7 @@ from datetime import UTC, datetime
 from typing import Any
 
 from .. import __version__
-from ..derived import ecdf_percentiles
+from .geometry import GEOMETRIES, compute_strata
 from .ruleset import Feature, Ruleset, RulesetError, Term
 
 SKELETON_SCHEMA = "0.1"
@@ -107,16 +107,12 @@ def _cmp(v: float, op: str, thr: float) -> bool:
     }[op]
 
 
-def map_skeleton(
-    substrate: dict[str, Any], validation: dict[str, Any], ruleset: Ruleset
-) -> dict[str, Any]:
-    statuses = check_gate(ruleset, validation)
-    population = [
-        n
-        for n in substrate["nodes"]
-        if (n.get("derived") or {}).get("indices") is not None and not n["metrics"].get("is_test")
-    ]
-    graph_degraded = bool(substrate["summary"].get("graph_degraded"))
+def _apply(
+    ruleset: Ruleset,
+    population: list[dict[str, Any]],
+    statuses: dict[str, str],
+    graph_degraded: bool,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     features_out: list[dict[str, Any]] = []
     counts: dict[str, int] = {}
     decorative_features: set[str] = set()
@@ -149,6 +145,7 @@ def map_skeleton(
             features_out.append(
                 {
                     "feature": f.name,
+                    "profile": ruleset.profile,
                     "node": n["id"],
                     "predicate": f.predicate,
                     "thresholds": resolved,
@@ -166,14 +163,63 @@ def map_skeleton(
             counts[f.name] = counts.get(f.name, 0) + 1
             if f.decorative:
                 decorative_features.add(f.name)
-    # strata: the vertical dimension of the cutaway, profile-independent (§6): percentile of
-    # the strata signal over the population, bucketed into five bands (0 = oldest/bottom).
-    strata_vals = {n["id"]: _node_value(n, ruleset.strata_signal) for n in population}
-    strata_pct = ecdf_percentiles(strata_vals)
-    strata = {
-        nid: (min(4, int((1.0 - (p or 0.0)) * 5)) if p is not None else 2)
-        for nid, p in strata_pct.items()
+    summary = {
+        "feature_counts": dict(sorted(counts.items())),
+        "diagnostic_count": sum(1 for x in features_out if x["diagnostic"]),
+        "decorative_count": sum(1 for x in features_out if x["decorative"]),
+        "degraded_count": sum(1 for x in features_out if x["degraded"]),
+        "decorative_features": sorted(decorative_features),
     }
+    return features_out, summary
+
+
+def map_skeleton(
+    substrate: dict[str, Any],
+    validation: dict[str, Any],
+    ruleset: Ruleset,
+    overlays: tuple[Ruleset, ...] = (),
+    geometry: str = "age",
+) -> dict[str, Any]:
+    """Base profile → `features`; further profiles → `overlays[]`, each gated on its own.
+    Geometry (strata, wings) comes from the substrate and the `geometry` choice, never from
+    a profile (mapper §6: layering, never unification)."""
+    if geometry not in GEOMETRIES:
+        raise RulesetError(f"unknown geometry {geometry!r}")
+    profiles = [ruleset.profile] + [o.profile for o in overlays]
+    if len(set(profiles)) != len(profiles):
+        raise RulesetError(f"duplicate profile among base and overlays: {profiles}")
+    statuses = check_gate(ruleset, validation)
+    for o in overlays:
+        statuses.update(check_gate(o, validation))
+    population = [
+        n
+        for n in substrate["nodes"]
+        if (n.get("derived") or {}).get("indices") is not None and not n["metrics"].get("is_test")
+    ]
+    graph_degraded = bool(substrate["summary"].get("graph_degraded"))
+    features_out, summary = _apply(ruleset, population, statuses, graph_degraded)
+    overlay_docs = []
+    for o in overlays:
+        of, osum = _apply(o, population, statuses, graph_degraded)
+        overlay_docs.append(
+            {
+                "profile": o.profile,
+                "ruleset": {"name": o.name, "version": o.version, "source": o.source},
+                "features": of,
+                "summary": osum,
+            }
+        )
+    strata, strata_raw = compute_strata(population, substrate, geometry)
+    # co-location (mapper §6): nodes flagged by more than one profile are shown, never averaged
+    by_node_profiles: dict[str, set[str]] = {}
+    for x in features_out:
+        if x["diagnostic"]:
+            by_node_profiles.setdefault(x["node"], set()).add(x["profile"])
+    for od in overlay_docs:
+        for x in od["features"]:
+            if x["diagnostic"]:
+                by_node_profiles.setdefault(x["node"], set()).add(x["profile"])
+    co_located = sorted(n for n, ps in by_node_profiles.items() if len(ps) > 1)
     doc = {
         "schema_version": SKELETON_SCHEMA,
         "mapper_version": __version__,
@@ -186,20 +232,21 @@ def map_skeleton(
         "repo": {"name": substrate["repo"]["name"], "head_sha": substrate["repo"]["head_sha"]},
         "archetype": None,  # mapper §7 Q1: unresolved in v0 — and therefore not claimed
         "gate": {"signals": dict(sorted(statuses.items())), "graph_degraded": graph_degraded},
+        "geometry": {"name": geometry, "wing_depth": ruleset.wing_depth},
         "strata": {
-            "signal": ruleset.strata_signal,
+            "geometry": geometry,
             "bands": 5,
             "by_node": dict(sorted(strata.items())),
+            "raw_by_node": dict(sorted(strata_raw.items())),
         },
         "features": features_out,
-        "overlays": [],
+        "overlays": overlay_docs,
+        "co_located_nodes": co_located,
         "summary": {
             "population": len(population),
-            "feature_counts": dict(sorted(counts.items())),
-            "diagnostic_count": sum(1 for x in features_out if x["diagnostic"]),
-            "decorative_count": sum(1 for x in features_out if x["decorative"]),
-            "degraded_count": sum(1 for x in features_out if x["degraded"]),
-            "decorative_features": sorted(decorative_features),
+            **summary,
+            "overlay_profiles": [o.profile for o in overlays],
+            "co_located_count": len(co_located),
         },
     }
     payload = json.dumps({k: v for k, v in doc.items() if k != "mapped_at"}, sort_keys=True)
