@@ -1,0 +1,10 @@
+# Tuned index weights — frozen per DECISIONS.md D-009 before the test set is run.
+# tuning repos: uluops-registry-api, eslint; grid step 0.1
+# objective: min over tuning repos of (ROC-AUC − best baseline ROC-AUC); tie: min PR-AUC ratio
+
+[weights]
+load_index = { "fan_in_nonzero" = 0.5, "centrality" = 0.3, "inv_fan_out" = 0.1, "size_loc" = 0.1 }
+change_pressure_index = { "churn_lines" = 0.5, "commit_count" = 0.2, "recency" = 0.3 }
+bug_pressure_index = { "commit_count" = 0.5, "recency" = 0.2, "revert_count" = 0.3 }
+neglect_index = { "age_days" = 0.4, "last_touched_days" = 0.4, "inv_recent_commit_share" = 0.2 }
+complexity_proxy_index = { "size_loc" = 0.4, "nesting_proxy" = 0.4, "fan_out" = 0.2 }

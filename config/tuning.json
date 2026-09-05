@@ -1,0 +1,287 @@
+{
+ "grid_step": 0.1,
+ "indices": {
+  "bug_pressure_index": {
+   "chosen": {
+    "commit_count": 0.5,
+    "recency": 0.2,
+    "revert_count": 0.3
+   },
+   "chosen_objective": {
+    "min_delta_roc": 0.01397048960429248,
+    "min_pr_ratio": 1.0021328586068063
+   },
+   "chosen_per_repo": [
+    {
+     "delta_roc": 0.025075478027507536,
+     "name": "uluops-registry-api",
+     "pr_ratio": 1.0021328586068063
+    },
+    {
+     "delta_roc": 0.01397048960429248,
+     "name": "eslint",
+     "pr_ratio": 1.0716224408891362
+    }
+   ],
+   "grid_size": 3003,
+   "inputs": [
+    "commit_count",
+    "fix_count",
+    "fix_count_nonzero",
+    "fix_ratio",
+    "recency",
+    "revert_count"
+   ],
+   "spec_placeholder": {
+    "fix_count_nonzero": 0.5,
+    "fix_ratio": 0.3,
+    "revert_count": 0.2
+   },
+   "spec_placeholder_per_repo": [
+    {
+     "delta_roc": -0.04123336687912338,
+     "name": "uluops-registry-api",
+     "pr_ratio": 0.854604634855887
+    },
+    {
+     "delta_roc": -0.11936955063715626,
+     "name": "eslint",
+     "pr_ratio": 0.7519114388688802
+    }
+   ],
+   "top10": [
+    {
+     "min_delta_roc": 0.01397048960429248,
+     "min_pr_ratio": 1.0021328586068063,
+     "weights": {
+      "commit_count": 0.5,
+      "recency": 0.2,
+      "revert_count": 0.3
+     }
+    },
+    {
+     "min_delta_roc": 0.013764811088754825,
+     "min_pr_ratio": 1.0067281301588904,
+     "weights": {
+      "commit_count": 0.3,
+      "recency": 0.1,
+      "revert_count": 0.6
+     }
+    },
+    {
+     "min_delta_roc": 0.013764811088754825,
+     "min_pr_ratio": 0.9978335908151923,
+     "weights": {
+      "commit_count": 0.4,
+      "recency": 0.2,
+      "revert_count": 0.4
+     }
+    },
+    {
+     "min_delta_roc": 0.013729040912139556,
+     "min_pr_ratio": 0.9978335908151923,
+     "weights": {
+      "commit_count": 0.2,
+      "recency": 0.1,
+      "revert_count": 0.7
+     }
+    },
+    {
+     "min_delta_roc": 0.01363961547060144,
+     "min_pr_ratio": 1.0067281301588904,
+     "weights": {
+      "commit_count": 0.6,
+      "recency": 0.2,
+      "revert_count": 0.2
+     }
+    },
+    {
+     "min_delta_roc": 0.013147775542141749,
+     "min_pr_ratio": 0.9974274806919512,
+     "weights": {
+      "commit_count": 0.6,
+      "recency": 0.3,
+      "revert_count": 0.1
+     }
+    },
+    {
+     "min_delta_roc": 0.01311200536552648,
+     "min_pr_ratio": 1.0014306780931646,
+     "weights": {
+      "commit_count": 0.7,
+      "recency": 0.3
+     }
+    },
+    {
+     "min_delta_roc": 0.013103062821372746,
+     "min_pr_ratio": 0.993039833802275,
+     "weights": {
+      "commit_count": 0.3,
+      "recency": 0.2,
+      "revert_count": 0.5
+     }
+    },
+    {
+     "min_delta_roc": 0.013040465012296054,
+     "min_pr_ratio": 1.0077068203574864,
+     "weights": {
+      "commit_count": 0.7,
+      "recency": 0.2,
+      "revert_count": 0.1
+     }
+    },
+    {
+     "min_delta_roc": 0.012962217750950189,
+     "min_pr_ratio": 1.0127548117443328,
+     "weights": {
+      "commit_count": 0.4,
+      "recency": 0.1,
+      "revert_count": 0.5
+     }
+    }
+   ]
+  },
+  "change_pressure_index": {
+   "chosen": {
+    "churn_lines": 0.5,
+    "commit_count": 0.2,
+    "recency": 0.3
+   },
+   "chosen_objective": {
+    "min_delta_roc": 0.030134138162307256,
+    "min_pr_ratio": 0.9971907621214802
+   },
+   "chosen_per_repo": [
+    {
+     "delta_roc": 0.05245722911774575,
+     "name": "uluops-registry-api",
+     "pr_ratio": 0.9971907621214802
+    },
+    {
+     "delta_roc": 0.030134138162307256,
+     "name": "eslint",
+     "pr_ratio": 1.1419815135992508
+    }
+   ],
+   "grid_size": 66,
+   "inputs": [
+    "churn_lines",
+    "commit_count",
+    "recency"
+   ],
+   "spec_placeholder": {
+    "churn_lines": 0.4,
+    "commit_count": 0.3,
+    "recency": 0.3
+   },
+   "spec_placeholder_per_repo": [
+    {
+     "delta_roc": 0.05235938723023592,
+     "name": "uluops-registry-api",
+     "pr_ratio": 1.001013319057139
+    },
+    {
+     "delta_roc": 0.029930695282808006,
+     "name": "eslint",
+     "pr_ratio": 1.1360637424488487
+    }
+   ],
+   "top10": [
+    {
+     "min_delta_roc": 0.030134138162307256,
+     "min_pr_ratio": 0.9971907621214802,
+     "weights": {
+      "churn_lines": 0.5,
+      "commit_count": 0.2,
+      "recency": 0.3
+     }
+    },
+    {
+     "min_delta_roc": 0.029930695282808006,
+     "min_pr_ratio": 1.001013319057139,
+     "weights": {
+      "churn_lines": 0.4,
+      "commit_count": 0.3,
+      "recency": 0.3
+     }
+    },
+    {
+     "min_delta_roc": 0.029414263357925408,
+     "min_pr_ratio": 0.9934892666327769,
+     "weights": {
+      "churn_lines": 0.5,
+      "commit_count": 0.1,
+      "recency": 0.4
+     }
+    },
+    {
+     "min_delta_roc": 0.028875475072658197,
+     "min_pr_ratio": 0.9971105597251606,
+     "weights": {
+      "churn_lines": 0.6,
+      "commit_count": 0.1,
+      "recency": 0.3
+     }
+    },
+    {
+     "min_delta_roc": 0.02872792309412031,
+     "min_pr_ratio": 0.9947785300223372,
+     "weights": {
+      "churn_lines": 0.4,
+      "commit_count": 0.2,
+      "recency": 0.4
+     }
+    },
+    {
+     "min_delta_roc": 0.02834562933154483,
+     "min_pr_ratio": 1.00636758878423,
+     "weights": {
+      "churn_lines": 0.3,
+      "commit_count": 0.4,
+      "recency": 0.3
+     }
+    },
+    {
+     "min_delta_roc": 0.027757657053431695,
+     "min_pr_ratio": 0.9836117146921001,
+     "weights": {
+      "churn_lines": 0.6,
+      "recency": 0.4
+     }
+    },
+    {
+     "min_delta_roc": 0.026684551754974306,
+     "min_pr_ratio": 1.0067985891048952,
+     "weights": {
+      "churn_lines": 0.5,
+      "commit_count": 0.3,
+      "recency": 0.2
+     }
+    },
+    {
+     "min_delta_roc": 0.02661301140174388,
+     "min_pr_ratio": 1.00174456714761,
+     "weights": {
+      "churn_lines": 0.3,
+      "commit_count": 0.3,
+      "recency": 0.4
+     }
+    },
+    {
+     "min_delta_roc": 0.026588419405320862,
+     "min_pr_ratio": 1.0109042431220332,
+     "weights": {
+      "churn_lines": 0.4,
+      "commit_count": 0.4,
+      "recency": 0.2
+     }
+    }
+   ]
+  }
+ },
+ "objective": "min over tuning repos of (ROC-AUC \u2212 best baseline ROC-AUC); tie: min PR-AUC ratio",
+ "tuning_repos": [
+  "uluops-registry-api",
+  "eslint"
+ ]
+}

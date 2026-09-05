@@ -68,9 +68,21 @@ GROUNDING: dict[str, dict[str, Any]] = {
         "heuristic": "filename adjacency; literal name, convention-dependent",
     },
     # G2 instrument-checked (counterparts come from altdeps.py, which shares no code with dependency-cruiser)
-    "fan_in": {"class": "G2", "counterpart": "fan_in_alt"},
-    "fan_out": {"class": "G2", "counterpart": "fan_out_alt"},
-    "test_fan_in": {"class": "G2", "counterpart": "test_fan_in_alt"},
+    "fan_in": {
+        "class": "G2",
+        "counterpart": "fan_in_alt",
+        "adversarial_fixture": "tests/test_instruments.py",
+    },
+    "fan_out": {
+        "class": "G2",
+        "counterpart": "fan_out_alt",
+        "adversarial_fixture": "tests/test_instruments.py",
+    },
+    "test_fan_in": {
+        "class": "G2",
+        "counterpart": "test_fan_in_alt",
+        "adversarial_fixture": "tests/test_instruments.py",
+    },
     # G3 cross-modal
     "age_days": {"class": "G3", "counterpart": "blame_age_median"},
     "neglect_index": {
@@ -196,9 +208,9 @@ class ValidationConfig:
     stability_delta: float = 0.15
     stability_min_n: int = 30  # D-011: untested (insufficient_stability_population) below this
     stability_max_excluded_frac: float = 0.5
-    degenerate_min_distinct: int = (
-        3  # D-011: a signal with fewer distinct values is degenerate, never asserted
-    )
+    # D-011/D-014: a signal whose modal value covers more than this share of the population is
+    # degenerate (a constant is 1.0; a binary flag with a 5% minority class is 0.95 and passes).
+    degenerate_max_modal_share: float = 0.97
     tau_asserted: float = 0.30  # G3 cross-modal floor
     tau_instrument: float = 0.60  # G2 second-instrument floor
     tau_retire: float = (
@@ -251,7 +263,10 @@ class ValidationConfig:
                 0.0 < self.stability_max_excluded_frac <= 0.5,
                 "stability_max_excluded_frac must be in (0, 0.5]",
             ),
-            (self.degenerate_min_distinct >= 3, "degenerate_min_distinct must be >= 3"),
+            (
+                0.5 <= self.degenerate_max_modal_share <= 0.99,
+                "degenerate_max_modal_share must be in [0.5, 0.99]",
+            ),
             (self.tau_asserted >= 0.30, "tau_asserted may not be below the spec default 0.30"),
             (self.tau_instrument >= 0.60, "tau_instrument may not be below the spec default 0.60"),
             (self.tau_retire > self.tau_instrument, "tau_retire must exceed tau_instrument"),

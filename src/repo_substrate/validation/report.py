@@ -33,7 +33,7 @@ def render_holdout_report(doc: dict[str, Any]) -> str:
     )
     out.append(
         f"- asserted: K {vc['stability_perturbation_k']}, **stability eps {vc['stability_eps']} / delta {vc['stability_delta']}**, "
-        f"min compared {vc['stability_min_n']}, max excluded {vc['stability_max_excluded_frac']}, min distinct {vc['degenerate_min_distinct']}, "
+        f"min compared {vc['stability_min_n']}, max excluded {vc['stability_max_excluded_frac']}, max modal share {vc['degenerate_max_modal_share']}, "
         f"τ floors G3 {vc['tau_asserted']} / G2 {vc['tau_instrument']}, retire {vc['tau_retire']}, **m_asserted {vc['m_asserted']}**"
     )
     out.append(
@@ -184,7 +184,16 @@ def render_holdout_report(doc: dict[str, Any]) -> str:
         for n, h in heur:
             out.append(f"- `{n}`: {h}")
         out.append("")
-    nd = [n for n, s in sig.items() if s["kind"] == "descriptive" and s.get("non_discriminating")]
+    nd = [
+        n
+        + (
+            " (fixture-backed: " + s["adversarial_fixture"] + ")"
+            if s.get("adversarial_fixture")
+            else " ⚠ NO FIXTURE"
+        )
+        for n, s in sig.items()
+        if s["kind"] == "descriptive" and s.get("non_discriminating")
+    ]
     out.append(
         f"**Non-discriminating pairs (min lower-CI τ ≥ {doc['validation_config']['tau_retire']} on every repo — cannot fail, so not a falsifier; adversarial fixture required):** "
         + (", ".join(f"`{n}`" for n in nd) if nd else "none")

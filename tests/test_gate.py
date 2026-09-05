@@ -196,6 +196,7 @@ def _asserted(name, stable=True, corroborated=True, degenerate=False) -> RepoAss
             "p95_abs_delta": 0.0,
             "n": 80,
             "distinct_values": 2 if degenerate else 40,
+            "modal_share": 0.99 if degenerate else 0.3,
         }
         if g["class"] in ("G2", "G3"):
             a.corroboration[sig] = {

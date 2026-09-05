@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import math
 import re
+from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
 from statistics import median
@@ -98,14 +99,15 @@ def run_stability(
     out: dict[str, dict[str, Any]] = {}
     for sig in GROUNDING:
         deltas = []
-        head_vals: set[float] = set()
+        head_vals: list[float] = []
         for p in common:
             a = _stability_value(head_pop[p], sig)
             b = _stability_value(pert_pop[p], sig)
             if a is None or b is None:
                 continue
-            head_vals.add(float(a))
+            head_vals.append(float(a))
             deltas.append(abs(float(a) - float(b)))
+        modal_share = (max(Counter(head_vals).values()) / len(head_vals)) if head_vals else 1.0
         base = {
             "k": k,
             "eps": vcfg.stability_eps,
@@ -113,7 +115,8 @@ def run_stability(
             "n": len(deltas),
             "n_excluded_touched": n_excluded,
             "excluded_frac": excluded_frac,
-            "distinct_values": len(head_vals),
+            "distinct_values": len(set(head_vals)),
+            "modal_share": modal_share,
         }
         if not deltas or not population_ok:
             out[sig] = {
@@ -125,9 +128,11 @@ def run_stability(
                 "reason": "insufficient_stability_population",
             }
             continue
-        # D-011 degeneracy: a near-constant signal passes any stability budget trivially (Popper's
-        # constant objection). It is not certified by stability; it is degenerate.
-        if len(head_vals) < vcfg.degenerate_min_distinct:
+        # D-011/D-014 degeneracy: a near-constant signal passes any stability budget trivially
+        # (Popper's constant objection). Measured as the share of the population sitting on the
+        # modal value, so a legitimately binary signal with a real minority class is not degenerate
+        # while a constant (share 1.0) or a nearly-constant one is.
+        if modal_share > vcfg.degenerate_max_modal_share:
             out[sig] = {
                 **base,
                 "median_abs_delta": 0.0,

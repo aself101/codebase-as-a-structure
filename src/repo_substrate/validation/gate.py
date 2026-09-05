@@ -182,6 +182,10 @@ def descriptive_verdict(
         "instrument": g.get("instrument"),
         "heuristic": g.get("heuristic"),
         "non_discriminating": non_discriminating if g["class"] in ("G2", "G3") else None,
+        # D-014: a pair that cannot fail on the reference set still counts if a committed adversarial
+        # fixture proves it can fail on constructed input; without one it would not.
+        "adversarial_fixture": g.get("adversarial_fixture"),
+        "retirement_backed": (bool(g.get("adversarial_fixture")) if non_discriminating else None),
         "grounding": {"per_repo": per_repo, "repos_passed": passes},
     }
     if reason:
