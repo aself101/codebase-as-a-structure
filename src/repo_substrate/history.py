@@ -195,9 +195,15 @@ class PydrillerHistoryMiner:
                             files[nc] = moved
                 touched.append((resolve(raw_path), mf.added_lines or 0, mf.deleted_lines or 0))
             rec = CommitRecord(
-                sha=commit.hash, ts=commit.author_date, author=author, subject=subject,
-                type=ctype, matched_rule=rule, nodes_touched=[t[0] for t in touched],
-                added=sum(t[1] for t in touched), deleted=sum(t[2] for t in touched),
+                sha=commit.hash,
+                ts=commit.author_date,
+                author=author,
+                subject=subject,
+                type=ctype,
+                matched_rule=rule,
+                nodes_touched=[t[0] for t in touched],
+                added=sum(t[1] for t in touched),
+                deleted=sum(t[2] for t in touched),
                 is_merge=commit.merge,
             )
             raw.append((commit.author_date, commit.hash, rec, touched))
@@ -208,8 +214,12 @@ class PydrillerHistoryMiner:
             for canon, added, deleted in touched:
                 fh = files.get(canon)
                 if fh is None:
-                    fh = FileHistory(path=canon, introduced_idx=-1,
-                                     first_seen=commit.author_date, last_seen=commit.author_date)
+                    fh = FileHistory(
+                        path=canon,
+                        introduced_idx=-1,
+                        first_seen=commit.author_date,
+                        last_seen=commit.author_date,
+                    )
                     files[canon] = fh
                 fh.commit_count += 1
                 fh.churn_added += added
@@ -244,7 +254,9 @@ class PydrillerHistoryMiner:
 # --- §5 cochange_degree ----------------------------------------------------------
 
 
-def cochange_degree(timeline: list[CommitRecord], cochange_min: int, max_files: int) -> dict[str, int]:
+def cochange_degree(
+    timeline: list[CommitRecord], cochange_min: int, max_files: int
+) -> dict[str, int]:
     """Distinct other files co-occurring with each file in ≥ cochange_min non-merge
     commits touching ≤ max_files files. Reads only nodes_touched — no edges, no timestamps —
     which is what makes it a valid cross-modal counterpart for import topology (validation §2.4.2)."""
@@ -275,18 +287,24 @@ class BlameFailure(RuntimeError):
     'no blame data' (an empty file). Carried as a value so the thread pool can finish."""
 
 
-def _blame_one(repo: Path, rev: str, path: str, as_of_epoch: int, timeout: int = 300) -> tuple[str, float | None | BlameFailure]:
+def _blame_one(
+    repo: Path, rev: str, path: str, as_of_epoch: int, timeout: int = 300
+) -> tuple[str, float | None | BlameFailure]:
     # -w: whitespace-insensitive. No -M/-C: cheaper, deterministic, and the metric is
     # "age of surviving text in this file", which is what we want (§5).
     try:
         proc = subprocess.run(
             ["git", "-C", str(repo), "blame", "-w", "--line-porcelain", rev, "--", path],
-            capture_output=True, check=False, timeout=timeout,
+            capture_output=True,
+            check=False,
+            timeout=timeout,
         )
     except subprocess.TimeoutExpired:
         return path, BlameFailure(f"git blame timed out after {timeout}s: {path}")
     if proc.returncode != 0:
-        return path, BlameFailure(f"git blame exit {proc.returncode}: {path}: {proc.stderr.decode('utf-8', 'replace')[-200:]}")
+        return path, BlameFailure(
+            f"git blame exit {proc.returncode}: {path}: {proc.stderr.decode('utf-8', 'replace')[-200:]}"
+        )
     out = proc.stdout
     # --line-porcelain repeats the header per line; the content line follows a tab.
     # Non-blank filter: pair each author-time with its content line.
@@ -298,7 +316,9 @@ def _blame_one(repo: Path, rev: str, path: str, as_of_epoch: int, timeout: int =
             try:
                 current_time = int(ln[12:])
             except ValueError:
-                return path, BlameFailure(f"unparseable author-time in blame porcelain: {path}: {ln[:40]!r}")
+                return path, BlameFailure(
+                    f"unparseable author-time in blame porcelain: {path}: {ln[:40]!r}"
+                )
         elif ln.startswith(b"\t"):
             if current_time is not None and ln[1:].strip():
                 ages.append((as_of_epoch - current_time) / 86400.0)
@@ -308,8 +328,9 @@ def _blame_one(repo: Path, rev: str, path: str, as_of_epoch: int, timeout: int =
     return path, float(median(ages))
 
 
-def blame_age_median(repo: Path, rev: str, paths: list[str], as_of: datetime, workers: int = 8
-                     ) -> tuple[dict[str, float | None], list[str]]:
+def blame_age_median(
+    repo: Path, rev: str, paths: list[str], as_of: datetime, workers: int = 8
+) -> tuple[dict[str, float | None], list[str]]:
     """Returns (path -> median age or None for an empty file, [paths where blame FAILED]).
     Failures are reported separately so the assembler can count them; a broken instrument
     must not read as an absent measurement (2026-09-04 audit)."""

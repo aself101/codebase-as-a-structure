@@ -26,8 +26,13 @@ def _clean(v: Any) -> Any:
     return v
 
 
-def predictive_verdict(sig: str, holdouts: list[RepoHoldout], roles: dict[str, str], vcfg: ValidationConfig,
-                       asserted: list[RepoAsserted] | None = None) -> dict[str, Any]:
+def predictive_verdict(
+    sig: str,
+    holdouts: list[RepoHoldout],
+    roles: dict[str, str],
+    vcfg: ValidationConfig,
+    asserted: list[RepoAsserted] | None = None,
+) -> dict[str, Any]:
     """D-009: only repos with role == "test" count toward `validated`. Tuning repos are
     scored and reported (in-sample) but cannot confer or block the verdict."""
     per_repo = []
@@ -36,16 +41,36 @@ def predictive_verdict(sig: str, holdouts: list[RepoHoldout], roles: dict[str, s
     recog_by_repo = {a.name: (a.recognition.get(sig), a.recognition_ref) for a in (asserted or [])}
     for h in holdouts:
         role = roles.get(h.name, "test")
-        entry: dict[str, Any] = {"name": h.name, "role": role, "split_sha": h.split_sha, "coverage": h.coverage,
-                                 "n_eligible": h.n_eligible, "holdout_positives": h.n_positives,
-                                 "base_rate": h.base_rate, "degenerate": h.degenerate}
+        entry: dict[str, Any] = {
+            "name": h.name,
+            "role": role,
+            "split_sha": h.split_sha,
+            "coverage": h.coverage,
+            "n_eligible": h.n_eligible,
+            "holdout_positives": h.n_positives,
+            "base_rate": h.base_rate,
+            "degenerate": h.degenerate,
+        }
         rec, ref = recog_by_repo.get(h.name, (None, None))
         if rec:
             entry["recognition"] = {**rec, "ref": ref}
         m = h.signals.get(sig)
         if m is not None:
-            entry.update({k: m[k] for k in ("roc_auc", "pr_auc", "precision_at_k", "recall_at_k", "passed",
-                                            "failed_clauses", "best_baseline", "tau_vs_best_baseline")})
+            entry.update(
+                {
+                    k: m[k]
+                    for k in (
+                        "roc_auc",
+                        "pr_auc",
+                        "precision_at_k",
+                        "recall_at_k",
+                        "passed",
+                        "failed_clauses",
+                        "best_baseline",
+                        "tau_vs_best_baseline",
+                    )
+                }
+            )
             entry["baselines"] = h.baselines
         if role == "test" and h.degenerate is None and m is not None:
             ran += 1
@@ -60,15 +85,28 @@ def predictive_verdict(sig: str, holdouts: list[RepoHoldout], roles: dict[str, s
     elif passes >= vcfg.min_repos:
         status, reason = "validated", None
     else:
-        status, reason = "unvalidated", f"passed_on_{passes}_of_{ran}_test_repos_need_{vcfg.min_repos}"
-    out: dict[str, Any] = {"status": status, "kind": "predictive",
-                           "holdout": {"per_repo": per_repo, "test_passes": passes, "test_ran": ran, "n_test_repos": n_test}}
+        status, reason = (
+            "unvalidated",
+            f"passed_on_{passes}_of_{ran}_test_repos_need_{vcfg.min_repos}",
+        )
+    out: dict[str, Any] = {
+        "status": status,
+        "kind": "predictive",
+        "holdout": {
+            "per_repo": per_repo,
+            "test_passes": passes,
+            "test_ran": ran,
+            "n_test_repos": n_test,
+        },
+    }
     if reason:
         out["reason"] = reason
     return out
 
 
-def _repo_pass(sig: str, a: RepoAsserted, resolved: dict[str, dict[str, Any]]) -> tuple[bool, str | None]:
+def _repo_pass(
+    sig: str, a: RepoAsserted, resolved: dict[str, dict[str, Any]]
+) -> tuple[bool, str | None]:
     """Per-repo pass for a descriptive signal under its grounding class."""
     st = a.stability.get(sig, {})
     if st.get("passed") is not True:
@@ -86,8 +124,12 @@ def _repo_pass(sig: str, a: RepoAsserted, resolved: dict[str, dict[str, Any]]) -
     return True, None
 
 
-def descriptive_verdict(sig: str, asserted: list[RepoAsserted], vcfg: ValidationConfig,
-                        resolved: dict[str, dict[str, Any]]) -> dict[str, Any]:
+def descriptive_verdict(
+    sig: str,
+    asserted: list[RepoAsserted],
+    vcfg: ValidationConfig,
+    resolved: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
     g = GROUNDING[sig]
     per_repo = []
     passes = 0
@@ -95,9 +137,15 @@ def descriptive_verdict(sig: str, asserted: list[RepoAsserted], vcfg: Validation
     lower_cis: list[float] = []
     for a in asserted:
         ok, why = _repo_pass(sig, a, resolved)
-        entry = {"name": a.name, "perturbed_sha": a.perturbed_sha, "passed": ok, "reason": why,
-                 "stability": a.stability.get(sig, {}), "corroboration": a.corroboration.get(sig, {}),
-                 "correlates": a.correlates.get(sig, {})}
+        entry = {
+            "name": a.name,
+            "perturbed_sha": a.perturbed_sha,
+            "passed": ok,
+            "reason": why,
+            "stability": a.stability.get(sig, {}),
+            "corroboration": a.corroboration.get(sig, {}),
+            "correlates": a.correlates.get(sig, {}),
+        }
         per_repo.append(entry)
         ci = (a.corroboration.get(sig) or {}).get("tau_b_ci")
         if ci and ci[0] is not None and not math.isnan(ci[0]):
@@ -118,14 +166,24 @@ def descriptive_verdict(sig: str, asserted: list[RepoAsserted], vcfg: Validation
                 break
         else:
             inp = next((r for r in reasons if r.startswith("input_not_asserted")), None)
-            reason = inp or (reasons[0] if reasons else f"passed_on_{passes}_repos_need_{vcfg.m_asserted}")
+            reason = inp or (
+                reasons[0] if reasons else f"passed_on_{passes}_repos_need_{vcfg.m_asserted}"
+            )
     # D-011 retirement criterion: a counterpart that cannot fail is not a falsifier.
-    non_discriminating = bool(lower_cis) and len(lower_cis) == len(asserted) and min(lower_cis) >= vcfg.tau_retire
-    out: dict[str, Any] = {"status": status, "kind": "descriptive", "grounding_class": g["class"],
-                           "counterpart": g.get("counterpart"), "inputs": g.get("inputs"),
-                           "instrument": g.get("instrument"), "heuristic": g.get("heuristic"),
-                           "non_discriminating": non_discriminating if g["class"] in ("G2", "G3") else None,
-                           "grounding": {"per_repo": per_repo, "repos_passed": passes}}
+    non_discriminating = (
+        bool(lower_cis) and len(lower_cis) == len(asserted) and min(lower_cis) >= vcfg.tau_retire
+    )
+    out: dict[str, Any] = {
+        "status": status,
+        "kind": "descriptive",
+        "grounding_class": g["class"],
+        "counterpart": g.get("counterpart"),
+        "inputs": g.get("inputs"),
+        "instrument": g.get("instrument"),
+        "heuristic": g.get("heuristic"),
+        "non_discriminating": non_discriminating if g["class"] in ("G2", "G3") else None,
+        "grounding": {"per_repo": per_repo, "repos_passed": passes},
+    }
     if reason:
         out["reason"] = reason
     return out
@@ -148,8 +206,11 @@ def _resolution_order() -> list[str]:
 
 
 def build_validation(
-    holdouts: list[RepoHoldout], asserted: list[RepoAsserted], vcfg: ValidationConfig,
-    substrate_fingerprint: str, reference_repos: list[dict[str, Any]],
+    holdouts: list[RepoHoldout],
+    asserted: list[RepoAsserted],
+    vcfg: ValidationConfig,
+    substrate_fingerprint: str,
+    reference_repos: list[dict[str, Any]],
     tuned_config_commit: str | None = None,
     substrate_effective_config: dict[str, Any] | None = None,
     substrate_attestations: dict[str, dict[str, str]] | None = None,
@@ -171,7 +232,12 @@ def build_validation(
         "validation_version": VALIDATION_VERSION,
         "validated_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "substrate_config_fingerprint": substrate_fingerprint,
-        "validation_config_fingerprint": vcfg.fingerprint([{"name": r["name"], "head_sha": r["head_sha"], "role": r.get("role", "test")} for r in reference_repos]),
+        "validation_config_fingerprint": vcfg.fingerprint(
+            [
+                {"name": r["name"], "head_sha": r["head_sha"], "role": r.get("role", "test")}
+                for r in reference_repos
+            ]
+        ),
         "validation_config": asdict(vcfg),
         # The substrate fingerprint's preimage (circumvention A7): what weights and toolchain these verdicts validate.
         "substrate_effective_config": substrate_effective_config,

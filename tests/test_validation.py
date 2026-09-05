@@ -21,8 +21,10 @@ from repo_substrate.validation.tune import compositions
 def test_roc_auc_and_ties():
     assert roc_auc([0.9, 0.8, 0.2, 0.1], [1, 1, 0, 0]) == pytest.approx(1.0)
     assert roc_auc([0.1, 0.2, 0.8, 0.9], [1, 1, 0, 0]) == pytest.approx(0.0)
-    assert roc_auc([0.5, 0.5, 0.5, 0.5], [1, 0, 1, 0]) == pytest.approx(0.5)   # all tied → chance
-    assert roc_auc([1, 2, 3], [0, 0, 0]) != roc_auc([1, 2, 3], [0, 0, 0])      # NaN when a class is empty
+    assert roc_auc([0.5, 0.5, 0.5, 0.5], [1, 0, 1, 0]) == pytest.approx(0.5)  # all tied → chance
+    assert roc_auc([1, 2, 3], [0, 0, 0]) != roc_auc(
+        [1, 2, 3], [0, 0, 0]
+    )  # NaN when a class is empty
 
 
 def test_average_precision_tie_grouping():
@@ -36,7 +38,7 @@ def test_average_precision_tie_grouping():
 
 def test_precision_at_k_tie_break_by_id():
     scores, labels, ids = [0.5, 0.5, 0.5], [1, 0, 0], ["b", "a", "c"]
-    p, r = precision_recall_at_k(scores, labels, ids, 1)   # 'a' wins the tie → not the positive
+    p, r = precision_recall_at_k(scores, labels, ids, 1)  # 'a' wins the tie → not the positive
     assert p == 0.0 and r == 0.0
     p, r = precision_recall_at_k(scores, labels, ids, 2)
     assert p == 0.5 and r == 1.0

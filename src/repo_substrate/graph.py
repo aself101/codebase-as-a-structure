@@ -12,7 +12,9 @@ from __future__ import annotations
 from collections import defaultdict
 
 
-def fan_counts(nodes: list[str], edges: set[tuple[str, str]]) -> tuple[dict[str, int], dict[str, int]]:
+def fan_counts(
+    nodes: list[str], edges: set[tuple[str, str]]
+) -> tuple[dict[str, int], dict[str, int]]:
     fan_in: dict[str, int] = {n: 0 for n in nodes}
     fan_out: dict[str, int] = {n: 0 for n in nodes}
     for a, b in edges:
@@ -21,7 +23,9 @@ def fan_counts(nodes: list[str], edges: set[tuple[str, str]]) -> tuple[dict[str,
     return fan_in, fan_out
 
 
-def pagerank(nodes: list[str], edges: set[tuple[str, str]], alpha: float, max_iter: int, tol: float) -> dict[str, float]:
+def pagerank(
+    nodes: list[str], edges: set[tuple[str, str]], alpha: float, max_iter: int, tol: float
+) -> dict[str, float]:
     """Deterministic PageRank. Node order is the sorted node list; iteration is
     plain Python floats summed in that fixed order."""
     n = len(nodes)

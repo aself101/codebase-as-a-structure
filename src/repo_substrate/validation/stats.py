@@ -17,7 +17,9 @@ def kendall_tau_b(x: Sequence[float], y: Sequence[float]) -> float:
     """Tie-corrected Kendall τ-b (scipy default). NaN when either side is constant."""
     if len(x) < 2:
         return float("nan")
-    t = stats.kendalltau(np.asarray(x, dtype=float), np.asarray(y, dtype=float), variant="b").statistic
+    t = stats.kendalltau(
+        np.asarray(x, dtype=float), np.asarray(y, dtype=float), variant="b"
+    ).statistic
     return float(t)
 
 

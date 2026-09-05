@@ -42,46 +42,74 @@ def compositions(keys: list[str], step: float) -> list[dict[str, float]]:
 
 def _baselines(ctx: SplitContext) -> tuple[float, float]:
     best_roc = max(roc_auc(ctx.recency, ctx.labels), roc_auc(ctx.busyness, ctx.labels))
-    best_pr = max(average_precision(ctx.recency, ctx.labels), average_precision(ctx.busyness, ctx.labels))
+    best_pr = max(
+        average_precision(ctx.recency, ctx.labels), average_precision(ctx.busyness, ctx.labels)
+    )
     return best_roc, best_pr
 
 
-def _score(ctx: SplitContext, best: tuple[float, float], index: str, weights: dict[str, float], cfg: SubstrateConfig) -> tuple[float, float]:
+def _score(
+    ctx: SplitContext,
+    best: tuple[float, float],
+    index: str,
+    weights: dict[str, float],
+    cfg: SubstrateConfig,
+) -> tuple[float, float]:
     w = replace(cfg.weights, **{index: weights})
     c = replace(cfg, weights=w)
     scores = []
     for nd in ctx.nodes:
         m = nd["metrics"]
-        idx = compute_indices(nd["derived"]["percentiles"], m, m.get("test_fan_in") or 0,
-                              m.get("recent_commit_share"), ctx.graph_degraded, c)
+        idx = compute_indices(
+            nd["derived"]["percentiles"],
+            m,
+            m.get("test_fan_in") or 0,
+            m.get("recent_commit_share"),
+            ctx.graph_degraded,
+            c,
+        )
         v = idx[index]
         if v is None:
-            return float("nan"), float("nan")  # unmeasurable under these weights; sorts last (see tune())
+            return float("nan"), float(
+                "nan"
+            )  # unmeasurable under these weights; sorts last (see tune())
         scores.append(float(v))
     return roc_auc(scores, ctx.labels) - best[0], average_precision(scores, ctx.labels) / best[1]
 
 
-def _sort_key(row: tuple[tuple[float, float], dict[str, float], list[tuple[float, float]]]) -> tuple[float, float]:
+def _sort_key(
+    row: tuple[tuple[float, float], dict[str, float], list[tuple[float, float]]],
+) -> tuple[float, float]:
     """Descending objective; NaN objectives sort strictly last (a NaN key would otherwise
     leave Python's sort in input order)."""
     d, r = row[0]
     return (-d if not math.isnan(d) else float("inf"), -r if not math.isnan(r) else float("inf"))
 
 
-def tune(tuning_repos: list[Path], cache: SubstrateCache, vcfg: ValidationConfig, cfg: SubstrateConfig,
-         indices: tuple[str, ...] = ("bug_pressure_index", "change_pressure_index")) -> dict[str, Any]:
+def tune(
+    tuning_repos: list[Path],
+    cache: SubstrateCache,
+    vcfg: ValidationConfig,
+    cfg: SubstrateConfig,
+    indices: tuple[str, ...] = ("bug_pressure_index", "change_pressure_index"),
+) -> dict[str, Any]:
     ctxs = [split_and_eligible(r, cache, vcfg) for r in tuning_repos]
     # Degeneracy guards (audit: a NaN objective silently froze grid point #1 as the result).
     for c in ctxs:
         if not c.ids or c.n_positives == 0 or c.n_positives == len(c.ids):
-            raise ValueError(f"{c.name}: degenerate tuning repo (eligible={len(c.ids)}, positives={c.n_positives}); refusing to tune")
+            raise ValueError(
+                f"{c.name}: degenerate tuning repo (eligible={len(c.ids)}, positives={c.n_positives}); refusing to tune"
+            )
     bests = [_baselines(c) for c in ctxs]
     for c, (r, p) in zip(ctxs, bests, strict=True):
         if math.isnan(r) or math.isnan(p) or p == 0.0:
             raise ValueError(f"{c.name}: baseline undefined (roc={r}, pr={p}); refusing to tune")
-    result: dict[str, Any] = {"tuning_repos": [c.name for c in ctxs], "grid_step": GRID_STEP,
-                              "objective": "min over tuning repos of (ROC-AUC − best baseline ROC-AUC); tie: min PR-AUC ratio",
-                              "indices": {}}
+    result: dict[str, Any] = {
+        "tuning_repos": [c.name for c in ctxs],
+        "grid_step": GRID_STEP,
+        "objective": "min over tuning repos of (ROC-AUC − best baseline ROC-AUC); tie: min PR-AUC ratio",
+        "indices": {},
+    }
     for index in indices:
         keys = sorted(ALLOWED_INPUTS[index])
         grid = compositions(keys, GRID_STEP)
@@ -93,7 +121,9 @@ def tune(tuning_repos: list[Path], cache: SubstrateCache, vcfg: ValidationConfig
         rows.sort(key=_sort_key)
         best_obj, best_w, best_per = rows[0]
         if math.isnan(best_obj[0]):
-            raise ValueError(f"{index}: every grid point was unmeasurable; refusing to freeze weights")
+            raise ValueError(
+                f"{index}: every grid point was unmeasurable; refusing to freeze weights"
+            )
         baseline_w = getattr(cfg.weights, index)
         base_per = [_score(c, b, index, baseline_w, cfg) for c, b in zip(ctxs, bests, strict=True)]
         result["indices"][index] = {
@@ -101,20 +131,43 @@ def tune(tuning_repos: list[Path], cache: SubstrateCache, vcfg: ValidationConfig
             "grid_size": len(grid),
             "chosen": {k: v for k, v in best_w.items() if v > 0},
             "chosen_objective": {"min_delta_roc": best_obj[0], "min_pr_ratio": best_obj[1]},
-            "chosen_per_repo": [{"name": c.name, "delta_roc": d, "pr_ratio": r} for c, (d, r) in zip(ctxs, best_per, strict=True)],
+            "chosen_per_repo": [
+                {"name": c.name, "delta_roc": d, "pr_ratio": r}
+                for c, (d, r) in zip(ctxs, best_per, strict=True)
+            ],
             "spec_placeholder": dict(baseline_w),
-            "spec_placeholder_per_repo": [{"name": c.name, "delta_roc": d, "pr_ratio": r} for c, (d, r) in zip(ctxs, base_per, strict=True)],
-            "top10": [{"weights": {k: v for k, v in w.items() if v > 0}, "min_delta_roc": o[0], "min_pr_ratio": o[1]} for o, w, _ in rows[:10]],
+            "spec_placeholder_per_repo": [
+                {"name": c.name, "delta_roc": d, "pr_ratio": r}
+                for c, (d, r) in zip(ctxs, base_per, strict=True)
+            ],
+            "top10": [
+                {
+                    "weights": {k: v for k, v in w.items() if v > 0},
+                    "min_delta_roc": o[0],
+                    "min_pr_ratio": o[1],
+                }
+                for o, w, _ in rows[:10]
+            ],
         }
     return result
 
 
 def write_tuned_toml(result: dict[str, Any], cfg: SubstrateConfig, path: Path) -> None:
     w = cfg.weights
-    lines = ["# Tuned index weights — frozen per DECISIONS.md D-009 before the test set is run.",
-             f"# tuning repos: {', '.join(result['tuning_repos'])}; grid step {result['grid_step']}",
-             f"# objective: {result['objective']}", "", "[weights]"]
-    for name in ("load_index", "change_pressure_index", "bug_pressure_index", "neglect_index", "complexity_proxy_index"):
+    lines = [
+        "# Tuned index weights — frozen per DECISIONS.md D-009 before the test set is run.",
+        f"# tuning repos: {', '.join(result['tuning_repos'])}; grid step {result['grid_step']}",
+        f"# objective: {result['objective']}",
+        "",
+        "[weights]",
+    ]
+    for name in (
+        "load_index",
+        "change_pressure_index",
+        "bug_pressure_index",
+        "neglect_index",
+        "complexity_proxy_index",
+    ):
         chosen = result["indices"].get(name, {}).get("chosen") or getattr(w, name)
         items = ", ".join(f'"{k}" = {v}' for k, v in chosen.items())
         lines.append(f"{name} = {{ {items} }}")

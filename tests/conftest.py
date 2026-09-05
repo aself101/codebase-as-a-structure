@@ -26,10 +26,23 @@ class Repo:
         self.git("init", "-q", "-b", "main")
 
     def git(self, *args: str, env: dict | None = None, check: bool = True) -> str:
-        e = {**os.environ, "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@x", "GIT_COMMITTER_NAME": "t",
-             "GIT_COMMITTER_EMAIL": "t@x", "LC_ALL": "C.UTF-8", **(env or {})}
-        return subprocess.run(["git", "-C", str(self.path), *args], capture_output=True, text=True,
-                              check=check, env=e, encoding="utf-8").stdout
+        e = {
+            **os.environ,
+            "GIT_AUTHOR_NAME": "t",
+            "GIT_AUTHOR_EMAIL": "t@x",
+            "GIT_COMMITTER_NAME": "t",
+            "GIT_COMMITTER_EMAIL": "t@x",
+            "LC_ALL": "C.UTF-8",
+            **(env or {}),
+        }
+        return subprocess.run(
+            ["git", "-C", str(self.path), *args],
+            capture_output=True,
+            text=True,
+            check=check,
+            env=e,
+            encoding="utf-8",
+        ).stdout
 
     def write(self, rel: str, text: str) -> None:
         p = self.path / rel
@@ -41,7 +54,14 @@ class Repo:
         when = (T0 + timedelta(days=self.n)).isoformat()
         if add_all:
             self.git("add", "-A")
-        self.git("commit", "-q", "--allow-empty", "-m", msg, env={"GIT_AUTHOR_DATE": when, "GIT_COMMITTER_DATE": when})
+        self.git(
+            "commit",
+            "-q",
+            "--allow-empty",
+            "-m",
+            msg,
+            env={"GIT_AUTHOR_DATE": when, "GIT_COMMITTER_DATE": when},
+        )
         return self.git("rev-parse", "HEAD").strip()
 
     def merge(self, branch: str, msg: str, extra: dict[str, str] | None = None) -> str:
@@ -53,7 +73,9 @@ class Repo:
         for rel, text in (extra or {}).items():
             self.write(rel, text)
         self.git("add", "-A")
-        self.git("commit", "-q", "-m", msg, env={"GIT_AUTHOR_DATE": when, "GIT_COMMITTER_DATE": when})
+        self.git(
+            "commit", "-q", "-m", msg, env={"GIT_AUTHOR_DATE": when, "GIT_COMMITTER_DATE": when}
+        )
         return self.git("rev-parse", "HEAD").strip()
 
 
@@ -71,7 +93,9 @@ def small_cfg() -> SubstrateConfig:
 
 
 def run_extract(repo: Repo, cfg: SubstrateConfig, tmp: Path, **kw) -> dict:
-    return extract(repo.path, cfg, ExtractOptions(scratch_dir=tmp, blame_workers=2, **kw), extractor=None)
+    return extract(
+        repo.path, cfg, ExtractOptions(scratch_dir=tmp, blame_workers=2, **kw), extractor=None
+    )
 
 
 @pytest.fixture
@@ -81,7 +105,9 @@ def scripted_repo(make_repo) -> tuple[Repo, list[str]]:
     r = make_repo()
     shas = []
     for i in range(4):
-        r.write(f"src/f{i}.js", f"const x{i} = require('./f{max(i-1,0)}');\nmodule.exports = x{i};\n")
+        r.write(
+            f"src/f{i}.js", f"const x{i} = require('./f{max(i - 1, 0)}');\nmodule.exports = x{i};\n"
+        )
     shas.append(r.commit("feat: initial"))
     r.write("src/old.js", "module.exports = 1;\n")
     shas.append(r.commit("feat: add old"))
@@ -104,7 +130,11 @@ def scripted_repo(make_repo) -> tuple[Repo, list[str]]:
     r.git("checkout", "-q", "main")
     r.write("src/f2.js", "const x2 = require('./f1');\nmodule.exports = x2 * 2;\n")
     shas.append(r.commit("chore: touch f2 on main"))
-    shas.append(r.merge("side", "Merge branch 'side'", extra={"src/merge_only.js": "// born in the merge\n"}))
+    shas.append(
+        r.merge(
+            "side", "Merge branch 'side'", extra={"src/merge_only.js": "// born in the merge\n"}
+        )
+    )
     r.write("src/f3.js", "const x3 = require('./f2');\nmodule.exports = x3 - 1;\n")
     shas.append(r.commit("fix: f3 latest"))
     return r, shas

@@ -14,9 +14,19 @@ from .config import SubstrateConfig
 
 # The exhaustive percentile keyset (§6.1). Every index input that is a percentile is here.
 PERCENTILE_METRICS: tuple[str, ...] = (
-    "size_loc", "age_days", "last_touched_days", "commit_count", "churn_lines",
-    "fix_count", "revert_count", "author_count", "fan_in", "fan_out",
-    "cochange_degree", "blame_age_median", "test_fan_in",
+    "size_loc",
+    "age_days",
+    "last_touched_days",
+    "commit_count",
+    "churn_lines",
+    "fix_count",
+    "revert_count",
+    "author_count",
+    "fan_in",
+    "fan_out",
+    "cochange_degree",
+    "blame_age_median",
+    "test_fan_in",
 )
 NONZERO_VARIANTS: tuple[str, ...] = ("fan_in", "fix_count", "revert_count", "test_fan_in")
 DERIVED_PERCENTILED: tuple[str, ...] = ("centrality", "nesting_proxy")
@@ -75,7 +85,9 @@ def compute_percentiles(
             else:
                 less = sum(1 for x in pop_sorted if x < v)
                 equal = sum(1 for x in pop_sorted if x == v)
-                result[node][key] = (less + (equal + 1) / 2.0) / n_pop if equal else (less + 0.5) / n_pop
+                result[node][key] = (
+                    (less + (equal + 1) / 2.0) / n_pop if equal else (less + 0.5) / n_pop
+                )
         if key in NONZERO_VARIANTS:
             nz_pop = {n: (v if (v is not None and v > 0) else None) for n, v in pop_vals.items()}
             nz_sorted = sorted(v for v in nz_pop.values() if v is not None)
@@ -91,11 +103,17 @@ def compute_percentiles(
                 else:
                     less = sum(1 for x in nz_sorted if x < v)
                     equal = sum(1 for x in nz_sorted if x == v)
-                    result[node][f"{key}_nonzero"] = (less + (equal + 1) / 2.0) / len(nz_sorted) if equal else (less + 0.5) / len(nz_sorted)
+                    result[node][f"{key}_nonzero"] = (
+                        (less + (equal + 1) / 2.0) / len(nz_sorted)
+                        if equal
+                        else (less + 0.5) / len(nz_sorted)
+                    )
     return result
 
 
-def _weighted(inputs: dict[str, float | None], weights: Mapping[str, float]) -> tuple[float | None, bool]:
+def _weighted(
+    inputs: dict[str, float | None], weights: Mapping[str, float]
+) -> tuple[float | None, bool]:
     """Weighted sum over available inputs with renormalization (§6.2.1). Returns
     (value, degraded). degraded is True when any weighted input was unavailable.
     All-unavailable → (None, True)."""
@@ -145,34 +163,46 @@ def compute_indices(
     load, load_deg = _weighted(load_inputs, w.load_index)
     load_deg = load_deg or graph_degraded
 
-    change, _ = _weighted({
-        "churn_lines": pct.get("churn_lines"),
-        "commit_count": pct.get("commit_count"),
-        "recency": inv(pct.get("last_touched_days")),
-    }, w.change_pressure_index)
+    change, _ = _weighted(
+        {
+            "churn_lines": pct.get("churn_lines"),
+            "commit_count": pct.get("commit_count"),
+            "recency": inv(pct.get("last_touched_days")),
+        },
+        w.change_pressure_index,
+    )
 
     # The candidate input set is wider than the pinned formula so the D-009 tuning grid can
     # reach recency/busyness terms; config.validate() confines weight keys to this set.
-    bug, _ = _weighted({
-        "fix_count_nonzero": fix_input,
-        "fix_count": pct.get("fix_count"),
-        "revert_count": pct.get("revert_count"),
-        "fix_ratio": fix_ratio,
-        "recency": inv(pct.get("last_touched_days")),
-        "commit_count": pct.get("commit_count"),
-    }, w.bug_pressure_index)
+    bug, _ = _weighted(
+        {
+            "fix_count_nonzero": fix_input,
+            "fix_count": pct.get("fix_count"),
+            "revert_count": pct.get("revert_count"),
+            "fix_ratio": fix_ratio,
+            "recency": inv(pct.get("last_touched_days")),
+            "commit_count": pct.get("commit_count"),
+        },
+        w.bug_pressure_index,
+    )
 
-    neglect, _ = _weighted({
-        "age_days": pct.get("age_days"),
-        "last_touched_days": pct.get("last_touched_days"),
-        "inv_recent_commit_share": inv(recent_commit_share),
-    }, w.neglect_index)
+    neglect, _ = _weighted(
+        {
+            "age_days": pct.get("age_days"),
+            "last_touched_days": pct.get("last_touched_days"),
+            "inv_recent_commit_share": inv(recent_commit_share),
+        },
+        w.neglect_index,
+    )
 
-    complexity, _ = _weighted({
-        "size_loc": pct.get("size_loc"),
-        "nesting_proxy": pct.get("nesting_proxy"),
-        "fan_out": pct.get("fan_out"),
-    }, w.complexity_proxy_index)
+    complexity, _ = _weighted(
+        {
+            "size_loc": pct.get("size_loc"),
+            "nesting_proxy": pct.get("nesting_proxy"),
+            "fan_out": pct.get("fan_out"),
+        },
+        w.complexity_proxy_index,
+    )
 
     # reinforcement_index (§6.2 as revised by D-011): the import-graph reading. 0.0 when no test
     # imports the file; otherwise 0.5 + 0.5 · percentile among files that some test imports, so

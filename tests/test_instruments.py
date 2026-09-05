@@ -15,19 +15,28 @@ from repo_substrate.cli import TOOLS_DIR
 from repo_substrate.config import SubstrateConfig
 from repo_substrate.deps import DependencyCruiserExtractor
 
-pytestmark = pytest.mark.skipif(not (TOOLS_DIR / "node_modules" / ".bin" / "depcruise").exists(),
-                                reason="dependency-cruiser not installed")
+pytestmark = pytest.mark.skipif(
+    not (TOOLS_DIR / "node_modules" / ".bin" / "depcruise").exists(),
+    reason="dependency-cruiser not installed",
+)
 
 
 @pytest.fixture
 def adversarial(make_repo):
     r = make_repo("adv")
-    r.write("tsconfig.json", '{"compilerOptions": {"baseUrl": ".", "paths": {"@lib/*": ["src/lib/*"]}}}\n')
+    r.write(
+        "tsconfig.json",
+        '{"compilerOptions": {"baseUrl": ".", "paths": {"@lib/*": ["src/lib/*"]}}}\n',
+    )
     r.write("src/lib/a.ts", "export const a = 1;\nexport type A = number;\n")
-    r.write("src/lib/b.ts", "import type { A } from './a';\nexport const b: A = 2;\n")          # type-only import
-    r.write("src/c.ts", "import { a } from '@lib/a';\nexport const c = a;\n")                       # alias
-    r.write("src/lib/d.ts", "export const s = `import x from './a'`;\nexport const d = 4;\n")      # looks like an import, is a string
-    r.write("src/e.ts", "export * from './lib/b';\n")                                              # re-export
+    r.write(
+        "src/lib/b.ts", "import type { A } from './a';\nexport const b: A = 2;\n"
+    )  # type-only import
+    r.write("src/c.ts", "import { a } from '@lib/a';\nexport const c = a;\n")  # alias
+    r.write(
+        "src/lib/d.ts", "export const s = `import x from './a'`;\nexport const d = 4;\n"
+    )  # looks like an import, is a string
+    r.write("src/e.ts", "export * from './lib/b';\n")  # re-export
     for i in range(30):  # enough nodes to clear n_min
         r.write(f"src/pad/p{i}.ts", f"export const p{i} = {i};\n")
     r.commit("feat: adversarial fixture")
@@ -54,14 +63,14 @@ def test_instruments_can_disagree_and_type_imports_are_edges(adversarial, tmp_pa
     # scanner (regex): additionally counts the import-shaped string in d.ts → over-counts to 3
     assert a["fan_in_alt"] == 3
     assert s["summary"]["fan_in_instrument_tau"] is not None
-    assert _m(s, "src/lib/b.ts")["fan_in"] == 1        # e.ts re-exports b
+    assert _m(s, "src/lib/b.ts")["fan_in"] == 1  # e.ts re-exports b
 
 
 def test_without_pre_compilation_deps_type_imports_vanish(adversarial, tmp_path):
     """The typeorm finding (D-011) reproduced in miniature: with the flag off, b→a disappears."""
     s = _run(adversarial, tmp_path, pre_comp=False)
     assert _m(s, "src/lib/a.ts")["fan_in"] == 1
-    assert _m(s, "src/lib/a.ts")["fan_in_alt"] == 3    # the scanner does not care about erasure
+    assert _m(s, "src/lib/a.ts")["fan_in_alt"] == 3  # the scanner does not care about erasure
 
 
 def test_fingerprint_moves_with_the_flag(adversarial, tmp_path):

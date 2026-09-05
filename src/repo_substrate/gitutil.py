@@ -27,13 +27,17 @@ class GitError(RuntimeError):
 def run_git(repo: Path, *args: str, check: bool = True) -> str:
     try:
         proc = subprocess.run(
-            ["git", "-C", str(repo), *args], capture_output=True, check=False,
+            ["git", "-C", str(repo), *args],
+            capture_output=True,
+            check=False,
             timeout=GIT_TIMEOUT,
         )
     except subprocess.TimeoutExpired as e:
         raise GitError(f"git {' '.join(args)} timed out after {GIT_TIMEOUT}s") from e
     if check and proc.returncode != 0:
-        raise GitError(f"git {' '.join(args)} failed ({proc.returncode}): {proc.stderr.decode('utf-8', 'replace').strip()}")
+        raise GitError(
+            f"git {' '.join(args)} failed ({proc.returncode}): {proc.stderr.decode('utf-8', 'replace').strip()}"
+        )
     return proc.stdout.decode("utf-8", "surrogateescape")
 
 
@@ -83,11 +87,15 @@ def cat_blobs(repo: Path, shas: list[str]) -> dict[str, bytes]:
     uniq = sorted(set(shas))
     proc = subprocess.run(
         ["git", "-C", str(repo), "cat-file", "--batch"],
-        input=("\n".join(uniq) + "\n").encode("ascii"), capture_output=True, check=False,
+        input=("\n".join(uniq) + "\n").encode("ascii"),
+        capture_output=True,
+        check=False,
         timeout=GIT_TIMEOUT,
     )
     if proc.returncode != 0:
-        raise GitError(f"git cat-file --batch failed: {proc.stderr.decode('utf-8', 'replace')[-300:]}")
+        raise GitError(
+            f"git cat-file --batch failed: {proc.stderr.decode('utf-8', 'replace')[-300:]}"
+        )
     data = proc.stdout
     out: dict[str, bytes] = {}
     pos = 0
@@ -99,13 +107,15 @@ def cat_blobs(repo: Path, shas: list[str]) -> dict[str, bytes]:
             raise GitError(f"cat-file: unexpected header {header!r} for {sha}")
         size = int(parts[2])
         start = nl + 1
-        out[sha] = data[start:start + size]
+        out[sha] = data[start : start + size]
         pos = start + size + 1  # trailing newline after each object
     return out
 
 
 def git_version() -> str:
-    out = subprocess.run(["git", "--version"], capture_output=True, check=True, timeout=30).stdout.decode("utf-8", "replace")
+    out = subprocess.run(
+        ["git", "--version"], capture_output=True, check=True, timeout=30
+    ).stdout.decode("utf-8", "replace")
     m = re.search(r"\d+\.\d+(\.\d+)?", out)
     return m.group(0) if m else out.strip()
 

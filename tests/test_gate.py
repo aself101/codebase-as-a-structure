@@ -35,7 +35,9 @@ def _vcfg(**kw) -> ValidationConfig:
 
 @pytest.fixture
 def cache(scripted_repo, small_cfg, tmp_path):
-    return SubstrateCache(tmp_path / "cache", small_cfg, None, scratch_dir=tmp_path, blame_workers=2)
+    return SubstrateCache(
+        tmp_path / "cache", small_cfg, None, scratch_dir=tmp_path, blame_workers=2
+    )
 
 
 # --- §3.1–§3.4 split, eligibility, labels ---------------------------------------------------
@@ -57,14 +59,17 @@ def test_labels_and_eligibility(scripted_repo, cache):
     # holdout = [chore: touch f2, merge, fix: f3] → only f3 is a fix-positive
     assert lab["src/f3.js"] == 1
     assert lab["src/f2.js"] == 0
-    assert "src/side.js" in lab                # committed before the split (9th commit) → eligible
-    assert "src/merge_only.js" not in lab      # born in the holdout window AND an orphan → not eligible (§3.3)
+    assert "src/side.js" in lab  # committed before the split (9th commit) → eligible
+    assert (
+        "src/merge_only.js" not in lab
+    )  # born in the holdout window AND an orphan → not eligible (§3.3)
     assert ctx.coverage == pytest.approx(len(ctx.ids) / ctx.n_head_nodes)
 
 
 def test_split_guard_refuses_wraparound(make_repo, small_cfg, tmp_path):
     r = make_repo("one")
-    r.write("a.js", "1\n"); r.commit("feat: only")
+    r.write("a.js", "1\n")
+    r.commit("feat: only")
     c = SubstrateCache(tmp_path / "c", small_cfg, None, scratch_dir=tmp_path, blame_workers=1)
     with pytest.raises(ValueError, match="too few"):
         split_and_eligible(r.path, c, _vcfg())
@@ -76,7 +81,9 @@ def test_holdout_labels_use_frozen_label_regex_not_feature_regex(scripted_repo, 
     narrow = SubstrateConfig(n_min=2, fix_subject_regex=r"\bNEVER-MATCHES\b")
     c = SubstrateCache(tmp_path / "c2", narrow, None, scratch_dir=tmp_path, blame_workers=2)
     ctx = split_and_eligible(repo.path, c, _vcfg(holdout_frac=0.25))
-    assert sum(ctx.labels) == 1               # "fix: f3 latest" is still a positive (conventional prefix, frozen regex)
+    assert (
+        sum(ctx.labels) == 1
+    )  # "fix: f3 latest" is still a positive (conventional prefix, frozen regex)
 
 
 def test_run_holdout_degenerate_when_no_negatives(make_repo, small_cfg, tmp_path):
@@ -85,8 +92,12 @@ def test_run_holdout_degenerate_when_no_negatives(make_repo, small_cfg, tmp_path
         r.write(f"f{i}.js", "1\n")
     r.commit("feat: init")
     for i in range(3):
-        r.write(f"f{i}.js", f"{i+2}\n"); r.commit(f"chore: touch {i}")
-    r.write("f0.js", "9\n"); r.write("f1.js", "9\n"); r.write("f2.js", "9\n"); r.commit("fix: everything")
+        r.write(f"f{i}.js", f"{i + 2}\n")
+        r.commit(f"chore: touch {i}")
+    r.write("f0.js", "9\n")
+    r.write("f1.js", "9\n")
+    r.write("f2.js", "9\n")
+    r.commit("fix: everything")
     c = SubstrateCache(tmp_path / "c3", small_cfg, None, scratch_dir=tmp_path, blame_workers=1)
     rh = run_holdout(r.path, c, _vcfg(holdout_frac=0.2))
     assert rh.degenerate == "no_holdout_negatives"
@@ -99,10 +110,10 @@ def test_run_holdout_degenerate_when_no_negatives(make_repo, small_cfg, tmp_path
 def test_stability_excludes_nodes_touched_by_removed_commits(scripted_repo, cache):
     repo, shas = scripted_repo
     full = cache.get(repo.path, "HEAD")
-    pert = cache.get(repo.path, shas[-2], truncate=True)     # remove the last commit (fix: f3)
+    pert = cache.get(repo.path, shas[-2], truncate=True)  # remove the last commit (fix: f3)
     v = _vcfg(stability_perturbation_k=1, stability_min_n=1, stability_max_excluded_frac=0.9)
     out, n_common, n_excluded = run_stability(full, pert, v)
-    assert n_excluded == 1                                      # src/f3.js was touched → excluded
+    assert n_excluded == 1  # src/f3.js was touched → excluded
     assert n_common >= 4
     assert all(o["n_excluded_touched"] == 1 for o in out.values())
 
@@ -111,8 +122,13 @@ def test_stability_population_floor_yields_untested(scripted_repo, cache):
     repo, shas = scripted_repo
     full = cache.get(repo.path, "HEAD")
     pert = cache.get(repo.path, shas[-2], truncate=True)
-    out, _, _ = run_stability(full, pert, _vcfg(stability_perturbation_k=1))   # default min_n=30 > population
-    assert all(o["passed"] is None and o["reason"] == "insufficient_stability_population" for o in out.values())
+    out, _, _ = run_stability(
+        full, pert, _vcfg(stability_perturbation_k=1)
+    )  # default min_n=30 > population
+    assert all(
+        o["passed"] is None and o["reason"] == "insufficient_stability_population"
+        for o in out.values()
+    )
 
 
 def test_signal_value_reaches_percentile_only_signals(scripted_repo, cache):
@@ -129,25 +145,67 @@ def test_signal_value_reaches_percentile_only_signals(scripted_repo, cache):
 
 
 def _holdout(name, passed, degenerate=None) -> RepoHoldout:
-    h = RepoHoldout(name=name, head_sha="h", split_sha="s", n_commits=100, n_holdout_commits=20, n_head_nodes=50,
-                    n_eligible=40, n_positives=10, coverage=0.8, base_rate=0.25, fix_label_rate=0.3, degenerate=degenerate)
-    h.baselines = {"busyness": {"roc_auc": 0.7, "pr_auc": 0.4}, "recency": {"roc_auc": 0.6, "pr_auc": 0.3}}
+    h = RepoHoldout(
+        name=name,
+        head_sha="h",
+        split_sha="s",
+        n_commits=100,
+        n_holdout_commits=20,
+        n_head_nodes=50,
+        n_eligible=40,
+        n_positives=10,
+        coverage=0.8,
+        base_rate=0.25,
+        fix_label_rate=0.3,
+        degenerate=degenerate,
+    )
+    h.baselines = {
+        "busyness": {"roc_auc": 0.7, "pr_auc": 0.4},
+        "recency": {"roc_auc": 0.6, "pr_auc": 0.3},
+    }
     h.best_baseline = "busyness"
     for s in PREDICTIVE_SIGNALS:
-        h.signals[s] = {"roc_auc": 0.8 if passed else 0.6, "pr_auc": 0.6 if passed else 0.3, "precision_at_k": {}, "recall_at_k": {},
-                        "passed": passed and degenerate is None, "failed_clauses": [] if passed else ["roc_margin"],
-                        "best_baseline": "busyness", "tau_vs_best_baseline": 0.5}
+        h.signals[s] = {
+            "roc_auc": 0.8 if passed else 0.6,
+            "pr_auc": 0.6 if passed else 0.3,
+            "precision_at_k": {},
+            "recall_at_k": {},
+            "passed": passed and degenerate is None,
+            "failed_clauses": [] if passed else ["roc_margin"],
+            "best_baseline": "busyness",
+            "tau_vs_best_baseline": 0.5,
+        }
     return h
 
 
 def _asserted(name, stable=True, corroborated=True, degenerate=False) -> RepoAsserted:
-    a = RepoAsserted(name=name, head_sha="h", perturbed_sha="p", n_population=100, n_compared=80, n_excluded_touched=5)
+    a = RepoAsserted(
+        name=name,
+        head_sha="h",
+        perturbed_sha="p",
+        n_population=100,
+        n_compared=80,
+        n_excluded_touched=5,
+    )
     for sig, g in GROUNDING.items():
-        a.stability[sig] = {"passed": (not degenerate) and stable, "reason": "degenerate" if degenerate else (None if stable else "unstable"),
-                            "median_abs_delta": 0.0, "max_abs_delta": 0.0, "p95_abs_delta": 0.0, "n": 80, "distinct_values": 2 if degenerate else 40}
+        a.stability[sig] = {
+            "passed": (not degenerate) and stable,
+            "reason": "degenerate" if degenerate else (None if stable else "unstable"),
+            "median_abs_delta": 0.0,
+            "max_abs_delta": 0.0,
+            "p95_abs_delta": 0.0,
+            "n": 80,
+            "distinct_values": 2 if degenerate else 40,
+        }
         if g["class"] in ("G2", "G3"):
-            a.corroboration[sig] = {"counterpart": g["counterpart"], "passed": corroborated, "tau_b": 0.7, "tau_b_ci": [0.6, 0.8],
-                                    "reason": None if corroborated else "corroboration_fail", "n": 80}
+            a.corroboration[sig] = {
+                "counterpart": g["counterpart"],
+                "passed": corroborated,
+                "tau_b": 0.7,
+                "tau_b_ci": [0.6, 0.8],
+                "reason": None if corroborated else "corroboration_fail",
+                "n": 80,
+            }
         else:
             a.corroboration[sig] = {"passed": True if g["class"] == "G1" else None}
     return a
@@ -155,8 +213,16 @@ def _asserted(name, stable=True, corroborated=True, degenerate=False) -> RepoAss
 
 def test_predictive_can_never_be_asserted_and_descriptive_never_validated():
     v = _vcfg()
-    doc = build_validation([_holdout("a", True), _holdout("b", True)], [_asserted("a"), _asserted("b")], v, "fp",
-                           [{"name": "a", "head_sha": "h", "role": "test"}, {"name": "b", "head_sha": "h", "role": "test"}])
+    doc = build_validation(
+        [_holdout("a", True), _holdout("b", True)],
+        [_asserted("a"), _asserted("b")],
+        v,
+        "fp",
+        [
+            {"name": "a", "head_sha": "h", "role": "test"},
+            {"name": "b", "head_sha": "h", "role": "test"},
+        ],
+    )
     for name, s in doc["signals"].items():
         if s["kind"] == "predictive":
             assert s["status"] in ("validated", "unvalidated", "untested")
@@ -169,18 +235,27 @@ def test_predictive_can_never_be_asserted_and_descriptive_never_validated():
 def test_tuning_repos_cannot_confer_validated():
     v = _vcfg()
     roles = {"a": "tuning", "b": "tuning"}
-    r = predictive_verdict("bug_pressure_index", [_holdout("a", True), _holdout("b", True)], roles, v)
+    r = predictive_verdict(
+        "bug_pressure_index", [_holdout("a", True), _holdout("b", True)], roles, v
+    )
     assert r["status"] == "untested" and r["reason"] == "no_test_repos"
     roles = {"a": "tuning", "b": "test"}
-    r = predictive_verdict("bug_pressure_index", [_holdout("a", True), _holdout("b", True)], roles, v)
-    assert r["status"] == "unvalidated"        # one passing test repo, need two
+    r = predictive_verdict(
+        "bug_pressure_index", [_holdout("a", True), _holdout("b", True)], roles, v
+    )
+    assert r["status"] == "unvalidated"  # one passing test repo, need two
     assert r["holdout"]["test_passes"] == 1 and r["holdout"]["n_test_repos"] == 1
 
 
 def test_degenerate_signal_is_never_asserted():
     v = _vcfg()
     resolved: dict = {}
-    r = descriptive_verdict("revert_count", [_asserted("a", degenerate=True), _asserted("b", degenerate=True)], v, resolved)
+    r = descriptive_verdict(
+        "revert_count",
+        [_asserted("a", degenerate=True), _asserted("b", degenerate=True)],
+        v,
+        resolved,
+    )
     assert r["status"] == "untested" and r["reason"] == "degenerate"
 
 
@@ -204,8 +279,14 @@ def test_retirement_flag_when_counterpart_cannot_fail():
 
 
 def test_validation_config_floors_cannot_be_loosened():
-    for bad in ({"m_asserted": 0}, {"min_repos": 1}, {"holdout_frac": 0.95}, {"tau_instrument": 0.3},
-                {"stability_eps": 0.3}, {"auc_margin": 0.0}):
+    for bad in (
+        {"m_asserted": 0},
+        {"min_repos": 1},
+        {"holdout_frac": 0.95},
+        {"tau_instrument": 0.3},
+        {"stability_eps": 0.3},
+        {"auc_margin": 0.0},
+    ):
         with pytest.raises(ValueError):
             ValidationConfig(**bad).validate()
     ValidationConfig().validate()
@@ -246,7 +327,8 @@ def test_cache_rejects_foreign_fingerprint_and_corrupt_entries(scripted_repo, sm
     p = c.path_for(repo.path, doc["repo"]["head_sha"], truncate=False)
     assert p.exists()
     # foreign fingerprint → rejected and re-extracted
-    tampered = dict(doc); tampered["repo"] = {**doc["repo"], "config_fingerprint": "0" * 64}
+    tampered = dict(doc)
+    tampered["repo"] = {**doc["repo"], "config_fingerprint": "0" * 64}
     p.write_text(json.dumps(tampered), encoding="utf-8")
     again = c.get(repo.path, "HEAD")
     assert again["repo"]["config_fingerprint"] == c.fingerprint

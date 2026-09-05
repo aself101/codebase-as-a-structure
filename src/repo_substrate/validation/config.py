@@ -32,73 +32,148 @@ PREDICTIVE_SIGNALS: tuple[str, ...] = ("bug_pressure_index", "change_pressure_in
 # signal -> grounding spec. `counterpart` for G2/G3; `inputs` for G4 (and G3 blends); `correlates` reported only.
 GROUNDING: dict[str, dict[str, Any]] = {
     # G1 measurements
-    "commit_count":        {"class": "G1", "instrument": "git log"},
-    "churn_lines":         {"class": "G1", "instrument": "git log --numstat"},
-    "fix_count":           {"class": "G1", "instrument": "git log", "heuristic": "§7 subject classifier (regex over commit subjects; also the holdout label)"},
-    "revert_count":        {"class": "G1", "instrument": "git log", "heuristic": "§7 subject classifier"},
-    "author_count":        {"class": "G1", "instrument": "git log", "heuristic": "author email, no mailmap (inflates on multi-email authors)"},
-    "last_touched_days":   {"class": "G1", "instrument": "git log author_date"},
-    "recent_commit_share": {"class": "G1", "instrument": "git log (timeline-relative window, §6.2.2)"},
-    "size_loc":            {"class": "G1", "instrument": "non-blank line count"},
-    "nesting_proxy":       {"class": "G1", "instrument": "indent counter (§6.2.2)", "heuristic": "indentation depth as a stand-in for nesting"},
-    "cochange_degree":     {"class": "G1", "instrument": "git log co-occurrence (§5)"},
-    "blame_age_median":    {"class": "G1", "instrument": "git blame -w", "heuristic": "blame line attribution; no -M/-C"},
-    "has_sibling_test":    {"class": "G1", "instrument": "path convention config (§6.2.2)", "heuristic": "filename adjacency; literal name, convention-dependent"},
+    "commit_count": {"class": "G1", "instrument": "git log"},
+    "churn_lines": {"class": "G1", "instrument": "git log --numstat"},
+    "fix_count": {
+        "class": "G1",
+        "instrument": "git log",
+        "heuristic": "§7 subject classifier (regex over commit subjects; also the holdout label)",
+    },
+    "revert_count": {"class": "G1", "instrument": "git log", "heuristic": "§7 subject classifier"},
+    "author_count": {
+        "class": "G1",
+        "instrument": "git log",
+        "heuristic": "author email, no mailmap (inflates on multi-email authors)",
+    },
+    "last_touched_days": {"class": "G1", "instrument": "git log author_date"},
+    "recent_commit_share": {
+        "class": "G1",
+        "instrument": "git log (timeline-relative window, §6.2.2)",
+    },
+    "size_loc": {"class": "G1", "instrument": "non-blank line count"},
+    "nesting_proxy": {
+        "class": "G1",
+        "instrument": "indent counter (§6.2.2)",
+        "heuristic": "indentation depth as a stand-in for nesting",
+    },
+    "cochange_degree": {"class": "G1", "instrument": "git log co-occurrence (§5)"},
+    "blame_age_median": {
+        "class": "G1",
+        "instrument": "git blame -w",
+        "heuristic": "blame line attribution; no -M/-C",
+    },
+    "has_sibling_test": {
+        "class": "G1",
+        "instrument": "path convention config (§6.2.2)",
+        "heuristic": "filename adjacency; literal name, convention-dependent",
+    },
     # G2 instrument-checked (counterparts come from altdeps.py, which shares no code with dependency-cruiser)
-    "fan_in":              {"class": "G2", "counterpart": "fan_in_alt"},
-    "fan_out":             {"class": "G2", "counterpart": "fan_out_alt"},
-    "test_fan_in":         {"class": "G2", "counterpart": "test_fan_in_alt"},
+    "fan_in": {"class": "G2", "counterpart": "fan_in_alt"},
+    "fan_out": {"class": "G2", "counterpart": "fan_out_alt"},
+    "test_fan_in": {"class": "G2", "counterpart": "test_fan_in_alt"},
     # G3 cross-modal
-    "age_days":            {"class": "G3", "counterpart": "blame_age_median"},
-    "neglect_index":       {"class": "G3", "counterpart": "blame_age_median",
-                            "inputs": ["age_days", "last_touched_days", "recent_commit_share"],
-                            "correlates": ["cochange_degree"]},
+    "age_days": {"class": "G3", "counterpart": "blame_age_median"},
+    "neglect_index": {
+        "class": "G3",
+        "counterpart": "blame_age_median",
+        "inputs": ["age_days", "last_touched_days", "recent_commit_share"],
+        "correlates": ["cochange_degree"],
+    },
     # G4 derived from asserted inputs
-    "fan_in_nonzero":          {"class": "G4", "inputs": ["fan_in"]},
-    "centrality":              {"class": "G4", "inputs": ["fan_in"], "correlates": ["cochange_degree"]},
-    "load_index":              {"class": "G4", "inputs": ["fan_in_nonzero", "centrality", "fan_out", "size_loc"],
-                                "correlates": ["cochange_degree", "test_fan_in"]},
-    "complexity_proxy_index":  {"class": "G4", "inputs": ["size_loc", "nesting_proxy", "fan_out"]},
-    "reinforcement_index":     {"class": "G4", "inputs": ["test_fan_in"], "correlates": ["has_sibling_test"]},
+    "fan_in_nonzero": {"class": "G4", "inputs": ["fan_in"]},
+    "centrality": {"class": "G4", "inputs": ["fan_in"], "correlates": ["cochange_degree"]},
+    "load_index": {
+        "class": "G4",
+        "inputs": ["fan_in_nonzero", "centrality", "fan_out", "size_loc"],
+        "correlates": ["cochange_degree", "test_fan_in"],
+    },
+    "complexity_proxy_index": {"class": "G4", "inputs": ["size_loc", "nesting_proxy", "fan_out"]},
+    "reinforcement_index": {
+        "class": "G4",
+        "inputs": ["test_fan_in"],
+        "correlates": ["has_sibling_test"],
+    },
 }
 DESCRIPTIVE_SIGNALS: tuple[str, ...] = tuple(GROUNDING)
 
 # Index weight key -> the grounded signal it is a transform of (used to check G4 input lists
 # against the actual formulas, so the two cannot drift; tested in tests/test_validation.py).
 WEIGHT_KEY_SIGNAL: dict[str, str] = {
-    "fan_in_nonzero": "fan_in_nonzero", "centrality": "centrality", "inv_fan_out": "fan_out",
-    "size_loc": "size_loc", "nesting_proxy": "nesting_proxy", "fan_out": "fan_out",
-    "age_days": "age_days", "last_touched_days": "last_touched_days",
+    "fan_in_nonzero": "fan_in_nonzero",
+    "centrality": "centrality",
+    "inv_fan_out": "fan_out",
+    "size_loc": "size_loc",
+    "nesting_proxy": "nesting_proxy",
+    "fan_out": "fan_out",
+    "age_days": "age_days",
+    "last_touched_days": "last_touched_days",
     "inv_recent_commit_share": "recent_commit_share",
-    "churn_lines": "churn_lines", "commit_count": "commit_count", "recency": "last_touched_days",
-    "fix_count_nonzero": "fix_count", "fix_count": "fix_count", "revert_count": "revert_count",
+    "churn_lines": "churn_lines",
+    "commit_count": "commit_count",
+    "recency": "last_touched_days",
+    "fix_count_nonzero": "fix_count",
+    "fix_count": "fix_count",
+    "revert_count": "revert_count",
     "fix_ratio": "fix_count",
 }
 
 # Blind-ranking list number -> signal it is compared against (blind/TEMPLATE.md).
-RECOGNITION_LISTS: dict[int, str] = {1: "load_index", 2: "bug_pressure_index", 3: "change_pressure_index", 4: "neglect_index"}
+RECOGNITION_LISTS: dict[int, str] = {
+    1: "load_index",
+    2: "bug_pressure_index",
+    3: "change_pressure_index",
+    4: "neglect_index",
+}
 
 # Which instrument produces each metric. A G2/G3 counterpart must come from a DIFFERENT
 # instrument than the signal (circumvention A4: a self- or kin-counterpart gives tau = 1).
 # Tested in tests/test_validation.py; editing this table changes the fingerprint.
 METRIC_INSTRUMENT: dict[str, str] = {
-    "fan_in": "dependency-cruiser", "fan_out": "dependency-cruiser", "test_fan_in": "dependency-cruiser",
-    "centrality": "dependency-cruiser", "fan_in_nonzero": "dependency-cruiser",
-    "fan_in_alt": "altdeps", "fan_out_alt": "altdeps", "test_fan_in_alt": "altdeps",
-    "age_days": "git-log", "last_touched_days": "git-log", "commit_count": "git-log", "churn_lines": "git-log",
-    "fix_count": "git-log", "revert_count": "git-log", "author_count": "git-log", "recent_commit_share": "git-log",
-    "cochange_degree": "git-log", "blame_age_median": "git-blame",
-    "size_loc": "file", "nesting_proxy": "file", "has_sibling_test": "path-convention",
-    "neglect_index": "git-log", "load_index": "dependency-cruiser", "complexity_proxy_index": "file",
+    "fan_in": "dependency-cruiser",
+    "fan_out": "dependency-cruiser",
+    "test_fan_in": "dependency-cruiser",
+    "centrality": "dependency-cruiser",
+    "fan_in_nonzero": "dependency-cruiser",
+    "fan_in_alt": "altdeps",
+    "fan_out_alt": "altdeps",
+    "test_fan_in_alt": "altdeps",
+    "age_days": "git-log",
+    "last_touched_days": "git-log",
+    "commit_count": "git-log",
+    "churn_lines": "git-log",
+    "fix_count": "git-log",
+    "revert_count": "git-log",
+    "author_count": "git-log",
+    "recent_commit_share": "git-log",
+    "cochange_degree": "git-log",
+    "blame_age_median": "git-blame",
+    "size_loc": "file",
+    "nesting_proxy": "file",
+    "has_sibling_test": "path-convention",
+    "neglect_index": "git-log",
+    "load_index": "dependency-cruiser",
+    "complexity_proxy_index": "file",
     "reinforcement_index": "dependency-cruiser",
 }
 
 # The spec's G1 membership (validation-spec §2.4.2 table). Pinned so a reclassification to
 # "stability only" is a test failure, not a silent config edit (circumvention A5).
-SPEC_G1: frozenset[str] = frozenset({
-    "commit_count", "churn_lines", "fix_count", "revert_count", "author_count", "last_touched_days",
-    "recent_commit_share", "size_loc", "nesting_proxy", "cochange_degree", "blame_age_median", "has_sibling_test",
-})
+SPEC_G1: frozenset[str] = frozenset(
+    {
+        "commit_count",
+        "churn_lines",
+        "fix_count",
+        "revert_count",
+        "author_count",
+        "last_touched_days",
+        "recent_commit_share",
+        "size_loc",
+        "nesting_proxy",
+        "cochange_degree",
+        "blame_age_median",
+        "has_sibling_test",
+    }
+)
 
 # D-009 pre-registered roles. The gate warns loudly when the repos it is handed differ.
 EXPECTED_TUNING_REPOS: tuple[str, ...] = ("uluops-registry-api", "eslint")
@@ -114,17 +189,21 @@ class ValidationConfig:
     pr_auc_mult: float = 1.20
     coverage_min: float = 0.50
     signal_floor_mult: float = 1.5
-    min_repos: int = 2                 # test-role repos that must pass (D-009)
+    min_repos: int = 2  # test-role repos that must pass (D-009)
     # §2.4 asserted bar
     stability_perturbation_k: int = 5
     stability_eps: float = 0.05
     stability_delta: float = 0.15
-    stability_min_n: int = 30          # D-011: untested (insufficient_stability_population) below this
+    stability_min_n: int = 30  # D-011: untested (insufficient_stability_population) below this
     stability_max_excluded_frac: float = 0.5
-    degenerate_min_distinct: int = 3   # D-011: a signal with fewer distinct values is degenerate, never asserted
-    tau_asserted: float = 0.30         # G3 cross-modal floor
-    tau_instrument: float = 0.60       # G2 second-instrument floor
-    tau_retire: float = 0.85           # D-011: G2/G3 pair with min lower-CI tau >= this on all repos is non-discriminating
+    degenerate_min_distinct: int = (
+        3  # D-011: a signal with fewer distinct values is degenerate, never asserted
+    )
+    tau_asserted: float = 0.30  # G3 cross-modal floor
+    tau_instrument: float = 0.60  # G2 second-instrument floor
+    tau_retire: float = (
+        0.85  # D-011: G2/G3 pair with min lower-CI tau >= this on all repos is non-discriminating
+    )
     m_asserted: int = 2
     # uncertainty
     bootstrap_n: int = 1000
@@ -163,15 +242,27 @@ class ValidationConfig:
             (self.m_asserted >= 2, "m_asserted must be >= 2"),
             (self.stability_perturbation_k >= 1, "stability_perturbation_k must be >= 1"),
             (0.0 < self.stability_eps <= 0.05, "stability_eps must be in (0, 0.05]"),
-            (self.stability_eps < self.stability_delta <= 0.15, "stability_delta must be in (eps, 0.15]"),
+            (
+                self.stability_eps < self.stability_delta <= 0.15,
+                "stability_delta must be in (eps, 0.15]",
+            ),
             (self.stability_min_n >= 30, "stability_min_n must be >= 30"),
-            (0.0 < self.stability_max_excluded_frac <= 0.5, "stability_max_excluded_frac must be in (0, 0.5]"),
+            (
+                0.0 < self.stability_max_excluded_frac <= 0.5,
+                "stability_max_excluded_frac must be in (0, 0.5]",
+            ),
             (self.degenerate_min_distinct >= 3, "degenerate_min_distinct must be >= 3"),
             (self.tau_asserted >= 0.30, "tau_asserted may not be below the spec default 0.30"),
             (self.tau_instrument >= 0.60, "tau_instrument may not be below the spec default 0.60"),
             (self.tau_retire > self.tau_instrument, "tau_retire must exceed tau_instrument"),
-            (self.bootstrap_n >= 200 and self.permutation_n >= 200, "bootstrap_n and permutation_n must be >= 200"),
-            (isinstance(self.holdout_frac, float) and isinstance(self.min_repos, int), "numeric types must match the schema"),
+            (
+                self.bootstrap_n >= 200 and self.permutation_n >= 200,
+                "bootstrap_n and permutation_n must be >= 200",
+            ),
+            (
+                isinstance(self.holdout_frac, float) and isinstance(self.min_repos, int),
+                "numeric types must match the schema",
+            ),
         ]
         bad = [msg for ok, msg in checks if not ok]
         if bad:
@@ -181,6 +272,12 @@ class ValidationConfig:
         re.compile(self.label_subject_regex)
 
     def fingerprint(self, reference_repos: list[dict[str, str]]) -> str:
-        payload = {"config": asdict(self), "grounding": GROUNDING, "predictive": PREDICTIVE_SIGNALS,
-                   "reference_repos": sorted(reference_repos, key=lambda r: r["name"])}
-        return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        payload = {
+            "config": asdict(self),
+            "grounding": GROUNDING,
+            "predictive": PREDICTIVE_SIGNALS,
+            "reference_repos": sorted(reference_repos, key=lambda r: r["name"]),
+        }
+        return hashlib.sha256(
+            json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
+        ).hexdigest()

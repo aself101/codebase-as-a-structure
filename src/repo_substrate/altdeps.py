@@ -68,7 +68,9 @@ def _alias_map(tsconfig: dict | None) -> tuple[str, list[tuple[str, list[str]]]]
     return base, pairs
 
 
-def _resolve(spec: str, importer: str, nodes: set[str], base_url: str, aliases: list[tuple[str, list[str]]]) -> str | None:
+def _resolve(
+    spec: str, importer: str, nodes: set[str], base_url: str, aliases: list[tuple[str, list[str]]]
+) -> str | None:
     spec = spec.split("?", 1)[0]
     targets: list[str] = []
     if spec.startswith("."):
@@ -78,7 +80,7 @@ def _resolve(spec: str, importer: str, nodes: set[str], base_url: str, aliases: 
     else:
         for pat, outs in aliases:
             if pat.endswith("/*") and spec.startswith(pat[:-1]):
-                rest = spec[len(pat) - 1:]
+                rest = spec[len(pat) - 1 :]
                 for o in outs:
                     o2 = o[:-1] + rest if o.endswith("*") else o
                     targets.append(_normalize(PurePosixPath(base_url) / o2))
@@ -94,15 +96,19 @@ def _resolve(spec: str, importer: str, nodes: set[str], base_url: str, aliases: 
     return None
 
 
-def scan_fan_in_alt(worktree: Path, node_paths: set[str], test_paths: set[str] | None = None
-                    ) -> tuple[dict[str, int], dict[str, int], dict[str, int], list[str]]:
+def scan_fan_in_alt(
+    worktree: Path, node_paths: set[str], test_paths: set[str] | None = None
+) -> tuple[dict[str, int], dict[str, int], dict[str, int], list[str]]:
     """Returns (fan_in_alt, fan_out_alt, test_fan_in_alt, unreadable_paths) over in-repo resolved
     edges, self-loops dropped, duplicates collapsed — the same edge contract as the primary
     extractor (§8). test_fan_in_alt counts importers that are in `test_paths`."""
     try:
         base_url, aliases = _alias_map(load_tsconfig(worktree))
     except TsconfigMalformed:
-        base_url, aliases = "", []  # the primary extractor records the caveat; this instrument proceeds alias-less
+        base_url, aliases = (
+            "",
+            [],
+        )  # the primary extractor records the caveat; this instrument proceeds alias-less
     importers: dict[str, set[str]] = defaultdict(set)
     out_edges: dict[str, set[str]] = defaultdict(set)
     js_ts = {p for p in node_paths if PurePosixPath(p).suffix in _EXTS}

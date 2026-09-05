@@ -106,13 +106,17 @@ class DependencyCruiserExtractor:
 
     name = "dependency-cruiser"
 
-    def __init__(self, tools_dir: Path, ts_pre_compilation_deps: bool = True, timeout: int = 900) -> None:
+    def __init__(
+        self, tools_dir: Path, ts_pre_compilation_deps: bool = True, timeout: int = 900
+    ) -> None:
         self.tools_dir = tools_dir
         self.ts_pre_compilation_deps = ts_pre_compilation_deps
         self.timeout = timeout
         self.bin = tools_dir / "node_modules" / ".bin" / "depcruise"
         if not self.bin.exists():
-            raise RuntimeError(f"dependency-cruiser not installed at {self.bin}; run `npm install` in {tools_dir}")
+            raise RuntimeError(
+                f"dependency-cruiser not installed at {self.bin}; run `npm install` in {tools_dir}"
+            )
 
     def version(self) -> str:
         p = self.tools_dir / "node_modules" / "dependency-cruiser" / "package.json"
@@ -135,10 +139,16 @@ class DependencyCruiserExtractor:
         # root would make depcruise crawl node_modules of the *target* if present.
         roots = sorted({p.split("/", 1)[0] for p in node_paths})
         args = [
-            str(self.bin), "--no-config", "--output-type", "json",
-            "--exclude", "(^|/)node_modules/",
-            "--do-not-follow", "(^|/)node_modules/",
-            "--max-depth", "0",
+            str(self.bin),
+            "--no-config",
+            "--output-type",
+            "json",
+            "--exclude",
+            "(^|/)node_modules/",
+            "--do-not-follow",
+            "(^|/)node_modules/",
+            "--max-depth",
+            "0",
         ]
         if self.ts_pre_compilation_deps:
             # Without this, `import type { X } from "./x"` produces no edge (the import is erased
@@ -150,10 +160,13 @@ class DependencyCruiserExtractor:
         env = dict(os.environ)
         env["NODE_OPTIONS"] = env.get("NODE_OPTIONS", "") + " --max-old-space-size=4096"
         try:
-            proc = subprocess.run(args, cwd=worktree, capture_output=True, check=False, env=env,
-                                  timeout=self.timeout)
+            proc = subprocess.run(
+                args, cwd=worktree, capture_output=True, check=False, env=env, timeout=self.timeout
+            )
         except subprocess.TimeoutExpired as e:
-            raise RuntimeError(f"depcruise timed out after {self.timeout}s in {worktree.name}") from e
+            raise RuntimeError(
+                f"depcruise timed out after {self.timeout}s in {worktree.name}"
+            ) from e
         stdout = proc.stdout.decode("utf-8", "replace")
         stderr = proc.stderr.decode("utf-8", "replace")
         if proc.returncode not in (0, 1) or not stdout.strip():
@@ -178,7 +191,12 @@ class DependencyCruiserExtractor:
                 if "core" in types:
                     res.external_imports += 1
                     continue
-                if could_not or "unknown" in types or "undetermined" in types or "npm-unknown" in types:
+                if (
+                    could_not
+                    or "unknown" in types
+                    or "undetermined" in types
+                    or "npm-unknown" in types
+                ):
                     if _is_relative_or_alias(spec):
                         res.unresolved_imports += 1
                         if len(res.unresolved_samples) < 50:

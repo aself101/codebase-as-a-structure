@@ -27,8 +27,14 @@ from ..gitutil import resolve_rev
 
 
 class SubstrateCache:
-    def __init__(self, cache_dir: Path, cfg: SubstrateConfig, extractor: DependencyExtractor | None,
-                 scratch_dir: Path | None = None, blame_workers: int = 8) -> None:
+    def __init__(
+        self,
+        cache_dir: Path,
+        cfg: SubstrateConfig,
+        extractor: DependencyExtractor | None,
+        scratch_dir: Path | None = None,
+        blame_workers: int = 8,
+    ) -> None:
         self.cache_dir = cache_dir
         self.cfg = cfg
         self.extractor = extractor
@@ -36,7 +42,9 @@ class SubstrateCache:
         self.blame_workers = blame_workers
         self.toolchain = toolchain_versions(extractor)
         self.fingerprint = cfg.fingerprint(self.toolchain)
-        self.attestations: dict[str, dict[str, str]] = {}  # cache key -> {sha, seed, bytes_sha256, truncated}
+        self.attestations: dict[
+            str, dict[str, str]
+        ] = {}  # cache key -> {sha, seed, bytes_sha256, truncated}
         cache_dir.mkdir(parents=True, exist_ok=True)
 
     def effective_config(self) -> dict[str, Any]:
@@ -45,7 +53,9 @@ class SubstrateCache:
 
     def path_for(self, repo: Path, sha: str, truncate: bool) -> Path:
         mode = "trunc" if truncate else "tip"
-        return self.cache_dir / f"{repo.name}-{sha[:12]}-{mode}-{self.fingerprint[:12]}.substrate.json"
+        return (
+            self.cache_dir / f"{repo.name}-{sha[:12]}-{mode}-{self.fingerprint[:12]}.substrate.json"
+        )
 
     def _load_valid(self, p: Path) -> dict[str, Any] | None:
         """A cached document is used only if it parses, is the current schema, and carries
@@ -56,7 +66,10 @@ class SubstrateCache:
         except (OSError, ValueError):
             p.unlink(missing_ok=True)
             return None
-        if doc.get("schema_version") != SCHEMA_VERSION or (doc.get("repo") or {}).get("config_fingerprint") != self.fingerprint:
+        if (
+            doc.get("schema_version") != SCHEMA_VERSION
+            or (doc.get("repo") or {}).get("config_fingerprint") != self.fingerprint
+        ):
             p.unlink(missing_ok=True)
             return None
         self._attest(p, doc, raw)
@@ -64,7 +77,8 @@ class SubstrateCache:
 
     def _attest(self, p: Path, doc: dict[str, Any], raw: bytes) -> None:
         self.attestations[p.name] = {
-            "head_sha": doc["repo"]["head_sha"], "seed": doc["seed"],
+            "head_sha": doc["repo"]["head_sha"],
+            "seed": doc["seed"],
             "bytes_sha256": hashlib.sha256(raw).hexdigest(),
             "truncated_at": doc["repo"].get("truncated_at"),
         }
@@ -76,8 +90,12 @@ class SubstrateCache:
             doc = self._load_valid(p)
             if doc is not None:
                 return doc
-        opts = ExtractOptions(rev=sha, truncate_at=(sha if truncate else None),
-                              scratch_dir=self.scratch_dir, blame_workers=self.blame_workers)
+        opts = ExtractOptions(
+            rev=sha,
+            truncate_at=(sha if truncate else None),
+            scratch_dir=self.scratch_dir,
+            blame_workers=self.blame_workers,
+        )
         sub = extract(repo, self.cfg, opts, self.extractor)
         raw = json.dumps(sub, sort_keys=True, ensure_ascii=False).encode("utf-8")
         tmp = p.with_suffix(".tmp")

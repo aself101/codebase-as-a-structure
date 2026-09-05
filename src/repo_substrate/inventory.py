@@ -80,7 +80,7 @@ def _module_key(path: str, cfg: SubstrateConfig) -> tuple[str, str]:
         if d == r:
             d = ""
         elif d.startswith(root):
-            d = d[len(root):]
+            d = d[len(root) :]
     for root in cfg.test_roots:
         r = root.rstrip("/")
         if d.endswith("/" + r):
@@ -170,12 +170,15 @@ def build_inventory(repo: Path, rev: str, cfg: SubstrateConfig) -> tuple[list[St
     nodes: list[StaticNode] = []
     for path, sha in included:
         data = blobs[sha]
-        nodes.append(StaticNode(
-            path=path, blob_sha=sha,
-            lang=LANGUAGE_BY_EXT[PurePosixPath(path).suffix],
-            size_loc=count_loc(data),
-            is_test=is_test_path(path, cfg),
-            test_proximity=prox[path],
-            nesting_proxy=nesting_proxy(data, cfg.nesting_max_bytes),
-        ))
+        nodes.append(
+            StaticNode(
+                path=path,
+                blob_sha=sha,
+                lang=LANGUAGE_BY_EXT[PurePosixPath(path).suffix],
+                size_loc=count_loc(data),
+                is_test=is_test_path(path, cfg),
+                test_proximity=prox[path],
+                nesting_proxy=nesting_proxy(data, cfg.nesting_max_bytes),
+            )
+        )
     return nodes, seed

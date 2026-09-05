@@ -112,7 +112,9 @@ def extract(
             if extractor is not None:
                 dep = extractor.extract(wt, js_ts)
             # Second instrument for the fan-in family (validation §2.4.2 G2, D-008/D-011): independent scanner.
-            fan_in_alt, fan_out_alt, test_fan_in_alt, alt_unreadable = scan_fan_in_alt(wt, js_ts, test_paths)
+            fan_in_alt, fan_out_alt, test_fan_in_alt, alt_unreadable = scan_fan_in_alt(
+                wt, js_ts, test_paths
+            )
     hist = miner.mine(repo, rev, fix_fallback)
     as_of = hist.as_of
 
@@ -137,13 +139,23 @@ def extract(
     if graph_available and js_ts:
         from scipy.stats import kendalltau
 
-        pairs = [(fan_in.get(p, 0), fan_in_alt.get(p, 0)) for p in sorted(js_ts) if p not in test_paths]
+        pairs = [
+            (fan_in.get(p, 0), fan_in_alt.get(p, 0)) for p in sorted(js_ts) if p not in test_paths
+        ]
         if len(pairs) >= 10:
             t = kendalltau([a for a, _ in pairs], [b for _, b in pairs], variant="b").statistic
             instrument_tau = None if t != t else float(t)
     instruments_disagree = instrument_tau is not None and instrument_tau < cfg.instrument_tau_min
-    graph_degraded = (not graph_available) or (resolution_rate is not None and resolution_rate < cfg.graph_quality_min) or instruments_disagree
-    centrality = pagerank(paths, dep.edges, cfg.pagerank_alpha, cfg.pagerank_max_iter, cfg.pagerank_tol) if graph_available else {}
+    graph_degraded = (
+        (not graph_available)
+        or (resolution_rate is not None and resolution_rate < cfg.graph_quality_min)
+        or instruments_disagree
+    )
+    centrality = (
+        pagerank(paths, dep.edges, cfg.pagerank_alpha, cfg.pagerank_max_iter, cfg.pagerank_tol)
+        if graph_available
+        else {}
+    )
 
     n_commits = len(hist.timeline)
     # floor, mirroring the validation split (§3.1) so the two 0.20 windows coincide exactly
@@ -173,8 +185,21 @@ def extract(
         }
         if fh is None:
             orphans.append(p)
-            m.update({k: None for k in ("commit_count", "churn_lines", "fix_count", "revert_count",
-                                        "author_count", "age_days", "last_touched_days", "introduced_idx")})
+            m.update(
+                {
+                    k: None
+                    for k in (
+                        "commit_count",
+                        "churn_lines",
+                        "fix_count",
+                        "revert_count",
+                        "author_count",
+                        "age_days",
+                        "last_touched_days",
+                        "introduced_idx",
+                    )
+                }
+            )
             m["history_missing"] = True
             recent_share[p] = None
         else:
@@ -186,11 +211,18 @@ def extract(
         metrics_by_node[p] = m
 
     # --- §6.1 population and percentiles
-    population = [p for p in paths
-                  if not metrics_by_node[p]["history_missing"]
-                  and not (cfg.exclude_tests_from_population and static_by_path[p].is_test)]
+    population = [
+        p
+        for p in paths
+        if not metrics_by_node[p]["history_missing"]
+        and not (cfg.exclude_tests_from_population and static_by_path[p].is_test)
+    ]
     percentiles_valid = len(population) >= cfg.n_min
-    pct = compute_percentiles(metrics_by_node, population) if percentiles_valid else {p: None for p in paths}
+    pct = (
+        compute_percentiles(metrics_by_node, population)
+        if percentiles_valid
+        else {p: None for p in paths}
+    )
 
     # --- §6.2 indices
     nodes_out = []
@@ -201,11 +233,15 @@ def extract(
         derived: dict[str, Any] | None
         node_pct = pct[p]
         if percentiles_valid and node_pct is not None and not m["history_missing"]:
-            indices = compute_indices(node_pct, m, m["test_fan_in"], recent_share[p], graph_degraded, cfg)
+            indices = compute_indices(
+                node_pct, m, m["test_fan_in"], recent_share[p], graph_degraded, cfg
+            )
             derived = {"percentiles": node_pct, "indices": indices}
         else:
             derived = {"percentiles": node_pct if percentiles_valid else None, "indices": None}
-        nodes_out.append({"id": p, "kind": "file", "lang": s.lang, "metrics": raw, "derived": derived})
+        nodes_out.append(
+            {"id": p, "kind": "file", "lang": s.lang, "metrics": raw, "derived": derived}
+        )
 
     # --- summary (§4 pinned definitions)
     non_merge_by_author: dict[str, int] = {}
@@ -251,11 +287,20 @@ def extract(
         "dep_graph_density": (len(dep.edges) / (n * (n - 1))) if n > 1 else 0.0,
     }
 
-    timeline = [{
-        "sha": c.sha, "ts": c.ts.isoformat(), "author": c.author, "subject": c.subject,
-        "type": c.type, "matched_rule": c.matched_rule, "nodes_touched": sorted(set(c.nodes_touched)),
-        "added": c.added, "deleted": c.deleted,
-    } for c in hist.timeline]
+    timeline = [
+        {
+            "sha": c.sha,
+            "ts": c.ts.isoformat(),
+            "author": c.author,
+            "subject": c.subject,
+            "type": c.type,
+            "matched_rule": c.matched_rule,
+            "nodes_touched": sorted(set(c.nodes_touched)),
+            "added": c.added,
+            "deleted": c.deleted,
+        }
+        for c in hist.timeline
+    ]
 
     out = {
         "schema_version": SCHEMA_VERSION,
@@ -283,8 +328,10 @@ def extract(
         "renames": dict(sorted(hist.renames.items())),
         "caveats": {
             "orphan_nodes": orphans,
-            "unresolved_import_samples": [{"from": a, "specifier": s} for a, s in dep.unresolved_samples],
-            "blame_failed": blame_failed,          # instrument broken, not absent (audit 2026-09-04)
+            "unresolved_import_samples": [
+                {"from": a, "specifier": s} for a, s in dep.unresolved_samples
+            ],
+            "blame_failed": blame_failed,  # instrument broken, not absent (audit 2026-09-04)
             "alt_scanner_unreadable": alt_unreadable,
             "tsconfig_malformed": dep.tsconfig_malformed,
         },

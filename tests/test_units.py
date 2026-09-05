@@ -22,18 +22,33 @@ FIX = re.compile(r"\b(bug|hotfix|patch)\b", re.IGNORECASE)
 # --- §7 classification [G] ------------------------------------------------------
 
 
-@pytest.mark.parametrize("subject,merge,expected", [
-    ("fix: null deref", False, ("fix", "conventional-prefix")),
-    ("Fix login bug", False, ("fix", "conventional-prefix")),          # colon optional, case-insensitive
-    ("feat(api): add thing", False, ("feat", "conventional-prefix")),
-    ('Revert "feat: x"', False, ("revert", "conventional-prefix")),     # stage 2 is dead: stage 1 catches it
-    ("Merge branch 'x'", True, ("merge", "merge-parents")),
-    ("fix typo", True, ("fix", "conventional-prefix")),                 # prefix beats merge (order pinned)
-    ("hotfix for prod", False, ("fix", "subject-regex")),
-    ("Update README", False, ("other", "default")),
-    ("fixture data added", False, ("other", "default")),               # \b: 'fixture' is not 'fix'
-    ("Fixes #12 crash", False, ("other", "default")),                  # 'Fixes' is not 'fix\\b' either — on the page
-])
+@pytest.mark.parametrize(
+    "subject,merge,expected",
+    [
+        ("fix: null deref", False, ("fix", "conventional-prefix")),
+        (
+            "Fix login bug",
+            False,
+            ("fix", "conventional-prefix"),
+        ),  # colon optional, case-insensitive
+        ("feat(api): add thing", False, ("feat", "conventional-prefix")),
+        (
+            'Revert "feat: x"',
+            False,
+            ("revert", "conventional-prefix"),
+        ),  # stage 2 is dead: stage 1 catches it
+        ("Merge branch 'x'", True, ("merge", "merge-parents")),
+        ("fix typo", True, ("fix", "conventional-prefix")),  # prefix beats merge (order pinned)
+        ("hotfix for prod", False, ("fix", "subject-regex")),
+        ("Update README", False, ("other", "default")),
+        ("fixture data added", False, ("other", "default")),  # \b: 'fixture' is not 'fix'
+        (
+            "Fixes #12 crash",
+            False,
+            ("other", "default"),
+        ),  # 'Fixes' is not 'fix\\b' either — on the page
+    ],
+)
 def test_classify_commit(subject, merge, expected):
     assert classify_commit(subject, merge, FIX) == expected
 
@@ -59,7 +74,10 @@ def test_nonzero_variant_and_out_of_population_nodes():
         "b": {"fan_in": 0, "size_loc": 20},
         "c": {"fan_in": 3, "size_loc": 30},
         "d": {"fan_in": 9, "size_loc": 40},
-        "t": {"fan_in": 9, "size_loc": 25},  # test file: outside the population, still ranked against it
+        "t": {
+            "fan_in": 9,
+            "size_loc": 25,
+        },  # test file: outside the population, still ranked against it
     }
     pct = compute_percentiles(metrics, ["a", "b", "c", "d"])
     assert pct["a"]["fan_in_nonzero"] is None and pct["b"]["fan_in_nonzero"] is None
@@ -75,9 +93,19 @@ def test_nonzero_variant_and_out_of_population_nodes():
 
 def test_indices_bounded_and_renormalized():
     cfg = SubstrateConfig()
-    pct = {"fan_in_nonzero": None, "centrality": None, "fan_out": 0.2, "size_loc": 0.8,
-           "churn_lines": 0.5, "commit_count": 0.5, "last_touched_days": 0.5,
-           "fix_count_nonzero": None, "revert_count": 0.3, "age_days": 0.9, "nesting_proxy": 0.4}
+    pct = {
+        "fan_in_nonzero": None,
+        "centrality": None,
+        "fan_out": 0.2,
+        "size_loc": 0.8,
+        "churn_lines": 0.5,
+        "commit_count": 0.5,
+        "last_touched_days": 0.5,
+        "fix_count_nonzero": None,
+        "revert_count": 0.3,
+        "age_days": 0.9,
+        "nesting_proxy": 0.4,
+    }
     m = {"fan_in": 0, "fix_count": 0, "commit_count": 4}
     idx = compute_indices(pct, m, 0.5, 0.25, False, cfg)
     for k, v in idx.items():
@@ -93,9 +121,13 @@ def test_indices_bounded_and_renormalized():
 def test_graph_degraded_drops_graph_inputs():
     cfg = SubstrateConfig()
     pct = {"fan_in_nonzero": 0.9, "centrality": 0.9, "fan_out": 0.5, "size_loc": 0.5}
-    idx = compute_indices(pct, {"fan_in": 5, "fix_count": 0, "commit_count": 1}, 0.0, None, True, cfg)
+    idx = compute_indices(
+        pct, {"fan_in": 5, "fix_count": 0, "commit_count": 1}, 0.0, None, True, cfg
+    )
     assert idx["load_index_degraded"] is True
-    assert idx["load_index"] == pytest.approx(0.5)  # only inv_fan_out and size_loc remain, equal weight
+    assert idx["load_index"] == pytest.approx(
+        0.5
+    )  # only inv_fan_out and size_loc remain, equal weight
 
 
 # --- §6.2.2 pagerank [E] ----------------------------------------------------------------
@@ -137,14 +169,20 @@ def test_fan_counts_and_edge_contract():
 def test_nesting_proxy_pinned_edge_cases():
     assert nesting_proxy(b"", 10**6) == 0
     assert nesting_proxy(b"a\nb\n", 10**6) == 0
-    assert nesting_proxy(b"a\n  b\n    c\n", 10**6) == 2          # modal width 2
-    assert nesting_proxy(b"a\n    b\n    c\n        d\n  e\n", 10**6) == 2  # widths {4:2, 8:1, 2:1} → 4; 8//4 = 2
-    assert nesting_proxy(b"a\n    b\n        c\n  d\n", 10**6) == 4  # widths {4:1, 8:1, 2:1} tie → 2; 8//2 = 4
-    assert nesting_proxy(b"a\n\tb\n\t\tc\n", 10**6) == 2             # tabs = one level each
-    assert nesting_proxy(b"a\n  b\n    c\n\t  d\n", 10**6) == 2      # mixed: tabs + spaces//width → 1+1
-    assert nesting_proxy(b"a\n  b\n    c\n", 3) is None              # oversize → None
-    assert nesting_proxy(b"a\n\n   \nb\n", 10**6) == 0                # blank lines skipped
-    assert nesting_proxy(b"a\n  b\n   c\n", 10**6) == 1              # tie {2:1, 3:1} → smaller width 2; 3//2 = 1
+    assert nesting_proxy(b"a\n  b\n    c\n", 10**6) == 2  # modal width 2
+    assert (
+        nesting_proxy(b"a\n    b\n    c\n        d\n  e\n", 10**6) == 2
+    )  # widths {4:2, 8:1, 2:1} → 4; 8//4 = 2
+    assert (
+        nesting_proxy(b"a\n    b\n        c\n  d\n", 10**6) == 4
+    )  # widths {4:1, 8:1, 2:1} tie → 2; 8//2 = 4
+    assert nesting_proxy(b"a\n\tb\n\t\tc\n", 10**6) == 2  # tabs = one level each
+    assert nesting_proxy(b"a\n  b\n    c\n\t  d\n", 10**6) == 2  # mixed: tabs + spaces//width → 1+1
+    assert nesting_proxy(b"a\n  b\n    c\n", 3) is None  # oversize → None
+    assert nesting_proxy(b"a\n\n   \nb\n", 10**6) == 0  # blank lines skipped
+    assert (
+        nesting_proxy(b"a\n  b\n   c\n", 10**6) == 1
+    )  # tie {2:1, 3:1} → smaller width 2; 3//2 = 1
 
 
 def test_count_loc_non_blank():
@@ -157,13 +195,19 @@ def test_count_loc_non_blank():
 def test_test_proximity_tiers():
     cfg = SubstrateConfig()
     paths = [
-        "lib/rules/foo.js", "tests/lib/rules/foo.js",              # mirrored sibling → 1.0
-        "src/util/bar.ts", "src/util/bar.test.ts",                  # same-dir sibling → 1.0
-        "src/a/baz.ts", "src/a/__tests__/baz.test.ts",              # __tests__ sibling → 1.0
-        "src/security/utils/san.ts", "test/unit/utils/san.test.js", # unique stem, different tree → 1.0
-        "src/x/index.ts", "src/y/index.ts", "test/index.test.ts",   # ambiguous stem → 0.5 each
-        "src/util/lonely.ts",                                       # same dir as bar's test → 0.5
-        "src/nowhere/zzz.ts",                                       # → 0.0
+        "lib/rules/foo.js",
+        "tests/lib/rules/foo.js",  # mirrored sibling → 1.0
+        "src/util/bar.ts",
+        "src/util/bar.test.ts",  # same-dir sibling → 1.0
+        "src/a/baz.ts",
+        "src/a/__tests__/baz.test.ts",  # __tests__ sibling → 1.0
+        "src/security/utils/san.ts",
+        "test/unit/utils/san.test.js",  # unique stem, different tree → 1.0
+        "src/x/index.ts",
+        "src/y/index.ts",
+        "test/index.test.ts",  # ambiguous stem → 0.5 each
+        "src/util/lonely.ts",  # same dir as bar's test → 0.5
+        "src/nowhere/zzz.ts",  # → 0.0
     ]
     prox = proximity_tiers(paths, cfg)
     assert prox["lib/rules/foo.js"] == 1.0
@@ -181,15 +225,20 @@ def test_test_proximity_tiers():
 
 def _c(sha, touched, merge=False):
     from datetime import datetime
-    return CommitRecord(sha, datetime(2026, 1, 1), "a@b", "x", "other", "default", touched, 0, 0, merge)
+
+    return CommitRecord(
+        sha, datetime(2026, 1, 1), "a@b", "x", "other", "default", touched, 0, 0, merge
+    )
 
 
 def test_cochange_degree_threshold_and_caps():
     tl = [
-        _c("1", ["a", "b"]), _c("2", ["a", "b"]),                # a–b twice → counts
-        _c("3", ["a", "c"]),                                     # a–c once → below cochange_min
-        _c("4", ["a", "d"], merge=True), _c("5", ["a", "d"], merge=True),  # merges ignored
-        _c("6", [f"f{i}" for i in range(40)] + ["a", "b"]),      # bulk commit > cap ignored
+        _c("1", ["a", "b"]),
+        _c("2", ["a", "b"]),  # a–b twice → counts
+        _c("3", ["a", "c"]),  # a–c once → below cochange_min
+        _c("4", ["a", "d"], merge=True),
+        _c("5", ["a", "d"], merge=True),  # merges ignored
+        _c("6", [f"f{i}" for i in range(40)] + ["a", "b"]),  # bulk commit > cap ignored
     ]
     deg = cochange_degree(tl, cochange_min=2, max_files=30)
     assert deg == {"a": 1, "b": 1}
@@ -217,5 +266,8 @@ def test_fingerprint_moves_with_weights_and_toolchain():
     from dataclasses import replace
 
     from repo_substrate.config import IndexWeights
-    w = IndexWeights(load_index={"fan_in_nonzero": 0.6, "centrality": 0.2, "inv_fan_out": 0.1, "size_loc": 0.1})
+
+    w = IndexWeights(
+        load_index={"fan_in_nonzero": 0.6, "centrality": 0.2, "inv_fan_out": 0.1, "size_loc": 0.1}
+    )
     assert replace(cfg, weights=w).fingerprint(tv) != f1

@@ -66,12 +66,17 @@ def _stability_value(node: dict[str, Any], sig: str) -> float | None:
 
 
 def population(sub: dict[str, Any], exclude_tests: bool = True) -> list[dict[str, Any]]:
-    return [nd for nd in sub["nodes"]
-            if (nd.get("derived") or {}).get("indices") is not None
-            and not (exclude_tests and nd["metrics"].get("is_test"))]
+    return [
+        nd
+        for nd in sub["nodes"]
+        if (nd.get("derived") or {}).get("indices") is not None
+        and not (exclude_tests and nd["metrics"].get("is_test"))
+    ]
 
 
-def run_stability(full: dict[str, Any], pert: dict[str, Any], vcfg: ValidationConfig) -> tuple[dict[str, dict[str, Any]], int, int]:
+def run_stability(
+    full: dict[str, Any], pert: dict[str, Any], vcfg: ValidationConfig
+) -> tuple[dict[str, dict[str, Any]], int, int]:
     """§2.4.1 (as revised by D-008): per-signal movement between HEAD and HEAD with the
     last K commits removed, over population nodes present in both runs and NOT touched
     by a removed commit. A touched file's recency and churn legitimately move — that is
@@ -87,7 +92,9 @@ def run_stability(full: dict[str, Any], pert: dict[str, Any], vcfg: ValidationCo
     n_excluded = len(common_all) - len(common)
     excluded_frac = (n_excluded / len(common_all)) if common_all else 1.0
     # D-011 floors: the test must not get easier as the removed commits touch more of the repo.
-    population_ok = len(common) >= vcfg.stability_min_n and excluded_frac <= vcfg.stability_max_excluded_frac
+    population_ok = (
+        len(common) >= vcfg.stability_min_n and excluded_frac <= vcfg.stability_max_excluded_frac
+    )
     out: dict[str, dict[str, Any]] = {}
     for sig in GROUNDING:
         deltas = []
@@ -99,28 +106,54 @@ def run_stability(full: dict[str, Any], pert: dict[str, Any], vcfg: ValidationCo
                 continue
             head_vals.add(float(a))
             deltas.append(abs(float(a) - float(b)))
-        base = {"k": k, "eps": vcfg.stability_eps, "delta": vcfg.stability_delta, "n": len(deltas),
-                "n_excluded_touched": n_excluded, "excluded_frac": excluded_frac,
-                "distinct_values": len(head_vals)}
+        base = {
+            "k": k,
+            "eps": vcfg.stability_eps,
+            "delta": vcfg.stability_delta,
+            "n": len(deltas),
+            "n_excluded_touched": n_excluded,
+            "excluded_frac": excluded_frac,
+            "distinct_values": len(head_vals),
+        }
         if not deltas or not population_ok:
-            out[sig] = {**base, "median_abs_delta": None, "max_abs_delta": None, "p95_abs_delta": None,
-                        "passed": None, "reason": "insufficient_stability_population"}
+            out[sig] = {
+                **base,
+                "median_abs_delta": None,
+                "max_abs_delta": None,
+                "p95_abs_delta": None,
+                "passed": None,
+                "reason": "insufficient_stability_population",
+            }
             continue
         # D-011 degeneracy: a near-constant signal passes any stability budget trivially (Popper's
         # constant objection). It is not certified by stability; it is degenerate.
         if len(head_vals) < vcfg.degenerate_min_distinct:
-            out[sig] = {**base, "median_abs_delta": 0.0, "max_abs_delta": 0.0, "p95_abs_delta": 0.0,
-                        "passed": False, "reason": "degenerate"}
+            out[sig] = {
+                **base,
+                "median_abs_delta": 0.0,
+                "max_abs_delta": 0.0,
+                "p95_abs_delta": 0.0,
+                "passed": False,
+                "reason": "degenerate",
+            }
             continue
         med, mx = float(median(deltas)), float(max(deltas))
         p95 = float(np.quantile(deltas, 0.95))
         passed = bool(med <= vcfg.stability_eps and mx <= vcfg.stability_delta)
-        out[sig] = {**base, "median_abs_delta": med, "max_abs_delta": mx, "p95_abs_delta": p95,
-                    "passed": passed, "reason": None if passed else "unstable"}
+        out[sig] = {
+            **base,
+            "median_abs_delta": med,
+            "max_abs_delta": mx,
+            "p95_abs_delta": p95,
+            "passed": passed,
+            "reason": None if passed else "unstable",
+        }
     return out, len(common), n_excluded
 
 
-def _tau_block(pop: list[dict[str, Any]], sig: str, cp: str, vcfg: ValidationConfig, floor: float | None) -> dict[str, Any]:
+def _tau_block(
+    pop: list[dict[str, Any]], sig: str, cp: str, vcfg: ValidationConfig, floor: float | None
+) -> dict[str, Any]:
     xs, ys = [], []
     for nd in pop:
         a = _signal_value(nd, sig)
@@ -134,14 +167,28 @@ def _tau_block(pop: list[dict[str, Any]], sig: str, cp: str, vcfg: ValidationCon
     tau = kendall_tau_b(xs, ys)
     lo, hi = bootstrap_ci(xs, ys, kendall_tau_b, vcfg.bootstrap_n, vcfg.rng_seed)
     pval = permutation_p(xs, ys, kendall_tau_b, vcfg.permutation_n, vcfg.rng_seed + 1)
-    block: dict[str, Any] = {"counterpart": cp, "n": len(xs), "tau_b": tau, "tau_b_ci": [lo, hi], "permutation_p": pval}
+    block: dict[str, Any] = {
+        "counterpart": cp,
+        "n": len(xs),
+        "tau_b": tau,
+        "tau_b_ci": [lo, hi],
+        "permutation_p": pval,
+    }
     if floor is not None:
         passed = bool(not math.isnan(lo) and lo >= floor)
-        block.update({"tau_floor": floor, "passed": passed, "reason": None if passed else "corroboration_fail"})
+        block.update(
+            {
+                "tau_floor": floor,
+                "passed": passed,
+                "reason": None if passed else "corroboration_fail",
+            }
+        )
     return block
 
 
-def run_corroboration(full: dict[str, Any], vcfg: ValidationConfig) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, dict[str, Any]]]]:
+def run_corroboration(
+    full: dict[str, Any], vcfg: ValidationConfig
+) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, dict[str, Any]]]]:
     """§2.4.2: G2 second-instrument and G3 cross-modal τ-b with bootstrap lower CI bound;
     reported correlates for every signal that declares them."""
     pop = population(full)
@@ -154,9 +201,19 @@ def run_corroboration(full: dict[str, Any], vcfg: ValidationConfig) -> tuple[dic
         elif cls == "G3":
             corr[sig] = _tau_block(pop, sig, g["counterpart"], vcfg, vcfg.tau_asserted)
         elif cls == "G1":
-            corr[sig] = {"counterpart": None, "instrument": g["instrument"], "passed": True, "reason": None}
+            corr[sig] = {
+                "counterpart": None,
+                "instrument": g["instrument"],
+                "passed": True,
+                "reason": None,
+            }
         else:  # G4 — decided in the gate from its inputs
-            corr[sig] = {"counterpart": None, "inputs": g["inputs"], "passed": None, "reason": "derived"}
+            corr[sig] = {
+                "counterpart": None,
+                "inputs": g["inputs"],
+                "passed": None,
+                "reason": "derived",
+            }
         for c in g.get("correlates", []):
             correlates.setdefault(sig, {})[c] = _tau_block(pop, sig, c, vcfg, None)
     return corr, correlates
@@ -186,7 +243,9 @@ def parse_blind_ranking(text: str) -> dict[int, list[str]]:
     return lists
 
 
-def run_recognition(full: dict[str, Any], blind_path: Path | None, k: int = 10) -> tuple[dict[str, dict[str, Any]], str | None]:
+def run_recognition(
+    full: dict[str, Any], blind_path: Path | None, k: int = 10
+) -> tuple[dict[str, dict[str, Any]], str | None]:
     """§2.4.3: overlap@k and τ-b between the developer's sealed ranks and the signal's
     values on the ranked files. Reported, never gating (n = 1)."""
     if blind_path is None or not blind_path.exists():
@@ -200,31 +259,56 @@ def run_recognition(full: dict[str, Any], blind_path: Path | None, k: int = 10) 
         if not human:
             out[sig] = {"n": 1, "list": num, "ranked": 0, "missing": missing}
             continue
-        scored = sorted(((_signal_value(nd, sig) or 0.0, pid) for pid, nd in nodes.items()
-                         if (nd.get("derived") or {}).get("indices") is not None), key=lambda t: (-t[0], t[1]))
+        scored = sorted(
+            (
+                (_signal_value(nd, sig) or 0.0, pid)
+                for pid, nd in nodes.items()
+                if (nd.get("derived") or {}).get("indices") is not None
+            ),
+            key=lambda t: (-t[0], t[1]),
+        )
         top = [pid for _, pid in scored[:k]]
         overlap = len(set(human) & set(top)) / k
         ranks = [float(-i) for i in range(len(human))]  # rank 1 → highest
         vals = [float(_signal_value(nodes[p], sig) or 0.0) for p in human]
         tau = kendall_tau_b(ranks, vals) if len(human) >= 3 else float("nan")
-        out[sig] = {"n": 1, "list": num, "ranked": len(human), "missing": missing,
-                    "overlap_at_k": overlap, "k": k, "tau_b_on_ranked": tau}
+        out[sig] = {
+            "n": 1,
+            "list": num,
+            "ranked": len(human),
+            "missing": missing,
+            "overlap_at_k": overlap,
+            "k": k,
+            "tau_b_on_ranked": tau,
+        }
     return out, str(blind_path)
 
 
-def run_asserted(repo: Path, cache: SubstrateCache, vcfg: ValidationConfig, blind_path: Path | None) -> RepoAsserted:
+def run_asserted(
+    repo: Path, cache: SubstrateCache, vcfg: ValidationConfig, blind_path: Path | None
+) -> RepoAsserted:
     full = cache.get(repo, "HEAD")
     timeline = full["timeline"]
     k = vcfg.stability_perturbation_k
     if len(timeline) <= k + 1:
-        raise ValueError(f"{repo.name}: too few commits ({len(timeline)}) for stability perturbation K={k}")
+        raise ValueError(
+            f"{repo.name}: too few commits ({len(timeline)}) for stability perturbation K={k}"
+        )
     pert_sha = timeline[-(k + 1)]["sha"]
     pert = cache.get(repo, pert_sha, truncate=True)
     stability, n_common, n_touched = run_stability(full, pert, vcfg)
     corr, correlates = run_corroboration(full, vcfg)
     recog, ref = run_recognition(full, blind_path)
     return RepoAsserted(
-        name=full["repo"]["name"], head_sha=full["repo"]["head_sha"], perturbed_sha=pert_sha,
-        n_population=len(population(full)), n_compared=n_common, n_excluded_touched=n_touched,
-        stability=stability, corroboration=corr, correlates=correlates, recognition=recog, recognition_ref=ref,
+        name=full["repo"]["name"],
+        head_sha=full["repo"]["head_sha"],
+        perturbed_sha=pert_sha,
+        n_population=len(population(full)),
+        n_compared=n_common,
+        n_excluded_touched=n_touched,
+        stability=stability,
+        corroboration=corr,
+        correlates=correlates,
+        recognition=recog,
+        recognition_ref=ref,
     )
