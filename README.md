@@ -1,0 +1,45 @@
+# codebase-as-structure
+
+*A single git repository rendered as a building you can read. The picture is diagnostic, not decorative: every visual feature is a function of a measured signal, and a feature may not render unless its signal has earned it.*
+
+**Package:** `repo-substrate` (C1 + the validation gate). **Status (2026-09-04):** M1 in progress — the substrate and the gate are built and reviewed; the tuned-weight verdict is pending. Nothing renders yet.
+
+## What is new here, exactly
+
+The building metaphor is not new. **CodeCity** (Wettel & Lanza, 2007) drew classes as buildings sized by metrics. **CodeScene** (Tornhill) visualizes churn × complexity hotspots from version history. **Nagappan & Zimmermann** (2005 onward) and Google's 2011 bug-prediction work established that churn and fix history predict where defects land. This project stands on all three and claims none of them.
+
+The claim is narrower: a **temporal-holdout validation gate between the metric and the picture**. Each signal the substrate emits carries a `validation_status`. The two predictive indices earn `validated` only by beating recency and busyness baselines on a held-out window of commits, on repos they were not tuned on. Descriptive signals earn `asserted` only by a stability budget plus corroboration from an independent instrument or a different modality. A named structural feature — a foundation, a toothpick wing, a flooded basement — may rest only on signals that passed. Anything else renders as `decorative`, counted, and excluded from every diagnostic claim.
+
+That claim is defensible only insofar as the gate can fail and the report shows it failing. So far it has: with placeholder weights, both predictive indices failed on all four reference repos, and the report says by how much against which baseline. The second import instrument caught the primary one dropping `import type` edges on typeorm. Those are the results this README is allowed to cite, and no more.
+
+## Layout
+
+| Path | What |
+|---|---|
+| `codebase-as-structure-system-spec.md` | Parent spec: thesis, six components, cross-cutting contracts (determinism, provenance, the anti-horoscope gate) |
+| `repo-substrate-spec.md` | C1: the substrate — per-file metrics, percentiles, composite indices, dependency edges, timeline |
+| `validation-spec.md` | The gate: temporal holdout, the asserted bar (stability + grounding classes G1–G4), `validation.json` |
+| `structural-mapper-spec.md` | C3 (draft skeleton): the ruleset that names features, under the gate |
+| `DECISIONS.md` | Append-only decision log, D-001 onward. Why the artifact is shaped this way |
+| `checklists/` | Testable contracts per spec, each pointing at the test that covers it |
+| `blind/` | Sealed recognition rankings per reference repo (n = 1, non-gating, provenance stated in-file) |
+| `src/repo_substrate/` | The package: `substrate extract` and `substrate-validate run \| tune` |
+| `tests/` | 62 tests incl. a scripted synthetic repository, verdict-path tests, and integrity checks |
+| `docs/` | Review history: the June tribunal, the archived prototype, notes |
+
+## Running it
+
+```
+uv sync && npm install
+uv run substrate extract <repo> -o out/x.substrate.json --report out/x.report.md
+uv run substrate-validate tune --repo <tuning-repo> --repo <tuning-repo> --out config/
+uv run substrate-validate run --test-repo <a> --test-repo <b> --tuning-repo <c> --tuning-repo <d> \
+    --config config/tuned.toml --out out/validation
+uv run pytest -q
+```
+
+The substrate report is stamped **UNGATED**: it consults no `validation.json` and makes no diagnosis. The holdout report is where the gate speaks.
+
+## How work is done here
+
+Decisions go in `DECISIONS.md` before or alongside the work they govern. Every review run is saved to the UluOps tracker project `codebase-as-structure`. A decision that closes an exploit names the code that enforces it, in the decision itself; a decision that cannot name code has not closed anything.

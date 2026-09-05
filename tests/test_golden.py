@@ -8,9 +8,9 @@ from __future__ import annotations
 import json
 
 import pytest
+from conftest import run_extract
 
 from repo_substrate.config import IndexWeights, SubstrateConfig
-from conftest import run_extract
 
 
 @pytest.fixture

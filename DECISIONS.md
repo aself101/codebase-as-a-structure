@@ -160,3 +160,30 @@ Resolves the four questions the June 19 proposal left open. Referenced by the tr
 **Not done, logged to the tracker:** an adversarial synthetic repo for G2 (alias-heavy, dynamic imports); the edge-dropout sweep that would show whether `centrality` inherits `fan_in`'s certification; the population-drift variant of the stability check; spec §4/§6.1 schema blocks rewritten to the emitted shape; the wall-time split option removed from §3.1; checklists re-derived.
 
 **Why.** The circumvention pass's summary is the reason: "nothing here requires expertise, because the gate's floors are literals in files the operator owns." The fingerprint was the right detector and was correctly built over config-space; it covered no bytes on disk and published no preimage. Both are now covered. What remains social is the choice of reference repos, which is pre-registered and flagged, and the honesty of a blind-ranking's provenance line, which is now cross-checked against git.
+
+## D-013 · 2026-09-04 · Standing rules from the first review cycle; the review roster as an experiment; the name
+
+**Context.** Alex had a Claude Desktop session read the tracker runs side by side and write `docs/notes-for-fable.md`. Three of its seven points were already in the D-012 batch; the rest are adopted here.
+
+**Rule 1 — a decision that closes an exploit names the code that enforces it.** In the decision itself. A decision that cannot name code has not closed anything; it has moved the exploit from the specification into configuration or discipline, which is exactly what the circumvention forecast found D-008/D-009/D-010 had done. D-012 follows this rule; every later decision must.
+
+**Rule 2 — the review roster is recorded with its rationale, so the roster choice can be scored later.** Alex delegated lens selection, which makes each review cycle a dataset: a model-chosen validator roster against a real corpus, scorable by RAH for whether the picks were the reliable agents or the relevant-sounding ones. First cycle (tracker runs 4–9, workflow `m1-review`):
+
+| Agent | Why chosen | Decision / score | Verdict on the choice |
+|---|---|---|---|
+| python-validator | mechanical hygiene | PASS 77 | correct, low information |
+| code-auditor | runtime correctness; subprocess/worktree/NaN paths | UNSOUND 68 | **highest yield** — five reproduced bugs, two invisible to the fingerprint |
+| test-architect | the golden test is what determinism rests on | IMPROVE 74 (auto-fail) | correct — mutation testing proved the verdict path was unguarded |
+| software-architecture-expert-validator | four specs claim things about the code nobody had checked | IMPRECISE 74 | correct — caught networkx, toolchain roles, §6.1 shape drift |
+| popper-validator | the June root finding was Popper's; closure test | UNCORROBORATED 87 | **correct** — predicted the `fan_in_nonzero` bug before the run confirmed it |
+| circumvention-forecaster | the June highest-severity lens; scored 38 then | VULNERABLE 88 | **most informative number on the project** — the "exploits moved, didn't close" pattern |
+
+Not chosen: Husserl (fulfillment audit fits M2, when there is a rendered experience), Hume (re-run at M2, when the stance becomes visible to a viewer), Wittgenstein (deferred to the C3 ruleset, where the naming lives).
+
+Definition versions and token counts were not attached to runs 4–9 at save time; attaching them is a tracker follow-up, and future saves carry them.
+
+**Rule 3 — a minimal consumer of `validation.json` exists from early M2.** Nobody shares a `validation.json`; the cutaway is the distribution mechanism for the measurement, and a consumer, even a throwaway one, is what makes the gate real (circumvention A12). M2 starts with a skeleton-schema sketch, strata plus one or two features, no C5.
+
+**Rule 4 — the novelty claim is exact.** README states the prior art (CodeCity; CodeScene; Nagappan & Zimmermann; Google 2011) and claims only the temporal-holdout gate between metric and picture, citing only results the report has produced.
+
+**Name (system-spec open question #5, substrate open question #9).** *Resolved.* The system is **codebase-as-structure** (the repository name, the parent spec, the tracker project). The standalone product — C1 plus the gate — is **repo-substrate** (the Python package and the CLI). Two names because they are two things: the second must be valuable even if the first never renders (`repo-substrate-spec.md` §1). No further naming work.
