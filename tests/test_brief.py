@@ -212,7 +212,7 @@ def test_d030_lint_closes_the_perverse_routes(sub):
         f["population"],
         f["diagnostic_count"],
         f["decorative"]["count"],
-        f["co_located_count"],
+        f["co_located_rooms"],
         *f["wings"].values(),
         *(x["count"] for x in f["features"]),
     }:
@@ -372,7 +372,85 @@ def test_lint_reads_the_connective_prose(sub):
 
 def test_facts_sheet_carries_overlaps_wing_counts_and_all_profile_co_location(sub):
     f = facts(_skeleton(sub), sub)
-    assert "overlaps" in f and "co_located_count_base" in f and f["gate_fingerprint"]
+    assert "overlaps" in f and "co_located_rooms_base_profile" in f and f["gate_fingerprint"]
     for x in f["features"]:
         assert sum(x["by_wing"].values()) == x["count"]
-    assert f["co_located_count"] >= f["co_located_count_base"]
+    assert f["co_located_rooms"] >= f["co_located_rooms_base_profile"]
+    assert f["units"]["co_located_rooms"].startswith("rooms")
+    for x in f["features"]:
+        assert x["dominant_dir"]["n"] <= x["count"]
+
+
+def test_lint_types_the_sheet(sub):
+    """D-037 (second seating, run 18): a number wears its unit (R12), an identity between
+    differing predicates names the inert conjunct (R13), 'validated' is refused where no signal
+    holds it (R14), a feature's dominant directory is named and cited (R15), rankings are refused."""
+    f = facts(_skeleton(sub), sub)
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    base = _good_draft(f)
+    assert lint(base, f) == []
+    # R12: the diagnostic-mark count called rooms; the population called marks
+    if f["diagnostic_count"] not in {x["count"] for x in f["features"]} | {f["population"]}:
+        bad = (
+            base
+            + f"There are {f['diagnostic_count']} rooms in all [{feat['feature']} ×{feat['count']}].\n\n"
+        )
+        assert "R12-unit" in {v.rule for v in lint(bad, f)}
+    if f["population"] not in {x["count"] for x in f["features"]}:
+        bad = (
+            base
+            + f"The survey records {f['population']} marks [{feat['feature']} ×{feat['count']}].\n\n"
+        )
+        assert "R12-unit" in {v.rule for v in lint(bad, f)}
+    # R14
+    val = (
+        base
+        + f"None of these rests on a validated measure [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R14-status" in {v.rule for v in lint(val, f)}
+    # R11 ranking
+    rank = base + f"The widest set is {feat['feature']} [{feat['feature']} ×{feat['count']}].\n\n"
+    assert "R11-share" in {v.rule for v in lint(rank, f)}
+    # R13: an identical overlap with an inert conjunct must say the signal excludes nothing
+    g = dict(f)
+    key = f"{feat['profile']}/{feat['feature']}"
+    g["overlaps"] = [
+        {
+            "a": key,
+            "b": "p/other_mark",
+            "relation": "identical",
+            "n": feat["count"],
+            "inert_terms": ["load_index >= 0.10"],
+        }
+    ]
+    together = (
+        base
+        + f"The {feat['feature']} rooms are the other_mark rooms [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R13-inert" in {v.rule for v in lint(together, g)}
+    said = (
+        base
+        + f"The {feat['feature']} rooms are the other_mark rooms; load_index excludes nothing here [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R13-inert" not in {v.rule for v in lint(said, g)}
+    # R15: a feature whose rooms sit in one directory must name it where cited
+    h = json.loads(json.dumps(f))
+    rooms = [f"lib/inner/{i}.js" for i in range(6)]
+    deep = dict(feat)
+    deep.update(
+        {
+            "feature": "deep_mark",
+            "rooms": rooms,
+            "count": 6,
+            "by_wing": {"lib": 6},
+            "dominant_dir": {"dir": "lib/inner", "n": 6},
+        }
+    )
+    h["features"].append(deep)
+    silent = base + f"Six rooms carry deep_mark [deep_mark ×6].\n\n"
+    assert "R15-composition" in {v.rule for v in lint(silent, h)}
+    shown = (
+        base + f"Six rooms carry deep_mark, all 6 in lib/inner [deep_mark ×6: lib/inner/0.js].\n\n"
+    )
+    rules = {v.rule for v in lint(shown, h)}
+    assert "R15-composition" not in rules and "R10-prefix" not in rules

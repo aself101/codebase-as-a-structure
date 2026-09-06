@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.3.0"
+BRIEF_VERSION = "0.4.0"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -34,8 +34,8 @@ DEFAULT_MODEL = "claude-opus-5"
 
 STANCE = (
     "The building is drawn as it is, warts and all. The diagnosis presupposes a norm of "
-    "health — load should be reinforced, old load-bearing code should be visited, fixes "
-    "should not concentrate — and that norm is a maintenance stance the reader may reject, "
+    "health — load should be reinforced, old load-bearing code should be visited — and that "
+    "norm is a maintenance stance the reader may reject, "
     "stated so it reads as an ought, not a fact (system spec, stance disclosure)."
 )
 
@@ -83,6 +83,14 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         for r in e["rooms"]:
             bw[wing_of(r)] = bw.get(wing_of(r), 0) + 1
         e["by_wing"] = dict(sorted(bw.items()))
+        # D-037: the largest single directory in the set — the composition a two-room exemplar
+        # list can hide (typeorm's dark_room is half src/error)
+        bd: dict[str, int] = {}
+        for r in e["rooms"]:
+            d = r.rsplit("/", 1)[0] if "/" in r else "(root)"
+            bd[d] = bd.get(d, 0) + 1
+        top = max(bd.items(), key=lambda kv: (kv[1], kv[0])) if bd else ("(root)", 0)
+        e["dominant_dir"] = {"dir": top[0], "n": top[1]}
     wings: dict[str, int] = {}
     for nid in skeleton["strata"]["by_node"]:
         w = wing_of(nid)
@@ -103,7 +111,15 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
     for i, (ka, ra) in enumerate(diag):
         for kb, rb in diag[i + 1 :]:
             if ra == rb:
-                overlaps.append({"a": ka, "b": kb, "relation": "identical", "n": len(ra)})
+                # D-037: when two predicates draw one set, the conjuncts one has and the other
+                # lacks did no work on this repository; the sheet names them so the prose cannot
+                # read the identity as two measurements agreeing
+                sa = set(feats[ka]["predicate"].replace("∧", "and").split(" and "))
+                sb = set(feats[kb]["predicate"].replace("∧", "and").split(" and "))
+                inert = sorted(t.strip() for t in (sa ^ sb))
+                overlaps.append(
+                    {"a": ka, "b": kb, "relation": "identical", "n": len(ra), "inert_terms": inert}
+                )
             elif ra < rb:
                 overlaps.append({"a": ka, "b": kb, "relation": "within", "n": len(ra)})
             elif rb < ra:
@@ -131,8 +147,19 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "count": s["decorative_count"],
             "features": sorted(s.get("decorative_features") or []),
         },
-        "co_located_count": co_located_all,
-        "co_located_count_base": s.get("co_located_count", 0),
+        "co_located_rooms": co_located_all,
+        "co_located_rooms_base_profile": s.get("co_located_count", 0),
+        # D-037: every building-level number carries its unit; a count of rooms is not a count of marks
+        "units": {
+            "population": "rooms",
+            "wings": "rooms",
+            "diagnostic_count": "marks",
+            "diagnostic_count_base": "marks",
+            "decorative.count": "marks",
+            "co_located_rooms": "rooms carrying two or more diagnostic marks, across all profiles",
+            "co_located_rooms_base_profile": "rooms marked in more than one profile (base summary)",
+            "feature.count": "rooms (one mark per room)",
+        },
         "overlaps": overlaps,
         "calibration": "in-repo, self-relative (system spec §5.3); one frame — stability is read from a time-lapse, not from this page",
         "gate_fingerprint": gate_fp,
@@ -239,10 +266,10 @@ CONSEQUENCE_PHRASES = [
 # The disclosure clause is struck from a sentence before R1 reads it — the clause is not an
 # amnesty for the rest of the sentence (Wittgenstein, D-028).
 DISCLOSURE_CLAUSES = [
-    r"not a claim about what (breaks|happens|fails|follows)[^.;,]*",
-    r"(denotes|names|is) (a )?position[^.;,]*",
-    r"a position in the import graph[^.;,]*",
-    r"position, not [^.;,]*",
+    r"not a claim about [^.;,]*",  # "what breaks", "damage", "condition" — the clause, not a phrase (D-037)
+    r"(denotes|names|is) (a )?(position|location|place)[^.;,]*",
+    r"a (position|location|place) in the import graph[^.;,]*",
+    r"(position|location), not [^.;,]*",
 ]
 # Whole-building labels (D-019: no archetype in v0).
 BUILDING_LABELS = {
@@ -277,6 +304,15 @@ NEGATED_DIAGNOSIS = re.compile(r"\b(?:not|no|nothing|never|neither|nor)\b[^.;]{0
 DISTRIBUTION = re.compile(
     r"\b(?:mostly|most of|largely|predominantly|mainly|chiefly|concentrated in|the bulk|"
     r"spread across|scattered|throughout|every wing|all wings|all of the wings|reaches into every)\b"
+)
+# D-037: comparatives and superlatives set one mark against another; the register forbids it
+COMPARISON = re.compile(
+    r"\b(?:widest|largest|biggest|broadest|narrowest|smallest|fewest|greatest|"
+    r"wider than|larger than|bigger than|smaller than|fewer than|more than any|the most \w+ set)\b"
+)
+# D-037: a number followed by its unit noun ("160 of those marks", "70 rooms")
+UNIT_USE = re.compile(
+    r"\b(\d{1,7})\s+(?:of\s+(?:those|these|the|its|the\s+\w+)\s+)?(rooms?|marks?)\b"
 )
 # a directory-like token: two or more path segments, not ending in a file extension
 DIRECTORY = re.compile(r"(?<![\w/@.-])([A-Za-z0-9_@.-]+(?:/[A-Za-z0-9_@.-]+)+)(?![\w/])")
@@ -387,8 +423,8 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
     allowed_numbers.add(facts_doc["diagnostic_count"])
     allowed_numbers.add(facts_doc.get("diagnostic_count_base", facts_doc["diagnostic_count"]))
     allowed_numbers.add(facts_doc["decorative"]["count"])
-    allowed_numbers.add(facts_doc["co_located_count"])
-    allowed_numbers.add(facts_doc.get("co_located_count_base", facts_doc["co_located_count"]))
+    allowed_numbers.add(facts_doc["co_located_rooms"])
+    allowed_numbers.add(facts_doc.get("co_located_rooms_base_profile", 0))
     allowed_numbers.update(facts_doc["wings"].values())
     allowed_numbers.add(facts_doc.get("wing_count", len(facts_doc["wings"])))
     # D-036 (hostile reading, run 17): a feature's numbers are admitted in the sentence that
@@ -400,6 +436,23 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
         feature_numbers[f["feature"]] = nums
         feature_numbers[f"{f['profile']}/{f['feature']}"] = nums
     wing_names = set(facts_doc["wings"])
+    # D-037: unit classes for R12 — feature counts are both (one mark per room)
+    rooms_only = {
+        facts_doc["population"],
+        facts_doc["co_located_rooms"],
+        facts_doc.get("co_located_rooms_base_profile", 0),
+    } | set(facts_doc["wings"].values())
+    marks_only = {
+        facts_doc["diagnostic_count"],
+        facts_doc.get("diagnostic_count_base", 0),
+        facts_doc["decorative"]["count"],
+    }
+    both = {f["count"] for f in facts_doc["features"]} | {
+        v for f in facts_doc["features"] for v in f.get("by_wing", {}).values()
+    }
+    rooms_ok = both | rooms_only
+    marks_ok = both | marks_only
+    any_validated = any(v == "validated" for v in (facts_doc.get("gate") or {}).values())
     room_metrics = facts_doc.get("rooms", {})
     used_consequence_names: set[str] = set()
     first_use: dict[str, tuple[int, str]] = {}  # feature → (paragraph, paragraph text)
@@ -486,6 +539,46 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                         i,
                         sent[:160],
                         f"'{m.group(0)}' asserts a share the sheet does not carry; state the count per wing (by_wing)",
+                    )
+                )
+            for m in COMPARISON.finditer(low_sent):
+                out.append(
+                    Violation(
+                        "R11-share",
+                        i,
+                        sent[:160],
+                        f"'{m.group(0)}' sets one mark against another; a p90 set has its size by construction (D-037)",
+                    )
+                )
+            # R12 (D-037): a number wears its unit — a count of rooms is not "N marks"
+            for m in UNIT_USE.finditer(BRACKET.sub("", sent)):
+                n, unit = int(m.group(1)), m.group(2).rstrip("s")
+                if unit == "mark" and n in rooms_only and n not in marks_ok:
+                    out.append(
+                        Violation(
+                            "R12-unit",
+                            i,
+                            sent[:160],
+                            f"{n} counts rooms on the facts sheet, not marks",
+                        )
+                    )
+                if unit == "room" and n in marks_only and n not in rooms_ok:
+                    out.append(
+                        Violation(
+                            "R12-unit",
+                            i,
+                            sent[:160],
+                            f"{n} counts marks on the facts sheet, not rooms",
+                        )
+                    )
+            # R14 (D-037): "validated" names a status no signal holds in this gate
+            if not any_validated and re.search(r"\bvalidated\b", low_sent):
+                out.append(
+                    Violation(
+                        "R14-status",
+                        i,
+                        sent[:160],
+                        "'validated' names a status no signal in this gate holds; every feature here rests on an asserted signal",
                     )
                 )
             if named:
@@ -635,6 +728,48 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                     f"{ov['a']} and {ov['b']} mark {'the same' if ov['relation'] == 'identical' else 'nested'} rooms ({ov['n']}); no sentence names both",
                 )
             )
+        # R13 (D-037): an identity between predicates that differ is a conjunct that did no work,
+        # and the sentence that names the pair says which
+        inert = ov.get("inert_terms") or []
+        if together and ov["relation"] == "identical" and inert:
+            sigs = sorted({re.split(r"\s*(?:>=|<=|==|>|<)\s*", t)[0].strip() for t in inert})
+            said = any(
+                re.search(rf"\b{re.escape(fa)}\b", snt)
+                and re.search(rf"\b{re.escape(fb)}\b", snt)
+                and all(re.search(rf"\b{re.escape(sig)}\b", snt) for sig in sigs)
+                for snt in sentences_all
+            )
+            if not said:
+                out.append(
+                    Violation(
+                        "R13-inert",
+                        0,
+                        "",
+                        f"{ov['a']} and {ov['b']} draw one set; the sentence naming both must say that {', '.join(sigs)} excludes nothing here",
+                    )
+                )
+    # R15 (D-037): a feature whose rooms sit one third or more in one directory names that directory
+    # in a sentence that cites the feature — and R10 then requires a cited room inside it, so the
+    # exemplars cannot be drawn away from the set's composition
+    for f in facts_doc["features"]:
+        dd = f.get("dominant_dir") or {}
+        if not f["diagnostic"] or not dd or f["count"] < 6 or dd["n"] * 3 < f["count"]:
+            continue
+        key, name = f"{f['profile']}/{f['feature']}", f["feature"]
+        named_dir = any(
+            any(c in (key, name) for c, _n, _r in _citations(snt))
+            and re.search(rf"(?<![\w/@.-]){re.escape(dd['dir'])}(?![\w])", snt)
+            for snt in sentences_all
+        )
+        if not named_dir:
+            out.append(
+                Violation(
+                    "R15-composition",
+                    0,
+                    "",
+                    f"{key}: {dd['n']} of its {f['count']} rooms sit in {dd['dir']}; no sentence citing it names that directory",
+                )
+            )
     # R5 disclosure: a consequence-implying name carries its position name in the paragraph
     # where it is first used (a disclosure in paragraph 1 does not license paragraph 9)
     low_all = text.lower()
@@ -698,6 +833,10 @@ Register, binding (validation-spec §2.1.1, mapper §3):
 - If the facts sheet lists `overlaps`, say so in one sentence naming both features: "The 70 flooded_basement rooms are the same 70 rooms as dark_room" — two marks on one set of rooms are one finding, not two.
 - Never use "mostly", "concentrated", "the bulk", "spread across", "throughout", "every wing"; the sheet carries `by_wing` counts per feature — state those ("39 of the 70 sit in src, 31 in packages") in the sentence that cites the feature.
 - A directory you name must contain a room you cite in the same sentence. A count you state must be the count (or a by_wing count) of a feature you cite in the same sentence, or a building-level count.
+- Every number on the sheet has a unit (`units`): a count of rooms is never "N marks". `co_located_rooms` counts rooms carrying two or more marks.
+- When `overlaps` lists `inert_terms`, say that the extra conjunct excludes nothing here, naming its signal: "flooded_basement adds load_index >= 0.10 to dark_room and it excludes nothing on this repository: the 70 rooms are the same 70".
+- Each feature carries `dominant_dir`: when a third or more of its rooms sit in one directory, name that directory in the sentence that cites the feature, and cite a room from it — the sample must show the set's composition, not flatter it.
+- Never rank marks against each other ("the widest set", "larger than"); a p90 set has its size by construction. Never write "validated": no signal in this gate holds that status; every feature rests on an asserted signal.
 - Write every count as digits (267 rooms, not "two hundred sixty-seven"); every number must be a value on the facts sheet — never add, subtract, or count for yourself.
 - The stance paragraph carries no citation.
 - Use only numbers that appear in the facts sheet (counts, lines, fan-in, fan-out). No estimates, no percentages, no counts you computed yourself ("sixteen of the seventeen").
@@ -777,7 +916,7 @@ def render_brief(
         f"# {facts_doc['repo']['name']} — architect's brief\n\n"
         f"*Register lint: **{status}**. What the lint checked: every paragraph cites a feature and a room it fired on, or a count the skeleton records; "
         f"a room named in a sentence is covered by a feature cited in that sentence; consequence and forecast vocabulary is refused outside a struck disclosure clause; "
-        f"numbers come from the facts sheet and sit in the sentence that cites their feature; features with the same or nested rooms are named together; a directory named contains a cited room; no distributional adverb; decorative features are cited by count only and never as diagnosis; a consequence-implying name carries its position name where first used; no whole-building label. "
+        f"numbers come from the facts sheet and sit in the sentence that cites their feature; features with the same or nested rooms are named together; a directory named contains a cited room; no distributional adverb or ranking of marks; a number wears its unit; an identity between predicates names the conjunct that did no work; a feature's dominant directory is named and cited; no 'validated' where no signal holds it; decorative features are cited by count only and never as diagnosis; a consequence-implying name carries its position name where first used; no whole-building label. "
         f"What it cannot check: a consequence voiced without a listed word, a computed number that happens to match, a room's function inferred from its name. Profile {facts_doc['profile']}"
         + (f" + {', '.join(facts_doc['overlays'])}" if facts_doc["overlays"] else "")
         + f", geometry {facts_doc['geometry']}, skeleton `{facts_doc['skeleton_hash'][:12]}…`, facts `{facts_doc['facts_hash'][:12]}…`. "
@@ -800,7 +939,7 @@ def render_brief(
             + "\n\n**This brief failed the register lint and is not a diagnosis until it passes.**\n"
         )
     else:
-        lint_md += "No violations. Rules: R1 consequence vocabulary and phrases (citations stripped, disclosure clause struck), R2 provenance of every citation, R3 numbers from the facts sheet only, R4 decorative features cited by count only and never as diagnosis, R5 position-name disclosure at first use, R6 no whole-building label, R7 diagnostic and decorative counts stated, R8 rooms named in a sentence covered by that sentence's citations, R9 features with the same or nested rooms named together, R10 a directory named contains a cited room, R11 no distributional adverb — shares are by_wing counts (D-036).\n"
+        lint_md += "No violations. Rules: R1 consequence vocabulary and phrases (citations stripped, disclosure clause struck), R2 provenance of every citation, R3 numbers from the facts sheet only, R4 decorative features cited by count only and never as diagnosis, R5 position-name disclosure at first use, R6 no whole-building label, R7 diagnostic and decorative counts stated, R8 rooms named in a sentence covered by that sentence's citations, R9 features with the same or nested rooms named together, R10 a directory named contains a cited room, R11 no distributional adverb or ranking between marks, R12 a number wears its unit, R13 an identity between differing predicates names the inert conjunct, R14 no 'validated' where no signal holds it, R15 a feature's dominant directory named and cited (D-036, D-037).\n"
     return head + text.strip() + "\n" + prov + lint_md
 
 
