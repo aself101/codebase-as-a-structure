@@ -1,0 +1,285 @@
+{
+ "after": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "ac41823b9e27e3a8079ce487c9772c5ef8f1e226",
+   "name": "typeorm"
+  },
+  "skeleton_hash": "b86995299e95dd776c45323917c71245a2d21c06e4c854a6b075f3b2b790bcd8"
+ },
+ "before": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "8cf22582d32f9b33ff2f2f5ab5c5f98832ab0d84",
+   "name": "typeorm"
+  },
+  "skeleton_hash": "14ea309df1c73bcad3d38367736539e703d01a3b3dbc486d97ce5ccf2a0d3a23"
+ },
+ "born": 0,
+ "budget": {
+  "feature_churn_max": 0.05,
+  "k": 5,
+  "max_k": 50,
+  "max_touched_frac": 0.5,
+  "min_jitter_union": 20,
+  "min_untouched_n": 30,
+  "operand": "jitter: rank + mixed feature churn, and strata moves, over untouched rooms",
+  "pinned_k": 25,
+  "reason": null,
+  "strata_moved_max": 0.05,
+  "verdict": "within_budget"
+ },
+ "commits_between": 5,
+ "common_nodes": 583,
+ "deleted": 0,
+ "feature_churn": 0.017915309446254073,
+ "kinds": {
+  "maintainability/crack": "rank",
+  "maintainability/dark_room": "clock",
+  "maintainability/flooded_basement": "mixed",
+  "maintainability/foundation": "rank",
+  "maintainability/hub": "rank",
+  "maintainability/lit_room": "clock",
+  "maintainability/scaffolding": "rank",
+  "maintainability/toothpick_wing": "rank",
+  "onboarding/corridor": "rank",
+  "onboarding/foundation": "rank",
+  "onboarding/import_root": "rank",
+  "onboarding/leaf_utility": "rank",
+  "onboarding/package_entry": "rank"
+ },
+ "per_feature": {
+  "maintainability/dark_room": {
+   "added": [],
+   "after": 70,
+   "before": 70,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "clock",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/flooded_basement": {
+   "added": [],
+   "after": 59,
+   "before": 59,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "mixed",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/foundation": {
+   "added": [],
+   "after": 59,
+   "before": 59,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/hub": {
+   "added": [],
+   "after": 60,
+   "before": 60,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/lit_room": {
+   "added": [
+    "packages/codemod/src/transforms/v1/mongodb-types.ts",
+    "src/decorator/options/SpatialColumnOptions.ts",
+    "src/driver/cockroachdb/CockroachQueryRunner.ts",
+    "src/driver/postgres/PostgresQueryRunner.ts",
+    "src/query-builder/transformer/RawSqlResultsToEntityTransformer.ts"
+   ],
+   "after": 60,
+   "before": 61,
+   "evidence": {
+    "gulpfile.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 51.2054
+     }
+    },
+    "packages/codemod/src/transforms/v1/mongodb-types.ts": {
+     "after": {
+      "last_touched_days": 0.0
+     },
+     "before": null
+    },
+    "src/decorator/options/SpatialColumnOptions.ts": {
+     "after": {
+      "last_touched_days": 6.1311
+     },
+     "before": null
+    },
+    "src/driver/cockroachdb/CockroachQueryRunner.ts": {
+     "after": {
+      "last_touched_days": 6.1311
+     },
+     "before": null
+    },
+    "src/driver/postgres/PostgresQueryRunner.ts": {
+     "after": {
+      "last_touched_days": 6.1311
+     },
+     "before": null
+    },
+    "src/metadata-builder/ClosureJunctionEntityMetadataBuilder.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 62.7955
+     }
+    },
+    "src/metadata/types/ClosureTreeOptions.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 62.7955
+     }
+    },
+    "src/query-builder/transformer/RawSqlResultsToEntityTransformer.ts": {
+     "after": {
+      "last_touched_days": 5.9492
+     },
+     "before": null
+    },
+    "src/repository/TreeRepository.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 62.7955
+     }
+    },
+    "src/util/RandomGenerator.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 51.2054
+     }
+    },
+    "src/util/StringUtils.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 51.2054
+     }
+    }
+   },
+   "jaccard": 0.8333333333333334,
+   "kind": "clock",
+   "removed": [
+    "gulpfile.ts",
+    "src/metadata-builder/ClosureJunctionEntityMetadataBuilder.ts",
+    "src/metadata/types/ClosureTreeOptions.ts",
+    "src/repository/TreeRepository.ts",
+    "src/util/RandomGenerator.ts",
+    "src/util/StringUtils.ts"
+   ],
+   "untouched_changes": 6
+  },
+  "maintainability/scaffolding": {
+   "added": [],
+   "after": 164,
+   "before": 164,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/corridor": {
+   "added": [],
+   "after": 37,
+   "before": 37,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/foundation": {
+   "added": [],
+   "after": 59,
+   "before": 59,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/import_root": {
+   "added": [],
+   "after": 1,
+   "before": 1,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/leaf_utility": {
+   "added": [],
+   "after": 33,
+   "before": 33,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/package_entry": {
+   "added": [],
+   "after": 6,
+   "before": 6,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  }
+ },
+ "strata_moved": [],
+ "strata_moved_frac": 0.0,
+ "touched": {
+  "frac": 0.012006861063464836,
+  "n": 7,
+  "nodes": [
+   "packages/codemod/src/transforms/v1/mongodb-types.ts",
+   "src/decorator/options/SpatialColumnOptions.ts",
+   "src/driver/cockroachdb/CockroachQueryRunner.ts",
+   "src/driver/postgres/PostgresQueryRunner.ts",
+   "src/entity-manager/EntityManager.ts",
+   "src/query-builder/SelectQueryBuilder.ts",
+   "src/query-builder/transformer/RawSqlResultsToEntityTransformer.ts"
+  ]
+ },
+ "untouched": {
+  "by_kind": {
+   "clock": {
+    "changes": 6,
+    "churn": 0.046511627906976744,
+    "union": 129
+   },
+   "mixed": {
+    "changes": 0,
+    "churn": 0.0,
+    "union": 59
+   },
+   "rank": {
+    "changes": 0,
+    "churn": 0.0,
+    "union": 409
+   }
+  },
+  "clock_churn": 0.046511627906976744,
+  "decorative_changes": 0,
+  "decorative_churn": 0.0,
+  "feature_churn": 0.010050251256281407,
+  "jitter_churn": 0.0,
+  "n": 576,
+  "strata_moved": [],
+  "strata_moved_frac": 0.0
+ }
+}

@@ -478,3 +478,5 @@ Re-judged under the strengthened lint, all four D-027 briefs fail — on exactly
 
 **Breaks if.** The next cycle's held lenses find the same seam the first three did — then the roster is not orthogonal and the alternation is not buying information.
 
+**Gate under substrate 0.4.1 (D-029 addendum, `reports/2026-09-06-m1c/`, fingerprint `179d8acb7b0c`).** Same tuned weights (`tuned_config_commit` 24c087a, re-tune byte-identical under 0.4.0, not repeated for the resolver fix). Every verdict is as under 0.3.0; the one addition is `is_package_entry`: **asserted**, a flag, with an entry share of typeorm 0.010, mcp-secure-server 0.080, uluops-registry-api 0.004, eslint 0.024 — the 0.4.0 run had found none on the registry and mcp-secure-server because their manifests point at `dist/`, and the build-directory stripping (D-030) is what changed between the two runs. Downstream readings are regenerated under this gate by `scripts/regenerate_readings.py --tag 2026-09-06`.
+

@@ -1,0 +1,335 @@
+{
+ "after": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "ecb30716b87ed127f0412956738afb7af385b267",
+   "name": "mcp-secure-server"
+  },
+  "skeleton_hash": "c52a834e77d6b49aa5c3947486896c183fe179f94dab73b21a3b852a65b43c7e"
+ },
+ "before": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "080f992e6dba29070a99dbac2747e7aa012dc903",
+   "name": "mcp-secure-server"
+  },
+  "skeleton_hash": "2d0e04a923d3d2164b12da3a7f50db324fa89e8c48efc705dc15272ce381bc39"
+ },
+ "born": 0,
+ "budget": {
+  "feature_churn_max": 0.05,
+  "k": 5,
+  "max_k": 50,
+  "max_touched_frac": 0.5,
+  "min_jitter_union": 20,
+  "min_untouched_n": 30,
+  "operand": "jitter: rank + mixed feature churn, and strata moves, over untouched rooms",
+  "pinned_k": 25,
+  "reason": null,
+  "strata_moved_max": 0.05,
+  "verdict": "within_budget"
+ },
+ "commits_between": 5,
+ "common_nodes": 202,
+ "deleted": 0,
+ "feature_churn": 0.04778156996587031,
+ "kinds": {
+  "maintainability/crack": "rank",
+  "maintainability/dark_room": "clock",
+  "maintainability/flooded_basement": "mixed",
+  "maintainability/foundation": "rank",
+  "maintainability/hub": "rank",
+  "maintainability/lit_room": "clock",
+  "maintainability/scaffolding": "rank",
+  "maintainability/toothpick_wing": "rank",
+  "onboarding/corridor": "rank",
+  "onboarding/foundation": "rank",
+  "onboarding/import_root": "rank",
+  "onboarding/leaf_utility": "rank",
+  "onboarding/package_entry": "rank"
+ },
+ "per_feature": {
+  "maintainability/dark_room": {
+   "added": [],
+   "after": 42,
+   "before": 42,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "clock",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/flooded_basement": {
+   "added": [],
+   "after": 37,
+   "before": 37,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "mixed",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/foundation": {
+   "added": [],
+   "after": 21,
+   "before": 21,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/hub": {
+   "added": [
+    "src/security/layers/layer-utils/content/patterns/injection.ts",
+    "src/types/validation.ts"
+   ],
+   "after": 22,
+   "before": 21,
+   "evidence": {
+    "src/security/layers/layer-utils/content/patterns/injection.ts": {
+     "after": {
+      "centrality": 0.0097
+     },
+     "before": null
+    },
+    "src/security/utils/security-logger-types.ts": {
+     "after": null,
+     "before": {
+      "centrality": 0.0107
+     }
+    },
+    "src/types/validation.ts": {
+     "after": {
+      "centrality": 0.0097
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.8695652173913043,
+   "kind": "rank",
+   "removed": [
+    "src/security/utils/security-logger-types.ts"
+   ],
+   "untouched_changes": 3
+  },
+  "maintainability/lit_room": {
+   "added": [
+    "src/security/config/tool-policies-config.ts",
+    "src/security/config/tool-policies.ts",
+    "src/security/constants.ts",
+    "src/security/layers/layer1-structure.ts",
+    "src/security/layers/validation-layer-base.ts"
+   ],
+   "after": 21,
+   "before": 21,
+   "evidence": {
+    "eslint.config.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 161.0246
+     }
+    },
+    "src/security/config/tool-policies-config.ts": {
+     "after": {
+      "last_touched_days": 37.5721
+     },
+     "before": null
+    },
+    "src/security/config/tool-policies.ts": {
+     "after": {
+      "last_touched_days": 37.5721
+     },
+     "before": null
+    },
+    "src/security/constants.ts": {
+     "after": {
+      "last_touched_days": 37.5721
+     },
+     "before": null
+    },
+    "src/security/layers/layer1-structure.ts": {
+     "after": {
+      "last_touched_days": 37.5721
+     },
+     "before": null
+    },
+    "src/security/layers/layer3-behavior.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 161.0246
+     }
+    },
+    "src/security/layers/layer5-contextual-types.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 161.0167
+     }
+    },
+    "src/security/layers/layer5-contextual.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 161.0167
+     }
+    },
+    "src/security/layers/validation-layer-base.ts": {
+     "after": {
+      "last_touched_days": 37.5721
+     },
+     "before": null
+    },
+    "src/security/transport/http-server.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 161.0246
+     }
+    }
+   },
+   "jaccard": 0.6153846153846154,
+   "kind": "clock",
+   "removed": [
+    "eslint.config.js",
+    "src/security/layers/layer3-behavior.ts",
+    "src/security/layers/layer5-contextual-types.ts",
+    "src/security/layers/layer5-contextual.ts",
+    "src/security/transport/http-server.ts"
+   ],
+   "untouched_changes": 5
+  },
+  "maintainability/scaffolding": {
+   "added": [],
+   "after": 53,
+   "before": 53,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/corridor": {
+   "added": [
+    "src/security/layers/layer-utils/content/patterns/injection.ts"
+   ],
+   "after": 18,
+   "before": 17,
+   "evidence": {
+    "src/security/layers/layer-utils/content/patterns/injection.ts": {
+     "after": {
+      "centrality": 0.0097,
+      "fan_out": 1
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.9444444444444444,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 1
+  },
+  "onboarding/foundation": {
+   "added": [],
+   "after": 21,
+   "before": 21,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/import_root": {
+   "added": [],
+   "after": 17,
+   "before": 17,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/leaf_utility": {
+   "added": [],
+   "after": 19,
+   "before": 19,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/package_entry": {
+   "added": [],
+   "after": 16,
+   "before": 16,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  }
+ },
+ "strata_moved": [
+  "cookbook/api-wrapper-server/src/index.ts",
+  "cookbook/cli-wrapper-server/src/index.ts",
+  "cookbook/database-server/src/index.ts",
+  "cookbook/filesystem-server/src/index.ts",
+  "cookbook/monitoring-server/src/tools/index.ts",
+  "cookbook/transaction-server/src/validators/index.ts",
+  "src/security/presets.ts",
+  "src/types/server.ts"
+ ],
+ "strata_moved_frac": 0.039603960396039604,
+ "touched": {
+  "frac": 0.06930693069306931,
+  "n": 14,
+  "nodes": [
+   "src/security/config/tool-policies-config.ts",
+   "src/security/config/tool-policies.ts",
+   "src/security/constants.ts",
+   "src/security/layers/layer-utils/content/patterns/path-traversal.ts",
+   "src/security/layers/layer1-structure.ts",
+   "src/security/layers/layer2-content.ts",
+   "src/security/layers/layer2-validators/data-semantics.ts",
+   "src/security/layers/validation-layer-base.ts",
+   "src/security/mcp-secure-server.ts",
+   "src/security/presets.ts",
+   "src/security/utils/error-sanitizer.ts",
+   "src/security/utils/pipeline-factory.ts",
+   "src/types/layers.ts",
+   "src/types/server.ts"
+  ]
+ },
+ "untouched": {
+  "by_kind": {
+   "clock": {
+    "changes": 5,
+    "churn": 0.09259259259259259,
+    "union": 54
+   },
+   "mixed": {
+    "changes": 0,
+    "churn": 0.0,
+    "union": 37
+   },
+   "rank": {
+    "changes": 4,
+    "churn": 0.024844720496894408,
+    "union": 161
+   }
+  },
+  "clock_churn": 0.09259259259259259,
+  "decorative_changes": 1,
+  "decorative_churn": 0.07692307692307693,
+  "feature_churn": 0.03571428571428571,
+  "jitter_churn": 0.020202020202020204,
+  "n": 188,
+  "strata_moved": [
+   "cookbook/api-wrapper-server/src/index.ts",
+   "cookbook/cli-wrapper-server/src/index.ts",
+   "cookbook/database-server/src/index.ts",
+   "cookbook/filesystem-server/src/index.ts",
+   "cookbook/monitoring-server/src/tools/index.ts",
+   "cookbook/transaction-server/src/validators/index.ts"
+  ],
+  "strata_moved_frac": 0.031914893617021274
+ }
+}

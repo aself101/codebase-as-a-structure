@@ -1,0 +1,37 @@
+[typeorm] (test) holdout…
+[typeorm] split=fe7f328fd5 eligible=2274 positives=1014 coverage=0.63 degenerate=None
+[typeorm] asserted bar…
+[mcp-secure-server] (test) holdout…
+[mcp-secure-server] split=3f55fd476d eligible=257 positives=22 coverage=0.99 degenerate=None
+[mcp-secure-server] asserted bar…
+[uluops-registry-api] (tuning) holdout…
+[uluops-registry-api] split=417d4387a0 eligible=403 positives=132 coverage=0.88 degenerate=None
+[uluops-registry-api] asserted bar…
+[eslint] (tuning) holdout…
+[eslint] split=3398431574 eligible=1219 positives=225 coverage=0.82 degenerate=None
+[eslint] asserted bar…
+  age_days                     asserted     
+  author_count                 asserted     
+  blame_age_median             asserted     
+  bug_pressure_index           unvalidated  passed_on_0_of_2_test_repos_need_2
+  centrality                   asserted     
+  change_pressure_index        unvalidated  passed_on_1_of_2_test_repos_need_2
+  churn_lines                  asserted     
+  cochange_degree              asserted     
+  commit_count                 asserted     
+  complexity_proxy_index       asserted     
+  fan_in                       asserted     
+  fan_in_nonzero               asserted     
+  fan_out                      asserted     
+  fix_count                    asserted     
+  has_sibling_test             asserted     
+  is_package_entry             asserted     
+  last_touched_days            asserted     
+  load_index                   asserted     
+  neglect_index                asserted     
+  nesting_proxy                asserted     
+  recent_commit_share          asserted     
+  reinforcement_index          asserted     
+  revert_count                 untested     degenerate
+  size_loc                     asserted     
+  test_fan_in                  asserted     
