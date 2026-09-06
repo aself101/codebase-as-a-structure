@@ -292,6 +292,12 @@ class Violation:
         }
 
 
+def _mentions(sentence: str, room: str) -> bool:
+    """`src/index.ts` is not a mention of `packages/codemod/src/index.ts`: a room is named
+    only as a whole path token."""
+    return re.search(r"(?<![\w/.\-])" + re.escape(room) + r"(?![\w/.\-])", sentence) is not None
+
+
 def _paragraphs(text: str) -> list[str]:
     body = text.split("\n## Provenance", 1)[0]
     return [p.strip() for p in re.split(r"\n\s*\n", body) if p.strip()]
@@ -367,7 +373,7 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                     )
                 )
             # R8 attribution: a room named in a sentence is covered by a feature cited in it
-            named = [rid for rid in room_ids if rid in sent]
+            named = [rid for rid in room_ids if _mentions(sent, rid)]
             if named:
                 covered: set[str] = set()
                 for m in CITATION.finditer(sent):
