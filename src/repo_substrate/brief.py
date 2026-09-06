@@ -207,7 +207,8 @@ BUILDING_LABELS = {
     "labyrinth",
     "maze",
 }
-CITATION = re.compile(r"\[([a-z_]+(?:/[a-z_]+)?)(?::\s*([^\]]+?)|\s*×\s*(\d+))\]")
+# [feature: a, b] · [feature ×N] · [feature ×N: a, b] — the count and the rooms are each checked
+CITATION = re.compile(r"\[([a-z_]+(?:/[a-z_]+)?)(?:\s*×\s*(\d+))?(?::\s*([^\]]+?))?\]")
 INTEGER = re.compile(r"(?<![\w./-])(\d{1,7})(?![\w./%-])")
 WORD_NUMBERS = {
     w: i
@@ -341,7 +342,14 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                     "paragraph carries no [feature: room] or [feature ×N] citation",
                 )
             )
-        for name, room, count in cites:
+        for name, count, room in cites:
+            if not count and not room:
+                out.append(
+                    Violation(
+                        "R2-provenance", i, para[:160], f"[{name}] cites neither a room nor a count"
+                    )
+                )
+                continue
             f = by_key.get(name) or by_feature.get(name)
             if f is None:
                 out.append(
@@ -385,11 +393,17 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                 out.append(
                     Violation("R3-number", i, para[:160], f"number {n} is not in the facts sheet")
                 )
-    # R5 disclosure: a consequence-implying name used in the brief must carry its position name
+    # R5 disclosure: a consequence-implying name used anywhere in the brief must carry its position name
     low_all = text.lower()
+    for f in facts_doc["features"]:
+        if f["name_implies_consequence"] and re.search(rf"\b{re.escape(f['feature'])}\b", low_all):
+            used_consequence_names.add(f["feature"])
     for feat in sorted(used_consequence_names):
         pos = (by_feature[feat].get("position_name") or "").lower()
-        if pos and pos not in low_all:
+        # tolerate plurals and hyphen/space variation: "high-load hub" ~ "high load hubs"
+        words = [re.escape(w) for w in re.split(r"[\s-]+", pos) if w]
+        pattern = r"[\s-]+".join(w + r"(?:s|es)?" for w in words) if words else None
+        if pattern and not re.search(pattern, low_all):
             out.append(
                 Violation(
                     "R5-disclosure",
@@ -399,7 +413,15 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                 )
             )
     # R7 decorative count must be stated when there are decorative features
-    if facts_doc["decorative"]["count"] and str(facts_doc["decorative"]["count"]) not in text:
+    dec_count = facts_doc["decorative"]["count"]
+    dec_words = {w for w, v in WORD_NUMBERS.items() if v == dec_count} | {
+        f"{tens}-{ones}"
+        for tens, tv in WORD_NUMBERS.items()
+        for ones, ov in WORD_NUMBERS.items()
+        if tv >= 20 and 0 < ov < 10 and tv + ov == dec_count
+    }
+    stated = str(dec_count) in text or any(re.search(rf"\b{w}\b", low_all) for w in dec_words)
+    if dec_count and not stated:
         out.append(
             Violation(
                 "R7-decorative-count",

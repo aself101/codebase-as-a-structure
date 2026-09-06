@@ -61,7 +61,12 @@ def _good_draft(f):
         f"The room {room} sits where {feat['feature']} fires [{feat['feature']} ×{feat['count']}].\n\n"
     )
     if f["decorative"]["count"]:
-        text += f"{f['decorative']['count']} decorative marks ({', '.join(f['decorative']['features'])}) render but are not a diagnosis [{feat['feature']} ×{feat['count']}].\n\n"
+        names = ", ".join(
+            x["feature"] + (f" — {x['position_name']}" if x.get("position_name") else "")
+            for x in f["features"]
+            if x["decorative"]
+        )
+        text += f"{f['decorative']['count']} decorative marks ({names}) render but are not a diagnosis [{feat['feature']} ×{feat['count']}].\n\n"
     return text
 
 
@@ -95,6 +100,13 @@ def test_lint_catches_each_register_breach(sub):
             good + f"The {dec} marks a diagnosis [{dec} ×{f['decorative']['count']}].\n\n"
         )
         assert "R7-decorative-count" in rules(good.replace(str(f["decorative"]["count"]), "many"))
+        from repo_substrate.brief import WORD_NUMBERS
+
+        word = next((w for w, v in WORD_NUMBERS.items() if v == f["decorative"]["count"]), None)
+        if word:
+            assert "R7-decorative-count" not in rules(
+                good.replace(str(f["decorative"]["count"]), word.capitalize(), 1)
+            )
     imp = next(
         (x for x in f["features"] if x["diagnostic"] and x["name_implies_consequence"]), None
     )
@@ -140,3 +152,8 @@ def test_relint_keeps_prose_and_provenance(sub):
     assert r2["passed"] and r2["text"].strip() == good.strip()
     assert r2["provenance"]["model_served"] == "fake" and r2["provenance"]["request_id"] == "req_1"
     assert "relinted" in r2["provenance"]
+    # generation-time lint and relint must agree on the same prose
+    bad = good + "Changing it will break much.\n\n"
+    r3 = run_brief(sk, sub, lambda s, u: (bad, {}), max_attempts=1)
+    r4 = relint(r3["markdown"], sk, sub)
+    assert [v["rule"] for v in r3["violations"]] == [v["rule"] for v in r4["violations"]]
