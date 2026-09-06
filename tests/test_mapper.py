@@ -96,7 +96,7 @@ def test_gate_treats_missing_key_as_untested(sub, tmp_path):
 def test_decorative_passes_the_gate_but_is_not_diagnostic(sub, tmp_path):
     p = _write_ruleset(
         tmp_path,
-        '[[feature]]\nname = "x"\npredicate = "bug_pressure_index >= p50"\ndecorative = true\ndecorative_reason = "unvalidated (test)"\n',
+        '[[feature]]\nname = "x"\npredicate = "bug_pressure_index >= p50"\ndecorative = true\ndecorative_reason = "bug_pressure_index is unvalidated (test)"\n',
     )
     sk = map_skeleton(sub, ALL_ASSERTED, load_ruleset(p))
     assert sk["summary"]["decorative_count"] > 0 and sk["summary"]["diagnostic_count"] == 0
@@ -509,3 +509,44 @@ def test_mapper_refuses_a_percentile_over_a_flag(sub, tmp_path):
     from repo_substrate.validation.config import GROUNDING
 
     assert GROUNDING["is_package_entry"].get("flag") is True
+
+
+def test_d030_ruleset_loader_grammar(sub, tmp_path):
+    """D-030: a decorative reason names its signal; a consequence word in a name needs the flag."""
+    p = _write_ruleset(
+        tmp_path,
+        '[[feature]]\nname = "x"\npredicate = "bug_pressure_index >= p50"\ndecorative = true\ndecorative_reason = "kept for the picture"\n',
+    )
+    with pytest.raises(RulesetError, match="must name the ungrounded signal"):
+        load_ruleset(p)
+    p2 = _write_ruleset(
+        tmp_path, '[[feature]]\nname = "flooded_attic"\npredicate = "centrality >= p90"\n'
+    )
+    with pytest.raises(RulesetError, match="consequence word"):
+        load_ruleset(p2)
+    p3 = _write_ruleset(
+        tmp_path,
+        '[[feature]]\nname = "flooded_attic"\npredicate = "centrality >= p90"\nname_implies_consequence = true\nposition_name = "high-centrality room"\n',
+    )
+    assert load_ruleset(p3).features[0].name == "flooded_attic"
+
+
+def test_decorative_churn_is_measured_and_never_judged(sub):
+    from repo_substrate.mapper.diff import SKELETON_BUDGET, skeleton_diff
+
+    base = load_ruleset(RULESET)
+    a = map_skeleton(sub, _all_asserted(base), base)
+    b = json.loads(json.dumps(a))
+    dec = [f for f in b["features"] if f["decorative"]]
+    if not dec:
+        pytest.skip("no decorative feature fires on the scripted repo")
+    b["features"] = [f for f in b["features"] if f is not dec[0]]
+    d = skeleton_diff(
+        a,
+        b,
+        touched=set(),
+        commits_between=1,
+        budget={**SKELETON_BUDGET, "min_untouched_n": 1, "min_jitter_union": 0},
+    )
+    assert d["untouched"]["decorative_changes"] == 1 and d["untouched"]["decorative_churn"] > 0
+    assert d["untouched"]["jitter_churn"] == 0.0 and d["budget"]["verdict"] == "within_budget"

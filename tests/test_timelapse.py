@@ -74,6 +74,9 @@ def test_timelapse_on_scripted_repo(scripted_repo, small_cfg, tmp_path):
     assert counts == sorted(counts)
     t = m["totals"]
     assert t["frames"] == len(cps) and t["mapped"] + t["skipped"] == t["frames"]
+    assert t["budget_reading"] in ("no_verdict", "within_budget", "over_budget")
+    assert 0.0 <= t["budget_coverage"] <= 1.0 and t["budget_judged"] <= t["transitions"]
+    assert "Budget reading:" in (out / "timelapse.md").read_text(encoding="utf-8")
     assert (
         abs(
             t["edit_share"]

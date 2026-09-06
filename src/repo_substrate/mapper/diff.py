@@ -120,14 +120,17 @@ def touched_since(
     return touched, len(tl) - idx - 1
 
 
-def _feature_sets(skeleton: dict[str, Any]) -> dict[tuple[str, str], set[str]]:
+def _feature_sets(
+    skeleton: dict[str, Any], decorative: bool = False
+) -> dict[tuple[str, str], set[str]]:
+    """Fired-node sets per (profile, feature) — diagnostic by default; `decorative=True`
+    returns the decorative ones instead, so their flicker is reported too (D-030: the hatch
+    excludes a feature from diagnosis, not from measurement)."""
     sets: dict[tuple[str, str], set[str]] = {}
-    for f in skeleton["features"]:
-        if f["diagnostic"]:
-            sets.setdefault((f["profile"], f["feature"]), set()).add(f["node"])
-    for od in skeleton.get("overlays") or []:
-        for f in od["features"]:
-            if f["diagnostic"]:
+    groups = [skeleton["features"]] + [od["features"] for od in skeleton.get("overlays") or []]
+    for feats in groups:
+        for f in feats:
+            if bool(f["decorative"]) == decorative and (decorative or f["diagnostic"]):
                 sets.setdefault((f["profile"], f["feature"]), set()).add(f["node"])
     return sets
 
@@ -249,6 +252,15 @@ def skeleton_diff(
             and a_strata[n] != b["strata"]["by_node"][n]
         )
 
+    # decorative flicker, reported and never judged
+    da = {k: {canon(n) for n in v} & common for k, v in _feature_sets(a, True).items()}
+    db = {k: v & common for k, v in _feature_sets(b, True).items()}
+    dec_changes = sum(
+        len((db.get(k, set()) ^ da.get(k, set())) & untouched) for k in set(da) | set(db)
+    )
+    dec_union = sum(
+        len((db.get(k, set()) | da.get(k, set())) & untouched) for k in set(da) | set(db)
+    )
     strata_moved = moved(common)
     u_moved = moved(untouched)
     u_churn = (tot["untouched"][0] / tot["untouched"][1]) if tot["untouched"][1] else 0.0
@@ -305,6 +317,8 @@ def skeleton_diff(
             },
             "jitter_churn": jitter_churn,
             "clock_churn": clock_churn,
+            "decorative_churn": (dec_changes / dec_union) if dec_union else 0.0,
+            "decorative_changes": dec_changes,
         },
         "kinds": dict(sorted(kinds.items())),
         "budget": {

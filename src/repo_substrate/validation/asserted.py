@@ -132,7 +132,11 @@ def run_stability(
         # (Popper's constant objection). Measured as the share of the population sitting on the
         # modal value, so a legitimately binary signal with a real minority class is not degenerate
         # while a constant (share 1.0) or a nearly-constant one is.
-        if modal_share > vcfg.degenerate_max_modal_share and not GROUNDING[sig].get("flag"):
+        # a flag is exempt from the degeneracy bar (it is never ranked, D-029) unless it is a
+        # constant on this repository — a flag that never varies asserts nothing (D-030)
+        if modal_share > vcfg.degenerate_max_modal_share and (
+            not GROUNDING[sig].get("flag") or modal_share >= 1.0
+        ):
             out[sig] = {
                 **base,
                 "median_abs_delta": 0.0,

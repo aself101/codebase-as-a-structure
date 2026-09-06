@@ -28,6 +28,29 @@ _TERM = re.compile(r"^\s*([A-Za-z_][A-Za-z0-9_]*)\s*(>=|<=|==|>|<)\s*(p(\d{1,2})
 _SPLIT = re.compile(r"\s+(?:and|∧)\s+")
 
 
+# Words in a FEATURE NAME that carry a consequence or damage (D-004 Q3, D-028, D-030): a name
+# containing one must be declared name_implies_consequence and carry a position_name. The
+# list is the audit surface; a new metaphor that implies damage is added here.
+NAME_CONSEQUENCE_WORDS = (
+    "crack",
+    "flood",
+    "toothpick",
+    "rot",
+    "decay",
+    "collapse",
+    "broken",
+    "fragile",
+    "danger",
+    "dark",
+    "neglect",
+    "abandon",
+    "dead",
+    "leak",
+    "fire",
+    "ruin",
+)
+
+
 class RulesetError(ValueError):
     pass
 
@@ -121,6 +144,17 @@ def load_ruleset(path: Path) -> Ruleset:
         # mapper §3 (D-004): the hatch is audited — a decorative rule must say why.
         if decorative and not reason:
             raise RulesetError(f"feature {name}: decorative = true requires decorative_reason")
+        terms_ = parse_predicate(pred)
+        if decorative and reason and not any(t.signal in str(reason) for t in terms_):
+            # mapper §3: the reason must NAME the ungrounded signal; a non-empty string is not a reason (D-030)
+            raise RulesetError(
+                f"feature {name}: decorative_reason must name the ungrounded signal(s) it excuses ({', '.join(sorted({t.signal for t in terms_}))})"
+            )
+        implied = any(w in str(name).lower() for w in NAME_CONSEQUENCE_WORDS)
+        if implied and not bool(f.get("name_implies_consequence", False)):
+            raise RulesetError(
+                f"feature {name}: the name carries a consequence word ({', '.join(w for w in NAME_CONSEQUENCE_WORDS if w in str(name).lower())}); declare name_implies_consequence = true with a position_name (D-030)"
+            )
         if not decorative and reason:
             raise RulesetError(f"feature {name}: decorative_reason given but decorative = false")
         # D-004 Q3 / D-024: the register hook has a grammar. A name that implies a consequence
@@ -145,7 +179,7 @@ def load_ruleset(path: Path) -> Ruleset:
             Feature(
                 name=name,
                 predicate=pred,
-                terms=parse_predicate(pred),
+                terms=terms_,
                 decorative=decorative,
                 decorative_reason=reason,
                 graph_dependent=bool(f.get("graph_dependent", False)),

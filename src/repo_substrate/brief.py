@@ -26,7 +26,8 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.1.0"
+BRIEF_VERSION = "0.2.0"
+MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
 # ---------------------------------------------------------------- 1. the facts sheet
@@ -317,10 +318,7 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
     allowed_numbers.update(facts_doc["wings"].values())
     for f in facts_doc["features"]:
         allowed_numbers.add(f["count"])
-    for r in facts_doc.get("rooms", {}).values():
-        for v in r.values():
-            if isinstance(v, int):
-                allowed_numbers.add(v)
+    room_metrics = facts_doc.get("rooms", {})
     used_consequence_names: set[str] = set()
     first_use: dict[str, tuple[int, str]] = {}  # feature → (paragraph, paragraph text)
     room_ids = sorted(
@@ -333,7 +331,9 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
         if para.startswith(("#", "*Register lint")):
             continue
         low_para = para.lower()
-        is_stance = stance_key in low_para or "presupposes a norm of health" in low_para
+        # the stance paragraph is the stance sentence, not any paragraph that quotes a phrase of it
+        bare = re.sub(CITATION, "", low_para).strip()
+        is_stance = bare.startswith(stance_key)
         is_disclosure = "decorative" in low_para and (
             "not a diagnosis" in low_para or "no diagnosis" in low_para
         )
@@ -404,7 +404,11 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                         cites.append((cm.group(1), cm.group(2), cm.group(3).strip()))
             else:
                 cites.append((name, count, room))
-        if not cites and not (is_stance or is_disclosure):
+        decorative_only = bool(cites) and all(
+            (by_key.get(n) or by_feature.get(n) or {}).get("decorative") and c and not r
+            for n, c, r in cites
+        )
+        if not cites and not is_stance and not (is_disclosure and decorative_only):
             out.append(
                 Violation(
                     "R2-provenance",
@@ -441,7 +445,17 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                         f"a decorative feature is cited by count only; [{name}: …] singles out rooms it may not",
                     )
                 )
-            if f["decorative"] and not is_disclosure:
+            cite_sentences = [
+                sent
+                for sent in SENTENCE.split(para)
+                if re.search(r"\[" + re.escape(name) + r"\b", sent)
+            ]
+            disclosed_here = any(
+                "decorative" in sent.lower()
+                and ("not a diagnosis" in sent.lower() or "no diagnosis" in sent.lower())
+                for sent in cite_sentences
+            )
+            if f["decorative"] and not disclosed_here:
                 out.append(
                     Violation(
                         "R4-decorative",
@@ -467,11 +481,30 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                 )
             if f["name_implies_consequence"]:
                 used_consequence_names.add(f["feature"])
-        # R3 numbers
-        for n in INTEGER.findall(re.sub(CITATION, "", para)):
-            if int(n) not in allowed_numbers:
+        # R3 numbers — digits and number words alike; a room's own metrics are admitted only
+        # in a paragraph that names the room (D-030: otherwise any small integer passes)
+        stripped = re.sub(CITATION, "", para)
+        para_allowed = set(allowed_numbers)
+        for rid in room_ids:
+            if rid in room_metrics and _mentions(para, rid):
+                para_allowed.update(v for v in room_metrics[rid].values() if isinstance(v, int))
+        for n in INTEGER.findall(stripped):
+            if int(n) not in para_allowed:
                 out.append(
                     Violation("R3-number", i, para[:160], f"number {n} is not in the facts sheet")
+                )
+        for m in WORD_NUMBER.finditer(stripped):
+            val = WORD_NUMBERS[m.group(1).lower()] + (
+                WORD_NUMBERS[m.group(2).lower()] if m.group(2) else 0
+            )
+            if val not in para_allowed:
+                out.append(
+                    Violation(
+                        "R3-number",
+                        i,
+                        para[:160],
+                        f"number '{m.group(0)}' ({val}) is not in the facts sheet",
+                    )
                 )
     # R5 disclosure: a consequence-implying name carries its position name in the paragraph
     # where it is first used (a disclosure in paragraph 1 does not license paragraph 9)
@@ -500,9 +533,13 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
         for ones, ov in WORD_NUMBERS.items()
         if tv >= 20 and 0 < ov < 10 and tv + ov == dec_count
     }
-    stated = str(dec_count) in text or any(re.search(rf"\b{w}\b", low_all) for w in dec_words)
+    prose_only = re.sub(CITATION, "", text)
+    low_prose = prose_only.lower()
+    stated = str(dec_count) in prose_only or any(
+        re.search(rf"\b{w}\b", low_prose) for w in dec_words
+    )
     diag = facts_doc["diagnostic_count"]
-    if str(diag) not in text:
+    if str(diag) not in prose_only:
         out.append(
             Violation(
                 "R7-counts",
@@ -684,12 +721,17 @@ def run_brief(
             raise ValueError("no generator and no draft")
         viols: list[Violation] = []
         text, prov = "", {}
-        for attempt in range(1, max_attempts + 1):
+        attempts_log: list[dict[str, Any]] = []
+        for attempt in range(1, min(max_attempts, MAX_ATTEMPTS_CAP) + 1):
             text, prov = generate(SYSTEM, _user_message(f, viols if attempt > 1 else None))
             viols = lint(text, f)
+            attempts_log.append({"attempt": attempt, "violations": [v.rule for v in viols]})
             prov = {
                 **prov,
                 "attempt": attempt,
+                "attempts_log": "; ".join(
+                    f"{a['attempt']}: {', '.join(a['violations']) or 'pass'}" for a in attempts_log
+                ),
                 "facts_hash": f["facts_hash"],
                 "brief_version": BRIEF_VERSION,
             }

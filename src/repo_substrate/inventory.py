@@ -167,6 +167,7 @@ def nesting_proxy(data: bytes, max_bytes: int) -> int | None:
 
 SOURCE_EXTS = (".ts", ".tsx", ".mts", ".cts", ".js", ".jsx", ".mjs", ".cjs", ".py")
 ENTRY_FIELDS = ("main", "module", "browser", "types", "typings")
+BUILD_DIRS = {"dist", "build", "out", "es", "esm", "cjs", "umd", "compiled", "target"}
 
 
 def _entry_strings(value) -> list[str]:
@@ -194,12 +195,22 @@ def _resolve_entry(pkg_dir: str, target: str, present: set[str]) -> str | None:
         rel = "index"
     rel_stem = re.sub(r"\.(d\.ts|d\.mts|[cm]?[jt]sx?|py)$", "", rel)
     root = f"{pkg_dir}/" if pkg_dir else ""
+    # a built entry lives under a build directory the inventory excludes: strip it, and a
+    # `types/` segment declarations often add, then look for the source under src/ etc.
+    stems = [rel_stem]
+    parts = rel_stem.split("/")
+    if parts and parts[0] in BUILD_DIRS:
+        rest = parts[1:]
+        if rest and rest[0] == "types":
+            rest = rest[1:]
+        stems.append("/".join(rest) if rest else "index")
     cands: list[str] = [root + rel]
-    for pre in ("", "src/", "lib/", "source/"):
-        stem = f"{root}{pre}{rel_stem}"
-        for ext in SOURCE_EXTS:
-            cands.append(stem + ext)
-            cands.append(f"{stem}/index{ext}")
+    for st in stems:
+        for pre in ("", "src/", "lib/", "source/"):
+            stem = f"{root}{pre}{st}"
+            for ext in SOURCE_EXTS:
+                cands.append(stem + ext)
+                cands.append(f"{stem}/index{ext}")
     for c in cands:
         c = re.sub(r"/+", "/", c)
         if c in present:

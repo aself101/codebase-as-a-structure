@@ -333,3 +333,27 @@ def test_package_facts_resolve_entries_and_owners(make_repo, small_cfg, tmp_path
         m["src/index.ts"]["package"] == ""
         and m["packages/sub/lib/helper.ts"]["package"] == "packages/sub"
     )
+
+
+def test_built_entries_under_dist_resolve_to_source(make_repo, small_cfg, tmp_path):
+    """D-030: the reference manifests point at dist/…; a build directory (and a types/
+    segment) is stripped before the source is looked for."""
+    from repo_substrate.assemble import ExtractOptions, extract
+
+    r = make_repo()
+    r.write(
+        "package.json",
+        '{"main": "./dist/index.js", "types": "./dist/types/index.d.ts", '
+        '"exports": {"./server": {"default": "./dist/security/server.js"}}}',
+    )
+    r.write("src/index.ts", "export const a = 1;\n")
+    r.write("src/security/server.ts", "export const s = 1;\n")
+    r.write("src/security/other.ts", "export const o = 1;\n")
+    r.commit("feat: built entries")
+    sub = extract(
+        r.path, small_cfg, ExtractOptions(scratch_dir=tmp_path, blame_workers=1), extractor=None
+    )
+    m = {n["id"]: n["metrics"] for n in sub["nodes"]}
+    assert m["src/index.ts"]["is_package_entry"]
+    assert m["src/security/server.ts"]["is_package_entry"]
+    assert not m["src/security/other.ts"]["is_package_entry"]

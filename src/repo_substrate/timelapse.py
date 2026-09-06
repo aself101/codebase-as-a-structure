@@ -257,6 +257,7 @@ def run_timelapse(
 def _totals(frames: list[dict[str, Any]]) -> dict[str, Any]:
     diffs = [f["diff"] for f in frames if f.get("diff")]
     tally: dict[str, int] = {}
+    judged = sum(1 for d in diffs if d["budget_verdict"] in ("within_budget", "over_budget"))
     for d in diffs:
         key = d["budget_verdict"] + (f":{d['budget_reason']}" if d["budget_reason"] else "")
         tally[key] = tally.get(key, 0) + 1
@@ -287,6 +288,13 @@ def _totals(frames: list[dict[str, Any]]) -> dict[str, Any]:
         "skipped": sum(1 for f in frames if f["status"] == "skipped"),
         "transitions": len(diffs),
         "budget_tally": dict(sorted(tally.items())),
+        "budget_judged": judged,
+        "budget_coverage": (judged / len(diffs)) if diffs else 0.0,
+        "budget_reading": (
+            "no_verdict"
+            if not judged
+            else ("over_budget" if tally.get("over_budget", 0) else "within_budget")
+        ),
         **sums,
         "movement": moves,
         "ripple_share": (
@@ -375,7 +383,7 @@ def render_report(m: dict[str, Any]) -> str:
 | structural (born + deleted) | {t["born"] + t["deleted"]} | {t["structural_share"]:.2f} |
 | **movement** | **{t["movement"]}** | over {t["transitions"]} transitions, {t["commits_between"]} commits |
 
-Budget tally across transitions: {tally}.
+Budget tally across transitions: {tally}. **Budget reading: {t["budget_reading"].replace("_", " ")}** — {t["budget_judged"]} of {t["transitions"]} transitions judged (coverage {t["budget_coverage"]:.2f}); a run the budget could not judge at all says nothing about stability (D-030).
 
 ## Feature counts per frame
 

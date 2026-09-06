@@ -179,3 +179,56 @@ def test_relint_keeps_prose_and_provenance(sub):
     r3 = run_brief(sk, sub, lambda s, u: (bad, {}), max_attempts=1)
     r4 = relint(r3["markdown"], sk, sub)
     assert [v["rule"] for v in r3["violations"]] == [v["rule"] for v in r4["violations"]]
+
+
+def test_d030_lint_closes_the_perverse_routes(sub):
+    """D-030: exemptions are narrow, numbers are paragraph-scoped, counts sit outside
+    citations, attempts are bounded and logged."""
+    from repo_substrate.brief import MAX_ATTEMPTS_CAP
+
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    good = _good_draft(f)
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    room = feat["rooms"][0]
+
+    def rules(text):
+        return {v.rule for v in lint(text, f)}
+
+    # a phrase of the stance does not exempt an uncited paragraph; the stance paragraph itself does
+    assert "R2-provenance" in rules(
+        good + "No citation here, which presupposes a norm of health.\n\n"
+    )
+    assert "R2-provenance" not in rules(good + f["stance"] + "\n\n")
+    # a room's metrics are allowed only where the room is named
+    lines = f["rooms"][room]["lines"]
+    if lines not in {
+        f["population"],
+        f["diagnostic_count"],
+        f["decorative"]["count"],
+        f["co_located_count"],
+        *f["wings"].values(),
+        *(x["count"] for x in f["features"]),
+    }:
+        assert "R3-number" in rules(
+            good + f"There are {lines} things [{feat['feature']} ×{feat['count']}].\n\n"
+        )
+        assert "R3-number" not in rules(
+            good + f"The room {room} has {lines} lines [{feat['feature']}: {room}].\n\n"
+        )
+    # counts must be stated outside citations
+    only_cited = good.replace(f"{f['diagnostic_count']} diagnostic marks", "diagnostic marks")
+    assert (
+        "R7-counts" in rules(only_cited + f"[{feat['feature']} ×{f['diagnostic_count']}]\n\n")
+        or str(f["diagnostic_count"]) in only_cited
+    )
+    # attempts are capped and logged
+    calls = []
+
+    def always_bad(system, user):
+        calls.append(1)
+        return good + "It will break.\n\n", {}
+
+    r = run_brief(sk, sub, always_bad, max_attempts=10)
+    assert len(calls) == MAX_ATTEMPTS_CAP and not r["passed"]
+    assert r["provenance"]["attempts_log"].count("R1-consequence") == MAX_ATTEMPTS_CAP
