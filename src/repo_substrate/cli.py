@@ -128,6 +128,12 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="lint this hand-written brief instead of generating",
     )
+    br.add_argument(
+        "--relint",
+        type=Path,
+        default=None,
+        help="re-judge an existing brief.md under the current lint, keeping its provenance",
+    )
     br.add_argument("--model", default=None, help=f"generator model (default {DEFAULT_MODEL})")
     br.add_argument("--effort", default="high", choices=["low", "medium", "high", "xhigh", "max"])
     br.add_argument(
