@@ -4,35 +4,37 @@
 
 ## Frames
 
-| # | sha | as of | commits | population | K | born/del | touched (frac) | edits (feat+strata) | ripple (feat+strata) (clock/rank) | untouched churn / strata | budget |
+| # | sha | as of | commits | population | K | born/del | touched (frac) | edits (feat+strata) | ripple (feat+strata) (clock/rank/mixed) | jitter churn / strata | budget |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | 0 | a658d7b0 | 2013-06-29 | 1 | 12 | skipped: population_below_n_min | | | | | | |
 | 1 | fb6442e0 | 2014-11-11 | 1608 | 163 | — | | | | | | |
-| 2 | 67e8f169 | 2015-08-27 | 3089 | 211 | 1481 | 58/10 | 147 (0.96) | 370+7 | 16+0 (11/5) | 0.410 / 0.000 | untested (insufficient_untouched_population) |
-| 3 | 61a3025f | 2016-03-28 | 4613 | 269 | 1524 | 64/6 | 165 (0.80) | 216+138 | 22+37 (18/41) | 0.162 / 0.925 | untested (touched_fraction_exceeds_floor) |
-| 4 | 9679daa8 | 2016-12-12 | 5487 | 307 | 874 | 38/0 | 269 (1.00) | 264+70 | 0+0 (0/0) | 0.000 / 0.000 | untested (insufficient_untouched_population) |
-| 5 | ea1b15d3 | 2018-01-09 | 6276 | 353 | 789 | 49/3 | 298 (0.98) | 457+47 | 4+0 (4/0) | 0.143 / 0.000 | untested (insufficient_untouched_population) |
-| 6 | 4c0b70b8 | 2019-08-31 | 7064 | 385 | 788 | 42/10 | 342 (1.00) | 460+9 | 1+0 (1/0) | 0.333 / 0.000 | untested (insufficient_untouched_population) |
-| 7 | d6c84af6 | 2021-02-10 | 7853 | 393 | 789 | 21/13 | 295 (0.79) | 197+22 | 93+0 (80/13) | 0.354 / 0.000 | untested (touched_fraction_exceeds_floor) |
-| 8 | c3ce5212 | 2022-11-04 | 8642 | 424 | 789 | 40/9 | 342 (0.89) | 175+7 | 34+0 (23/11) | 0.254 / 0.000 | untested (touched_fraction_exceeds_floor) |
-| 9 | b07d4278 | 2024-03-30 | 9431 | 447 | 789 | 42/19 | 347 (0.86) | 169+17 | 36+0 (27/9) | 0.257 / 0.000 | untested (touched_fraction_exceeds_floor) |
-| 10 | 677a2837 | 2025-06-10 | 10219 | 467 | 788 | 32/12 | 434 (1.00) | 212+8 | 0+0 (0/0) | 0.000 / 0.000 | untested (insufficient_untouched_population) |
-| 11 | 3f20a57c | 2026-09-04 | 11008 | 473 | 789 | 16/10 | 281 (0.61) | 160+12 | 56+0 (36/20) | 0.139 / 0.000 | untested (touched_fraction_exceeds_floor) |
+| 2 | 67e8f169 | 2015-08-27 | 3089 | 211 | 1481 | 58/10 | 147 (0.96) | 370+7 | 16+0 (7/5/4) | 0.281 / 0.000 | untested (beyond_pinned_k) |
+| 3 | 61a3025f | 2016-03-28 | 4613 | 269 | 1524 | 64/6 | 165 (0.80) | 216+139 | 22+37 (2/41/16) | 0.189 / 0.925 | untested (beyond_pinned_k) |
+| 4 | 9679daa8 | 2016-12-12 | 5487 | 307 | 874 | 38/0 | 269 (1.00) | 264+70 | 0+0 (0/0/0) | 0.000 / 0.000 | untested (beyond_pinned_k) |
+| 5 | ea1b15d3 | 2018-01-09 | 6276 | 353 | 789 | 49/3 | 298 (0.98) | 457+47 | 4+0 (2/0/2) | 0.091 / 0.000 | untested (beyond_pinned_k) |
+| 6 | 4c0b70b8 | 2019-08-31 | 7064 | 385 | 788 | 42/10 | 342 (1.00) | 460+30 | 1+0 (1/0/0) | 0.000 / 0.000 | untested (beyond_pinned_k) |
+| 7 | d6c84af6 | 2021-02-10 | 7853 | 393 | 789 | 21/13 | 295 (0.79) | 197+22 | 93+0 (61/13/19) | 0.167 / 0.000 | untested (beyond_pinned_k) |
+| 8 | c3ce5212 | 2022-11-04 | 8642 | 424 | 789 | 40/9 | 342 (0.89) | 175+7 | 34+0 (17/11/6) | 0.185 / 0.000 | untested (beyond_pinned_k) |
+| 9 | b07d4278 | 2024-03-30 | 9431 | 447 | 789 | 42/19 | 347 (0.86) | 169+17 | 36+0 (26/9/1) | 0.114 / 0.000 | untested (beyond_pinned_k) |
+| 10 | 677a2837 | 2025-06-10 | 10219 | 467 | 788 | 32/12 | 434 (1.00) | 212+9 | 0+0 (0/0/0) | 0.000 / 0.000 | untested (beyond_pinned_k) |
+| 11 | 3f20a57c | 2026-09-04 | 11008 | 473 | 789 | 16/10 | 281 (0.61) | 160+12 | 56+0 (3/20/33) | 0.167 / 0.000 | untested (beyond_pinned_k) |
 
-*edits* = feature changes and strata moves on nodes the intervening commits edited (the skeleton reporting the edit); *ripple* = the same on nodes they did not edit, split into *clock* (features over clock-relative signals — maintainability/dark_room, maintainability/flooded_basement, maintainability/lit_room — and age-geometry strata: the skeleton reporting time) and *rank* (features over rank-only signals and layer strata: the percentile or the layer moved under a node nobody touched — jitter); *born/del* = structural change. The three together are the movement between frames.
+*edits* = feature changes and strata moves on nodes the intervening commits edited (the skeleton reporting the edit); *ripple* = the same on nodes they did not edit, split into *clock* (features over clock-relative signals only — maintainability/dark_room, maintainability/lit_room — the skeleton reporting time), *rank* (features over rank-only signals, and every floor move of an untouched room: the percentile or the layer moved under a node nobody touched — jitter), and *mixed* (features over a clock and a rank signal together — maintainability/flooded_basement — whose rank component cannot be separated and which the budget therefore counts as jitter); *born/del* = structural change. The four together are the movement between frames. The budget (D-018, operand revised D-024) judges *jitter* = rank + mixed churn and strata moves over untouched rooms, only at K ≤ 10; beyond that it is `untested: beyond_pinned_k` and the numbers stand on their own.
 
 ## Decomposition of movement over the history
 
 | | count | share |
 |---|---|---|
-| edits (touched nodes) | 3017 | 0.79 |
+| edits (touched nodes) | 3040 | 0.79 |
 | ripple (untouched nodes) | 299 | 0.08 |
-| &nbsp;&nbsp;of which clock (time reported) | 200 | 0.05 |
+| &nbsp;&nbsp;of which clock (time reported) | 119 | 0.03 |
 | &nbsp;&nbsp;of which rank (jitter) | 99 | 0.03 |
+| &nbsp;&nbsp;of which mixed (counted as jitter) | 81 | 0.02 |
+| **jitter (rank + mixed)** | **180** | **0.05** at median K = 789 |
 | structural (born + deleted) | 494 | 0.13 |
-| **movement** | **3810** | over 10 transitions, 9400 commits |
+| **movement** | **3833** | over 10 transitions, 9400 commits |
 
-Budget tally across transitions: untested:insufficient_untouched_population × 5, untested:touched_fraction_exceeds_floor × 5.
+Budget tally across transitions: untested:beyond_pinned_k × 10.
 
 ## Feature counts per frame
 

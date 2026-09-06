@@ -56,6 +56,7 @@ def share_bar(t: dict, height: int = 14) -> str:
         ("edits", t["edit_share"], "edits"),
         ("clock", t["ripple_clock_share"], "clock"),
         ("rank", t["ripple_rank_share"], "rank"),
+        ("mixed", t.get("ripple_mixed_share", 0.0), "mixed"),
         ("structural", t["structural_share"], "structural"),
     ]
     out = ['<div class="bar" style="height:%dpx">' % height]
@@ -77,7 +78,7 @@ def summary_rows() -> str:
             f'<div class="sum-row"><div class="sum-name"><b>{escape(name)}</b><span>{escape(blurb)}</span></div>'
             f"{share_bar(t)}"
             f'<div class="sum-nums"><span class="n edits">{t["edit_share"]:.0%}</span><span class="n clock">{t["ripple_clock_share"]:.0%}</span>'
-            f'<span class="n rank">{t["ripple_rank_share"]:.0%}</span><span class="n structural">{t["structural_share"]:.0%}</span>'
+            f'<span class="n rank">{t["ripple_rank_share"]:.0%}</span><span class="n mixed">{t.get("ripple_mixed_share", 0.0):.0%}</span><span class="n structural">{t["structural_share"]:.0%}</span>'
             f'<span class="tot">{t["movement"]:,} moves · {t["commits_between"]:,} commits</span></div></div>'
         )
     return "".join(rows)
@@ -108,13 +109,15 @@ def repo_block(k: str, name: str, m: dict) -> str:
             x1 = 100.0 * f["commit_count"] / head
             edits = d["feature_changes_touched"] + d["strata_moves_touched"]
             struct = d["born"] + d["deleted"]
-            tot = edits + d["ripple_clock"] + d["ripple_rank"] + struct
+            mixed = d.get("ripple_mixed", 0)
+            tot = edits + d["ripple_clock"] + d["ripple_rank"] + mixed + struct
             segs = "".join(
                 f'<span class="seg {cls}" style="flex:{v / tot if tot else 0:.4f}"></span>'
                 for cls, v in (
                     ("edits", edits),
                     ("clock", d["ripple_clock"]),
                     ("rank", d["ripple_rank"]),
+                    ("mixed", mixed),
                     ("structural", struct),
                 )
                 if v > 0
@@ -122,7 +125,7 @@ def repo_block(k: str, name: str, m: dict) -> str:
             verdict = d["budget_verdict"].replace("_", " ")
             title = (
                 f"{prev['commit_count']:,} → {f['commit_count']:,} ({d['commits_between']} commits): "
-                f"edits {edits}, clock {d['ripple_clock']}, rank {d['ripple_rank']}, born/deleted {d['born']}/{d['deleted']}; budget {verdict}"
+                f"edits {edits}, clock {d['ripple_clock']}, rank {d['ripple_rank']}, mixed {mixed}, born/deleted {d['born']}/{d['deleted']}; budget {verdict}"
             )
             bars.append(
                 f'<div class="tbar" style="left:{x0:.2f}%;width:{x1 - x0:.2f}%" data-i="{f["index"]}" title="{escape(title)}">{segs}</div>'
@@ -157,6 +160,7 @@ def repo_block(k: str, name: str, m: dict) -> str:
                 "edits": d["feature_changes_touched"] + d["strata_moves_touched"],
                 "clock": d["ripple_clock"],
                 "rank": d["ripple_rank"],
+                "mixed": d.get("ripple_mixed", 0),
                 "verdict": d["budget_verdict"],
                 "reason": d["budget_reason"],
             }
@@ -188,16 +192,16 @@ page = f"""<title>Skeleton Time-lapse</title>
 <style>
 :root{{
   --ground:#eef0ec; --sheet:#f7f8f5; --ink:#232830; --ink-2:#5a626e; --line:#c6ccc9; --accent:#1f4e9c; --accent-soft:#d8e3f4;
-  --edits:#8a919c; --clock:#c58b1e; --rank:#c8322b; --structural:#4f7ea8;
+  --edits:#8a919c; --clock:#c58b1e; --rank:#c8322b; --mixed:#7a3e9d; --structural:#4f7ea8;
   --sans:"IBM Plex Sans",system-ui,sans-serif; --cond:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
 }}
 @media (prefers-color-scheme: dark){{ :root:not([data-theme="light"]){{
   --ground:#101d31; --sheet:#182741; --ink:#d7dfe9; --ink-2:#93a2b6; --line:#2e4260; --accent:#7db2ff; --accent-soft:#213a5e;
-  --edits:#6f7d92; --clock:#d9a84a; --rank:#e0564d; --structural:#6f9fca;
+  --edits:#6f7d92; --clock:#d9a84a; --rank:#e0564d; --mixed:#b48ad6; --structural:#6f9fca;
 }} }}
 :root[data-theme="dark"]{{
   --ground:#101d31; --sheet:#182741; --ink:#d7dfe9; --ink-2:#93a2b6; --line:#2e4260; --accent:#7db2ff; --accent-soft:#213a5e;
-  --edits:#6f7d92; --clock:#d9a84a; --rank:#e0564d; --structural:#6f9fca;
+  --edits:#6f7d92; --clock:#d9a84a; --rank:#e0564d; --mixed:#b48ad6; --structural:#6f9fca;
 }}
 body{{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;margin:0}}
 header{{padding:28px clamp(16px,4vw,48px) 18px;border-bottom:1px solid var(--line)}}
@@ -210,9 +214,9 @@ h1{{font-family:var(--cond);font-weight:600;font-size:30px;letter-spacing:.01em;
 .sum-row{{display:grid;grid-template-columns:minmax(180px,1fr) 3fr minmax(300px,2fr);gap:14px;align-items:center}}
 .sum-name{{display:flex;flex-direction:column;line-height:1.25}} .sum-name b{{font-family:var(--mono);font-weight:500;font-size:14px}} .sum-name span{{font-size:12.5px;color:var(--ink-2)}}
 .bar{{display:flex;width:100%;background:var(--line);overflow:hidden}}
-.seg{{display:block;min-width:1px}} .seg.edits{{background:var(--edits)}} .seg.clock{{background:var(--clock)}} .seg.rank{{background:var(--rank)}} .seg.structural{{background:var(--structural)}}
+.seg{{display:block;min-width:1px}} .seg.edits{{background:var(--edits)}} .seg.clock{{background:var(--clock)}} .seg.rank{{background:var(--rank)}} .seg.mixed{{background:var(--mixed)}} .seg.structural{{background:var(--structural)}}
 .sum-nums{{display:flex;gap:10px;font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums;align-items:baseline}}
-.n{{min-width:34px}} .n.edits{{color:var(--ink-2)}} .n.clock{{color:var(--clock)}} .n.rank{{color:var(--rank);font-weight:500}} .n.structural{{color:var(--structural)}}
+.n{{min-width:34px}} .n.edits{{color:var(--ink-2)}} .n.clock{{color:var(--clock)}} .n.rank{{color:var(--rank);font-weight:500}} .n.mixed{{color:var(--mixed)}} .n.structural{{color:var(--structural)}}
 .tot{{color:var(--ink-2);font-size:12px;margin-left:auto;white-space:nowrap}}
 nav{{display:flex;gap:2px;padding:14px clamp(16px,4vw,48px) 0;border-bottom:1px solid var(--line)}}
 .tab{{font:500 14px var(--mono);color:var(--ink-2);background:transparent;border:1px solid transparent;border-bottom:none;padding:7px 14px;cursor:pointer;border-radius:3px 3px 0 0}}
@@ -244,8 +248,8 @@ nav{{display:flex;gap:2px;padding:14px clamp(16px,4vw,48px) 0;border-bottom:1px 
 </style>
 <header>
   <h1>Skeleton Time-lapse</h1>
-  <p class="q">Twelve checkpoints on each repository's first-parent trunk, a skeleton per checkpoint under HEAD's gate, and the movement between adjacent skeletons decomposed. The phase's question: <b>is the named structure, over the history, structural change or the budget's jitter?</b> Only <b>rank</b> ripple is jitter: a feature or floor that moved under a room nobody touched because the percentile or the dependency layer shifted beneath it.</p>
-  <div class="legend"><span style="--c:var(--edits)">edits — touched rooms</span><span style="--c:var(--clock)">clock — time reported</span><span style="--c:var(--rank)">rank — jitter</span><span style="--c:var(--structural)">structural — born / deleted</span></div>
+  <p class="q">Twelve checkpoints on each repository's first-parent trunk, a skeleton per checkpoint under HEAD's gate, and the movement between adjacent skeletons decomposed. The phase's question: <b>is the named structure, over the history, structural change or the budget's jitter?</b> <b>Rank</b> ripple is jitter: a feature or floor that moved under a room nobody touched because the percentile or the dependency layer shifted beneath it; <b>mixed</b> ripple, through a feature that reads both a clock and a rank signal, is counted with it. Under the corrected operand (D-024) jitter is 5–12% on the mature repositories and 20–33% on the young ones, where in-repo age bands re-rank as the population grows.</p>
+  <div class="legend"><span style="--c:var(--edits)">edits — touched rooms</span><span style="--c:var(--clock)">clock — time reported</span><span style="--c:var(--rank)">rank — jitter</span><span style="--c:var(--mixed)">mixed — counted as jitter</span><span style="--c:var(--structural)">structural — born / deleted</span></div>
   <div class="sum">{summary_rows()}</div>
 </header>
 <nav role="tablist">{tabs}</nav>
@@ -275,7 +279,7 @@ nav{{display:flex;gap:2px;padding:14px clamp(16px,4vw,48px) 0;border-bottom:1px 
       const d = c.diff;
       const s = document.createElement('span');
       const cls = d.verdict === 'over_budget' ? 'v-over' : d.verdict === 'within_budget' ? 'v-within' : 'v-untested';
-      s.innerHTML = ' · since previous: K=' + d.K + ', born ' + d.born + ', deleted ' + d.deleted + ', edits ' + d.edits + ', clock ' + d.clock + ', rank ' + d.rank + ' · budget <span class="' + cls + '">' + d.verdict.replace('_',' ') + (d.reason ? ' (' + d.reason.replace(/_/g,' ') + ')' : '') + '</span>';
+      s.innerHTML = ' · since previous: K=' + d.K + ', born ' + d.born + ', deleted ' + d.deleted + ', edits ' + d.edits + ', clock ' + d.clock + ', rank ' + d.rank + ', mixed ' + (d.mixed || 0) + ' · budget <span class="' + cls + '">' + d.verdict.replace('_',' ') + (d.reason ? ' (' + d.reason.replace(/_/g,' ') + ')' : '') + '</span>';
       cap.appendChild(s);
     }}
     sec.dataset.current = i;
