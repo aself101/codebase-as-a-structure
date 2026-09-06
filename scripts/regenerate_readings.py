@@ -58,6 +58,7 @@ def main() -> int:
     }
     geoms = ["age", "layer"] if args.geometry == "both" else [args.geometry]
     vpath = str(args.validation)
+    k = v["validation_config"]["stability_perturbation_k"]
 
     # 1. budget re-read
     m2 = ROOT / "reports" / f"{args.tag}-m2x"
@@ -119,7 +120,7 @@ def main() -> int:
             )
     (m2 / "skeleton-budget.md").write_text(
         f"# Skeleton-level stability budget — re-read under `{fp}` ({args.tag})\n\n"
-        f"*Procedure of D-018 with the D-024/D-026 operand: before = the gate's stability-perturbation substrate (HEAD minus the last K = 5 timeline commits), after = HEAD; maintainability + onboarding; gate `{args.validation}`.*\n\n"
+        f"*Procedure of D-018 with the D-024/D-026 operand: before = the gate's stability-perturbation substrate (HEAD minus the last K = {k} timeline commits), after = HEAD; maintainability + onboarding; gate `{args.validation}`.*\n\n"
         "| repo | geometry | K | common | born/del | touched | churn (all) | strata (all) | jitter churn | clock churn | strata (untouched) | verdict |\n|---|---|---|---|---|---|---|---|---|---|---|---|\n"
         + "\n".join(rows)
         + "\n",

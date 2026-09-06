@@ -19,6 +19,6 @@ The question (D-020): over a repository's history, is the named structure struct
 
 - **The jitter share is the answer** to the phase's question, per (repository, geometry, schedule), and it is quoted with its median K because it is a joint value of repository and schedule (D-024, D-026).
 - **Clock** is the skeleton reporting time; **edits** are the skeleton reporting edits; **structural** is births and deletions; only **rank + mixed** is jitter.
-- **The budget's verdicts** are rendered only at K ≤ 50 (D-026); on twelve-frame schedules every transition is `untested: beyond_pinned_k` by construction, and the numbers stand on their own.
+- **The budget's verdicts** are rendered only at 25 ≤ K ≤ 50 (D-026, D-032); on twelve-frame schedules almost every transition is `untested` by construction (`beyond_pinned_k` on the long histories, `below_pinned_k` on the short one), and the numbers stand on their own.
 - The pre-registered ceilings of D-024 (jitter above 0.20 on any repository/geometry, or above 0.10 on two, refutes "a few percent") are judged in the decision log, not here; this file is the reading.
 - Per-run pages beside this file carry the frames, the change sheets (D-023), and the per-transition tables.

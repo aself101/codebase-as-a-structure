@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.2.0"
+BRIEF_VERSION = "0.2.1"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -228,8 +228,35 @@ BUILDING_LABELS = {
     "labyrinth",
     "maze",
 }
-# [feature: a, b] · [feature ×N] · [feature ×N: a, b] — the count and the rooms are each checked
-CITATION = re.compile(r"\[([a-z_]+(?:/[a-z_]+)?)(?:\s*×\s*(\d+))?(?::\s*([^\]]+?))?\]")
+# [feature: a, b] · [feature ×N] · [feature ×N: a, b] · [f ×N; g ×M] · [f ×N, g ×M] — one bracket
+# may chain several clauses; the count and the rooms of each are checked (D-032 addendum)
+BRACKET = re.compile(r"\[([a-z_][^\]]*)\]")
+CLAUSE = re.compile(r"^([a-z_]+(?:/[a-z_]+)?)\s*(?:×\s*(\d+))?\s*(?::\s*(.+))?$")
+
+
+def _citations(text: str):
+    """Yield (feature, count, rooms) for every clause of every bracket in ``text``.
+
+    Clauses chain on ``;``. A comma chains too, but only between bare counts
+    (``[crack ×21, toothpick_wing ×3]``) — inside ``[hub: a.ts, b.ts]`` the comma
+    separates rooms. A clause that does not parse is yielded by its raw text so
+    it resolves to nothing and R2 refuses it.
+    """
+    for b in BRACKET.finditer(text):
+        body = b.group(1)
+        parts = [c.strip() for c in body.split(";")]
+        if len(parts) == 1 and "," in body and ":" not in body:
+            cs = [c.strip() for c in body.split(",")]
+            if all((m := CLAUSE.match(c)) and m.group(2) for c in cs):
+                parts = cs
+        for c in parts:
+            m = CLAUSE.match(c)
+            if m:
+                yield m.group(1), m.group(2), (m.group(3) or "").strip() or None
+            else:
+                yield c, None, None
+
+
 INTEGER = re.compile(r"(?<![\w./-])(\d{1,7})(?![\w./%-])")
 WORD_NUMBERS = {
     w: i
@@ -333,7 +360,7 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
             continue
         low_para = para.lower()
         # the stance paragraph is the stance sentence, not any paragraph that quotes a phrase of it
-        bare = re.sub(CITATION, "", low_para).strip()
+        bare = BRACKET.sub("", low_para).strip()
         is_stance = bare.startswith(stance_key)
         is_disclosure = "decorative" in low_para and (
             "not a diagnosis" in low_para or "no diagnosis" in low_para
@@ -348,7 +375,7 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
         # R1 consequence vocabulary, per sentence. Bracket interiors are names, not claims,
         # and are stripped first; the disclosure clause is struck, not used as an amnesty.
         for sent in SENTENCE.split(para):
-            scan = re.sub(CITATION, "", sent).lower()
+            scan = BRACKET.sub("", sent).lower()
             for clause in DISCLOSURE_CLAUSES:
                 scan = re.sub(clause, " ", scan)
             hits = sorted(w for w in CONSEQUENCE_WORDS if re.search(rf"\b{re.escape(w)}\b", scan))
@@ -377,8 +404,8 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
             named = [rid for rid in room_ids if _mentions(sent, rid)]
             if named:
                 covered: set[str] = set()
-                for m in CITATION.finditer(sent):
-                    cf = by_key.get(m.group(1)) or by_feature.get(m.group(1))
+                for cname, _c, _r in _citations(sent):
+                    cf = by_key.get(cname) or by_feature.get(cname)
                     if cf:
                         covered.update(cf["rooms"])
                 for rid in named:
@@ -392,19 +419,7 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                             )
                         )
         # R2 provenance: citations resolve; every paragraph carries at least one
-        cites = []
-        for m in CITATION.finditer(para):
-            name, count, room = m.group(1), m.group(2), m.group(3)
-            if room and ";" in room:
-                # [foundation: x; hub: x; dark_room: x] — several clauses in one bracket
-                first, *rest = [c.strip() for c in room.split(";")]
-                cites.append((name, count, first))
-                for clause in rest:
-                    cm = re.match(r"([a-z_]+(?:/[a-z_]+)?)\s*(?:×\s*(\d+))?\s*:?\s*(.*)", clause)
-                    if cm:
-                        cites.append((cm.group(1), cm.group(2), cm.group(3).strip()))
-            else:
-                cites.append((name, count, room))
+        cites = list(_citations(para))
         decorative_only = bool(cites) and all(
             (by_key.get(n) or by_feature.get(n) or {}).get("decorative") and c and not r
             for n, c, r in cites
@@ -484,7 +499,7 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                 used_consequence_names.add(f["feature"])
         # R3 numbers — digits and number words alike; a room's own metrics are admitted only
         # in a paragraph that names the room (D-030: otherwise any small integer passes)
-        stripped = re.sub(CITATION, "", para)
+        stripped = BRACKET.sub("", para)
         para_allowed = set(allowed_numbers)
         for rid in room_ids:
             if rid in room_metrics and _mentions(para, rid):
@@ -495,6 +510,8 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                     Violation("R3-number", i, para[:160], f"number {n} is not in the facts sheet")
                 )
         for m in WORD_NUMBER.finditer(stripped):
+            if m.group(0).lower() == "one":
+                continue  # the determiner, not a measurement (D-032 addendum)
             val = WORD_NUMBERS[m.group(1).lower()] + (
                 WORD_NUMBERS[m.group(2).lower()] if m.group(2) else 0
             )
@@ -534,7 +551,7 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
         for ones, ov in WORD_NUMBERS.items()
         if tv >= 20 and 0 < ov < 10 and tv + ov == dec_count
     }
-    prose_only = re.sub(CITATION, "", text)
+    prose_only = BRACKET.sub("", text)
     low_prose = prose_only.lower()
     stated = str(dec_count) in prose_only or any(
         re.search(rf"\b{w}\b", low_prose) for w in dec_words
@@ -567,7 +584,7 @@ SYSTEM = """You are a condemnation surveyor writing the architect's brief for a 
 
 Register, binding (validation-spec §2.1.1, mapper §3):
 - Present tense only. Every feature rests on a signal that describes a present structural position. You may say where a room sits and what fires on it. You may not say what will happen, what breaks, what is at risk, what is fragile, what will ripple, what a change would cause. Those are predictions; none is licensed here. Avoid the words: break, will, would, risk, fragile, brittle, dangerous, ripple, cascade, fail, failure, likely, predict, expect, cause, collapse, vulnerable, exposed, threat, prone, future, soon, eventually, impact, consequence, propagate, bug, defect, safe, unsafe, critical.
-- Every paragraph cites its evidence in brackets, where the bracket opens with the feature's own name from the facts sheet: [hub: src/db/connection.ts] for one room, [hub: src/a.ts, src/b.ts] for several, [hub ×27] for a count (×27 must equal that feature's count in the facts sheet). Never write the word "feature" inside a bracket; write the feature's name (foundation, hub, dark_room, scaffolding, corridor, …). A paragraph with no citation is struck.
+- Every paragraph cites its evidence in brackets, where the bracket opens with the feature's own name from the facts sheet: [hub: src/db/connection.ts] for one room, [hub: src/a.ts, src/b.ts] for several, [hub ×27] for a count (×27 must equal that feature's count in the facts sheet). Several counts share one bracket separated by semicolons: [foundation ×21; onboarding/foundation ×21]. To name example rooms under a count, put them in the same bracket in the same sentence: [foundation ×21: src/a.ts, src/b.ts] — a room named in a later sentence needs its own bracket there. Never write the word "feature" inside a bracket; write the feature's name (foundation, hub, dark_room, scaffolding, corridor, …). A paragraph with no citation is struck.
 - A room you name in a sentence must be covered by a feature you cite in that same sentence, and that feature must have fired on that room. Never name a room under a feature that did not fire on it.
 - State the population, the diagnostic-mark count (all profiles), and the co-located count together, early.
 - Name rooms; do not say what they do. A path is not a function: "src/error/QueryFailedError.ts" is a room, not "the error classes". Describe position and marks, not purpose.
@@ -578,13 +595,14 @@ Register, binding (validation-spec §2.1.1, mapper §3):
 - Decorative features rest on nothing confirmed. Do not use them in any diagnosis and do not name the rooms they fired on. State the decorative count once, plainly, citing by count only, e.g. "27 decorative marks render but are not a diagnosis [crack ×27]."
 - A feature whose name implies a consequence (foundation, toothpick_wing, crack) must be disclosed with its position name from the facts sheet, e.g. "foundation — a high-load hub, a position in the import graph, not a claim about what breaks".
 - Do not give the building a one-word label (cathedral, shantytown, bunker, ruin). No archetype exists.
+- The page header already states the calibration (in-repo, self-relative, one frame). Do not write a calibration or method paragraph.
 - Do not invent rooms, wings, or features. Do not describe code you have not been given; the facts sheet is the whole building.
 
 Form: 300–600 words of plain prose in short paragraphs; no headings, no bullet lists; the surveyor's voice — exact, unimpressed, specific. Begin with the building's shape (wings and rooms), then the features by where they sit, then the decorative disclosure, then the stance sentence given in the facts sheet, verbatim or near it."""
 
 
 def _user_message(facts_doc: dict[str, Any], violations: list[Violation] | None = None) -> str:
-    slim = {k: v for k, v in facts_doc.items() if k != "rooms"}
+    slim = {k: v for k, v in facts_doc.items() if k not in ("rooms", "calibration")}
     msg = "FACTS SHEET (JSON):\n" + json.dumps(slim, indent=1, sort_keys=True, ensure_ascii=False)
     if violations:
         msg += (

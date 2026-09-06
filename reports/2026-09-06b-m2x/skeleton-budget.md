@@ -1,6 +1,6 @@
 # Skeleton-level stability budget — re-read under `179d8acb7b0c` (2026-09-06b)
 
-*Procedure of D-018 with the D-024/D-026 operand: before = the gate's stability-perturbation substrate (HEAD minus the last K = 5 timeline commits), after = HEAD; maintainability + onboarding; gate `out/validation-k25/validation.json`.*
+*Procedure of D-018 with the D-024/D-026 operand: before = the gate's stability-perturbation substrate (HEAD minus the last K = 25 timeline commits), after = HEAD; maintainability + onboarding; gate `out/validation-k25/validation.json`.*
 
 | repo | geometry | K | common | born/del | touched | churn (all) | strata (all) | jitter churn | clock churn | strata (untouched) | verdict |
 |---|---|---|---|---|---|---|---|---|---|---|---|

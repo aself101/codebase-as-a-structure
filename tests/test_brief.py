@@ -232,3 +232,36 @@ def test_d030_lint_closes_the_perverse_routes(sub):
     r = run_brief(sk, sub, always_bad, max_attempts=10)
     assert len(calls) == MAX_ATTEMPTS_CAP and not r["passed"]
     assert r["provenance"]["attempts_log"].count("R1-consequence") == MAX_ATTEMPTS_CAP
+
+
+def test_lint_reads_chained_brackets_and_the_determiner_one(sub):
+    """D-032 addendum: [f ×N; g ×M] and [f ×N, g ×M] are several citations in one bracket;
+    the word "one" is a determiner, not a measurement; a room under a count must share its bracket."""
+    f = facts(_skeleton(sub), sub)
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    other = next(x for x in f["features"] if x["diagnostic"] and x is not feat)
+    # a consequence-implying name must be disclosed where first used (R5); do it in the chained sentence
+    disclose = (
+        f"{other['feature']} — {other['position_name']} — and "
+        if other["name_implies_consequence"]
+        else ""
+    )
+    room = feat["rooms"][0]
+    base = _good_draft(f)
+    chained = base + (
+        f"{disclose}two marks share one bracket [{feat['feature']} ×{feat['count']}; {other['feature']} ×{other['count']}].\n\n"
+        f"{disclose}one more in the comma form [{feat['feature']} ×{feat['count']}, {other['feature']} ×{other['count']}].\n\n"
+    )
+    assert lint(chained, f) == []
+    wrong_count = (
+        base
+        + f"{disclose}bad [{feat['feature']} ×{feat['count'] + 1}; {other['feature']} ×{other['count']}].\n\n"
+    )
+    assert {v.rule for v in lint(wrong_count, f)} == {"R2-provenance"}
+    hybrid = base + f"Under a count [{feat['feature']} ×{feat['count']}: {room}].\n\n"
+    assert lint(hybrid, f) == []
+    later = (
+        base
+        + f"A count here [{feat['feature']} ×{feat['count']}]. The room {room} is named here without one.\n\n"
+    )
+    assert "R8-attribution" in {v.rule for v in lint(later, f)}
