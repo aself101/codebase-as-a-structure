@@ -26,7 +26,7 @@ That claim is defensible only insofar as the gate can fail and the report shows 
 | `blind/` | Sealed recognition rankings per reference repo (n = 1, non-gating, provenance stated in-file) |
 | `src/repo_substrate/` | The package: `substrate extract \| map \| render` and `substrate-validate run \| tune` |
 | `rulesets/` | C3 rulesets (TOML): maintainability v0.1.0 (base) and onboarding v0.1.0 (overlay) |
-| `tests/` | 92 tests incl. a scripted synthetic repository, verdict-path tests, and integrity checks |
+| `tests/` | 102 tests incl. a scripted synthetic repository, verdict-path tests, and integrity checks |
 | `docs/` | Review history: the June tribunal, the archived prototype, notes |
 
 ## Running it

@@ -17,7 +17,13 @@ from typing import Any
 from .cutaway import render_change_sheet, render_cutaway
 from .gitutil import run_git
 from .mapper import Ruleset, map_skeleton
-from .mapper.diff import skeleton_diff, touched_between
+from .mapper.diff import (
+    CLOCK_SIGNALS,
+    SKELETON_BUDGET,
+    classify_signals,
+    skeleton_diff,
+    touched_between,
+)
 from .validation.substrates import SubstrateCache
 
 
@@ -25,32 +31,17 @@ class TimelapseError(ValueError):
     pass
 
 
-# Signals measured against the checkpoint's clock (substrate spec §5, §7): a node nobody
-# edited still moves on these because time passed or history lengthened. Movement on
-# untouched nodes through these signals is the skeleton reporting time, not jitter
-# (time-lapse §4). `recent_commit_share` is timeline-relative by commit count, which is a
-# clock in commits rather than days; the two indices carry a clock input each.
-CLOCK_SIGNALS = frozenset(
-    {
-        "age_days",
-        "last_touched_days",
-        "blame_age_median",
-        "recent_commit_share",
-        "neglect_index",
-        "change_pressure_index",
-    }
-)
-
-
 def feature_kinds(ruleset: Ruleset, overlays: tuple[Ruleset, ...]) -> dict[str, str]:
-    """(profile/feature) → 'clock' if any signal the predicate reads is clock-relative, else 'rank'."""
-    kinds: dict[str, str] = {}
-    for rs in (ruleset, *overlays):
-        for f in rs.features:
-            kinds[f"{rs.profile}/{f.name}"] = (
-                "clock" if any(s in CLOCK_SIGNALS for s in f.signals) else "rank"
-            )
-    return kinds
+    """(profile/feature) → 'clock' | 'rank' | 'mixed' from the predicate's signals
+    (`mapper.diff.classify_signals`, `CLOCK_SIGNALS`)."""
+    return {
+        f"{rs.profile}/{f.name}": classify_signals(f.signals)
+        for rs in (ruleset, *overlays)
+        for f in rs.features
+    }
+
+
+__all__ = ["CLOCK_SIGNALS", "feature_kinds"]
 
 
 def trunk(repo: Path) -> list[str]:
@@ -61,7 +52,9 @@ def trunk(repo: Path) -> list[str]:
 
 def choose_checkpoints(n: int, frames: int | None = None, every: int | None = None) -> list[int]:
     """Trunk indices for the schedule: `frames` evenly spaced (first and last inclusive) or
-    `every` K commits walking back from HEAD. HEAD (index n-1) is always the last frame."""
+    `every` K commits walking back from HEAD. HEAD (index n-1) is always the last frame.
+    Fewer than `frames` indices come back when the trunk is shorter than the request; the
+    manifest records the realized count (`schedule.realized`)."""
     if n <= 0:
         raise TimelapseError("empty trunk")
     if (frames is None) == (every is None):
@@ -87,20 +80,20 @@ def _feature_counts(skeleton: dict[str, Any]) -> dict[str, int]:
     return counts
 
 
-def _diff_summary(d: dict[str, Any], kinds: dict[str, str], geometry: str) -> dict[str, Any]:
+def _diff_summary(d: dict[str, Any]) -> dict[str, Any]:
     touched_changes = sum(
         len(v["added"]) + len(v["removed"]) - v["untouched_changes"]
         for v in d["per_feature"].values()
     )
     untouched_changes = sum(v["untouched_changes"] for v in d["per_feature"].values())
-    clock_feat = sum(
-        v["untouched_changes"] for k, v in d["per_feature"].items() if kinds.get(k) == "clock"
-    )
+    bk = d["untouched"]["by_kind"]
     strata_untouched = len(d["untouched"]["strata_moved"])
-    clock_strata = strata_untouched if geometry == "age" else 0
+    # strata moves of untouched rooms are rank: a floor moves only because the population
+    # re-ranked around the room (D-022 removed the clock's way of moving it)
     return {
-        "ripple_clock": clock_feat + clock_strata,
-        "ripple_rank": (untouched_changes - clock_feat) + (strata_untouched - clock_strata),
+        "ripple_clock": bk["clock"]["changes"],
+        "ripple_rank": bk["rank"]["changes"] + strata_untouched,
+        "ripple_mixed": bk["mixed"]["changes"],
         "commits_between": d["commits_between"],
         "common_nodes": d["common_nodes"],
         "born": d["born"],
@@ -112,11 +105,11 @@ def _diff_summary(d: dict[str, Any], kinds: dict[str, str], geometry: str) -> di
         "untouched_n": d["untouched"]["n"],
         "untouched_churn": d["untouched"]["feature_churn"],
         "untouched_strata_frac": d["untouched"]["strata_moved_frac"],
-        # the decomposition of movement (time-lapse §4)
+        "jitter_churn": d["untouched"]["jitter_churn"],
         "feature_changes_touched": touched_changes,
         "feature_changes_untouched": untouched_changes,
-        "strata_moves_touched": len(d["strata_moved"]) - len(d["untouched"]["strata_moved"]),
-        "strata_moves_untouched": len(d["untouched"]["strata_moved"]),
+        "strata_moves_touched": len(d["strata_moved"]) - strata_untouched,
+        "strata_moves_untouched": strata_untouched,
         "budget_verdict": d["budget"]["verdict"],
         "budget_reason": d["budget"]["reason"],
     }
@@ -129,15 +122,31 @@ def run_timelapse(
     ruleset: Ruleset,
     overlays: tuple[Ruleset, ...],
     geometry: str,
-    checkpoints: list[int],
+    checkpoints: list[int] | None,
     out_dir: Path,
     schedule: dict[str, Any] | None = None,
     log=None,
+    frames_requested: int | None = None,
+    every: int | None = None,
 ) -> dict[str, Any]:
+    """`checkpoints` are trunk indices; when None they are chosen from `frames_requested`
+    or `every` over the trunk read once here (so the schedule and the frames see one HEAD)."""
     repo = repo.resolve()
     line = trunk(repo)
+    if not line:
+        raise TimelapseError(f"{repo.name}: no commits on HEAD")
+    if checkpoints is None:
+        checkpoints = choose_checkpoints(len(line), frames_requested, every)
+        schedule = {"frames": frames_requested, "every": every, "checkpoints": checkpoints}
     out_dir.mkdir(parents=True, exist_ok=True)
-    gate_fp = validation.get("substrate_config_fingerprint")
+    for stale in out_dir.glob("f[0-9][0-9][0-9]-*"):
+        if stale.suffix in (".json", ".svg"):
+            stale.unlink()  # products of an earlier schedule must not sit beside this one
+    if "substrate_config_fingerprint" not in validation:
+        raise TimelapseError(
+            "validation.json carries no substrate_config_fingerprint; the gate cannot be matched to the frames"
+        )
+    gate_fp = validation["substrate_config_fingerprint"]
     kinds = feature_kinds(ruleset, overlays)
     frames: list[dict[str, Any]] = []
     prev: tuple[dict[str, Any], dict[str, Any]] | None = None  # (substrate, skeleton)
@@ -146,10 +155,18 @@ def run_timelapse(
             raise TimelapseError(f"checkpoint index {ti} outside trunk of {len(line)}")
         sha = line[ti]
         sub = cache.get(repo, sha, truncate=True)
-        if gate_fp and sub["repo"]["config_fingerprint"] != gate_fp:
+        if sub["repo"]["config_fingerprint"] != gate_fp:
+            mine = cache.effective_config() if hasattr(cache, "effective_config") else {}
+            theirs = validation.get("substrate_effective_config") or {}
+            differing = sorted(k for k in set(mine) | set(theirs) if mine.get(k) != theirs.get(k))
             raise TimelapseError(
                 f"frame {i} ({sha[:8]}): substrate fingerprint {sub['repo']['config_fingerprint'][:12]} "
-                f"differs from the gate's {gate_fp[:12]}; the gate licenses nothing about it"
+                f"differs from the gate's {gate_fp[:12]}; the gate licenses nothing about it. "
+                + (
+                    f"Differing config keys: {differing}"
+                    if differing
+                    else "The effective configs are not both available to compare."
+                )
             )
         frame: dict[str, Any] = {
             "index": i,
@@ -184,12 +201,12 @@ def run_timelapse(
             psub, pskel = prev
             ren = sub.get("renames", {})
             touched, between = touched_between(psub, sub, ren)
-            d = skeleton_diff(pskel, skel, ren, touched, between)
+            d = skeleton_diff(pskel, skel, ren, touched, between, kinds=kinds)
             (out_dir / f"{stem}.diff.json").write_text(
                 json.dumps(d, indent=1, sort_keys=True, ensure_ascii=False, allow_nan=False) + "\n",
                 encoding="utf-8",
             )
-            frame["diff"] = _diff_summary(d, kinds, geometry)
+            frame["diff"] = _diff_summary(d)
             (out_dir / f"{stem}.change.svg").write_text(
                 render_change_sheet(pskel, skel, sub, d, kinds, psub), encoding="utf-8"
             )
@@ -204,7 +221,7 @@ def run_timelapse(
                 + (
                     f" | K={dd['commits_between']} born={dd['born']} del={dd['deleted']} "
                     f"untouched churn={dd['untouched_churn']:.3f} strata={dd['untouched_strata_frac']:.3f} "
-                    f"ripple clock/rank={dd['ripple_clock']}/{dd['ripple_rank']} → {dd['budget_verdict']}"
+                    f"ripple clock/rank/mixed={dd['ripple_clock']}/{dd['ripple_rank']}/{dd['ripple_mixed']} → {dd['budget_verdict']}"
                     + (f" ({dd['budget_reason']})" if dd["budget_reason"] else "")
                     if dd
                     else ""
@@ -213,7 +230,7 @@ def run_timelapse(
     manifest = {
         "schema_version": "0.1",
         "repo": {"name": repo.name, "head_sha": line[-1], "trunk_length": len(line)},
-        "schedule": schedule or {"checkpoints": checkpoints},
+        "schedule": {**(schedule or {}), "checkpoints": checkpoints, "realized": len(checkpoints)},
         "gate": {
             "substrate_config_fingerprint": gate_fp,
             "validation_config_fingerprint": validation.get("validation_config_fingerprint"),
@@ -252,6 +269,7 @@ def _totals(frames: list[dict[str, Any]]) -> dict[str, Any]:
         "strata_moves_untouched",
         "ripple_clock",
         "ripple_rank",
+        "ripple_mixed",
         "commits_between",
     )
     sums = {k: sum(d[k] for d in diffs) for k in keys}
@@ -278,6 +296,11 @@ def _totals(frames: list[dict[str, Any]]) -> dict[str, Any]:
         ),
         "ripple_clock_share": (sums["ripple_clock"] / moves if moves else 0.0),
         "ripple_rank_share": (sums["ripple_rank"] / moves if moves else 0.0),
+        "ripple_mixed_share": (sums["ripple_mixed"] / moves if moves else 0.0),
+        "jitter_share": ((sums["ripple_rank"] + sums["ripple_mixed"]) / moves if moves else 0.0),
+        "k_median": (
+            sorted(d["commits_between"] for d in diffs)[len(diffs) // 2] if diffs else None
+        ),
         "edit_share": (
             (sums["feature_changes_touched"] + sums["strata_moves_touched"]) / moves
             if moves
@@ -308,8 +331,8 @@ def render_report(m: dict[str, Any]) -> str:
             f"| {f['index']} | {f['sha'][:8]} | {f['as_of'][:10]} | {f['commit_count']} | {f['population']} | "
             f"{d['commits_between']} | {d['born']}/{d['deleted']} | {d['touched']} ({d['touched_frac']:.2f}) | "
             f"{d['feature_changes_touched']}+{d['strata_moves_touched']} | "
-            f"{d['feature_changes_untouched']}+{d['strata_moves_untouched']} ({d['ripple_clock']}/{d['ripple_rank']}) | "
-            f"{d['untouched_churn']:.3f} / {d['untouched_strata_frac']:.3f} | {verdict} |"
+            f"{d['feature_changes_untouched']}+{d['strata_moves_untouched']} ({d['ripple_clock']}/{d['ripple_rank']}/{d['ripple_mixed']}) | "
+            f"{d['jitter_churn']:.3f} / {d['untouched_strata_frac']:.3f} | {verdict} |"
         )
     tally = ", ".join(f"{k} × {v}" for k, v in t["budget_tally"].items()) or "none"
     ov = ", ".join(f"{o['name']} {o['version']}" for o in m["overlays"]) or "none"
@@ -317,6 +340,10 @@ def render_report(m: dict[str, Any]) -> str:
     clock_feats = (
         ", ".join(sorted(k for k, v in m["feature_kinds"].items() if v == "clock")) or "none"
     )
+    mixed_feats = (
+        ", ".join(sorted(k for k, v in m["feature_kinds"].items() if v == "mixed")) or "none"
+    )
+    max_k = SKELETON_BUDGET["max_k"]
     count_rows = []
     for f in m["frames"]:
         fc = f.get("feature_counts") or {}
@@ -329,11 +356,11 @@ def render_report(m: dict[str, Any]) -> str:
 
 ## Frames
 
-| # | sha | as of | commits | population | K | born/del | touched (frac) | edits (feat+strata) | ripple (feat+strata) (clock/rank) | untouched churn / strata | budget |
+| # | sha | as of | commits | population | K | born/del | touched (frac) | edits (feat+strata) | ripple (feat+strata) (clock/rank/mixed) | jitter churn / strata | budget |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 {chr(10).join(rows)}
 
-*edits* = feature changes and strata moves on nodes the intervening commits edited (the skeleton reporting the edit); *ripple* = the same on nodes they did not edit, split into *clock* (features over clock-relative signals — {clock_feats} — and age-geometry strata: the skeleton reporting time) and *rank* (features over rank-only signals and layer strata: the percentile or the layer moved under a node nobody touched — jitter); *born/del* = structural change. The three together are the movement between frames.
+*edits* = feature changes and strata moves on nodes the intervening commits edited (the skeleton reporting the edit); *ripple* = the same on nodes they did not edit, split into *clock* (features over clock-relative signals only — {clock_feats} — the skeleton reporting time), *rank* (features over rank-only signals, and every floor move of an untouched room: the percentile or the layer moved under a node nobody touched — jitter), and *mixed* (features over a clock and a rank signal together — {mixed_feats} — whose rank component cannot be separated and which the budget therefore counts as jitter); *born/del* = structural change. The four together are the movement between frames. The budget (D-018, operand revised D-024) judges *jitter* = rank + mixed churn and strata moves over untouched rooms, only at K ≤ {max_k}; beyond that it is `untested: beyond_pinned_k` and the numbers stand on their own.
 
 ## Decomposition of movement over the history
 
@@ -343,6 +370,8 @@ def render_report(m: dict[str, Any]) -> str:
 | ripple (untouched nodes) | {t["feature_changes_untouched"] + t["strata_moves_untouched"]} | {t["ripple_share"]:.2f} |
 | &nbsp;&nbsp;of which clock (time reported) | {t["ripple_clock"]} | {t["ripple_clock_share"]:.2f} |
 | &nbsp;&nbsp;of which rank (jitter) | {t["ripple_rank"]} | {t["ripple_rank_share"]:.2f} |
+| &nbsp;&nbsp;of which mixed (counted as jitter) | {t["ripple_mixed"]} | {t["ripple_mixed_share"]:.2f} |
+| **jitter (rank + mixed)** | **{t["ripple_rank"] + t["ripple_mixed"]}** | **{t["jitter_share"]:.2f}** at median K = {t["k_median"]} |
 | structural (born + deleted) | {t["born"] + t["deleted"]} | {t["structural_share"]:.2f} |
 | **movement** | **{t["movement"]}** | over {t["transitions"]} transitions, {t["commits_between"]} commits |
 
@@ -397,6 +426,11 @@ def render_page(m: dict[str, Any], out_dir: Path) -> str:
     )
     n = len(frames_html)
     caps_json = json.dumps(captions, ensure_ascii=False)
+    if n == 0:
+        return f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>{name} — time-lapse</title></head>
+<body><p>{name}: no frame was mapped (every checkpoint's population is below n_min); nothing to show.</p></body></html>
+"""
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>{name} — time-lapse</title>
 <style>
@@ -408,7 +442,7 @@ body{{margin:0;background:#e9e6df;color:#26221d;font-family:ui-monospace,Menlo,m
 </style></head><body>
 <div class="bar"><b>{name}</b> <span>time-lapse · {n} frames · geometry {escape(m["geometry"])}</span>
 <button id="prev">◀</button><input id="scrub" type="range" min="0" max="{max(n - 1, 0)}" value="{max(n - 1, 0)}"><button id="next">▶</button>
-<label><input type="radio" name="mode" value="cutaway" checked> cutaway</label><label><input type="radio" name="mode" value="change"> change sheet (since previous frame, D-023)</label>
+<label><input type="radio" name="mode" value="cutaway" checked> cutaway</label><label><input type="radio" name="mode" value="change"> change sheet (since previous frame, D-023; a room takes its strongest mark: rank &gt; mixed &gt; clock)</label>
 <span>base profile: {escape(m["ruleset"]["profile"])} (always on)</span>{toggles}</div>
 <div class="cap" id="cap"></div>
 <div class="sheet">{"".join(frames_html)}</div>
@@ -418,7 +452,7 @@ const frames = Array.from(document.querySelectorAll('.frame'));
 const scrub = document.getElementById('scrub');
 function mode() {{ return document.querySelector('input[name=mode]:checked').value; }}
 function show(i) {{ i = Math.max(0, Math.min(frames.length - 1, i)); frames.forEach((f, j) => f.hidden = j !== i);
-  const f = frames[i], chg = f.querySelector('.chg'), cut = f.querySelector('.cut');
+  const f = frames[i]; if (!f) return; const chg = f.querySelector('.chg'), cut = f.querySelector('.cut');
   const useChange = mode() === 'change' && chg; if (chg) chg.hidden = !useChange; cut.hidden = !!useChange;
   scrub.value = i; document.getElementById('cap').textContent = (caps[i] || '') + (mode() === 'change' && !chg ? ' · no previous frame: cutaway shown' : ''); }}
 document.querySelectorAll('input[name=mode]').forEach(r => r.addEventListener('change', () => show(+scrub.value)));

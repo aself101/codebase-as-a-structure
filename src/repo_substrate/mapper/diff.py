@@ -23,17 +23,65 @@ from __future__ import annotations
 
 from typing import Any
 
-# D-018. Per comparison (the caller chooses K; `commits_between` is recorded), per geometry.
-# One node in twenty. Measured ripple on the four reference repos at K = 5 sits well
-# under it: untouched feature churn ≤ 0.014, untouched strata movement ≤ 0.032 (both
-# maxima on mcp-secure-server, the latter under the layer geometry). A ceiling above the
-# observed range but within a factor of two of the tightest reading — headroom, not a fit.
+# D-018, revised D-024. The budget bounds JITTER: movement of untouched rooms through
+# rank-only features, mixed features (a clock and a rank signal in one predicate — the
+# rank component cannot be separated, so the whole is counted as jitter, the conservative
+# side), and strata (a floor moves for an untouched room only because the population
+# re-ranked around it, D-022 having removed the clock's way of moving it). Clock-only
+# features are reported beside it, never judged: a lit room going dark because nobody
+# visited is the skeleton reporting time. Ceilings are one room in twenty. The budget was
+# read at K = 5 (`pinned_k`) and is applied up to `max_k`; beyond that a comparison is
+# `untested: beyond_pinned_k` — the token never travels to a K it was not pinned at.
+# Readings at K = 5 under substrate 0.3.0 (reports/2026-09-05-m2b): untouched churn
+# ≤ 0.038 (mcp-secure-server), untouched strata ≤ 0.032 (mcp, layer geometry).
 SKELETON_BUDGET: dict[str, float | int] = {
     "feature_churn_max": 0.05,
     "strata_moved_max": 0.05,
     "min_untouched_n": 30,
     "max_touched_frac": 0.5,
+    "pinned_k": 5,
+    "max_k": 10,
 }
+
+# Signals measured against the checkpoint's clock (substrate spec §5, §7; D-021). A feature
+# over these alone is `clock`; over none of these is `rank`; over both kinds is `mixed`.
+# Membership is pinned by test (D-024) against the substrate spec's own list.
+CLOCK_SIGNALS = frozenset(
+    {
+        "age_days",
+        "last_touched_days",
+        "blame_age_median",
+        "recent_commit_share",
+        "neglect_index",
+        "change_pressure_index",
+    }
+)
+
+
+def classify_signals(signals) -> str:
+    """'clock' | 'rank' | 'mixed' for the set of signals one predicate reads."""
+    sig = set(signals)
+    if not sig:
+        return "rank"
+    clock = {s for s in sig if s in CLOCK_SIGNALS}
+    if clock == sig:
+        return "clock"
+    if not clock:
+        return "rank"
+    return "mixed"
+
+
+def feature_kinds_from_skeleton(*skeletons: dict[str, Any]) -> dict[str, str]:
+    """(profile/feature) → kind, read from the signals each fired feature records as
+    evidence — so a diff of two skeletons needs no ruleset to classify movement."""
+    signals: dict[str, set[str]] = {}
+    for sk in skeletons:
+        groups = [sk.get("features") or []] + [od["features"] for od in sk.get("overlays") or []]
+        for feats in groups:
+            for f in feats:
+                key = f"{f['profile']}/{f['feature']}"
+                signals.setdefault(key, set()).update((f.get("evidence") or {}).keys())
+    return {k: classify_signals(v) for k, v in signals.items()}
 
 
 def canonicalize(path: str, renames: dict[str, str]) -> str:
@@ -110,11 +158,36 @@ def skeleton_diff(
     touched: set[str] | None = None,
     commits_between: int | None = None,
     budget: dict[str, float | int] = SKELETON_BUDGET,
+    kinds: dict[str, str] | None = None,
+    unavailable_reason: str = "touched_set_unavailable",
 ) -> dict[str, Any]:
     """Compare skeleton `a` (earlier) with `b` (later). `renames` maps a-names to b-names.
     `touched` (b-names) is the set of nodes the intervening commits edited; when given,
-    the budget verdict is computed over the untouched population, otherwise `untested`."""
+    the budget verdict is computed over the untouched population's jitter, otherwise
+    `untested` with `unavailable_reason`. `kinds` (feature → clock|rank|mixed) defaults to
+    what the two skeletons' evidence says. Refuses skeletons that are not comparable."""
     renames = renames or {}
+    for field, get in (
+        ("repo", lambda sk: sk["repo"]["name"]),
+        ("geometry", lambda sk: sk["geometry"]["name"]),
+        ("ruleset", lambda sk: sk["ruleset"]["name"]),
+    ):
+        if get(a) != get(b):
+            raise ValueError(
+                f"skeletons are not comparable: {field} differs ({get(a)!r} vs {get(b)!r})"
+            )
+    kinds = kinds if kinds is not None else feature_kinds_from_skeleton(a, b)
+    a_strata = {}
+    for n, v in a["strata"]["by_node"].items():
+        a_strata[canonicalize(n, renames)] = v
+    a_evidence: dict[tuple[str, str], dict[str, dict[str, Any]]] = {}
+    b_evidence: dict[tuple[str, str], dict[str, dict[str, Any]]] = {}
+    for sk, store, canon_names in ((a, a_evidence, True), (b, b_evidence, False)):
+        groups = [sk.get("features") or []] + [od["features"] for od in sk.get("overlays") or []]
+        for feats in groups:
+            for f in feats:
+                node = canonicalize(f["node"], renames) if canon_names else f["node"]
+                store.setdefault((f["profile"], f["feature"]), {})[node] = f.get("evidence") or {}
 
     def canon(p: str) -> str:
         seen: set[str] = set()
@@ -132,31 +205,43 @@ def skeleton_diff(
     untouched = common - touched
     per_feature = {}
     tot = {"all": [0, 0], "untouched": [0, 0]}  # [symmetric difference, union]
+    by_kind = {k: [0, 0] for k in ("clock", "rank", "mixed")}  # untouched [changes, union]
     for key in sorted(set(fa) | set(fb)):
         sa, sb = fa.get(key, set()), fb.get(key, set())
         added, removed = sorted(sb - sa), sorted(sa - sb)
         union = len(sa | sb)
         jacc = (len(sa & sb) / union) if union else 1.0
+        name = f"{key[0]}/{key[1]}"
+        kind = kinds.get(name, "rank")  # an unclassifiable feature counts as jitter
+        u_changes = len((sb ^ sa) & untouched)
         tot["all"][0] += len(added) + len(removed)
         tot["all"][1] += union
-        tot["untouched"][0] += len((sb ^ sa) & untouched)
+        tot["untouched"][0] += u_changes
         tot["untouched"][1] += len((sa | sb) & untouched)
-        per_feature[f"{key[0]}/{key[1]}"] = {
+        by_kind[kind][0] += u_changes
+        by_kind[kind][1] += len((sa | sb) & untouched)
+        evidence = {
+            **{n: {"before": None, "after": b_evidence.get(key, {}).get(n)} for n in added},
+            **{n: {"before": a_evidence.get(key, {}).get(n), "after": None} for n in removed},
+        }
+        per_feature[name] = {
             "before": len(sa),
             "after": len(sb),
             "added": added,
             "removed": removed,
             "jaccard": jacc,
-            "untouched_changes": len((sb ^ sa) & untouched),
+            "untouched_changes": u_changes,
+            "kind": kind,
+            "evidence": evidence,
         }
 
     def moved(pop: set[str]) -> list[str]:
         return sorted(
             n
             for n in pop
-            if a["strata"]["by_node"].get(n) is not None
+            if a_strata.get(n) is not None
             and b["strata"]["by_node"].get(n) is not None
-            and a["strata"]["by_node"][n] != b["strata"]["by_node"][n]
+            and a_strata[n] != b["strata"]["by_node"][n]
         )
 
     strata_moved = moved(common)
@@ -164,14 +249,20 @@ def skeleton_diff(
     u_churn = (tot["untouched"][0] / tot["untouched"][1]) if tot["untouched"][1] else 0.0
     u_strata = (len(u_moved) / len(untouched)) if untouched else 0.0
     touched_frac = (len(touched) / len(common)) if common else 0.0
+    jitter_changes = by_kind["rank"][0] + by_kind["mixed"][0]
+    jitter_union = by_kind["rank"][1] + by_kind["mixed"][1]
+    jitter_churn = (jitter_changes / jitter_union) if jitter_union else 0.0
+    clock_churn = (by_kind["clock"][0] / by_kind["clock"][1]) if by_kind["clock"][1] else 0.0
 
     if commits_between is None:
-        verdict, reason = "untested", "touched_set_unavailable"
-    elif len(untouched) < budget["min_untouched_n"]:
-        verdict, reason = "untested", "insufficient_untouched_population"
+        verdict, reason = "untested", unavailable_reason
+    elif commits_between > budget["max_k"]:
+        verdict, reason = "untested", "beyond_pinned_k"
     elif touched_frac > budget["max_touched_frac"]:
         verdict, reason = "untested", "touched_fraction_exceeds_floor"
-    elif u_churn > budget["feature_churn_max"] or u_strata > budget["strata_moved_max"]:
+    elif len(untouched) < budget["min_untouched_n"]:
+        verdict, reason = "untested", "insufficient_untouched_population"
+    elif jitter_churn > budget["feature_churn_max"] or u_strata > budget["strata_moved_max"]:
         verdict, reason = "over_budget", None
     else:
         verdict, reason = "within_budget", None
@@ -201,6 +292,19 @@ def skeleton_diff(
             "feature_churn": u_churn,
             "strata_moved": u_moved,
             "strata_moved_frac": u_strata,
+            "by_kind": {
+                k: {"changes": v[0], "union": v[1], "churn": (v[0] / v[1]) if v[1] else 0.0}
+                for k, v in by_kind.items()
+            },
+            "jitter_churn": jitter_churn,
+            "clock_churn": clock_churn,
         },
-        "budget": {**budget, "verdict": verdict, "reason": reason},
+        "kinds": dict(sorted(kinds.items())),
+        "budget": {
+            **budget,
+            "k": commits_between,
+            "operand": "jitter: rank + mixed feature churn, and strata moves, over untouched rooms",
+            "verdict": verdict,
+            "reason": reason,
+        },
     }

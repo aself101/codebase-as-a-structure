@@ -51,6 +51,10 @@ def _room_w(size_loc: int) -> int:
     return int(min(64, max(10, 8 + 2 * math.sqrt(max(size_loc, 1)))))
 
 
+def _fmt_days(v: Any) -> str:
+    return "? (no history)" if v is None else f"{v:.1f}d"
+
+
 def _strata_caption(skeleton: dict[str, Any]) -> str:
     if skeleton["strata"].get("geometry", "age") == "layer":
         return "strata = dependency layers (longest import path to a leaf), leaves at the bottom"
@@ -77,6 +81,11 @@ def _layout(skeleton: dict[str, Any], substrate: dict[str, Any]) -> _Layout:
     nodes = {n["id"]: n for n in substrate["nodes"]}
     strata_by_node: dict[str, int] = skeleton["strata"]["by_node"]
     population = sorted(strata_by_node)
+    missing = [n for n in population if n not in nodes]
+    if missing:
+        raise ValueError(
+            f"skeleton and substrate do not match: {len(missing)} skeleton node(s) absent from the substrate, e.g. {missing[0]!r}"
+        )
     wings: dict[str, list[str]] = defaultdict(list)
     for nid in population:
         wings[_wing_of(nid, wing_depth)].append(nid)
@@ -107,7 +116,8 @@ def _layout(skeleton: dict[str, Any], substrate: dict[str, Any]) -> _Layout:
                 )
         wing_w[w] = max(max_w, 80)
     band_h = [
-        max(1, max(len(band_rows[(w, b)]) for w in wing_names)) * (ROOM_H + ROOM_GAP) + BAND_GAP
+        max(1, max((len(band_rows[(w, b)]) for w in wing_names), default=0)) * (ROOM_H + ROOM_GAP)
+        + BAND_GAP
         for b in range(STRATA)
     ]
     total_w = max(MIN_W, MARGIN * 2 + sum(wing_w[w] + WING_GAP for w in wing_names))
@@ -258,7 +268,7 @@ def render_cutaway(skeleton: dict[str, Any], substrate: dict[str, Any]) -> str:
                     sty = ";".join(f"{k}:{v}" for k, v in style.items())
                     title = (
                         f"{nid}\nlines {m['size_loc']} · fan_in {m.get('fan_in')} · fan_out {m.get('fan_out')} · "
-                        f"age {(m.get('age_days') or 0):.1f}d · last touched {(m.get('last_touched_days') or 0):.1f}d\n"
+                        f"age {_fmt_days(m.get('age_days'))} · last touched {_fmt_days(m.get('last_touched_days'))}\n"
                         + ("\n".join(labels) if labels else "no named feature")
                     )
                     rooms.append(
@@ -310,9 +320,10 @@ CHANGE_STYLE: dict[str, str] = {
     "edit": "fill:#a9aeb6;stroke:#6b717b;stroke-width:1",
     "clock": "fill:#efd28a;stroke:#c58b1e;stroke-width:1",
     "rank": "fill:#eba39c;stroke:#c8322b;stroke-width:1.5",
+    "mixed": "fill:#d9c2e8;stroke:#7a3e9d;stroke-width:1.5",
     "demolished": "fill:none;stroke:#8c8577;stroke-width:1;stroke-dasharray:3 2",
 }
-CHANGE_ORDER = ["born", "edit", "clock", "rank", "unchanged", "demolished"]
+CHANGE_ORDER = ["born", "edit", "clock", "rank", "mixed", "unchanged", "demolished"]
 
 
 def render_change_sheet(
@@ -341,25 +352,37 @@ def render_change_sheet(
     geometry = after["geometry"]["name"]
     changes: dict[str, list[str]] = defaultdict(list)
     kind_of: dict[str, set[str]] = defaultdict(set)
+
+    def _ev(e: dict[str, Any] | None) -> str:
+        if not e:
+            return ""
+        return " {" + ", ".join(f"{k}={v}" for k, v in sorted(e.items())) + "}"
+
     for key, v in diff["per_feature"].items():
+        kind = v.get("kind") or kinds.get(key, "rank")
+        ev = v.get("evidence") or {}
         for n in v["added"]:
-            changes[n].append(f"+{key}")
-            kind_of[n].add(kinds.get(key, "rank"))
+            changes[n].append(f"+{key}{_ev((ev.get(n) or {}).get('after'))}")
+            kind_of[n].add(kind)
         for n in v["removed"]:
-            changes[n].append(f"−{key}")
-            kind_of[n].add(kinds.get(key, "rank"))
+            changes[n].append(f"−{key}{_ev((ev.get(n) or {}).get('before'))}")
+            kind_of[n].add(kind)
     for n in diff["strata_moved"]:
         changes[n].append(f"floor {a_by_node.get(n)}→{b_by_node.get(n)}")
-        kind_of[n].add("clock" if geometry == "age" else "rank")
+        kind_of[n].add("rank")  # a floor moves for an untouched room only by re-ranking
 
     def classify(n: str) -> str:
+        """A room takes its strongest mark: rank > mixed > clock (the table counts per
+        feature instead; the two agree on rooms with one kind of change)."""
         if n not in common:
             return "born"
         if n not in changes:
             return "unchanged"
         if n in touched:
             return "edit"
-        return "rank" if "rank" in kind_of[n] else "clock"
+        if "rank" in kind_of[n]:
+            return "rank"
+        return "mixed" if "mixed" in kind_of[n] else "clock"
 
     L = _layout(after, substrate_after)
     counts = {k: 0 for k in CHANGE_ORDER}
@@ -394,14 +417,14 @@ def render_change_sheet(
         f" ({bud['reason']})" if bud.get("reason") else ""
     )
     out.append(
-        f'<text x="{MARGIN}" y="46">born {counts["born"]} · demolished {counts["demolished"]} · edited {counts["edit"]} · '
-        f'<tspan fill="#c58b1e">clock {counts["clock"]}</tspan> · <tspan fill="#c8322b" font-weight="bold">rank {counts["rank"]}</tspan> · '
+        f'<text x="{MARGIN}" y="46">rooms: born {counts["born"]} · demolished {counts["demolished"]} · edited {counts["edit"]} · '
+        f'<tspan fill="#c58b1e">clock {counts["clock"]}</tspan> · <tspan fill="#c8322b" font-weight="bold">rank {counts["rank"]}</tspan> · <tspan fill="#7a3e9d">mixed {counts["mixed"]}</tspan> · '
         f"unchanged {counts['unchanged']} · common {diff['common_nodes']} · touched {diff['touched']['n']} · "
         f"budget (D-018, over the untouched population): {escape(verdict)}</text>"
     )
     out.append(
         f'<text x="{MARGIN}" y="64" fill="#555">a room is marked by what happened to it between the two frames — edit: a commit touched it and a feature or its floor changed · '
-        "clock: untouched, moved through a clock-relative feature or the age band (time reported) · rank: untouched, the percentile or dependency layer moved beneath it (jitter)</text>"
+        "clock: untouched, moved through a clock-only feature (time reported) · rank: untouched, the percentile, layer, or floor moved beneath it (jitter) · mixed: untouched, through a feature reading both kinds (counted as jitter) · a room takes its strongest mark, rank &gt; mixed &gt; clock</text>"
     )
     out.append(
         f'<text x="{MARGIN}" y="82" fill="#555">layout = the after frame\'s cutaway (same wings, same floors, same room positions) · '

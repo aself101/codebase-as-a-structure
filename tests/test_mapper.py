@@ -246,24 +246,29 @@ def test_skeleton_budget_is_judged_over_the_untouched_population(sub):
     that changes anyway is ripple, and ripple is what the budget counts."""
     from repo_substrate.mapper.diff import SKELETON_BUDGET, skeleton_diff
 
+    from repo_substrate.mapper.diff import feature_kinds_from_skeleton
+
     base = load_ruleset(RULESET)
     a = map_skeleton(sub, _all_asserted(base), base)
     b = json.loads(json.dumps(a))
     victim = next(f for f in b["features"] if f["diagnostic"])
     b["features"] = [f for f in b["features"] if f is not victim]
+    # the budget judges jitter (rank + mixed); this test is about the population split, so
+    # classify the victim's feature as rank explicitly whatever its signals are
+    kinds = {**feature_kinds_from_skeleton(a), f"{victim['profile']}/{victim['feature']}": "rank"}
     loose = {**SKELETON_BUDGET, "min_untouched_n": 1}
     # Without a touched set the verdict is untested, never a pass.
     assert skeleton_diff(a, b)["budget"]["verdict"] == "untested"
     assert skeleton_diff(a, b)["budget"]["reason"] == "touched_set_unavailable"
     # The victim was edited: whole-population churn > 0, untouched churn 0, within budget.
-    d = skeleton_diff(a, b, touched={victim["node"]}, commits_between=1, budget=loose)
+    d = skeleton_diff(a, b, touched={victim["node"]}, commits_between=1, budget=loose, kinds=kinds)
     assert d["feature_churn"] > 0 and d["untouched"]["feature_churn"] == 0.0
     assert d["touched"]["n"] == 1 and d["budget"]["verdict"] == "within_budget"
     key = f"{victim['profile']}/{victim['feature']}"
     assert d["per_feature"][key]["untouched_changes"] == 0
     # The victim was not edited: the same change is ripple and counts against the budget.
     tight = {**loose, "feature_churn_max": 0.0}
-    d2 = skeleton_diff(a, b, touched=set(), commits_between=1, budget=tight)
+    d2 = skeleton_diff(a, b, touched=set(), commits_between=1, budget=tight, kinds=kinds)
     assert d2["untouched"]["feature_churn"] > 0 and d2["budget"]["verdict"] == "over_budget"
     assert d2["per_feature"][key]["untouched_changes"] == 1
 
@@ -360,3 +365,116 @@ def test_change_sheet_marks_rooms_by_what_happened(sub):
     svg2 = render_change_sheet(a, b, sub, d2, kinds, sub)
     assert f'data-change="edit"><title>{victim["node"]}' in svg2.replace("\n", " ")
     assert render_change_sheet(a, b, sub, d2, kinds, sub) == svg2
+
+
+def test_clock_signals_are_pinned_to_the_substrate_spec_list():
+    """D-024: the list that decides what counts as time is pinned, not inferred."""
+    from repo_substrate.mapper.diff import CLOCK_SIGNALS, classify_signals
+
+    assert CLOCK_SIGNALS == frozenset(
+        {
+            "age_days",
+            "last_touched_days",
+            "blame_age_median",
+            "recent_commit_share",
+            "neglect_index",
+            "change_pressure_index",
+        }
+    )
+    assert classify_signals({"last_touched_days"}) == "clock"
+    assert classify_signals({"centrality"}) == "rank"
+    assert classify_signals({"neglect_index", "load_index"}) == "mixed"
+    assert classify_signals(set()) == "rank"
+
+
+def test_feature_kinds_read_from_the_skeleton_match_the_ruleset(sub):
+    from repo_substrate.mapper.diff import feature_kinds_from_skeleton
+    from repo_substrate.timelapse import feature_kinds
+
+    base, ov = load_ruleset(RULESET), load_ruleset(ONBOARDING)
+    sk = map_skeleton(sub, _all_asserted(base, ov), base, (ov,))
+    from_sk = feature_kinds_from_skeleton(sk)
+    from_rs = feature_kinds(base, (ov,))
+    for key, kind in from_sk.items():
+        assert from_rs[key] == kind
+    assert from_rs["maintainability/flooded_basement"] == "mixed"
+    assert from_rs["maintainability/dark_room"] == "clock"
+    assert from_rs["maintainability/hub"] == "rank"
+
+
+def test_diff_counts_a_renamed_room_that_changed_floor(sub):
+    """code-audit C1 (D-024): a rename plus a stratum change was silently dropped."""
+    from repo_substrate.mapper.diff import skeleton_diff
+
+    base = load_ruleset(RULESET)
+    a = map_skeleton(sub, _all_asserted(base), base)
+    b = json.loads(json.dumps(a))
+    old = next(iter(b["strata"]["by_node"]))
+    new = "renamed/" + old.split("/")[-1]
+    b["strata"]["by_node"][new] = (b["strata"]["by_node"].pop(old) + 1) % 5
+    for f in b["features"]:
+        if f["node"] == old:
+            f["node"] = new
+    d = skeleton_diff(a, b, {old: new}, touched=set(), commits_between=1)
+    assert d["strata_moved"] == [new] and d["born"] == 0 and d["deleted"] == 0
+
+
+def test_budget_is_untested_beyond_its_pinned_k(sub):
+    from repo_substrate.mapper.diff import SKELETON_BUDGET, skeleton_diff
+
+    base = load_ruleset(RULESET)
+    a = map_skeleton(sub, _all_asserted(base), base)
+    d = skeleton_diff(a, a, touched=set(), commits_between=SKELETON_BUDGET["max_k"] + 1)
+    assert d["budget"]["verdict"] == "untested" and d["budget"]["reason"] == "beyond_pinned_k"
+    assert d["budget"]["k"] == SKELETON_BUDGET["max_k"] + 1
+
+
+def test_diff_refuses_incomparable_skeletons(sub):
+    from repo_substrate.mapper.diff import skeleton_diff
+
+    base = load_ruleset(RULESET)
+    a = map_skeleton(sub, _all_asserted(base), base, (), "age")
+    b = map_skeleton(sub, _all_asserted(base), base, (), "layer")
+    with pytest.raises(ValueError, match="geometry differs"):
+        skeleton_diff(a, b)
+
+
+def test_change_sheet_keeps_every_room_where_the_cutaway_put_it(sub):
+    """D-023's claim, pinned: same x/y/width per room on both sheets."""
+    import re
+
+    from repo_substrate.cutaway import render_change_sheet
+    from repo_substrate.mapper.diff import skeleton_diff
+    from repo_substrate.timelapse import feature_kinds
+
+    base = load_ruleset(RULESET)
+    a = map_skeleton(sub, _all_asserted(base), base)
+    d = skeleton_diff(a, a, touched=set(), commits_between=1)
+    cut = render_cutaway(a, sub)
+    chg = render_change_sheet(a, a, sub, d, feature_kinds(base, ()), sub)
+    pat = re.compile(r'<rect x="(\d+)" y="(\d+)" width="(\d+)" height="16"[^>]*><title>([^\n<]+)')
+
+    def rooms(svg: str) -> dict[str, tuple[str, str, str]]:
+        return {m.group(4): (m.group(1), m.group(2), m.group(3)) for m in pat.finditer(svg)}
+
+    rc, rg = rooms(cut), rooms(chg)
+    assert set(rc) == set(a["strata"]["by_node"])
+    assert all(rg[n][0] == rc[n][0] and rg[n][2] == rc[n][2] for n in rc)  # x and width
+    assert len({rg[n][1] == rc[n][1] for n in rc}) == 1  # y offset is uniform (a taller header)
+
+
+def test_register_hook_has_a_grammar(sub, tmp_path):
+    """D-024 (Wittgenstein FR-2): name_implies_consequence needs a position_name that is
+    not the name; a position_name that repeats the name is refused."""
+    p = _write_ruleset(
+        tmp_path,
+        '[[feature]]\nname = "x"\npredicate = "centrality >= p90"\nname_implies_consequence = true\n',
+    )
+    with pytest.raises(RulesetError, match="requires a position_name"):
+        load_ruleset(p)
+    p2 = _write_ruleset(
+        tmp_path,
+        '[[feature]]\nname = "hub"\npredicate = "centrality >= p90"\nposition_name = "hub"\n',
+    )
+    with pytest.raises(RulesetError, match="repeats the feature name"):
+        load_ruleset(p2)

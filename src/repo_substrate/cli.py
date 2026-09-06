@@ -14,6 +14,7 @@ from pathlib import Path
 from .assemble import ExtractOptions, extract
 from .config import SubstrateConfig
 from .deps import DependencyCruiserExtractor
+from .gitutil import GitError
 from .report import render_report
 
 TOOLS_DIR = Path(__file__).resolve().parents[2]  # project root holds package.json / node_modules
@@ -113,10 +114,30 @@ def main(argv: list[str] | None = None) -> int:
     tl.add_argument("--blame-workers", type=int, default=8)
     tl.add_argument("-o", "--output", type=Path, required=True, help="output directory")
     args = ap.parse_args(argv)
+    try:
+        return _dispatch(args)
+    except (json.JSONDecodeError, UnicodeDecodeError) as e:
+        print(f"substrate {args.cmd}: could not parse a JSON input ({e})", file=sys.stderr)
+        return 2
+    except FileNotFoundError as e:
+        print(f"substrate {args.cmd}: {e}", file=sys.stderr)
+        return 2
+    except (ValueError, GitError) as e:  # RulesetError, GateError, TimelapseError, mismatches
+        print(f"substrate {args.cmd}: {e}", file=sys.stderr)
+        return 2
 
+
+def _load_json(path: Path, what: str) -> dict:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+        raise ValueError(f"{what} {path} is not valid JSON: {e}") from e
+
+
+def _dispatch(args: argparse.Namespace) -> int:
     if args.cmd == "timelapse":
         from .mapper import load_ruleset
-        from .timelapse import choose_checkpoints, run_timelapse, trunk
+        from .timelapse import run_timelapse
         from .validation.substrates import SubstrateCache
 
         cfg = SubstrateConfig.load(args.config)
@@ -126,12 +147,9 @@ def main(argv: list[str] | None = None) -> int:
             else DependencyCruiserExtractor(TOOLS_DIR, cfg.dep_ts_pre_compilation_deps)
         )
         cache = SubstrateCache(args.cache, cfg, extractor, args.scratch, args.blame_workers)
-        val_doc = json.loads(args.validation.read_text(encoding="utf-8"))
+        val_doc = _load_json(args.validation, "validation")
         rs = load_ruleset(args.ruleset)
         ovs = tuple(load_ruleset(p) for p in args.overlay)
-        n = len(trunk(args.repo.resolve()))
-        cps = choose_checkpoints(n, args.frames, args.every)
-        schedule = {"frames": args.frames, "every": args.every, "checkpoints": cps}
         m = run_timelapse(
             args.repo,
             cache,
@@ -139,15 +157,21 @@ def main(argv: list[str] | None = None) -> int:
             rs,
             ovs,
             args.geometry,
-            cps,
+            None,
             args.output,
-            schedule,
             log=lambda s: print(s, file=sys.stderr),
+            frames_requested=args.frames,
+            every=args.every,
         )
+        if args.frames and m["schedule"]["realized"] < args.frames:
+            print(
+                f"note: {args.frames} frames requested, {m['schedule']['realized']} distinct checkpoints on a trunk of {m['repo']['trunk_length']}",
+                file=sys.stderr,
+            )
         t = m["totals"]
         print(
             f"{m['repo']['name']}: {t['mapped']} mapped / {t['skipped']} skipped; movement={t['movement']} "
-            f"edit={t['edit_share']:.2f} ripple={t['ripple_share']:.2f} structural={t['structural_share']:.2f}; "
+            f"edit={t['edit_share']:.2f} clock={t['ripple_clock_share']:.2f} jitter={t['jitter_share']:.2f} structural={t['structural_share']:.2f}; "
             f"budget {t['budget_tally']} → {args.output}/timelapse.html",
             file=sys.stderr,
         )
@@ -156,18 +180,21 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "skeleton-diff":
         from .mapper.diff import skeleton_diff, touched_since
 
-        a = json.loads(args.before.read_text(encoding="utf-8"))
-        b = json.loads(args.after.read_text(encoding="utf-8"))
+        a = _load_json(args.before, "before skeleton")
+        b = _load_json(args.after, "after skeleton")
         ren: dict[str, str] = {}
         touched: set[str] | None = None
         between: int | None = None
+        reason = "renames_not_given"  # no --renames: the budget has no timeline to read
         if args.renames:
-            after_sub = json.loads(args.renames.read_text(encoding="utf-8"))
+            after_sub = _load_json(args.renames, "after substrate")
             ren = after_sub.get("renames", {})
             ts = touched_since(after_sub, a["repo"]["head_sha"], ren)
             if ts is not None:
                 touched, between = ts
-        d = skeleton_diff(a, b, ren, touched, between)
+            else:
+                reason = "touched_set_unavailable"  # the before sha is not in the after timeline
+        d = skeleton_diff(a, b, ren, touched, between, unavailable_reason=reason)
         text = json.dumps(d, indent=1, sort_keys=True, ensure_ascii=False, allow_nan=False) + "\n"
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -178,6 +205,7 @@ def main(argv: list[str] | None = None) -> int:
             f"common={d['common_nodes']} born={d['born']} deleted={d['deleted']} "
             f"feature_churn={d['feature_churn']:.3f} strata_moved={len(d['strata_moved'])} ({d['strata_moved_frac']:.3f}) | "
             f"untouched n={d['untouched']['n']} churn={d['untouched']['feature_churn']:.3f} "
+            f"(jitter {d['untouched']['jitter_churn']:.3f}, clock {d['untouched']['clock_churn']:.3f}) "
             f"strata={d['untouched']['strata_moved_frac']:.3f} → {d['budget']['verdict']}"
             + (f" ({d['budget']['reason']})" if d["budget"]["reason"] else ""),
             file=sys.stderr,
@@ -186,8 +214,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "map":
         from .mapper import load_ruleset, map_skeleton
 
-        sub_doc = json.loads(args.substrate.read_text(encoding="utf-8"))
-        val_doc = json.loads(args.validation.read_text(encoding="utf-8"))
+        sub_doc = _load_json(args.substrate, "substrate")
+        val_doc = _load_json(args.validation, "validation")
         rs = load_ruleset(args.ruleset)
         ovs = tuple(load_ruleset(p) for p in args.overlay)
         skel = map_skeleton(sub_doc, val_doc, rs, ovs, args.geometry)
@@ -206,8 +234,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "render":
         from .cutaway import render_cutaway, render_html
 
-        skel = json.loads(args.skeleton.read_text(encoding="utf-8"))
-        sub_doc = json.loads(args.substrate.read_text(encoding="utf-8"))
+        skel = _load_json(args.skeleton, "skeleton")
+        sub_doc = _load_json(args.substrate, "substrate")
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(render_cutaway(skel, sub_doc), encoding="utf-8")
         if args.html:

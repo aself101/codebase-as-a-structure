@@ -1,0 +1,25 @@
+# D-024: a ruleset written to break the skeleton-level budget — absolute thresholds placed
+# where the signals' distributions are dense, so a small edit elsewhere re-ranks nothing but
+# the raw counts of neighbours cross the line. Not a product ruleset; a falsifier.
+[ruleset]
+name = "adversarial-dense"
+version = "0.0.1"
+profile = "adversarial"
+
+[[feature]]
+name = "two_importers"
+predicate = "fan_in >= 2"
+note = "the mode of fan_in on most repos sits at 1-2"
+
+[[feature]]
+name = "medium_file"
+predicate = "size_loc >= 200"
+
+[[feature]]
+name = "three_commits"
+predicate = "commit_count >= 3"
+
+[[feature]]
+name = "mid_load"
+predicate = "load_index >= p50"
+note = "a percentile threshold at the densest part of the distribution"

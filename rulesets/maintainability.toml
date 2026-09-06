@@ -29,8 +29,7 @@ note = "Top decile of the load blend (fan_in_nonzero, centrality, inverse fan_ou
 name = "hub"
 predicate = "centrality >= p90"
 graph_dependent = true
-position_name = "hub"
-note = "Top-decile PageRank over the import graph. Pure position name."
+note = "Top-decile PageRank over the import graph. A pure position name needs no position_name (D-024)."
 
 [[feature]]
 name = "flooded_basement"

@@ -116,3 +116,54 @@ def test_timelapse_refuses_a_frame_under_a_foreign_gate(scripted_repo, small_cfg
         run_timelapse(
             repo.path, cache, val, base, (), "age", [len(trunk(repo.path)) - 1], tmp_path / "x"
         )
+
+
+def test_timelapse_refuses_a_gate_without_a_fingerprint(scripted_repo, small_cfg, tmp_path):
+    """code-audit C4 (D-024): a missing key must not disable the check."""
+    repo, _ = scripted_repo
+    cache = SubstrateCache(tmp_path / "cache", small_cfg, None, tmp_path, 2)
+    base = load_ruleset(RULESET)
+    val = _validation(cache, base)
+    del val["substrate_config_fingerprint"]
+    with pytest.raises(TimelapseError, match="no substrate_config_fingerprint"):
+        run_timelapse(
+            repo.path, cache, val, base, (), "age", [len(trunk(repo.path)) - 1], tmp_path / "x"
+        )
+
+
+def test_page_with_no_mapped_frame_says_so(tmp_path):
+    from repo_substrate.timelapse import render_page
+
+    m = {
+        "repo": {"name": "r"},
+        "geometry": "age",
+        "ruleset": {"profile": "p"},
+        "overlays": [],
+        "frames": [
+            {
+                "index": 0,
+                "sha": "a" * 40,
+                "as_of": "2026-01-01T00:00:00+00:00",
+                "commit_count": 1,
+                "population": 3,
+                "status": "skipped",
+                "reason": "population_below_n_min",
+            }
+        ],
+    }
+    page = render_page(m, tmp_path)
+    assert "no frame was mapped" in page and "show(" not in page
+
+
+def test_stale_frames_from_an_earlier_schedule_are_removed(scripted_repo, small_cfg, tmp_path):
+    repo, _ = scripted_repo
+    cache = SubstrateCache(tmp_path / "cache", small_cfg, None, tmp_path, 2)
+    base = load_ruleset(RULESET)
+    val = _validation(cache, base)
+    out = tmp_path / "tl"
+    n = len(trunk(repo.path))
+    run_timelapse(repo.path, cache, val, base, (), "age", None, out, frames_requested=min(3, n))
+    stems_before = {p.name for p in out.glob("f*-*.skeleton.json")}
+    run_timelapse(repo.path, cache, val, base, (), "age", None, out, frames_requested=1)
+    stems_after = {p.name for p in out.glob("f*-*.skeleton.json")}
+    assert len(stems_after) == 1 and stems_after <= stems_before or len(stems_after) == 1

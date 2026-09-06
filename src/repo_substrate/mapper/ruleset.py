@@ -123,6 +123,24 @@ def load_ruleset(path: Path) -> Ruleset:
             raise RulesetError(f"feature {name}: decorative = true requires decorative_reason")
         if not decorative and reason:
             raise RulesetError(f"feature {name}: decorative_reason given but decorative = false")
+        # D-004 Q3 / D-024: the register hook has a grammar. A name that implies a consequence
+        # must say what position it denotes, in words that are not the name.
+        implies = bool(f.get("name_implies_consequence", False))
+        pos = f.get("position_name")
+        if implies and not pos:
+            raise RulesetError(
+                f"feature {name}: name_implies_consequence = true requires a position_name"
+            )
+        if pos is not None and str(pos).strip().lower() == str(name).replace("_", " ").lower():
+            raise RulesetError(
+                f"feature {name}: position_name repeats the feature name and discloses nothing"
+            )
+        try:
+            wing_depth_ok = int(hdr.get("wing_depth", 1)) >= 1
+        except (TypeError, ValueError):
+            wing_depth_ok = False
+        if not wing_depth_ok:
+            raise RulesetError("[ruleset] wing_depth must be an integer >= 1")
         feats.append(
             Feature(
                 name=name,

@@ -18,7 +18,9 @@ Testable contracts for Phase 1. Tags: `[NOW]` required for the phase; `[TL]` tim
 
 - [x] `[NOW][BUDGET]` Adjacent mapped frames are diffed with the later frame's renames and the exact touched set (`touched_between`: commits in the later timeline absent from the earlier). *(§4)* `(unit)`
 - [x] `[NOW][TL]` Movement decomposes into edits (touched), ripple (untouched), structural (born + deleted); shares sum to one. *(§4)* `(unit: test_timelapse_on_scripted_repo)`
-- [x] `[NOW][TL]` Ripple splits into clock (clock-relative signals, age strata) and rank (rank-only signals, layer strata); a feature's kind follows its predicate's signals. *(§4)* `(unit: test_timelapse_on_scripted_repo)`
+- [x] `[NOW][TL]` Ripple splits into clock, rank, and mixed by the predicate's signals (`CLOCK_SIGNALS` pinned by test); untouched strata moves are rank; the budget judges jitter = rank + mixed and is `untested: beyond_pinned_k` past K = 10. *(§4, D-024)* `(unit: test_clock_signals_are_pinned_to_the_substrate_spec_list, test_feature_kinds_read_from_the_skeleton_match_the_ruleset, test_budget_is_untested_beyond_its_pinned_k)`
+- [x] `[NOW][DET]` A renamed room that changed floor is counted; skeletons that differ in repo, geometry, or ruleset are refused; a gate without a fingerprint is refused. *(D-024)* `(unit: test_diff_counts_a_renamed_room_that_changed_floor, test_diff_refuses_incomparable_skeletons, test_timelapse_refuses_a_gate_without_a_fingerprint)`
+- [x] `[NOW][TL]` Every room sits at the cutaway's x and width on the change sheet. *(D-023, D-024)* `(unit: test_change_sheet_keeps_every_room_where_the_cutaway_put_it)`
 - [x] `[TL][BUDGET]` The report states the K of every transition and that the budget was pinned at K = 5. *(§4)* `(review: reports/2026-09-05-phase1/*.timelapse.md, 2026-09-05)`
 
 ## D. Outputs (§5)
