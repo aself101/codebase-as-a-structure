@@ -35,7 +35,8 @@ note = "Top-decile PageRank over the import graph. A pure position name needs no
 name = "flooded_basement"
 predicate = "neglect_index >= p90 and load_index >= 0.10"
 graph_dependent = true
-name_implies_consequence = false
+name_implies_consequence = true
+position_name = "long-untouched, still-imported room"
 note = "Old, long-untouched, and still imported. neglect_index is cross-modally corroborated against blame age (G3); load_index is a G4 blend of checked measurements. Present-tense: this is where the water is, not a prediction that it rises."
 
 [[feature]]
@@ -47,6 +48,8 @@ note = "At least one test file imports the node (import-graph reading of reinfor
 [[feature]]
 name = "dark_room"
 predicate = "last_touched_days >= p90"
+name_implies_consequence = true
+position_name = "long-untouched room"
 note = "Top decile of time since last edit. Lighting, not judgment: a finished utility is dark too (stance disclosure, system spec)."
 
 [[feature]]

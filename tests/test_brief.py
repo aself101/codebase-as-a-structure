@@ -57,7 +57,7 @@ def _good_draft(f):
     room = feat["rooms"][0]
     wing, n = next(iter(f["wings"].items()))
     text = (
-        f"The building has {f['population']} rooms; the wing {wing} holds {n} of them [{feat['feature']}: {room}].\n\n"
+        f"The building has {f['population']} rooms and {f['diagnostic_count']} diagnostic marks; the wing {wing} holds {n} of them [{feat['feature']}: {room}].\n\n"
         f"The room {room} sits where {feat['feature']} fires [{feat['feature']} ×{feat['count']}].\n\n"
     )
     if f["decorative"]["count"]:
@@ -93,6 +93,26 @@ def test_lint_catches_each_register_breach(sub):
         good + f"Wrong count [{feat['feature']} ×{feat['count'] + 1}].\n\n"
     )
     assert "R3-number" in rules(good + f"There are 424242 rooms [{feat['feature']}: {room}].\n\n")
+    other = next(
+        x
+        for x in f["features"]
+        if x["diagnostic"] and x["feature"] != feat["feature"] and room not in x["rooms"]
+    )
+    assert "R8-attribution" in rules(
+        good + f"The room {room} carries the mark [{other['feature']} ×{other['count']}].\n\n"
+    )
+    assert "R8-attribution" not in rules(
+        good + f"The room {room} sits here [{feat['feature']}: {room}].\n\n"
+    )
+    assert "R7-counts" in rules(good.replace(str(f["diagnostic_count"]), "many", 1))
+    # the disclosure clause is not an amnesty for the rest of the sentence
+    assert "R1-consequence" in rules(
+        good
+        + f"This room is fragile, not a claim about what breaks [{feat['feature']}: {room}].\n\n"
+    )
+    assert "R1-consequence" in rules(
+        good + f"Against that, other rooms hold reinforcement [{feat['feature']}: {room}].\n\n"
+    )
     assert "R6-archetype" in rules(good + f"It is a cathedral [{feat['feature']}: {room}].\n\n")
     if f["decorative"]["features"]:
         dec = f["decorative"]["features"][0]
@@ -133,7 +153,9 @@ def test_run_brief_regenerates_once_and_marks_failure(sub):
 
     r = run_brief(sk, sub, fake)
     assert r["passed"] and r["provenance"]["attempt"] == 2 and "FAILED" in calls[1]
-    assert "Register lint: **PASS**" in r["markdown"] and "## Provenance" in r["markdown"]
+    assert (
+        "Register lint: **PASS on attempt 2**" in r["markdown"] and "## Provenance" in r["markdown"]
+    )
     r2 = run_brief(sk, sub, lambda s, u: (good + "It will fail.", {}), max_attempts=1)
     assert not r2["passed"] and "FAILED (" in r2["markdown"] and len(r2["violations"]) >= 1
     r3 = run_brief(sk, sub, draft=good)

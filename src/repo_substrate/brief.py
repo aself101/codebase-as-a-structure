@@ -87,7 +87,8 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         "population": s["population"],
         "wings": dict(sorted(wings.items())),
         "gate": dict(sorted(skeleton["gate"]["signals"].items())),
-        "diagnostic_count": s["diagnostic_count"],
+        "diagnostic_count": sum(e["count"] for e in feats.values() if e["diagnostic"]),
+        "diagnostic_count_base": s["diagnostic_count"],
         "decorative": {
             "count": s["decorative_count"],
             "features": sorted(s.get("decorative_features") or []),
@@ -183,6 +184,24 @@ CONSEQUENCE_WORDS = {
     "safe",
     "critical",
 }
+# Consequence voiced as a relation between sets, without a listed word (Hume C1, D-028).
+CONSEQUENCE_PHRASES = [
+    r"\bagainst that\b",
+    r"\boffsets?\b",
+    r"\bcompensat\w*",
+    r"\bmakes? up for\b",
+    r"\bin exchange\b",
+    r"\bcounterbalanc\w*",
+    r"\bif [^.]{0,60}\b(changed|touched|removed|moved)\b",
+]
+# The disclosure clause is struck from a sentence before R1 reads it — the clause is not an
+# amnesty for the rest of the sentence (Wittgenstein, D-028).
+DISCLOSURE_CLAUSES = [
+    r"not a claim about what (breaks|happens|fails|follows)[^.;,]*",
+    r"(denotes|names|is) (a )?position[^.;,]*",
+    r"a position in the import graph[^.;,]*",
+    r"position, not [^.;,]*",
+]
 # Whole-building labels (D-019: no archetype in v0).
 BUILDING_LABELS = {
     "cathedral",
@@ -286,6 +305,7 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
     allowed_numbers = set()
     allowed_numbers.add(facts_doc["population"])
     allowed_numbers.add(facts_doc["diagnostic_count"])
+    allowed_numbers.add(facts_doc.get("diagnostic_count_base", facts_doc["diagnostic_count"]))
     allowed_numbers.add(facts_doc["decorative"]["count"])
     allowed_numbers.add(facts_doc["co_located_count"])
     allowed_numbers.update(facts_doc["wings"].values())
@@ -296,6 +316,12 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
             if isinstance(v, int):
                 allowed_numbers.add(v)
     used_consequence_names: set[str] = set()
+    first_use: dict[str, tuple[int, str]] = {}  # feature → (paragraph, paragraph text)
+    room_ids = sorted(
+        {r for f in facts_doc["features"] for r in f["rooms"]} | set(facts_doc.get("rooms", {})),
+        key=len,
+        reverse=True,
+    )
     stance_key = facts_doc["stance"][:40].lower()
     for i, para in enumerate(_paragraphs(text), 1):
         if para.startswith(("#", "*Register lint")):
@@ -305,12 +331,21 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
         is_disclosure = "decorative" in low_para and (
             "not a diagnosis" in low_para or "no diagnosis" in low_para
         )
-        # R1 consequence vocabulary, per sentence, unless the sentence is a disclosure
+        for f0 in facts_doc["features"]:
+            if (
+                f0["name_implies_consequence"]
+                and f0["feature"] not in first_use
+                and re.search(rf"\b{re.escape(f0['feature'])}\b", low_para)
+            ):
+                first_use[f0["feature"]] = (i, low_para)
+        # R1 consequence vocabulary, per sentence. Bracket interiors are names, not claims,
+        # and are stripped first; the disclosure clause is struck, not used as an amnesty.
         for sent in SENTENCE.split(para):
-            low = sent.lower()
-            if "denotes position" in low or "position, not" in low or "not a claim" in low:
-                continue
-            hits = sorted(w for w in CONSEQUENCE_WORDS if re.search(rf"\b{re.escape(w)}\b", low))
+            scan = re.sub(CITATION, "", sent).lower()
+            for clause in DISCLOSURE_CLAUSES:
+                scan = re.sub(clause, " ", scan)
+            hits = sorted(w for w in CONSEQUENCE_WORDS if re.search(rf"\b{re.escape(w)}\b", scan))
+            hits += [m.group(0) for pat in CONSEQUENCE_PHRASES for m in re.finditer(pat, scan)]
             if hits:
                 out.append(
                     Violation(
@@ -321,7 +356,7 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                     )
                 )
             # R6 building label
-            labels = sorted(w for w in BUILDING_LABELS if re.search(rf"\b{re.escape(w)}\b", low))
+            labels = sorted(w for w in BUILDING_LABELS if re.search(rf"\b{re.escape(w)}\b", scan))
             if labels:
                 out.append(
                     Violation(
@@ -331,6 +366,24 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                         f"whole-building label: {', '.join(labels)} (D-019)",
                     )
                 )
+            # R8 attribution: a room named in a sentence is covered by a feature cited in it
+            named = [rid for rid in room_ids if rid in sent]
+            if named:
+                covered: set[str] = set()
+                for m in CITATION.finditer(sent):
+                    cf = by_key.get(m.group(1)) or by_feature.get(m.group(1))
+                    if cf:
+                        covered.update(cf["rooms"])
+                for rid in named:
+                    if rid not in covered:
+                        out.append(
+                            Violation(
+                                "R8-attribution",
+                                i,
+                                sent[:160],
+                                f"names {rid} but no feature cited in the sentence fired on it",
+                            )
+                        )
         # R2 provenance: citations resolve; every paragraph carries at least one
         cites = []
         for m in CITATION.finditer(para):
@@ -373,6 +426,15 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                     )
                 )
                 continue
+            if f["decorative"] and room:
+                out.append(
+                    Violation(
+                        "R4-decorative",
+                        i,
+                        para[:160],
+                        f"a decorative feature is cited by count only; [{name}: …] singles out rooms it may not",
+                    )
+                )
             if f["decorative"] and not is_disclosure:
                 out.append(
                     Violation(
@@ -405,23 +467,23 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                 out.append(
                     Violation("R3-number", i, para[:160], f"number {n} is not in the facts sheet")
                 )
-    # R5 disclosure: a consequence-implying name used anywhere in the brief must carry its position name
+    # R5 disclosure: a consequence-implying name carries its position name in the paragraph
+    # where it is first used (a disclosure in paragraph 1 does not license paragraph 9)
     low_all = text.lower()
-    for f in facts_doc["features"]:
-        if f["name_implies_consequence"] and re.search(rf"\b{re.escape(f['feature'])}\b", low_all):
-            used_consequence_names.add(f["feature"])
+    used_consequence_names |= set(first_use)
     for feat in sorted(used_consequence_names):
         pos = (by_feature[feat].get("position_name") or "").lower()
         # tolerate plurals and hyphen/space variation: "high-load hub" ~ "high load hubs"
         words = [re.escape(w) for w in re.split(r"[\s-]+", pos) if w]
         pattern = r"[\s-]+".join(w + r"(?:s|es)?" for w in words) if words else None
-        if pattern and not re.search(pattern, low_all):
+        where = first_use.get(feat, (0, low_all))
+        if pattern and not re.search(pattern, where[1]):
             out.append(
                 Violation(
                     "R5-disclosure",
-                    0,
+                    where[0],
                     feat,
-                    f"'{feat}' is used but its position name ('{pos}') is not disclosed (D-004 Q3)",
+                    f"'{feat}' is first used here without its position name ('{pos}') in the same paragraph (D-004 Q3)",
                 )
             )
     # R7 decorative count must be stated when there are decorative features
@@ -433,6 +495,16 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
         if tv >= 20 and 0 < ov < 10 and tv + ov == dec_count
     }
     stated = str(dec_count) in text or any(re.search(rf"\b{w}\b", low_all) for w in dec_words)
+    diag = facts_doc["diagnostic_count"]
+    if str(diag) not in text:
+        out.append(
+            Violation(
+                "R7-counts",
+                0,
+                "",
+                f"the brief must state the diagnostic-mark count ({diag}, all profiles) beside the population",
+            )
+        )
     if dec_count and not stated:
         out.append(
             Violation(
@@ -452,8 +524,14 @@ SYSTEM = """You are a condemnation surveyor writing the architect's brief for a 
 Register, binding (validation-spec §2.1.1, mapper §3):
 - Present tense only. Every feature rests on a signal that describes a present structural position. You may say where a room sits and what fires on it. You may not say what will happen, what breaks, what is at risk, what is fragile, what will ripple, what a change would cause. Those are predictions; none is licensed here. Avoid the words: break, will, would, risk, fragile, brittle, dangerous, ripple, cascade, fail, failure, likely, predict, expect, cause, collapse, vulnerable, exposed, threat, prone, future, soon, eventually, impact, consequence, propagate, bug, defect, safe, unsafe, critical.
 - Every paragraph cites its evidence in brackets, where the bracket opens with the feature's own name from the facts sheet: [hub: src/db/connection.ts] for one room, [hub: src/a.ts, src/b.ts] for several, [hub ×27] for a count (×27 must equal that feature's count in the facts sheet). Never write the word "feature" inside a bracket; write the feature's name (foundation, hub, dark_room, scaffolding, corridor, …). A paragraph with no citation is struck.
-- Use only numbers that appear in the facts sheet (counts, lines, fan-in, fan-out). No estimates, no percentages.
-- Decorative features rest on nothing confirmed. Do not use them in any diagnosis. State the decorative count once, plainly, e.g. "27 decorative marks (crack) render but are not a diagnosis."
+- A room you name in a sentence must be covered by a feature you cite in that same sentence, and that feature must have fired on that room. Never name a room under a feature that did not fire on it.
+- State the population, the diagnostic-mark count (all profiles), and the co-located count together, early.
+- Name rooms; do not say what they do. A path is not a function: "src/error/QueryFailedError.ts" is a room, not "the error classes". Describe position and marks, not purpose.
+- Do not set two features against each other ("against that", "offsets", "compensates"): the sets are independent measurements and the brief does not know their intersection unless the facts sheet states it.
+- Disclose a consequence-implying name's position name in the same paragraph where the name first appears; the disclosure clause covers only itself, not the rest of the sentence.
+- The stance paragraph carries no citation.
+- Use only numbers that appear in the facts sheet (counts, lines, fan-in, fan-out). No estimates, no percentages, no counts you computed yourself ("sixteen of the seventeen").
+- Decorative features rest on nothing confirmed. Do not use them in any diagnosis and do not name the rooms they fired on. State the decorative count once, plainly, citing by count only, e.g. "27 decorative marks render but are not a diagnosis [crack ×27]."
 - A feature whose name implies a consequence (foundation, toothpick_wing, crack) must be disclosed with its position name from the facts sheet, e.g. "foundation — a high-load hub, a position in the import graph, not a claim about what breaks".
 - Do not give the building a one-word label (cathedral, shantytown, bunker, ruin). No archetype exists.
 - Do not invent rooms, wings, or features. Do not describe code you have not been given; the facts sheet is the whole building.
@@ -522,10 +600,14 @@ def render_brief(
         if not violations
         else f"FAILED ({len(violations)} violation{'s' if len(violations) != 1 else ''})"
     )
+    if provenance.get("attempt"):
+        status += f" on attempt {provenance['attempt']}"
     head = (
         f"# {facts_doc['repo']['name']} — architect's brief\n\n"
-        f"*Register lint: **{status}**. Every claim below is licensed by an `asserted` signal and cites the feature and room it rests on; "
-        f"a claim voices a present structural position, never a consequence. Profile {facts_doc['profile']}"
+        f"*Register lint: **{status}**. What the lint checked: every paragraph cites a feature and a room it fired on, or a count the skeleton records; "
+        f"a room named in a sentence is covered by a feature cited in that sentence; consequence and forecast vocabulary is refused outside a struck disclosure clause; "
+        f"numbers come from the facts sheet; decorative features are cited by count only and never as diagnosis; a consequence-implying name carries its position name where first used; no whole-building label. "
+        f"What it cannot check: a consequence voiced without a listed word, a computed number that happens to match, a room's function inferred from its name. Profile {facts_doc['profile']}"
         + (f" + {', '.join(facts_doc['overlays'])}" if facts_doc["overlays"] else "")
         + f", geometry {facts_doc['geometry']}, skeleton `{facts_doc['skeleton_hash'][:12]}…`, facts `{facts_doc['facts_hash'][:12]}…`.*\n\n"
     )
@@ -545,7 +627,7 @@ def render_brief(
             + "\n\n**This brief failed the register lint and is not a diagnosis until it passes.**\n"
         )
     else:
-        lint_md += "No violations. Rules: R1 consequence vocabulary, R2 provenance of every citation, R3 numbers from the facts sheet only, R4 decorative features excluded from diagnosis, R5 position-name disclosure, R6 no whole-building label, R7 decorative count stated.\n"
+        lint_md += "No violations. Rules: R1 consequence vocabulary and phrases (citations stripped, disclosure clause struck), R2 provenance of every citation, R3 numbers from the facts sheet only, R4 decorative features cited by count only and never as diagnosis, R5 position-name disclosure at first use, R6 no whole-building label, R7 diagnostic and decorative counts stated, R8 rooms named in a sentence covered by that sentence's citations.\n"
     return head + text.strip() + "\n" + prov + lint_md
 
 
