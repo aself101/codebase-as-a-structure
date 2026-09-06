@@ -432,7 +432,11 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
     # 2 was some other feature's count
     feature_numbers: dict[str, set[int]] = {}
     for f in facts_doc["features"]:
-        nums = {f["count"], *f.get("by_wing", {}).values()}
+        nums = {
+            f["count"],
+            *f.get("by_wing", {}).values(),
+            (f.get("dominant_dir") or {}).get("n", f["count"]),
+        }
         feature_numbers[f["feature"]] = nums
         feature_numbers[f"{f['profile']}/{f['feature']}"] = nums
     wing_names = set(facts_doc["wings"])
