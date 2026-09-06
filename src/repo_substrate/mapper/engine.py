@@ -64,6 +64,13 @@ def check_gate(ruleset: Ruleset, validation: dict[str, Any]) -> dict[str, str]:
             statuses[sig] = st
             if not f.decorative and st not in OK_STATUSES:
                 problems.append(f"feature {f.name!r} reads {sig!r} with status {st!r}")
+        for t in f.terms:
+            if t.percentile is not None and (
+                (validation.get("signals") or {}).get(t.signal) or {}
+            ).get("flag"):
+                raise RulesetError(
+                    f"feature {f.name!r}: {t.signal!r} is a flag (never ranked) and may not carry a percentile threshold (D-029)"
+                )
     if problems:
         raise GateError(
             "anti-horoscope gate: "

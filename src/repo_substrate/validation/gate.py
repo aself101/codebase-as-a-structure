@@ -177,6 +177,7 @@ def descriptive_verdict(
         "status": status,
         "kind": "descriptive",
         "grounding_class": g["class"],
+        "flag": bool(g.get("flag", False)),
         "counterpart": g.get("counterpart"),
         "inputs": g.get("inputs"),
         "instrument": g.get("instrument"),

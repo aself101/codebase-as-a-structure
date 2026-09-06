@@ -11,6 +11,8 @@ from __future__ import annotations
 
 import fnmatch
 import hashlib
+import json
+import re
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
@@ -28,6 +30,10 @@ class StaticNode:
     is_test: bool
     test_proximity: float  # 1.0 sibling / 0.5 same-dir-or-mirror / 0.0 none (§6.2.2)
     nesting_proxy: int | None
+    package: str = ""  # nearest ancestor directory holding a package.json ("" = repo root) (D-029)
+    is_package_entry: bool = (
+        False  # declared entry of its package (package.json main/module/types/bin/exports) (D-029)
+    )
 
 
 def _matches_any(path: str, globs: tuple[str, ...]) -> bool:
@@ -159,11 +165,102 @@ def nesting_proxy(data: bytes, max_bytes: int) -> int | None:
     return max(tabs + spaces // width for tabs, spaces in leads)
 
 
+SOURCE_EXTS = (".ts", ".tsx", ".mts", ".cts", ".js", ".jsx", ".mjs", ".cjs", ".py")
+ENTRY_FIELDS = ("main", "module", "browser", "types", "typings")
+
+
+def _entry_strings(value) -> list[str]:
+    """Every string reachable in a package.json entry value (`exports` nests by condition)."""
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, dict):
+        return [x for v in value.values() for x in _entry_strings(v)]
+    if isinstance(value, list):
+        return [x for v in value for x in _entry_strings(v)]
+    return []
+
+
+def _resolve_entry(pkg_dir: str, target: str, present: set[str]) -> str | None:
+    """Map a declared entry to an inventory path. Exact first; then the declared heuristic
+    (recorded in the grounding table): a built entry `./index.js` maps to a source
+    `index.ts`, `src/index.ts`, `lib/index.js` …, and a directory to its index. Returns the
+    first present candidate, or None."""
+    t = target.strip()
+    if not t or t.startswith(("http:", "https:", "node:")):
+        return None
+    t = t.removeprefix("./")
+    rel = re.sub(r"/+", "/", t).strip("/")
+    if not rel:
+        rel = "index"
+    rel_stem = re.sub(r"\.(d\.ts|d\.mts|[cm]?[jt]sx?|py)$", "", rel)
+    root = f"{pkg_dir}/" if pkg_dir else ""
+    cands: list[str] = [root + rel]
+    for pre in ("", "src/", "lib/", "source/"):
+        stem = f"{root}{pre}{rel_stem}"
+        for ext in SOURCE_EXTS:
+            cands.append(stem + ext)
+            cands.append(f"{stem}/index{ext}")
+    for c in cands:
+        c = re.sub(r"/+", "/", c)
+        if c in present:
+            return c
+    return None
+
+
+def package_facts(
+    entries: list[tuple[str, str]], included: list[tuple[str, str]], repo: Path
+) -> tuple[dict[str, str], set[str]]:
+    """(package_of: included path → nearest package dir, entry paths) from every
+    package.json in the tree (D-029). `node_modules` and the exclude globs are honoured by
+    the caller's `included` list for nodes; package.json files under node_modules are skipped."""
+    pkg_blobs = [
+        (path, sha)
+        for path, sha in entries
+        if PurePosixPath(path).name == "package.json" and "node_modules" not in path.split("/")
+    ]
+    present = {p for p, _ in included}
+    pkg_dirs: list[str] = []
+    entry_paths: set[str] = set()
+    if pkg_blobs:
+        blobs = cat_blobs(repo, [sha for _, sha in pkg_blobs])
+        for path, sha in pkg_blobs:
+            pkg_dir = str(PurePosixPath(path).parent)
+            pkg_dir = "" if pkg_dir == "." else pkg_dir
+            pkg_dirs.append(pkg_dir)
+            try:
+                doc = json.loads(blobs[sha].decode("utf-8"))
+            except (ValueError, UnicodeDecodeError):
+                continue
+            if not isinstance(doc, dict):
+                continue
+            declared: list[str] = []
+            for f in ENTRY_FIELDS:
+                declared += _entry_strings(doc.get(f))
+            declared += _entry_strings(doc.get("bin"))
+            declared += _entry_strings(doc.get("exports"))
+            for d in declared:
+                r = _resolve_entry(pkg_dir, d, present)
+                if r:
+                    entry_paths.add(r)
+    pkg_dirs = sorted(set(pkg_dirs), key=len, reverse=True)
+    package_of: dict[str, str] = {}
+    for path in present:
+        owner = ""
+        for d in pkg_dirs:
+            if d and path.startswith(d + "/"):
+                owner = d
+                break
+        package_of[path] = owner
+    return package_of, entry_paths
+
+
 def build_inventory(repo: Path, rev: str, cfg: SubstrateConfig) -> tuple[list[StaticNode], str]:
     """Nodes at ``rev`` and the seed. Contents are read by blob SHA (``git cat-file``),
     never by worktree path, so a case-insensitive filesystem cannot swap two files."""
-    included = included_paths(ls_tree(repo, rev), cfg)
+    entries = ls_tree(repo, rev)
+    included = included_paths(entries, cfg)
     seed = tree_seed(included)
+    package_of, entry_paths = package_facts(entries, included, repo)
     paths = [p for p, _ in included]
     prox = test_proximity(paths, cfg)
     blobs = cat_blobs(repo, [sha for _, sha in included])
@@ -179,6 +276,8 @@ def build_inventory(repo: Path, rev: str, cfg: SubstrateConfig) -> tuple[list[St
                 is_test=is_test_path(path, cfg),
                 test_proximity=prox[path],
                 nesting_proxy=nesting_proxy(data, cfg.nesting_max_bytes),
+                package=package_of.get(path, ""),
+                is_package_entry=path in entry_paths,
             )
         )
     return nodes, seed

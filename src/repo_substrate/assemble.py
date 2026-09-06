@@ -173,6 +173,8 @@ def extract(
             "fan_out": fan_out.get(p, 0),
             "is_test": s.is_test,
             "has_sibling_test": s.test_proximity == 1.0,
+            "package": s.package,
+            "is_package_entry": s.is_package_entry,
             "nesting_proxy": s.nesting_proxy,
             "cochange_degree": cochange.get(p, 0),
             "blame_age_median": blame.get(p),

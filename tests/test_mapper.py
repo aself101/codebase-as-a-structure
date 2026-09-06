@@ -496,3 +496,16 @@ def test_budget_refuses_a_tiny_jitter_population(sub):
     assert d["budget"]["verdict"] == "untested"
     assert d["budget"]["reason"] == "insufficient_jitter_population"
     assert SKELETON_BUDGET["pinned_k"] == 25 and SKELETON_BUDGET["max_k"] == 50
+
+
+def test_mapper_refuses_a_percentile_over_a_flag(sub, tmp_path):
+    """D-029: a flag is never ranked."""
+    p = _write_ruleset(tmp_path, '[[feature]]\nname = "x"\npredicate = "is_package_entry >= p90"\n')
+    rs = load_ruleset(p)
+    v = _validation(is_package_entry="asserted")
+    v["signals"]["is_package_entry"]["flag"] = True
+    with pytest.raises(RulesetError, match="flag"):
+        map_skeleton(sub, v, rs)
+    from repo_substrate.validation.config import GROUNDING
+
+    assert GROUNDING["is_package_entry"].get("flag") is True

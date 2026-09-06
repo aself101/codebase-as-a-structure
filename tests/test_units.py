@@ -299,3 +299,37 @@ def test_age_ranks_do_not_move_when_the_clock_crosses_a_day_boundary():
     assert p1 == p2
     assert p1["b"] == p1["c"] and p1["a"] > p1["b"] > p1["d"]
     assert _days(as_of_1, as_of_2) == 0.0  # never negative
+
+
+def test_package_facts_resolve_entries_and_owners(make_repo, small_cfg, tmp_path):
+    """D-029: package.json entries map to source files (built → source heuristic), and each
+    room knows the nearest package directory."""
+    from repo_substrate.assemble import ExtractOptions, extract
+
+    r = make_repo()
+    r.write(
+        "package.json",
+        '{"name": "root", "main": "./index.js", "types": "index.d.ts", "bin": {"x": "./bin/cli.js"}}',
+    )
+    r.write("src/index.ts", "export const a = 1;\n")
+    r.write("src/other.ts", "export const b = 2;\n")
+    r.write("bin/cli.ts", "console.log(1);\n")
+    r.write(
+        "packages/sub/package.json",
+        '{"name": "sub", "exports": {".": {"import": "./lib/main.mjs", "types": "./lib/main.d.ts"}}}',
+    )
+    r.write("packages/sub/lib/main.ts", "export const c = 3;\n")
+    r.write("packages/sub/lib/helper.ts", "export const d = 4;\n")
+    r.commit("feat: packages")
+    sub = extract(
+        r.path, small_cfg, ExtractOptions(scratch_dir=tmp_path, blame_workers=1), extractor=None
+    )
+    m = {n["id"]: n["metrics"] for n in sub["nodes"]}
+    assert m["src/index.ts"]["is_package_entry"] and m["bin/cli.ts"]["is_package_entry"]
+    assert m["packages/sub/lib/main.ts"]["is_package_entry"]
+    assert not m["src/other.ts"]["is_package_entry"]
+    assert not m["packages/sub/lib/helper.ts"]["is_package_entry"]
+    assert (
+        m["src/index.ts"]["package"] == ""
+        and m["packages/sub/lib/helper.ts"]["package"] == "packages/sub"
+    )

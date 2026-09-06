@@ -67,6 +67,14 @@ GROUNDING: dict[str, dict[str, Any]] = {
         "instrument": "path convention config (§6.2.2)",
         "heuristic": "filename adjacency; literal name, convention-dependent",
     },
+    # D-029: a FLAG — a boolean that is never ranked. Stability applies; the degeneracy bar
+    # (which guards percentiles) does not; a ruleset may use it only with an absolute term.
+    "is_package_entry": {
+        "class": "G1",
+        "instrument": "package.json main/module/browser/types/bin/exports",
+        "heuristic": "built entry → source mapping (./index.js → src/index.ts, dir → index)",
+        "flag": True,
+    },
     # G2 instrument-checked (counterparts come from altdeps.py, which shares no code with dependency-cruiser)
     "fan_in": {
         "class": "G2",
@@ -184,6 +192,7 @@ SPEC_G1: frozenset[str] = frozenset(
         "cochange_degree",
         "blame_age_median",
         "has_sibling_test",
+        "is_package_entry",  # flag (D-029)
     }
 )
 

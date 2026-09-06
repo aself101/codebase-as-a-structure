@@ -8,16 +8,22 @@
 
 [ruleset]
 name = "onboarding"
-version = "0.1.0"
+version = "0.2.0"
 profile = "onboarding"
-description = "Where to start reading: entrances (import much, imported by nothing), corridors (high centrality and high fan-out — everything routes through), foundations. Position names throughout."
+description = "Where to start reading: package entries (declared in package.json), import-graph roots (import much, imported by nothing), corridors (high centrality and high fan-out — everything routes through), foundations. Position names throughout."
 
 [[feature]]
-name = "entrance"
+name = "package_entry"
+predicate = "is_package_entry == 1"
+position_name = "declared package entry"
+note = "The file a package.json names as main, module, types, bin, or an export — the door a consumer is told to use. is_package_entry is a G1 flag with a declared heuristic (built entry → source); it is never ranked (D-029)."
+
+[[feature]]
+name = "import_root"
 predicate = "fan_in == 0 and fan_out >= p75"
 graph_dependent = true
 position_name = "import-graph root"
-note = "Imported by no in-repo file and importing more than most: a place execution enters. fan_in and fan_out are G2 instrument-checked."
+note = "Imported by no in-repo file and importing more than most. In an application this is where execution enters; in a library it is often a tool or a script, because the library's own entry is imported internally (D-028 hostile-reader #3) — hence the rename from entrance (D-029). fan_in and fan_out are G2 instrument-checked."
 
 [[feature]]
 name = "corridor"
