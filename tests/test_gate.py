@@ -350,8 +350,9 @@ def test_cache_key_separates_truncated_from_tip(scripted_repo, small_cfg, tmp_pa
 
 def test_local_signals_read_zero_after_reranking(scripted_repo, cache):
     """D-033: once percentiles are ranked over the untouched population in both runs, a signal
-    computed from the file's own content and history cannot move — the local signals are the
-    instrument's null check, and the tail operand for graph signals is p95."""
+    computed from the file's own content and history cannot move — the zeros check the class assignment (an own signal that moves is
+    misclassified) and the re-ranking's implementation — not the coupled readings (D-035); the
+    tail operand for coupled signals is p95."""
     from repo_substrate.validation.config import GROUNDING
 
     repo, shas = scripted_repo

@@ -35,10 +35,7 @@ def read(path: Path) -> dict:
             st = r.get("stability") or {}
             if st.get("median_abs_delta") is None:
                 continue
-            rows.append(
-                (
-                    sig,
-                    r["name"],
+            rows.append((sig, r["name"],
                     st["median_abs_delta"],
                     st.get("p95_abs_delta"),
                     st["max_abs_delta"],
@@ -46,17 +43,15 @@ def read(path: Path) -> dict:
                     rec["status"],
                     st.get("passed"),
                     st.get("ripple", "own"),
-                    st.get("operand", "max"),
-                )
-            )
+                    st.get("operand", "max"), st.get("reason")))
     return {"k": k, "eps": eps, "delta": delta, "rows": rows, "path": str(path)}
 
 
 def render(d: dict) -> str:
     rows = d["rows"]
     own = [r for r in rows if r[8] == "own"]
-    coupled = [r for r in rows if r[8] == "coupled"]
-    # D-033: the own signals are the instrument's null check; the bars are placed over the
+    coupled = [r for r in rows if r[8] == "coupled" and r[10] != "degenerate"]  # D-035: degenerate rows shown, not placed
+    # D-033 (corrected by its addendum): the own signals are the class check; the bars are placed over the
     # coupled readings, each on its own tail operand (p95), the median operand beside.
     placed = coupled if coupled else rows
     meds = [r[2] for r in placed]
@@ -64,8 +59,8 @@ def render(d: dict) -> str:
     out = [f"## K = {d['k']} — `{d['path']}`", ""]
     nz = [r for r in own if r[4] > 0]
     out.append(
-        f"{len(rows)} (signal, repo) readings reached the stability test: {len(own)} own (null check — "
-        f"{len(nz)} read above 0.000{': ' + ', '.join(f'{r[0]}@{r[1]}' for r in nz) if nz else ''}), {len(coupled)} coupled (the bars are placed over these)."
+        f"{len(rows)} (signal, repo) readings reached the stability test: {len(own)} own (class check — zero by construction, D-033 addendum; "
+        f"{len(nz)} read above 0.000{': ' + ', '.join(f'{r[0]}@{r[1]}' for r in nz) if nz else ''}), {len(coupled)} coupled and non-degenerate (the bars are placed over these)."
     )
     out.append("")
     out.append(
@@ -90,10 +85,10 @@ def render(d: dict) -> str:
     out.append("")
     out.append("| signal | ripple | repo | median \\|Δ\\| | p95 | max | operand | n | status |")
     out.append("|---|---|---|---|---|---|---|---|---|")
-    for sig, repo, med, p95, mx, n, status, passed, ripple, operand in sorted(
+    for sig, repo, med, p95, mx, n, status, passed, ripple, operand, reason in sorted(
         rows, key=lambda r: -(r[3] if r[9] == "p95" else r[4])
     ):
-        flag = "" if passed else " **fails**"
+        flag = "" if passed else (" *degenerate*" if reason == "degenerate" else " **unstable**")
         out.append(
             f"| `{sig}` | {ripple} | {repo} | {med:.4f} | {p95 if p95 is None else f'{p95:.4f}'} | {mx:.4f} | {operand} | {n} | {status}{flag} |"
         )
