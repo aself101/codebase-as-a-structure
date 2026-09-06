@@ -388,3 +388,17 @@ No weight vector in either grid reaches the pre-registered bar on the tuning set
 
 **Breaks if.** Alex wants the render or the brief first. Then M3 is built on the mature repositories with the budget's K left open and stated on the page.
 
+## D-026 · 2026-09-05 · The budget is pinned at K = 25, applied to 50; the calibration rule; age floors are the unstable element
+
+**Decision.** `SKELETON_BUDGET` (`mapper/diff.py`): `pinned_k = 25`, `max_k = 50`, ceilings unchanged at 0.05 (jitter churn) and 0.05 (untouched strata), and a new floor `min_jitter_union = 20` (`untested: insufficient_jitter_population` below it). Test: `test_budget_refuses_a_tiny_jitter_population`. The K study that pins it is `reports/2026-09-05-kstudy/kstudy.md` (D-025's design, run 2026-09-05 evening).
+
+**The calibration rule.** The ceiling is not moved; the K is chosen so that the ceiling sits between the reference set's per-transition median and its 90th percentile of jitter churn. At K = 5 nothing reaches it (D-024's adversarial ruleset included). At K = 25 on the registry the median is 0.034 and the p90 0.143; at K = 10 on mcp 0.022 / 0.066; at K = 50 on typeorm 0.027 / 0.235; at K = 100 on eslint 0.028 / 0.125. Twenty-five is the smallest K at which the rule holds on every repository where it was read, and fifty is the largest at which the median is still at or under the ceiling on the fastest-growing one. A ceiling that separates typical from tail can fail, and this one does: 53% of the registry's K = 25 transitions exceed it. D-018's "headroom, not a fit" stands; the K was the missing parameter, which is what D-024's adversarial run showed.
+
+**Measured, and worth stating.** Jitter share is a property of the repository, not the schedule — within a repository it holds to within a few points across a fivefold change in K (registry 0.25–0.28, typeorm 0.15–0.16, eslint 0.16 at both K). Nagarjuna's SV-1 is answered: quote it with K, and it will hold. Jitter churn per transition grows with K at a rate set by growth, and the median crosses the ceiling at K ≈ 25 (mcp), 50 (registry), 100 (typeorm), 200 (eslint).
+
+**Per geometry (time-lapse §7 Q2, resolved by not adding a ceiling).** Age-geometry floors are the least stable element of the whole skeleton: untouched strata movement p90 0.13–0.43 under age against ≤ 0.13 under layer, medians up to 0.10 against 0.000. Age bands are quantiles of `age_days`; a growing population re-ranks them wholesale between frames, while layer depth moves only when the graph does. A second ceiling for age strata would be tuned to pass. Instead: one ceiling, and the reading that layer is the stable geometry for a time-lapse and that percentile age bands should become absolute-era bands if the age geometry is to hold a floor still — D-019's calibration argument applied to strata. Opened as mapper §7 Q6; not built.
+
+**Assumes.** `commits_between` counts every commit in the timeline between checkpoints, merges' side branches included, so an `--every 25` schedule produces K in the twenties to sixties; `max_k = 50` admits most of them and refuses the merge-heavy tail as `beyond_pinned_k`, which is the honest outcome.
+
+**Breaks if.** A reference repository is added whose K = 25 median exceeds 0.05 — a repository growing faster than mcp-secure-server did in its first month. Then the pinned K must fall, or the rule is restated per growth rate rather than per K. Or if absolute-era strata are built: then the strata ceiling is re-read under them.
+

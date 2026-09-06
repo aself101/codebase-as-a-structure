@@ -256,7 +256,7 @@ def test_skeleton_budget_is_judged_over_the_untouched_population(sub):
     # the budget judges jitter (rank + mixed); this test is about the population split, so
     # classify the victim's feature as rank explicitly whatever its signals are
     kinds = {**feature_kinds_from_skeleton(a), f"{victim['profile']}/{victim['feature']}": "rank"}
-    loose = {**SKELETON_BUDGET, "min_untouched_n": 1}
+    loose = {**SKELETON_BUDGET, "min_untouched_n": 1, "min_jitter_union": 0}
     # Without a touched set the verdict is untested, never a pass.
     assert skeleton_diff(a, b)["budget"]["verdict"] == "untested"
     assert skeleton_diff(a, b)["budget"]["reason"] == "touched_set_unavailable"
@@ -478,3 +478,21 @@ def test_register_hook_has_a_grammar(sub, tmp_path):
     )
     with pytest.raises(RulesetError, match="repeats the feature name"):
         load_ruleset(p2)
+
+
+def test_budget_refuses_a_tiny_jitter_population(sub):
+    """D-026: two rooms flipping is not a rate."""
+    from repo_substrate.mapper.diff import SKELETON_BUDGET, skeleton_diff
+
+    base = load_ruleset(RULESET)
+    a = map_skeleton(sub, _all_asserted(base), base)
+    d = skeleton_diff(
+        a,
+        a,
+        touched=set(),
+        commits_between=1,
+        budget={**SKELETON_BUDGET, "min_untouched_n": 1, "min_jitter_union": 10**6},
+    )
+    assert d["budget"]["verdict"] == "untested"
+    assert d["budget"]["reason"] == "insufficient_jitter_population"
+    assert SKELETON_BUDGET["pinned_k"] == 25 and SKELETON_BUDGET["max_k"] == 50

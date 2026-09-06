@@ -23,24 +23,29 @@ from __future__ import annotations
 
 from typing import Any
 
-# D-018, revised D-024. The budget bounds JITTER: movement of untouched rooms through
-# rank-only features, mixed features (a clock and a rank signal in one predicate — the
-# rank component cannot be separated, so the whole is counted as jitter, the conservative
-# side), and strata (a floor moves for an untouched room only because the population
-# re-ranked around it, D-022 having removed the clock's way of moving it). Clock-only
-# features are reported beside it, never judged: a lit room going dark because nobody
-# visited is the skeleton reporting time. Ceilings are one room in twenty. The budget was
-# read at K = 5 (`pinned_k`) and is applied up to `max_k`; beyond that a comparison is
-# `untested: beyond_pinned_k` — the token never travels to a K it was not pinned at.
-# Readings at K = 5 under substrate 0.3.0 (reports/2026-09-05-m2b): untouched churn
-# ≤ 0.038 (mcp-secure-server), untouched strata ≤ 0.032 (mcp, layer geometry).
+# D-018, operand revised D-024, K re-pinned D-026. The budget bounds JITTER: movement of
+# untouched rooms through rank-only features, mixed features (a clock and a rank signal in
+# one predicate — the rank component cannot be separated, so the whole is counted as
+# jitter, the conservative side), and strata (a floor moves for an untouched room only
+# because the population re-ranked around it, D-022 having removed the clock's way of
+# moving it). Clock-only features are reported beside it, never judged.
+# The ceilings are one room in twenty. The K: at K = 5 nothing fires the ceiling, not the
+# reference set and not a ruleset written to break it (D-024); the K study (D-025/D-026,
+# reports/2026-09-05-kstudy) read jitter churn per transition at K = 5…250 and found it
+# grows with K at a rate set by the repository's growth. At K = 25 the ceiling sits between
+# the reference set's median (0.02–0.05) and its 90th percentile (0.07–0.24) on every
+# repository where it was read — it separates typical from tail without being fitted — so
+# the budget is pinned at 25 and applied up to 50. Beyond that a comparison is
+# `untested: beyond_pinned_k`. A jitter union under `min_jitter_union` rooms is
+# `untested: insufficient_jitter_population` (two rooms flipping is not a rate).
 SKELETON_BUDGET: dict[str, float | int] = {
     "feature_churn_max": 0.05,
     "strata_moved_max": 0.05,
     "min_untouched_n": 30,
     "max_touched_frac": 0.5,
-    "pinned_k": 5,
-    "max_k": 10,
+    "pinned_k": 25,
+    "max_k": 50,
+    "min_jitter_union": 20,
 }
 
 # Signals measured against the checkpoint's clock (substrate spec §5, §7; D-021). A feature
@@ -262,6 +267,8 @@ def skeleton_diff(
         verdict, reason = "untested", "touched_fraction_exceeds_floor"
     elif len(untouched) < budget["min_untouched_n"]:
         verdict, reason = "untested", "insufficient_untouched_population"
+    elif jitter_union < budget.get("min_jitter_union", 0):
+        verdict, reason = "untested", "insufficient_jitter_population"
     elif jitter_churn > budget["feature_churn_max"] or u_strata > budget["strata_moved_max"]:
         verdict, reason = "over_budget", None
     else:
