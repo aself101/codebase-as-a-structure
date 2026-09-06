@@ -12,6 +12,7 @@ import sys
 from pathlib import Path
 
 from .assemble import ExtractOptions, extract
+from .brief import DEFAULT_MODEL
 from .config import SubstrateConfig
 from .deps import DependencyCruiserExtractor
 from .gitutil import GitError
@@ -113,6 +114,25 @@ def main(argv: list[str] | None = None) -> int:
     tl.add_argument("--no-deps", action="store_true")
     tl.add_argument("--blame-workers", type=int, default=8)
     tl.add_argument("-o", "--output", type=Path, required=True, help="output directory")
+    br = sub.add_parser(
+        "brief",
+        help="M3: the architect's brief over a skeleton, generated under the surveyor stance and checked by the register lint",
+    )
+    br.add_argument("skeleton", type=Path)
+    br.add_argument("substrate", type=Path, nargs="?", default=None)
+    br.add_argument("-o", "--output", type=Path, required=True, help="brief.md")
+    br.add_argument("--facts", type=Path, default=None, help="also write the facts sheet JSON")
+    br.add_argument(
+        "--draft",
+        type=Path,
+        default=None,
+        help="lint this hand-written brief instead of generating",
+    )
+    br.add_argument("--model", default=None, help=f"generator model (default {DEFAULT_MODEL})")
+    br.add_argument("--effort", default="high", choices=["low", "medium", "high", "xhigh", "max"])
+    br.add_argument(
+        "--max-attempts", type=int, default=2, help="regenerate once with the violations fed back"
+    )
     args = ap.parse_args(argv)
     try:
         return _dispatch(args)
@@ -135,6 +155,30 @@ def _load_json(path: Path, what: str) -> dict:
 
 
 def _dispatch(args: argparse.Namespace) -> int:
+    if args.cmd == "brief":
+        from .brief import anthropic_generator, run_brief
+
+        skel = _load_json(args.skeleton, "skeleton")
+        sub_doc = _load_json(args.substrate, "substrate") if args.substrate else None
+        draft = args.draft.read_text(encoding="utf-8") if args.draft else None
+        gen = (
+            None
+            if draft is not None
+            else anthropic_generator(args.model or DEFAULT_MODEL, args.effort)
+        )
+        r = run_brief(skel, sub_doc, gen, draft, args.max_attempts)
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(r["markdown"], encoding="utf-8")
+        if args.facts:
+            args.facts.write_text(
+                json.dumps(r["facts"], indent=1, sort_keys=True, ensure_ascii=False) + "\n",
+                encoding="utf-8",
+            )
+        status = "PASS" if r["passed"] else f"FAILED ({len(r['violations'])})"
+        print(f"{skel['repo']['name']}: register lint {status} → {args.output}", file=sys.stderr)
+        for v in r["violations"][:12]:
+            print(f"  {v['rule']} ¶{v['paragraph']}: {v['detail']}", file=sys.stderr)
+        return 0 if r["passed"] else 1
     if args.cmd == "timelapse":
         from .mapper import load_ruleset
         from .timelapse import run_timelapse

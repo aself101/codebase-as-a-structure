@@ -1,0 +1,1517 @@
+{
+ "brief_version": "0.1.0",
+ "co_located_count": 47,
+ "decorative": {
+  "count": 24,
+  "features": [
+   "crack",
+   "toothpick_wing"
+  ]
+ },
+ "diagnostic_count": 196,
+ "facts_hash": "987906877c8ec5193cfc29f27077392d4f9637d2f429b57536317f875e0991ed",
+ "features": [
+  {
+   "count": 21,
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "diagnostic": false,
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "profile": "maintainability",
+   "rooms": [
+    "eslint.config.js",
+    "src/index.ts",
+    "src/security/config/tool-policies-config.ts",
+    "src/security/constants.ts",
+    "src/security/index.ts",
+    "src/security/layers/layer-utils/content/patterns/index.ts",
+    "src/security/layers/layer-utils/content/patterns/path-traversal.ts",
+    "src/security/layers/layer-utils/semantics/semantic-policies.ts",
+    "src/security/layers/layer2-content.ts",
+    "src/security/layers/layer2-validators/pattern-detection.ts",
+    "src/security/layers/layer3-behavior.ts",
+    "src/security/layers/layer4-semantics.ts",
+    "src/security/layers/layer5-contextual.ts",
+    "src/security/mcp-secure-server.ts",
+    "src/security/transport/http-server.ts",
+    "src/security/transport/secure-transport.ts",
+    "src/security/utils/error-sanitizer.ts",
+    "src/security/utils/pipeline-factory.ts",
+    "src/security/utils/security-logger.ts",
+    "src/types/layers.ts",
+    "src/types/server.ts"
+   ],
+   "validation_status": "unvalidated"
+  },
+  {
+   "count": 42,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "profile": "maintainability",
+   "rooms": [
+    "cookbook/api-wrapper-server/src/tools/currency.ts",
+    "cookbook/api-wrapper-server/src/tools/index.ts",
+    "cookbook/api-wrapper-server/src/tools/news.ts",
+    "cookbook/api-wrapper-server/src/tools/weather.ts",
+    "cookbook/api-wrapper-server/src/utils/http.ts",
+    "cookbook/api-wrapper-server/src/utils/index.ts",
+    "cookbook/api-wrapper-server/src/utils/validators.ts",
+    "cookbook/api-wrapper-server/vitest.config.ts",
+    "cookbook/database-server/src/tools/create-order.ts",
+    "cookbook/database-server/src/tools/health-check.ts",
+    "cookbook/database-server/src/tools/index.ts",
+    "cookbook/database-server/src/utils/database.ts",
+    "cookbook/database-server/vitest.config.ts",
+    "cookbook/filesystem-server/src/tools/index.ts",
+    "cookbook/filesystem-server/src/tools/list-directory.ts",
+    "cookbook/filesystem-server/src/tools/read-file.ts",
+    "cookbook/filesystem-server/src/tools/search-files.ts",
+    "cookbook/filesystem-server/src/tools/write-log.ts",
+    "cookbook/filesystem-server/src/utils/index.ts",
+    "cookbook/filesystem-server/src/utils/path-validator.ts",
+    "cookbook/filesystem-server/vitest.config.ts",
+    "cookbook/image-gen-server/src/index-minimal.ts",
+    "cookbook/image-gen-server/src/providers/google.ts",
+    "cookbook/image-gen-server/src/providers/ideogram.ts",
+    "cookbook/image-gen-server/src/providers/stability.ts",
+    "cookbook/image-gen-server/src/tools/index.ts",
+    "cookbook/image-gen-server/src/utils.ts",
+    "cookbook/image-gen-server/src/utils/index.ts",
+    "cookbook/image-gen-server/vitest.config.ts",
+    "cookbook/kenpom-server/src/tools/index.ts",
+    "cookbook/kenpom-server/src/utils/index.ts",
+    "cookbook/kenpom-server/vitest.config.ts",
+    "cookbook/nba-server/src/tools/index.ts",
+    "cookbook/nba-server/src/utils/index.ts",
+    "cookbook/nba-server/vitest.config.ts",
+    "src/security/layers/layer-utils/content/helper-utils.ts",
+    "src/security/layers/layer-utils/content/unicode.ts",
+    "src/security/layers/layer-utils/content/utils/index.ts",
+    "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
+    "src/security/layers/layer2-validators/base64-css.ts",
+    "src/security/utils/tool-registry.ts",
+    "src/types/messages.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 37,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "profile": "maintainability",
+   "rooms": [
+    "cookbook/api-wrapper-server/src/tools/currency.ts",
+    "cookbook/api-wrapper-server/src/tools/index.ts",
+    "cookbook/api-wrapper-server/src/tools/news.ts",
+    "cookbook/api-wrapper-server/src/tools/weather.ts",
+    "cookbook/api-wrapper-server/src/utils/http.ts",
+    "cookbook/api-wrapper-server/src/utils/index.ts",
+    "cookbook/api-wrapper-server/src/utils/validators.ts",
+    "cookbook/api-wrapper-server/vitest.config.ts",
+    "cookbook/database-server/src/tools/create-order.ts",
+    "cookbook/database-server/src/tools/health-check.ts",
+    "cookbook/database-server/src/tools/index.ts",
+    "cookbook/database-server/src/utils/database.ts",
+    "cookbook/database-server/vitest.config.ts",
+    "cookbook/filesystem-server/src/tools/index.ts",
+    "cookbook/filesystem-server/src/tools/list-directory.ts",
+    "cookbook/filesystem-server/src/tools/read-file.ts",
+    "cookbook/filesystem-server/src/tools/search-files.ts",
+    "cookbook/filesystem-server/src/tools/write-log.ts",
+    "cookbook/filesystem-server/src/utils/index.ts",
+    "cookbook/filesystem-server/src/utils/path-validator.ts",
+    "cookbook/filesystem-server/vitest.config.ts",
+    "cookbook/image-gen-server/src/providers/google.ts",
+    "cookbook/image-gen-server/src/providers/ideogram.ts",
+    "cookbook/image-gen-server/src/providers/stability.ts",
+    "cookbook/image-gen-server/src/utils.ts",
+    "cookbook/image-gen-server/vitest.config.ts",
+    "cookbook/kenpom-server/src/utils/index.ts",
+    "cookbook/kenpom-server/vitest.config.ts",
+    "cookbook/nba-server/src/utils/index.ts",
+    "cookbook/nba-server/vitest.config.ts",
+    "src/security/layers/layer-utils/content/helper-utils.ts",
+    "src/security/layers/layer-utils/content/unicode.ts",
+    "src/security/layers/layer-utils/content/utils/index.ts",
+    "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
+    "src/security/layers/layer2-validators/base64-css.ts",
+    "src/security/utils/tool-registry.ts",
+    "src/types/messages.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 21,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "profile": "maintainability",
+   "rooms": [
+    "cookbook/filesystem-server/src/utils/index.ts",
+    "cookbook/filesystem-server/src/utils/path-validator.ts",
+    "cookbook/image-gen-server/src/providers/index.ts",
+    "cookbook/image-gen-server/src/tools/generate.ts",
+    "cookbook/monitoring-server/src/utils/alert-manager.ts",
+    "cookbook/monitoring-server/src/utils/metrics-collector.ts",
+    "cookbook/transaction-server/src/utils/index.ts",
+    "src/security/config/tool-policies-config.ts",
+    "src/security/config/tool-policies.ts",
+    "src/security/constants.ts",
+    "src/security/layers/layer-utils/content/patterns/index.ts",
+    "src/security/layers/layer-utils/content/patterns/injection.ts",
+    "src/security/layers/layer5-contextual.ts",
+    "src/security/layers/validation-layer-base.ts",
+    "src/security/transport/secure-transport.ts",
+    "src/security/utils/error-sanitizer.ts",
+    "src/security/utils/security-logger.ts",
+    "src/security/utils/validation-pipeline.ts",
+    "src/types/index.ts",
+    "src/types/policies.ts",
+    "src/types/server.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 22,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "profile": "maintainability",
+   "rooms": [
+    "cookbook/api-wrapper-server/src/utils/index.ts",
+    "cookbook/database-server/src/utils/index.ts",
+    "cookbook/filesystem-server/src/utils/index.ts",
+    "cookbook/filesystem-server/src/utils/path-validator.ts",
+    "cookbook/image-gen-server/src/providers/bfl.ts",
+    "cookbook/image-gen-server/src/providers/google.ts",
+    "cookbook/image-gen-server/src/providers/ideogram.ts",
+    "cookbook/image-gen-server/src/providers/index.ts",
+    "cookbook/image-gen-server/src/providers/openai.ts",
+    "cookbook/image-gen-server/src/providers/stability.ts",
+    "cookbook/transaction-server/src/utils/index.ts",
+    "cookbook/transaction-server/src/utils/mock-data.ts",
+    "src/security/config/tool-policies-config.ts",
+    "src/security/config/tool-policies.ts",
+    "src/security/config/tool-policy-validation.ts",
+    "src/security/layers/layer-utils/content/patterns/injection.ts",
+    "src/security/utils/error-sanitizer.ts",
+    "src/types/index.ts",
+    "src/types/layers.ts",
+    "src/types/policies.ts",
+    "src/types/server.ts",
+    "src/types/validation.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 21,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "profile": "maintainability",
+   "rooms": [
+    "src/security/config/tool-policies-config.ts",
+    "src/security/config/tool-policies.ts",
+    "src/security/constants.ts",
+    "src/security/layers/builtin-validators.ts",
+    "src/security/layers/layer-utils/content/patterns/path-traversal.ts",
+    "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+    "src/security/layers/layer-utils/content/utils/structural-analysis.ts",
+    "src/security/layers/layer-utils/content/utils/text-decoding.ts",
+    "src/security/layers/layer1-structure.ts",
+    "src/security/layers/layer2-content.ts",
+    "src/security/layers/layer2-validators/data-semantics.ts",
+    "src/security/layers/layer2-validators/pattern-detection.ts",
+    "src/security/layers/validation-layer-base.ts",
+    "src/security/mcp-secure-server.ts",
+    "src/security/presets.ts",
+    "src/security/utils/error-sanitizer.ts",
+    "src/security/utils/pipeline-factory.ts",
+    "src/security/utils/security-logger-types.ts",
+    "src/security/utils/security-logger.ts",
+    "src/types/layers.ts",
+    "src/types/server.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 53,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "profile": "maintainability",
+   "rooms": [
+    "cookbook/api-wrapper-server/src/tools/index.ts",
+    "cookbook/api-wrapper-server/src/utils/index.ts",
+    "cookbook/cli-wrapper-server/src/utils/allowlist.ts",
+    "cookbook/cli-wrapper-server/src/utils/path-validator.ts",
+    "cookbook/database-server/src/tools/create-order.ts",
+    "cookbook/database-server/src/tools/generate-report.ts",
+    "cookbook/database-server/src/tools/health-check.ts",
+    "cookbook/database-server/src/tools/query-users.ts",
+    "cookbook/database-server/src/utils/database.ts",
+    "cookbook/filesystem-server/src/tools/list-directory.ts",
+    "cookbook/filesystem-server/src/tools/read-file.ts",
+    "cookbook/filesystem-server/src/tools/search-files.ts",
+    "cookbook/filesystem-server/src/tools/write-log.ts",
+    "cookbook/filesystem-server/src/utils/path-validator.ts",
+    "cookbook/http-server/src/tools/calculator.ts",
+    "cookbook/http-server/src/tools/echo.ts",
+    "cookbook/image-gen-server/src/tools/edit.ts",
+    "cookbook/image-gen-server/src/tools/generate.ts",
+    "cookbook/image-gen-server/src/tools/list-models.ts",
+    "cookbook/image-gen-server/src/tools/upscale.ts",
+    "cookbook/kenpom-server/src/tools/conference.ts",
+    "cookbook/kenpom-server/src/tools/player.ts",
+    "cookbook/kenpom-server/src/tools/ratings.ts",
+    "cookbook/kenpom-server/src/tools/team.ts",
+    "cookbook/monitoring-server/src/utils/alert-manager.ts",
+    "cookbook/monitoring-server/src/utils/audit-logger.ts",
+    "cookbook/monitoring-server/src/utils/metrics-collector.ts",
+    "cookbook/monitoring-server/src/utils/prometheus-formatter.ts",
+    "cookbook/multi-endpoint-server/src/servers/admin-server.ts",
+    "cookbook/multi-endpoint-server/src/servers/public-server.ts",
+    "cookbook/nba-server/src/tools/game.ts",
+    "cookbook/nba-server/src/tools/live.ts",
+    "cookbook/nba-server/src/tools/player.ts",
+    "cookbook/nba-server/src/tools/team.ts",
+    "cookbook/transaction-server/src/utils/index.ts",
+    "cookbook/transaction-server/src/validators/index.ts",
+    "src/index.ts",
+    "src/security/layers/layer-utils/content/canonicalize.ts",
+    "src/security/layers/layer-utils/content/helper-utils.ts",
+    "src/security/layers/layer-utils/content/patterns/index.ts",
+    "src/security/layers/layer-utils/content/unicode.ts",
+    "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+    "src/security/layers/layer-utils/content/utils/text-decoding.ts",
+    "src/security/layers/layer-utils/semantics/glob-utils.ts",
+    "src/security/layers/layer5-contextual.ts",
+    "src/security/layers/validation-layer-base.ts",
+    "src/security/mcp-secure-server.ts",
+    "src/security/transport/http-server.ts",
+    "src/security/transport/secure-transport.ts",
+    "src/security/utils/error-sanitizer.ts",
+    "src/security/utils/response-validator.ts",
+    "src/security/utils/security-logger.ts",
+    "src/security/utils/validation-pipeline.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 3,
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated on the pre-registered test set (D-015): its tuned weights assign zero to fix history and it does not beat busyness by the margin. The fragility half of this feature has no forecast to stand on; it renders as decorative, counted, and excluded from diagnostic claims until a reference repo validates the index.",
+   "diagnostic": false,
+   "feature": "toothpick_wing",
+   "name_implies_consequence": true,
+   "position_name": "unreinforced high-load node with high edit pressure",
+   "predicate": "load_index >= p90 and bug_pressure_index >= p90 and reinforcement_index <= 0.0",
+   "profile": "maintainability",
+   "rooms": [
+    "src/security/config/tool-policies-config.ts",
+    "src/security/constants.ts",
+    "src/types/server.ts"
+   ],
+   "validation_status": "unvalidated"
+  },
+  {
+   "count": 18,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "corridor",
+   "name_implies_consequence": false,
+   "position_name": "high-centrality, high-fan-out junction",
+   "predicate": "centrality >= p90 and fan_out >= p50",
+   "profile": "onboarding",
+   "rooms": [
+    "cookbook/api-wrapper-server/src/utils/index.ts",
+    "cookbook/database-server/src/utils/index.ts",
+    "cookbook/filesystem-server/src/utils/index.ts",
+    "cookbook/image-gen-server/src/providers/bfl.ts",
+    "cookbook/image-gen-server/src/providers/google.ts",
+    "cookbook/image-gen-server/src/providers/ideogram.ts",
+    "cookbook/image-gen-server/src/providers/index.ts",
+    "cookbook/image-gen-server/src/providers/openai.ts",
+    "cookbook/image-gen-server/src/providers/stability.ts",
+    "cookbook/transaction-server/src/utils/index.ts",
+    "src/security/config/tool-policies-config.ts",
+    "src/security/config/tool-policies.ts",
+    "src/security/config/tool-policy-validation.ts",
+    "src/security/layers/layer-utils/content/patterns/injection.ts",
+    "src/security/utils/error-sanitizer.ts",
+    "src/types/index.ts",
+    "src/types/layers.ts",
+    "src/types/server.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 17,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "entrance",
+   "name_implies_consequence": false,
+   "position_name": "import-graph root",
+   "predicate": "fan_in == 0 and fan_out >= p75",
+   "profile": "onboarding",
+   "rooms": [
+    "cookbook/advanced-validation-server/src/index.ts",
+    "cookbook/database-server/src/index.ts",
+    "cookbook/filesystem-server/src/index.ts",
+    "cookbook/http-server/src/index.ts",
+    "cookbook/http-server/src/tools/index.ts",
+    "cookbook/image-gen-server/src/index-debug.ts",
+    "cookbook/image-gen-server/src/index-minimal.ts",
+    "cookbook/image-gen-server/src/index.ts",
+    "cookbook/image-gen-server/src/tools/index.ts",
+    "cookbook/kenpom-server/src/index.ts",
+    "cookbook/kenpom-server/src/tools/index.ts",
+    "cookbook/monitoring-server/src/index.ts",
+    "cookbook/multi-endpoint-server/src/index.ts",
+    "cookbook/multi-endpoint-server/src/tools/index.ts",
+    "cookbook/nba-server/src/index.ts",
+    "cookbook/nba-server/src/tools/index.ts",
+    "cookbook/transaction-server/src/index.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 21,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "profile": "onboarding",
+   "rooms": [
+    "cookbook/filesystem-server/src/utils/index.ts",
+    "cookbook/filesystem-server/src/utils/path-validator.ts",
+    "cookbook/image-gen-server/src/providers/index.ts",
+    "cookbook/image-gen-server/src/tools/generate.ts",
+    "cookbook/monitoring-server/src/utils/alert-manager.ts",
+    "cookbook/monitoring-server/src/utils/metrics-collector.ts",
+    "cookbook/transaction-server/src/utils/index.ts",
+    "src/security/config/tool-policies-config.ts",
+    "src/security/config/tool-policies.ts",
+    "src/security/constants.ts",
+    "src/security/layers/layer-utils/content/patterns/index.ts",
+    "src/security/layers/layer-utils/content/patterns/injection.ts",
+    "src/security/layers/layer5-contextual.ts",
+    "src/security/layers/validation-layer-base.ts",
+    "src/security/transport/secure-transport.ts",
+    "src/security/utils/error-sanitizer.ts",
+    "src/security/utils/security-logger.ts",
+    "src/security/utils/validation-pipeline.ts",
+    "src/types/index.ts",
+    "src/types/policies.ts",
+    "src/types/server.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 19,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "leaf_utility",
+   "name_implies_consequence": false,
+   "position_name": "imported leaf",
+   "predicate": "fan_out == 0 and fan_in >= p75",
+   "profile": "onboarding",
+   "rooms": [
+    "cookbook/filesystem-server/src/utils/path-validator.ts",
+    "cookbook/http-server/src/tools/calculator.ts",
+    "cookbook/http-server/src/tools/echo.ts",
+    "cookbook/kenpom-server/src/tools/conference.ts",
+    "cookbook/kenpom-server/src/tools/player.ts",
+    "cookbook/kenpom-server/src/tools/ratings.ts",
+    "cookbook/kenpom-server/src/tools/team.ts",
+    "cookbook/monitoring-server/src/utils/alert-manager.ts",
+    "cookbook/monitoring-server/src/utils/metrics-collector.ts",
+    "cookbook/nba-server/src/tools/game.ts",
+    "cookbook/nba-server/src/tools/live.ts",
+    "cookbook/nba-server/src/tools/player.ts",
+    "cookbook/nba-server/src/tools/team.ts",
+    "src/security/constants.ts",
+    "src/security/layers/contextual-config-builder.ts",
+    "src/security/layers/layer-utils/semantics/glob-utils.ts",
+    "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
+    "src/security/utils/security-logger-types.ts",
+    "src/types/policies.ts"
+   ],
+   "validation_status": "asserted"
+  }
+ ],
+ "gate": {
+  "bug_pressure_index": "unvalidated",
+  "centrality": "asserted",
+  "fan_in": "asserted",
+  "fan_out": "asserted",
+  "last_touched_days": "asserted",
+  "load_index": "asserted",
+  "neglect_index": "asserted",
+  "reinforcement_index": "asserted"
+ },
+ "geometry": "age",
+ "overlays": [
+  "onboarding"
+ ],
+ "population": 202,
+ "profile": "maintainability",
+ "repo": {
+  "head_sha": "ecb30716b87ed127f0412956738afb7af385b267",
+  "name": "mcp-secure-server"
+ },
+ "rooms": {
+  "cookbook/advanced-validation-server/src/index.ts": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 222
+  },
+  "cookbook/advanced-validation-server/src/tools/api-call.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 94
+  },
+  "cookbook/advanced-validation-server/src/tools/batch-process.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 59
+  },
+  "cookbook/advanced-validation-server/src/tools/export-data.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 131
+  },
+  "cookbook/advanced-validation-server/src/tools/financial-query.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 97
+  },
+  "cookbook/advanced-validation-server/src/tools/index.ts": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 25
+  },
+  "cookbook/advanced-validation-server/src/validators/anomaly-detector.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 129
+  },
+  "cookbook/advanced-validation-server/src/validators/business-hours.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 91
+  },
+  "cookbook/advanced-validation-server/src/validators/egress-tracker.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 108
+  },
+  "cookbook/advanced-validation-server/src/validators/geofencing.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 87
+  },
+  "cookbook/advanced-validation-server/src/validators/index.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 38
+  },
+  "cookbook/advanced-validation-server/src/validators/pii-detector.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 109
+  },
+  "cookbook/api-wrapper-server/src/index.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 132
+  },
+  "cookbook/api-wrapper-server/src/tools/currency.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 105
+  },
+  "cookbook/api-wrapper-server/src/tools/index.ts": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 18
+  },
+  "cookbook/api-wrapper-server/src/tools/news.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 106
+  },
+  "cookbook/api-wrapper-server/src/tools/weather.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 147
+  },
+  "cookbook/api-wrapper-server/src/utils/http.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 48
+  },
+  "cookbook/api-wrapper-server/src/utils/index.ts": {
+   "fan_in": 4,
+   "fan_out": 2,
+   "lines": 5
+  },
+  "cookbook/api-wrapper-server/src/utils/validators.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 25
+  },
+  "cookbook/api-wrapper-server/vitest.config.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 14
+  },
+  "cookbook/cli-wrapper-server/examples/allowlist-validation.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 90
+  },
+  "cookbook/cli-wrapper-server/examples/safe-execution.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 60
+  },
+  "cookbook/cli-wrapper-server/src/index.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 187
+  },
+  "cookbook/cli-wrapper-server/src/tools/encode-video.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 268
+  },
+  "cookbook/cli-wrapper-server/src/tools/git-status.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 151
+  },
+  "cookbook/cli-wrapper-server/src/tools/image-resize.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 240
+  },
+  "cookbook/cli-wrapper-server/src/tools/index.ts": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 27
+  },
+  "cookbook/cli-wrapper-server/src/tools/pdf-metadata.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 213
+  },
+  "cookbook/cli-wrapper-server/src/utils/allowlist.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 212
+  },
+  "cookbook/cli-wrapper-server/src/utils/command-executor.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 150
+  },
+  "cookbook/cli-wrapper-server/src/utils/index.ts": {
+   "fan_in": 4,
+   "fan_out": 3,
+   "lines": 24
+  },
+  "cookbook/cli-wrapper-server/src/utils/path-validator.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 156
+  },
+  "cookbook/cli-wrapper-server/vitest.config.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 6
+  },
+  "cookbook/database-server/examples/safe-query.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 47
+  },
+  "cookbook/database-server/examples/transaction-example.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 71
+  },
+  "cookbook/database-server/examples/validation-example.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 102
+  },
+  "cookbook/database-server/src/index.ts": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 347
+  },
+  "cookbook/database-server/src/tools/create-order.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 90
+  },
+  "cookbook/database-server/src/tools/generate-report.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 208
+  },
+  "cookbook/database-server/src/tools/health-check.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 66
+  },
+  "cookbook/database-server/src/tools/index.ts": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 7
+  },
+  "cookbook/database-server/src/tools/query-users.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 73
+  },
+  "cookbook/database-server/src/utils/database.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 111
+  },
+  "cookbook/database-server/src/utils/index.ts": {
+   "fan_in": 5,
+   "fan_out": 2,
+   "lines": 15
+  },
+  "cookbook/database-server/src/utils/zod-errors.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 91
+  },
+  "cookbook/database-server/vitest.config.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 8
+  },
+  "cookbook/filesystem-server/src/index.ts": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 223
+  },
+  "cookbook/filesystem-server/src/tools/index.ts": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 17
+  },
+  "cookbook/filesystem-server/src/tools/list-directory.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 181
+  },
+  "cookbook/filesystem-server/src/tools/read-file.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 154
+  },
+  "cookbook/filesystem-server/src/tools/search-files.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 229
+  },
+  "cookbook/filesystem-server/src/tools/write-log.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 126
+  },
+  "cookbook/filesystem-server/src/utils/index.ts": {
+   "fan_in": 5,
+   "fan_out": 1,
+   "lines": 17
+  },
+  "cookbook/filesystem-server/src/utils/path-validator.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 180
+  },
+  "cookbook/filesystem-server/vitest.config.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 14
+  },
+  "cookbook/http-server/src/index.ts": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 53
+  },
+  "cookbook/http-server/src/tools/calculator.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 55
+  },
+  "cookbook/http-server/src/tools/echo.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 31
+  },
+  "cookbook/http-server/src/tools/index.ts": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 2
+  },
+  "cookbook/http-server/vitest.config.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 7
+  },
+  "cookbook/image-gen-server/src/index-debug.ts": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 128
+  },
+  "cookbook/image-gen-server/src/index-minimal.ts": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 33
+  },
+  "cookbook/image-gen-server/src/index.ts": {
+   "fan_in": 0,
+   "fan_out": 4,
+   "lines": 111
+  },
+  "cookbook/image-gen-server/src/providers/bfl.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 66
+  },
+  "cookbook/image-gen-server/src/providers/google.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 60
+  },
+  "cookbook/image-gen-server/src/providers/ideogram.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 79
+  },
+  "cookbook/image-gen-server/src/providers/index.ts": {
+   "fan_in": 9,
+   "fan_out": 5,
+   "lines": 86
+  },
+  "cookbook/image-gen-server/src/providers/openai.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 90
+  },
+  "cookbook/image-gen-server/src/providers/stability.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 101
+  },
+  "cookbook/image-gen-server/src/tools/edit.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 139
+  },
+  "cookbook/image-gen-server/src/tools/generate.ts": {
+   "fan_in": 6,
+   "fan_out": 2,
+   "lines": 136
+  },
+  "cookbook/image-gen-server/src/tools/index.ts": {
+   "fan_in": 0,
+   "fan_out": 4,
+   "lines": 24
+  },
+  "cookbook/image-gen-server/src/tools/list-models.ts": {
+   "fan_in": 5,
+   "fan_out": 1,
+   "lines": 84
+  },
+  "cookbook/image-gen-server/src/tools/upscale.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 100
+  },
+  "cookbook/image-gen-server/src/utils.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 106
+  },
+  "cookbook/image-gen-server/src/utils/index.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 4
+  },
+  "cookbook/image-gen-server/vitest.config.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 14
+  },
+  "cookbook/kenpom-server/src/index.ts": {
+   "fan_in": 0,
+   "fan_out": 5,
+   "lines": 112
+  },
+  "cookbook/kenpom-server/src/tools/conference.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 93
+  },
+  "cookbook/kenpom-server/src/tools/efficiency.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 124
+  },
+  "cookbook/kenpom-server/src/tools/index.ts": {
+   "fan_in": 0,
+   "fan_out": 5,
+   "lines": 20
+  },
+  "cookbook/kenpom-server/src/tools/player.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 63
+  },
+  "cookbook/kenpom-server/src/tools/ratings.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 86
+  },
+  "cookbook/kenpom-server/src/tools/team.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 100
+  },
+  "cookbook/kenpom-server/src/utils/index.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 6
+  },
+  "cookbook/kenpom-server/vitest.config.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 14
+  },
+  "cookbook/minimal-server/minimal-test-server.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 320
+  },
+  "cookbook/monitoring-server/src/index.ts": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 355
+  },
+  "cookbook/monitoring-server/src/tools/configure-alerts.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 205
+  },
+  "cookbook/monitoring-server/src/tools/export-metrics.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 178
+  },
+  "cookbook/monitoring-server/src/tools/get-audit-log.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 109
+  },
+  "cookbook/monitoring-server/src/tools/get-security-metrics.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 68
+  },
+  "cookbook/monitoring-server/src/tools/index.ts": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 27
+  },
+  "cookbook/monitoring-server/src/utils/alert-manager.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 375
+  },
+  "cookbook/monitoring-server/src/utils/audit-logger.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 274
+  },
+  "cookbook/monitoring-server/src/utils/index.ts": {
+   "fan_in": 5,
+   "fan_out": 4,
+   "lines": 52
+  },
+  "cookbook/monitoring-server/src/utils/metrics-collector.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 350
+  },
+  "cookbook/monitoring-server/src/utils/prometheus-formatter.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 228
+  },
+  "cookbook/monitoring-server/vitest.config.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 6
+  },
+  "cookbook/multi-endpoint-server/src/index.ts": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 83
+  },
+  "cookbook/multi-endpoint-server/src/servers/admin-server.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 41
+  },
+  "cookbook/multi-endpoint-server/src/servers/public-server.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 42
+  },
+  "cookbook/multi-endpoint-server/src/tools/admin/system-stats.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 71
+  },
+  "cookbook/multi-endpoint-server/src/tools/admin/user-management.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 40
+  },
+  "cookbook/multi-endpoint-server/src/tools/index.ts": {
+   "fan_in": 0,
+   "fan_out": 4,
+   "lines": 22
+  },
+  "cookbook/multi-endpoint-server/src/tools/public/health.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 16
+  },
+  "cookbook/multi-endpoint-server/src/tools/public/status.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 24
+  },
+  "cookbook/multi-endpoint-server/vitest.config.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 7
+  },
+  "cookbook/nba-server/src/index.ts": {
+   "fan_in": 0,
+   "fan_out": 5,
+   "lines": 131
+  },
+  "cookbook/nba-server/src/tools/game.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 114
+  },
+  "cookbook/nba-server/src/tools/index.ts": {
+   "fan_in": 0,
+   "fan_out": 5,
+   "lines": 37
+  },
+  "cookbook/nba-server/src/tools/league.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 86
+  },
+  "cookbook/nba-server/src/tools/live.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 96
+  },
+  "cookbook/nba-server/src/tools/player.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 174
+  },
+  "cookbook/nba-server/src/tools/team.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 93
+  },
+  "cookbook/nba-server/src/utils/index.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 6
+  },
+  "cookbook/nba-server/vitest.config.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 14
+  },
+  "cookbook/tool-policies-server/src/index.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 427
+  },
+  "cookbook/tool-policies-server/vitest.config.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 6
+  },
+  "cookbook/transaction-server/src/index.ts": {
+   "fan_in": 0,
+   "fan_out": 3,
+   "lines": 241
+  },
+  "cookbook/transaction-server/src/tools/check-status.ts": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 105
+  },
+  "cookbook/transaction-server/src/tools/confirm-transaction.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 90
+  },
+  "cookbook/transaction-server/src/tools/connect-session.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 54
+  },
+  "cookbook/transaction-server/src/tools/disconnect-session.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 54
+  },
+  "cookbook/transaction-server/src/tools/execute-transaction.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 143
+  },
+  "cookbook/transaction-server/src/tools/index.ts": {
+   "fan_in": 1,
+   "fan_out": 8,
+   "lines": 51
+  },
+  "cookbook/transaction-server/src/tools/list-accounts.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 60
+  },
+  "cookbook/transaction-server/src/tools/prepare-transaction.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 166
+  },
+  "cookbook/transaction-server/src/tools/select-account.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 76
+  },
+  "cookbook/transaction-server/src/utils/index.ts": {
+   "fan_in": 11,
+   "fan_out": 2,
+   "lines": 38
+  },
+  "cookbook/transaction-server/src/utils/mock-data.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 127
+  },
+  "cookbook/transaction-server/src/utils/session-store.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 174
+  },
+  "cookbook/transaction-server/src/validators/index.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 7
+  },
+  "cookbook/transaction-server/src/validators/workflow-state.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 106
+  },
+  "cookbook/transaction-server/vitest.config.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 8
+  },
+  "eslint.config.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 84
+  },
+  "src/index.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 169
+  },
+  "src/security/config/index.ts": {
+   "fan_in": 3,
+   "fan_out": 3,
+   "lines": 35
+  },
+  "src/security/config/pattern-categories.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 148
+  },
+  "src/security/config/tool-policies-config.ts": {
+   "fan_in": 4,
+   "fan_out": 2,
+   "lines": 301
+  },
+  "src/security/config/tool-policies.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 111
+  },
+  "src/security/config/tool-policy-validation.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 190
+  },
+  "src/security/constants.ts": {
+   "fan_in": 6,
+   "fan_out": 0,
+   "lines": 63
+  },
+  "src/security/index.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 154
+  },
+  "src/security/layers/builtin-validators.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 202
+  },
+  "src/security/layers/contextual-config-builder.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 104
+  },
+  "src/security/layers/layer-utils/content/canonicalize.ts": {
+   "fan_in": 4,
+   "fan_out": 2,
+   "lines": 183
+  },
+  "src/security/layers/layer-utils/content/dangerous-patterns.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 19
+  },
+  "src/security/layers/layer-utils/content/helper-utils.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 14
+  },
+  "src/security/layers/layer-utils/content/patterns/index.ts": {
+   "fan_in": 5,
+   "fan_out": 5,
+   "lines": 291
+  },
+  "src/security/layers/layer-utils/content/patterns/injection.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 172
+  },
+  "src/security/layers/layer-utils/content/patterns/network.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 126
+  },
+  "src/security/layers/layer-utils/content/patterns/overflow-validation.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 117
+  },
+  "src/security/layers/layer-utils/content/patterns/path-traversal.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 201
+  },
+  "src/security/layers/layer-utils/content/unicode.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 230
+  },
+  "src/security/layers/layer-utils/content/utils/hash-utils.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 54
+  },
+  "src/security/layers/layer-utils/content/utils/index.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 11
+  },
+  "src/security/layers/layer-utils/content/utils/structural-analysis.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 54
+  },
+  "src/security/layers/layer-utils/content/utils/text-decoding.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 208
+  },
+  "src/security/layers/layer-utils/semantics/glob-utils.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 81
+  },
+  "src/security/layers/layer-utils/semantics/semantic-policies-types.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 92
+  },
+  "src/security/layers/layer-utils/semantics/semantic-policies.ts": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 217
+  },
+  "src/security/layers/layer-utils/semantics/semantic-quotas.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 159
+  },
+  "src/security/layers/layer-utils/semantics/semantic-resource-validation.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 174
+  },
+  "src/security/layers/layer1-structure.ts": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 238
+  },
+  "src/security/layers/layer2-content.ts": {
+   "fan_in": 1,
+   "fan_out": 6,
+   "lines": 258
+  },
+  "src/security/layers/layer2-validators/base64-css.ts": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 126
+  },
+  "src/security/layers/layer2-validators/data-semantics.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 184
+  },
+  "src/security/layers/layer2-validators/index.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 29
+  },
+  "src/security/layers/layer2-validators/pattern-detection.ts": {
+   "fan_in": 3,
+   "fan_out": 4,
+   "lines": 272
+  },
+  "src/security/layers/layer3-behavior.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 270
+  },
+  "src/security/layers/layer4-semantics.ts": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 369
+  },
+  "src/security/layers/layer5-contextual-types.ts": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 62
+  },
+  "src/security/layers/layer5-contextual.ts": {
+   "fan_in": 5,
+   "fan_out": 4,
+   "lines": 277
+  },
+  "src/security/layers/validation-layer-base.ts": {
+   "fan_in": 8,
+   "fan_out": 2,
+   "lines": 193
+  },
+  "src/security/mcp-secure-server.ts": {
+   "fan_in": 4,
+   "fan_out": 13,
+   "lines": 377
+  },
+  "src/security/presets.ts": {
+   "fan_in": 4,
+   "fan_out": 2,
+   "lines": 202
+  },
+  "src/security/transport/error-rate-limiter.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 157
+  },
+  "src/security/transport/http-body-parser.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 61
+  },
+  "src/security/transport/http-server-types.ts": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 43
+  },
+  "src/security/transport/http-server.ts": {
+   "fan_in": 2,
+   "fan_out": 6,
+   "lines": 312
+  },
+  "src/security/transport/http-transport-manager.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 141
+  },
+  "src/security/transport/index.ts": {
+   "fan_in": 2,
+   "fan_out": 4,
+   "lines": 19
+  },
+  "src/security/transport/secure-transport.ts": {
+   "fan_in": 5,
+   "fan_out": 2,
+   "lines": 275
+  },
+  "src/security/transport/transport-validator.ts": {
+   "fan_in": 1,
+   "fan_out": 6,
+   "lines": 96
+  },
+  "src/security/utils/error-sanitizer.ts": {
+   "fan_in": 6,
+   "fan_out": 1,
+   "lines": 448
+  },
+  "src/security/utils/log-formatters.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 188
+  },
+  "src/security/utils/pipeline-factory.ts": {
+   "fan_in": 1,
+   "fan_out": 11,
+   "lines": 78
+  },
+  "src/security/utils/request-normalizer.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 86
+  },
+  "src/security/utils/response-validator.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 68
+  },
+  "src/security/utils/security-logger-types.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 88
+  },
+  "src/security/utils/security-logger.ts": {
+   "fan_in": 5,
+   "fan_out": 3,
+   "lines": 491
+  },
+  "src/security/utils/tool-registry.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 55
+  },
+  "src/security/utils/validation-pipeline.ts": {
+   "fan_in": 6,
+   "fan_out": 2,
+   "lines": 140
+  },
+  "src/types/index.ts": {
+   "fan_in": 16,
+   "fan_out": 5,
+   "lines": 85
+  },
+  "src/types/layers.ts": {
+   "fan_in": 3,
+   "fan_out": 3,
+   "lines": 184
+  },
+  "src/types/messages.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 113
+  },
+  "src/types/policies.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 147
+  },
+  "src/types/server.ts": {
+   "fan_in": 6,
+   "fan_out": 6,
+   "lines": 164
+  },
+  "src/types/validation.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 229
+  },
+  "vitest.config.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 38
+  }
+ },
+ "skeleton_hash": "5aa58254701209ce178ce91eb9fba02559ee9bea785073f23b1bb7757474bbbc",
+ "stance": "The building is drawn as it is, warts and all. The diagnosis presupposes a norm of health — load should be reinforced, old load-bearing code should be visited, fixes should not concentrate — and that norm is a maintenance stance the reader may reject, stated so it reads as an ought, not a fact (system spec, stance disclosure).",
+ "wings": {
+  "(root)": 2,
+  "cookbook": 136,
+  "src": 64
+ }
+}

@@ -402,3 +402,19 @@ No weight vector in either grid reaches the pre-registered bar on the tuning set
 
 **Breaks if.** A reference repository is added whose K = 25 median exceeds 0.05 — a repository growing faster than mcp-secure-server did in its first month. Then the pinned K must fall, or the rule is restated per growth rate rather than per K. Or if absolute-era strata are built: then the strata ceiling is re-read under them.
 
+## D-027 · 2026-09-06 · M3 built: the architect brief with the register lint
+
+**Decision.** `substrate brief skeleton.json [substrate.json] -o brief.md` (`src/repo_substrate/brief.py`, `architect-brief-spec.md`, `checklists/architect-brief.checklist.md`). Three parts: a deterministic **facts sheet** (the closed set of sayable things, hashed), one **generation** call to `claude-opus-5` under the condemnation-surveyor stance with the register rules in the system prompt, and a deterministic **register lint** of seven rules that runs after the model. A brief that fails is written marked FAILED and the command exits 1; the violations are fed back once for a regeneration. `--draft` lints a hand-written brief with no model in the path, which is how the tests run and how a brief can be written by anyone.
+
+**Why this shape.** The anti-horoscope contract cannot be enforced inside a model; it can be enforced on what the model wrote. So the lint is the product and the generator is replaceable: the model writes, the lint refuses, the page shows both. D-003's "adversarially-framed Generator lens" is read in v0 as the stance plus the lint as hostile reader; a second model pass acting as hostile reader is open (spec §5 Q1) because it would be another model, and the reader can trust the deterministic part.
+
+**The rules and where each comes from.** R1 consequence vocabulary — validation §2.1.1, the A2 boundary; the lexicon (`CONSEQUENCE_WORDS`) is the audit surface and errs toward false positives. R2 provenance — the C5 → mapper seam in the system-integration checklist: every claim resolves to a feature and a room. R3 numbers — the facts sheet only. R4/R7 decorative — mapper §3: excluded from diagnosis, count stated. R5 disclosure — D-004 Q3 via the grammar D-024 gave `name_implies_consequence`. R6 no label — D-019.
+
+**Model and settings.** `claude-opus-5`, adaptive thinking, effort `high`, streaming, server-side refusal fallback enabled (`fallbacks: "default"`), model served and request id recorded on the page. Non-deterministic by nature; the facts hash and the lint status are what make two briefs comparable.
+
+**Scope (D-025).** Mature repositories. The brief is generated for all four reference skeletons under the M1b gate (`reports/2026-09-06-m3/`); the young repositories' briefs are read as briefs over a skeleton that re-ranks between frames, and say so through the skeleton hash and the time-lapse beside them.
+
+**Assumes.** The lexicon covers the consequence words a model reaches for under this system prompt; a consequence voiced without a listed word passes (spec §4.1 — the known false-negative surface). Room metrics are withheld from the prompt to keep it small; the lint still checks any number against them.
+
+**Breaks if.** A predictive index becomes `validated`: then the lint must admit consequence vocabulary sourced from that index alone, and the flat lexicon becomes a per-signal one (spec §5 Q3). Or a reader finds the briefs unreadable because every sentence carries a bracket — the citation form is the cheapest provenance that a lint can check, and a renderer that folds citations into footnotes is a presentation change, not a contract change.
+

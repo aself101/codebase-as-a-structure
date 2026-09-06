@@ -1,0 +1,3794 @@
+{
+ "brief_version": "0.1.0",
+ "co_located_count": 84,
+ "decorative": {
+  "count": 61,
+  "features": [
+   "crack",
+   "toothpick_wing"
+  ]
+ },
+ "diagnostic_count": 472,
+ "facts_hash": "31cc018c7fb62a1969ea88144799d4a12bbc43107ecba1834cc8ee8a2b3f9246",
+ "features": [
+  {
+   "count": 59,
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "diagnostic": false,
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "profile": "maintainability",
+   "rooms": [
+    "gulpfile.ts",
+    "src/cache/DbQueryResultCache.ts",
+    "src/commands/MigrationGenerateCommand.ts",
+    "src/connection/ConnectionOptionsReader.ts",
+    "src/data-source/DataSource.ts",
+    "src/driver/DriverUtils.ts",
+    "src/driver/aurora-mysql/AuroraMysqlQueryRunner.ts",
+    "src/driver/aurora-postgres/AuroraPostgresQueryRunner.ts",
+    "src/driver/cockroachdb/CockroachDriver.ts",
+    "src/driver/cockroachdb/CockroachQueryRunner.ts",
+    "src/driver/mongodb/MongoDriver.ts",
+    "src/driver/mongodb/MongoQueryRunner.ts",
+    "src/driver/mongodb/typings.ts",
+    "src/driver/mysql/MysqlDriver.ts",
+    "src/driver/mysql/MysqlQueryRunner.ts",
+    "src/driver/oracle/OracleDriver.ts",
+    "src/driver/oracle/OracleQueryRunner.ts",
+    "src/driver/postgres/PostgresDriver.ts",
+    "src/driver/postgres/PostgresQueryRunner.ts",
+    "src/driver/sap/SapDriver.ts",
+    "src/driver/sap/SapQueryRunner.ts",
+    "src/driver/sqlite-abstract/AbstractSqliteDriver.ts",
+    "src/driver/sqlite-abstract/AbstractSqliteQueryRunner.ts",
+    "src/driver/sqljs/SqljsDriver.ts",
+    "src/driver/sqlserver/SqlServerDriver.ts",
+    "src/driver/sqlserver/SqlServerQueryRunner.ts",
+    "src/entity-manager/EntityManager.ts",
+    "src/entity-manager/MongoEntityManager.ts",
+    "src/find-options/FindOneOptions.ts",
+    "src/index.ts",
+    "src/metadata-builder/EntityMetadataBuilder.ts",
+    "src/metadata-builder/JunctionEntityMetadataBuilder.ts",
+    "src/metadata/ColumnMetadata.ts",
+    "src/metadata/EntityMetadata.ts",
+    "src/metadata/IndexMetadata.ts",
+    "src/migration/MigrationExecutor.ts",
+    "src/naming-strategy/DefaultNamingStrategy.ts",
+    "src/persistence/SubjectExecutor.ts",
+    "src/platform/PlatformTools.ts",
+    "src/query-builder/InsertQueryBuilder.ts",
+    "src/query-builder/QueryBuilder.ts",
+    "src/query-builder/QueryExpressionMap.ts",
+    "src/query-builder/RelationLoader.ts",
+    "src/query-builder/SelectQueryBuilder.ts",
+    "src/query-builder/SoftDeleteQueryBuilder.ts",
+    "src/query-builder/UpdateQueryBuilder.ts",
+    "src/query-builder/transformer/DocumentToEntityTransformer.ts",
+    "src/query-builder/transformer/RawSqlResultsToEntityTransformer.ts",
+    "src/query-runner/BaseQueryRunner.ts",
+    "src/query-runner/QueryRunner.ts",
+    "src/repository/BaseEntity.ts",
+    "src/repository/MongoRepository.ts",
+    "src/repository/Repository.ts",
+    "src/repository/TreeRepository.ts",
+    "src/schema-builder/RdbmsSchemaBuilder.ts",
+    "src/schema-builder/SchemaBuilder.ts",
+    "src/subscriber/Broadcaster.ts",
+    "src/util/DateUtils.ts",
+    "src/util/OrmUtils.ts"
+   ],
+   "validation_status": "unvalidated"
+  },
+  {
+   "count": 70,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "dark_room",
+   "name_implies_consequence": false,
+   "position_name": null,
+   "predicate": "last_touched_days >= p90",
+   "profile": "maintainability",
+   "rooms": [
+    "src/common/MixedList.ts",
+    "src/common/ObjectLiteral.ts",
+    "src/common/ObjectType.ts",
+    "src/decorator/options/ColumnEmbeddedOptions.ts",
+    "src/decorator/options/ColumnEnumOptions.ts",
+    "src/decorator/options/ColumnHstoreOptions.ts",
+    "src/decorator/options/ColumnWithLengthOptions.ts",
+    "src/decorator/options/ValueTransformer.ts",
+    "src/driver/sap/SapConnectionCredentialsOptions.ts",
+    "src/driver/sqlserver/authentication/AzureActiveDirectoryServicePrincipalSecret.ts",
+    "src/driver/sqlserver/authentication/DefaultAuthentication.ts",
+    "src/driver/sqlserver/authentication/NtlmAuthentication.ts",
+    "src/driver/types/MetadataTableType.ts",
+    "src/driver/types/ReplicationMode.ts",
+    "src/entity-schema/EntitySchemaCheckOptions.ts",
+    "src/entity-schema/EntitySchemaEmbeddedError.ts",
+    "src/error/CannotAttachTreeChildrenEntityError.ts",
+    "src/error/CannotDetermineEntityError.ts",
+    "src/error/CannotGetEntityManagerNotConnectedError.ts",
+    "src/error/CannotReflectMethodParameterTypeError.ts",
+    "src/error/CircularRelationsError.ts",
+    "src/error/ColumnTypeUndefinedError.ts",
+    "src/error/ConnectionIsNotSetError.ts",
+    "src/error/ConnectionNotFoundError.ts",
+    "src/error/DriverOptionNotSetError.ts",
+    "src/error/FindRelationsNotFoundError.ts",
+    "src/error/InsertValuesMissingError.ts",
+    "src/error/LimitOnUpdateNotSupportedError.ts",
+    "src/error/LockNotSupportedOnGivenDriverError.ts",
+    "src/error/MetadataAlreadyExistsError.ts",
+    "src/error/MetadataWithSuchNameAlreadyExistsError.ts",
+    "src/error/MissingDriverError.ts",
+    "src/error/MustBeEntityError.ts",
+    "src/error/NestedSetMultipleRootError.ts",
+    "src/error/NoConnectionOptionError.ts",
+    "src/error/NoNeedToReleaseEntityManagerError.ts",
+    "src/error/NoVersionOrUpdateDateColumnError.ts",
+    "src/error/OffsetWithoutLimitNotSupportedError.ts",
+    "src/error/OptimisticLockCanNotBeUsedError.ts",
+    "src/error/OptimisticLockVersionMismatchError.ts",
+    "src/error/PersistedEntityNotFoundError.ts",
+    "src/error/PessimisticLockTransactionRequiredError.ts",
+    "src/error/PrimaryColumnCannotBeNullableError.ts",
+    "src/error/QueryRunnerAlreadyReleasedError.ts",
+    "src/error/QueryRunnerProviderAlreadyReleasedError.ts",
+    "src/error/TransactionAlreadyStartedError.ts",
+    "src/error/TransactionNotStartedError.ts",
+    "src/error/TypeORMError.ts",
+    "src/error/UpdateValuesMissingError.ts",
+    "src/find-options/EqualOperator.ts",
+    "src/find-options/FindTreeOptions.ts",
+    "src/metadata-args/CheckMetadataArgs.ts",
+    "src/metadata-args/DiscriminatorValueMetadataArgs.ts",
+    "src/metadata-args/EmbeddedMetadataArgs.ts",
+    "src/metadata-args/EntitySubscriberMetadataArgs.ts",
+    "src/metadata-args/GeneratedMetadataArgs.ts",
+    "src/metadata-args/NamingStrategyMetadataArgs.ts",
+    "src/metadata/types/DeferrableType.ts",
+    "src/metadata/types/EventListenerTypes.ts",
+    "src/metadata/types/PropertyTypeInFunction.ts",
+    "src/metadata/types/TableTypes.ts",
+    "src/query-builder/JoinOptions.ts",
+    "src/query-builder/NotBrackets.ts",
+    "src/query-builder/SelectQuery.ts",
+    "src/query-builder/SelectQueryBuilderOption.ts",
+    "src/repository/FindTreesOptions.ts",
+    "src/repository/RemoveOptions.ts",
+    "src/schema-builder/options/TableCheckOptions.ts",
+    "src/schema-builder/options/TableUniqueOptions.ts",
+    "src/subscriber/BroadcasterResult.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 59,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "flooded_basement",
+   "name_implies_consequence": false,
+   "position_name": null,
+   "predicate": "neglect_index >= p90 and load_index >= 0.10",
+   "profile": "maintainability",
+   "rooms": [
+    "src/cli.ts",
+    "src/common/ObjectLiteral.ts",
+    "src/common/ObjectType.ts",
+    "src/decorator/listeners/AfterInsert.ts",
+    "src/decorator/listeners/AfterLoad.ts",
+    "src/decorator/listeners/AfterRemove.ts",
+    "src/decorator/listeners/AfterUpdate.ts",
+    "src/decorator/listeners/BeforeInsert.ts",
+    "src/decorator/listeners/BeforeRemove.ts",
+    "src/decorator/listeners/BeforeUpdate.ts",
+    "src/decorator/listeners/EventSubscriber.ts",
+    "src/decorator/options/ColumnEmbeddedOptions.ts",
+    "src/decorator/options/ColumnEnumOptions.ts",
+    "src/decorator/tree/TreeLevelColumn.ts",
+    "src/entity-schema/EntitySchema.ts",
+    "src/error/CannotGetEntityManagerNotConnectedError.ts",
+    "src/error/CircularRelationsError.ts",
+    "src/error/ColumnTypeUndefinedError.ts",
+    "src/error/ConnectionIsNotSetError.ts",
+    "src/error/ConnectionNotFoundError.ts",
+    "src/error/DriverOptionNotSetError.ts",
+    "src/error/DriverPackageNotInstalledError.ts",
+    "src/error/EntityMetadataNotFoundError.ts",
+    "src/error/LockNotSupportedOnGivenDriverError.ts",
+    "src/error/MetadataAlreadyExistsError.ts",
+    "src/error/MetadataWithSuchNameAlreadyExistsError.ts",
+    "src/error/MissingDriverError.ts",
+    "src/error/MissingJoinColumnError.ts",
+    "src/error/MissingJoinTableError.ts",
+    "src/error/MissingPrimaryColumnError.ts",
+    "src/error/NoConnectionForRepositoryError.ts",
+    "src/error/NoNeedToReleaseEntityManagerError.ts",
+    "src/error/NoVersionOrUpdateDateColumnError.ts",
+    "src/error/OptimisticLockCanNotBeUsedError.ts",
+    "src/error/OptimisticLockVersionMismatchError.ts",
+    "src/error/PersistedEntityNotFoundError.ts",
+    "src/error/PessimisticLockTransactionRequiredError.ts",
+    "src/error/PrimaryColumnCannotBeNullableError.ts",
+    "src/error/QueryRunnerAlreadyReleasedError.ts",
+    "src/error/QueryRunnerProviderAlreadyReleasedError.ts",
+    "src/error/RepositoryNotTreeError.ts",
+    "src/error/TransactionAlreadyStartedError.ts",
+    "src/error/TransactionNotStartedError.ts",
+    "src/error/UsingJoinColumnIsNotAllowedError.ts",
+    "src/error/UsingJoinColumnOnlyOnOneSideAllowedError.ts",
+    "src/error/UsingJoinTableIsNotAllowedError.ts",
+    "src/error/UsingJoinTableOnlyOnOneSideAllowedError.ts",
+    "src/metadata-args/ColumnMetadataArgs.ts",
+    "src/metadata-args/DiscriminatorValueMetadataArgs.ts",
+    "src/metadata-args/EmbeddedMetadataArgs.ts",
+    "src/metadata-args/EntitySubscriberMetadataArgs.ts",
+    "src/metadata-args/JoinColumnMetadataArgs.ts",
+    "src/metadata-args/NamingStrategyMetadataArgs.ts",
+    "src/metadata-args/RelationMetadataArgs.ts",
+    "src/metadata-args/TableMetadataArgs.ts",
+    "src/metadata/types/EventListenerTypes.ts",
+    "src/metadata/types/TableTypes.ts",
+    "src/repository/RemoveOptions.ts",
+    "src/schema-builder/SchemaBuilder.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 59,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "profile": "maintainability",
+   "rooms": [
+    "packages/codemod/src/transforms/ast-helpers.ts",
+    "packages/codemod/src/transforms/stats.ts",
+    "src/common/ObjectLiteral.ts",
+    "src/data-source/BaseDataSourceOptions.ts",
+    "src/data-source/DataSource.ts",
+    "src/decorator/Index.ts",
+    "src/decorator/columns/Column.ts",
+    "src/decorator/columns/PrimaryColumn.ts",
+    "src/decorator/columns/PrimaryGeneratedColumn.ts",
+    "src/decorator/entity/Entity.ts",
+    "src/decorator/options/ColumnOptions.ts",
+    "src/decorator/options/ValueTransformer.ts",
+    "src/decorator/relations/JoinColumn.ts",
+    "src/decorator/relations/JoinTable.ts",
+    "src/decorator/relations/ManyToMany.ts",
+    "src/decorator/relations/ManyToOne.ts",
+    "src/decorator/relations/OneToMany.ts",
+    "src/decorator/relations/OneToOne.ts",
+    "src/driver/Driver.ts",
+    "src/driver/DriverUtils.ts",
+    "src/driver/mongodb/typings.ts",
+    "src/driver/types/ColumnTypes.ts",
+    "src/driver/types/IsolationLevel.ts",
+    "src/driver/types/ReplicationMode.ts",
+    "src/entity-manager/EntityManager.ts",
+    "src/error/TypeORMError.ts",
+    "src/error/index.ts",
+    "src/find-options/FindOperator.ts",
+    "src/find-options/OrderByCondition.ts",
+    "src/globals.ts",
+    "src/index.ts",
+    "src/logger/Logger.ts",
+    "src/metadata-args/ColumnMetadataArgs.ts",
+    "src/metadata/ColumnMetadata.ts",
+    "src/metadata/EntityMetadata.ts",
+    "src/metadata/RelationMetadata.ts",
+    "src/metadata/types/DeferrableType.ts",
+    "src/metadata/types/EventListenerTypes.ts",
+    "src/migration/MigrationInterface.ts",
+    "src/naming-strategy/NamingStrategyInterface.ts",
+    "src/platform/PlatformTools.ts",
+    "src/query-builder/Brackets.ts",
+    "src/query-builder/SelectQueryBuilder.ts",
+    "src/query-runner/QueryResult.ts",
+    "src/query-runner/QueryRunner.ts",
+    "src/schema-builder/table/Table.ts",
+    "src/schema-builder/table/TableCheck.ts",
+    "src/schema-builder/table/TableColumn.ts",
+    "src/schema-builder/table/TableExclusion.ts",
+    "src/schema-builder/table/TableForeignKey.ts",
+    "src/schema-builder/table/TableIndex.ts",
+    "src/schema-builder/table/TableUnique.ts",
+    "src/schema-builder/view/View.ts",
+    "src/util/ApplyValueTransformers.ts",
+    "src/util/DateUtils.ts",
+    "src/util/InstanceChecker.ts",
+    "src/util/ObjectUtils.ts",
+    "src/util/OrmUtils.ts",
+    "src/util/StringUtils.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 60,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "position_name": "hub",
+   "predicate": "centrality >= p90",
+   "profile": "maintainability",
+   "rooms": [
+    "src/cache/QueryResultCache.ts",
+    "src/cache/QueryResultCacheOptions.ts",
+    "src/common/EntityTarget.ts",
+    "src/common/MixedList.ts",
+    "src/common/ObjectLiteral.ts",
+    "src/common/ObjectType.ts",
+    "src/data-source/BaseDataSourceOptions.ts",
+    "src/data-source/DataSource.ts",
+    "src/data-source/index.ts",
+    "src/decorator/columns/Column.ts",
+    "src/decorator/columns/PrimaryColumn.ts",
+    "src/decorator/columns/PrimaryGeneratedColumn.ts",
+    "src/decorator/entity/Entity.ts",
+    "src/decorator/options/ColumnCommonOptions.ts",
+    "src/decorator/options/ColumnOptions.ts",
+    "src/decorator/options/EntityOptions.ts",
+    "src/decorator/options/JoinColumnOptions.ts",
+    "src/decorator/options/RelationOptions.ts",
+    "src/decorator/options/ValueTransformer.ts",
+    "src/decorator/relations/ManyToMany.ts",
+    "src/decorator/relations/ManyToOne.ts",
+    "src/driver/Driver.ts",
+    "src/driver/DriverUtils.ts",
+    "src/driver/mongodb/typings.ts",
+    "src/driver/types/ColumnTypes.ts",
+    "src/driver/types/DatabaseType.ts",
+    "src/entity-manager/EntityManager.ts",
+    "src/entity-schema/EntitySchema.ts",
+    "src/entity-schema/EntitySchemaOptions.ts",
+    "src/error/TypeORMError.ts",
+    "src/error/index.ts",
+    "src/find-options/FindOperator.ts",
+    "src/find-options/OrderByCondition.ts",
+    "src/globals.ts",
+    "src/index.ts",
+    "src/logger/Logger.ts",
+    "src/metadata-args/ColumnMetadataArgs.ts",
+    "src/metadata-args/EntitySubscriberMetadataArgs.ts",
+    "src/metadata-args/GeneratedMetadataArgs.ts",
+    "src/metadata-args/MetadataArgsStorage.ts",
+    "src/metadata-args/RelationMetadataArgs.ts",
+    "src/metadata-args/TableMetadataArgs.ts",
+    "src/metadata/ColumnMetadata.ts",
+    "src/metadata/EntityMetadata.ts",
+    "src/metadata/types/DeferrableType.ts",
+    "src/metadata/types/EventListenerTypes.ts",
+    "src/migration/MigrationInterface.ts",
+    "src/naming-strategy/NamingStrategyInterface.ts",
+    "src/platform/PlatformTools.ts",
+    "src/query-builder/Brackets.ts",
+    "src/query-builder/SelectQueryBuilder.ts",
+    "src/query-builder/WhereExpressionBuilder.ts",
+    "src/query-runner/QueryResult.ts",
+    "src/query-runner/QueryRunner.ts",
+    "src/schema-builder/options/TableIndexTypes.ts",
+    "src/schema-builder/table/Table.ts",
+    "src/schema-builder/view/View.ts",
+    "src/subscriber/event/BaseEvent.ts",
+    "src/util/InstanceChecker.ts",
+    "src/util/ObjectUtils.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 60,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "profile": "maintainability",
+   "rooms": [
+    "eslint.config.mjs",
+    "packages/codemod/eslint.config.mjs",
+    "packages/codemod/src/transforms/v1/mongodb-types.ts",
+    "src/cache/DbQueryResultCache.ts",
+    "src/commands/MigrationGenerateCommand.ts",
+    "src/common/PrimitiveCriteria.ts",
+    "src/connection/ConnectionMetadataBuilder.ts",
+    "src/connection/ConnectionOptionsReader.ts",
+    "src/data-source/BaseDataSourceOptions.ts",
+    "src/data-source/DataSource.ts",
+    "src/decorator/ForeignKey.ts",
+    "src/decorator/columns/PrimaryGeneratedColumn.ts",
+    "src/decorator/options/RelationOptions.ts",
+    "src/decorator/options/SpatialColumnOptions.ts",
+    "src/decorator/tree/TreeChildren.ts",
+    "src/driver/aurora-mysql/AuroraMysqlDriver.ts",
+    "src/driver/better-sqlite3/BetterSqlite3QueryRunner.ts",
+    "src/driver/capacitor/CapacitorDataSourceOptions.ts",
+    "src/driver/cockroachdb/CockroachDriver.ts",
+    "src/driver/cockroachdb/CockroachQueryRunner.ts",
+    "src/driver/expo/ExpoDriver.ts",
+    "src/driver/mysql/MysqlDriver.ts",
+    "src/driver/postgres/PostgresDriver.ts",
+    "src/driver/postgres/PostgresQueryRunner.ts",
+    "src/driver/react-native/ReactNativeDriver.ts",
+    "src/driver/sap/SapDriver.ts",
+    "src/driver/spanner/SpannerDriver.ts",
+    "src/driver/sqljs/SqljsQueryRunner.ts",
+    "src/entity-manager/EntityManager.ts",
+    "src/entity-manager/MongoEntityManager.ts",
+    "src/entity-schema/EntitySchemaRelationOptions.ts",
+    "src/find-options/FindOneOptions.ts",
+    "src/find-options/FindOptionsWhere.ts",
+    "src/index.ts",
+    "src/logger/AbstractLogger.ts",
+    "src/logger/Logger.ts",
+    "src/metadata-builder/JunctionEntityMetadataBuilder.ts",
+    "src/metadata/ColumnMetadata.ts",
+    "src/metadata/IndexMetadata.ts",
+    "src/metadata/UniqueMetadata.ts",
+    "src/metadata/types/OnDeleteType.ts",
+    "src/metadata/types/OnUpdateType.ts",
+    "src/metadata/types/RelationTypeInFunction.ts",
+    "src/metadata/types/RelationTypes.ts",
+    "src/metadata/types/TreeTypes.ts",
+    "src/persistence/subject-builder/ManyToManySubjectBuilder.ts",
+    "src/persistence/subject-builder/OneToManySubjectBuilder.ts",
+    "src/platform/PlatformTools.ts",
+    "src/query-builder/InsertQueryBuilder.ts",
+    "src/query-builder/QueryBuilder.ts",
+    "src/query-builder/SelectQueryBuilder.ts",
+    "src/query-builder/UpdateQueryBuilder.ts",
+    "src/query-builder/WhereClause.ts",
+    "src/query-builder/transformer/RawSqlResultsToEntityTransformer.ts",
+    "src/repository/BaseEntity.ts",
+    "src/repository/MongoRepository.ts",
+    "src/repository/Repository.ts",
+    "src/schema-builder/RdbmsSchemaBuilder.ts",
+    "src/util/OrmUtils.ts",
+    "src/util/VersionUtils.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 164,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "profile": "maintainability",
+   "rooms": [
+    "packages/codemod/src/cli/list-transforms.ts",
+    "packages/codemod/src/cli/parse-args.ts",
+    "packages/codemod/src/cli/run-transforms.ts",
+    "packages/codemod/src/dependencies/find-package-json.ts",
+    "packages/codemod/src/dependencies/index.ts",
+    "packages/codemod/src/dependencies/upgrade.ts",
+    "packages/codemod/src/dependencies/v1.ts",
+    "packages/codemod/src/lib/colors.ts",
+    "packages/codemod/src/lib/error.ts",
+    "packages/codemod/src/lib/format-time.ts",
+    "packages/codemod/src/lib/highlight.ts",
+    "packages/codemod/src/transforms/ast-helpers.ts",
+    "packages/codemod/src/transforms/resolve.ts",
+    "packages/codemod/src/transforms/stats.ts",
+    "packages/codemod/src/transforms/transformer.ts",
+    "packages/legacy-naming-strategies/src/legacy-oracle-naming-strategy.ts",
+    "packages/legacy-naming-strategies/src/naming-strategy-v03.ts",
+    "src/cache/QueryResultCache.ts",
+    "src/cache/QueryResultCacheOptions.ts",
+    "src/cache/RedisQueryResultCache.ts",
+    "src/commands/CommandUtils.ts",
+    "src/commands/MigrationCreateCommand.ts",
+    "src/commands/MigrationGenerateCommand.ts",
+    "src/common/DeepPartial.ts",
+    "src/common/ObjectLiteral.ts",
+    "src/connection/ConnectionMetadataBuilder.ts",
+    "src/connection/ConnectionOptionsReader.ts",
+    "src/data-source/DataSource.ts",
+    "src/data-source/DataSourceOptions.ts",
+    "src/data-source/index.ts",
+    "src/decorator/Check.ts",
+    "src/decorator/Exclusion.ts",
+    "src/decorator/Generated.ts",
+    "src/decorator/Index.ts",
+    "src/decorator/Unique.ts",
+    "src/decorator/columns/Column.ts",
+    "src/decorator/columns/CreateDateColumn.ts",
+    "src/decorator/columns/DeleteDateColumn.ts",
+    "src/decorator/columns/PrimaryColumn.ts",
+    "src/decorator/columns/PrimaryGeneratedColumn.ts",
+    "src/decorator/columns/UpdateDateColumn.ts",
+    "src/decorator/columns/VersionColumn.ts",
+    "src/decorator/columns/ViewColumn.ts",
+    "src/decorator/entity-view/ViewEntity.ts",
+    "src/decorator/entity/ChildEntity.ts",
+    "src/decorator/entity/Entity.ts",
+    "src/decorator/entity/TableInheritance.ts",
+    "src/decorator/listeners/BeforeInsert.ts",
+    "src/decorator/listeners/BeforeUpdate.ts",
+    "src/decorator/listeners/EventSubscriber.ts",
+    "src/decorator/options/ValueTransformer.ts",
+    "src/decorator/relations/JoinColumn.ts",
+    "src/decorator/relations/JoinTable.ts",
+    "src/decorator/relations/ManyToMany.ts",
+    "src/decorator/relations/ManyToOne.ts",
+    "src/decorator/relations/OneToMany.ts",
+    "src/decorator/relations/OneToOne.ts",
+    "src/decorator/relations/RelationId.ts",
+    "src/decorator/tree/Tree.ts",
+    "src/decorator/tree/TreeChildren.ts",
+    "src/decorator/tree/TreeLevelColumn.ts",
+    "src/decorator/tree/TreeParent.ts",
+    "src/driver/DriverUtils.ts",
+    "src/driver/better-sqlite3/BetterSqlite3DataSourceOptions.ts",
+    "src/driver/cockroachdb/CockroachDriver.ts",
+    "src/driver/mongodb/MongoDataSourceOptions.ts",
+    "src/driver/mongodb/MongoDriver.ts",
+    "src/driver/mysql/MysqlDataSourceOptions.ts",
+    "src/driver/mysql/MysqlDriver.ts",
+    "src/driver/oracle/OracleDriver.ts",
+    "src/driver/postgres/PostgresDataSourceOptions.ts",
+    "src/driver/postgres/PostgresDriver.ts",
+    "src/driver/postgres/PostgresQueryRunner.ts",
+    "src/driver/sap/SapDriver.ts",
+    "src/driver/spanner/SpannerDriver.ts",
+    "src/driver/sqlite-abstract/AbstractSqliteDriver.ts",
+    "src/driver/sqlserver/MssqlParameter.ts",
+    "src/driver/sqlserver/SqlServerDataSourceOptions.ts",
+    "src/driver/sqlserver/SqlServerDriver.ts",
+    "src/driver/sqlserver/SqlServerQueryRunner.ts",
+    "src/driver/types/CteCapabilities.ts",
+    "src/driver/types/IsolationLevel.ts",
+    "src/driver/types/ReplicationMode.ts",
+    "src/entity-manager/EntityManager.ts",
+    "src/entity-schema/EntitySchemaOptions.ts",
+    "src/entity-schema/EntitySchemaTransformer.ts",
+    "src/error/AlreadyHasActiveConnectionError.ts",
+    "src/error/CannotGetEntityManagerNotConnectedError.ts",
+    "src/error/EntityNotFoundError.ts",
+    "src/error/EntityPropertyNotFoundError.ts",
+    "src/error/ForbiddenTransactionModeOverrideError.ts",
+    "src/error/InitializedRelationError.ts",
+    "src/error/InsertValuesMissingError.ts",
+    "src/error/LimitOnUpdateNotSupportedError.ts",
+    "src/error/MissingDeleteDateColumnError.ts",
+    "src/error/NestedSetMultipleRootError.ts",
+    "src/error/NoConnectionForRepositoryError.ts",
+    "src/error/OffsetWithoutLimitNotSupportedError.ts",
+    "src/error/QueryFailedError.ts",
+    "src/error/TypeORMError.ts",
+    "src/error/UpdateValuesMissingError.ts",
+    "src/find-options/operator/ArrayContainedBy.ts",
+    "src/find-options/operator/ArrayContains.ts",
+    "src/find-options/operator/ArrayOverlap.ts",
+    "src/find-options/operator/JsonContains.ts",
+    "src/find-options/operator/Raw.ts",
+    "src/index.ts",
+    "src/logger/Logger.ts",
+    "src/logger/LoggerFactory.ts",
+    "src/metadata-args/ColumnMetadataArgs.ts",
+    "src/metadata-args/EntitySubscriberMetadataArgs.ts",
+    "src/metadata-builder/EntityMetadataValidator.ts",
+    "src/metadata-builder/MetadataUtils.ts",
+    "src/metadata/CheckMetadata.ts",
+    "src/metadata/ColumnMetadata.ts",
+    "src/metadata/EntityMetadata.ts",
+    "src/metadata/ExclusionMetadata.ts",
+    "src/metadata/ForeignKeyMetadata.ts",
+    "src/metadata/IndexMetadata.ts",
+    "src/metadata/UniqueMetadata.ts",
+    "src/migration/Migration.ts",
+    "src/migration/MigrationInterface.ts",
+    "src/naming-strategy/DefaultNamingStrategy.ts",
+    "src/naming-strategy/NamingStrategyInterface.ts",
+    "src/platform/PlatformTools.ts",
+    "src/query-builder/Brackets.ts",
+    "src/query-builder/NotBrackets.ts",
+    "src/query-builder/QueryBuilder.ts",
+    "src/query-builder/QueryBuilderCte.ts",
+    "src/query-runner/BaseQueryRunner.ts",
+    "src/query-runner/QueryRunner.ts",
+    "src/repository/BaseEntity.ts",
+    "src/repository/MongoRepository.ts",
+    "src/repository/Repository.ts",
+    "src/repository/TreeRepository.ts",
+    "src/repository/UpsertOptions.ts",
+    "src/schema-builder/options/TableOptions.ts",
+    "src/schema-builder/table/Table.ts",
+    "src/schema-builder/table/TableCheck.ts",
+    "src/schema-builder/table/TableColumn.ts",
+    "src/schema-builder/table/TableExclusion.ts",
+    "src/schema-builder/table/TableForeignKey.ts",
+    "src/schema-builder/table/TableIndex.ts",
+    "src/schema-builder/table/TableUnique.ts",
+    "src/schema-builder/view/View.ts",
+    "src/subscriber/EntitySubscriberInterface.ts",
+    "src/subscriber/event/InsertEvent.ts",
+    "src/subscriber/event/LoadEvent.ts",
+    "src/subscriber/event/QueryEvent.ts",
+    "src/subscriber/event/RecoverEvent.ts",
+    "src/subscriber/event/SoftRemoveEvent.ts",
+    "src/subscriber/event/UpdateEvent.ts",
+    "src/util/ApplyValueTransformers.ts",
+    "src/util/DateUtils.ts",
+    "src/util/DirectoryExportedClassesLoader.ts",
+    "src/util/ImportUtils.ts",
+    "src/util/ObjectUtils.ts",
+    "src/util/OrmUtils.ts",
+    "src/util/PathUtils.ts",
+    "src/util/RandomGenerator.ts",
+    "src/util/SqlTagUtils.ts",
+    "src/util/StringUtils.ts",
+    "src/util/Uint8ArrayUtils.ts",
+    "src/util/VersionUtils.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 2,
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated on the pre-registered test set (D-015): its tuned weights assign zero to fix history and it does not beat busyness by the margin. The fragility half of this feature has no forecast to stand on; it renders as decorative, counted, and excluded from diagnostic claims until a reference repo validates the index.",
+   "diagnostic": false,
+   "feature": "toothpick_wing",
+   "name_implies_consequence": true,
+   "position_name": "unreinforced high-load node with high edit pressure",
+   "predicate": "load_index >= p90 and bug_pressure_index >= p90 and reinforcement_index <= 0.0",
+   "profile": "maintainability",
+   "rooms": [
+    "src/driver/mongodb/typings.ts",
+    "src/query-builder/SelectQueryBuilder.ts"
+   ],
+   "validation_status": "unvalidated"
+  },
+  {
+   "count": 37,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "corridor",
+   "name_implies_consequence": false,
+   "position_name": "high-centrality, high-fan-out junction",
+   "predicate": "centrality >= p90 and fan_out >= p50",
+   "profile": "onboarding",
+   "rooms": [
+    "src/cache/QueryResultCache.ts",
+    "src/common/EntityTarget.ts",
+    "src/data-source/BaseDataSourceOptions.ts",
+    "src/data-source/DataSource.ts",
+    "src/data-source/index.ts",
+    "src/decorator/columns/Column.ts",
+    "src/decorator/columns/PrimaryColumn.ts",
+    "src/decorator/columns/PrimaryGeneratedColumn.ts",
+    "src/decorator/entity/Entity.ts",
+    "src/decorator/options/ColumnOptions.ts",
+    "src/decorator/options/RelationOptions.ts",
+    "src/decorator/relations/ManyToMany.ts",
+    "src/decorator/relations/ManyToOne.ts",
+    "src/driver/Driver.ts",
+    "src/driver/DriverUtils.ts",
+    "src/driver/mongodb/typings.ts",
+    "src/entity-manager/EntityManager.ts",
+    "src/entity-schema/EntitySchemaOptions.ts",
+    "src/error/index.ts",
+    "src/find-options/FindOperator.ts",
+    "src/globals.ts",
+    "src/index.ts",
+    "src/logger/Logger.ts",
+    "src/metadata-args/ColumnMetadataArgs.ts",
+    "src/metadata-args/MetadataArgsStorage.ts",
+    "src/metadata-args/RelationMetadataArgs.ts",
+    "src/metadata-args/TableMetadataArgs.ts",
+    "src/metadata/ColumnMetadata.ts",
+    "src/metadata/EntityMetadata.ts",
+    "src/naming-strategy/NamingStrategyInterface.ts",
+    "src/query-builder/SelectQueryBuilder.ts",
+    "src/query-builder/WhereExpressionBuilder.ts",
+    "src/query-runner/QueryRunner.ts",
+    "src/schema-builder/table/Table.ts",
+    "src/schema-builder/view/View.ts",
+    "src/subscriber/event/BaseEvent.ts",
+    "src/util/InstanceChecker.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 1,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "entrance",
+   "name_implies_consequence": false,
+   "position_name": "import-graph root",
+   "predicate": "fan_in == 0 and fan_out >= p75",
+   "profile": "onboarding",
+   "rooms": [
+    "packages/codemod/src/index.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 59,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "profile": "onboarding",
+   "rooms": [
+    "packages/codemod/src/transforms/ast-helpers.ts",
+    "packages/codemod/src/transforms/stats.ts",
+    "src/common/ObjectLiteral.ts",
+    "src/data-source/BaseDataSourceOptions.ts",
+    "src/data-source/DataSource.ts",
+    "src/decorator/Index.ts",
+    "src/decorator/columns/Column.ts",
+    "src/decorator/columns/PrimaryColumn.ts",
+    "src/decorator/columns/PrimaryGeneratedColumn.ts",
+    "src/decorator/entity/Entity.ts",
+    "src/decorator/options/ColumnOptions.ts",
+    "src/decorator/options/ValueTransformer.ts",
+    "src/decorator/relations/JoinColumn.ts",
+    "src/decorator/relations/JoinTable.ts",
+    "src/decorator/relations/ManyToMany.ts",
+    "src/decorator/relations/ManyToOne.ts",
+    "src/decorator/relations/OneToMany.ts",
+    "src/decorator/relations/OneToOne.ts",
+    "src/driver/Driver.ts",
+    "src/driver/DriverUtils.ts",
+    "src/driver/mongodb/typings.ts",
+    "src/driver/types/ColumnTypes.ts",
+    "src/driver/types/IsolationLevel.ts",
+    "src/driver/types/ReplicationMode.ts",
+    "src/entity-manager/EntityManager.ts",
+    "src/error/TypeORMError.ts",
+    "src/error/index.ts",
+    "src/find-options/FindOperator.ts",
+    "src/find-options/OrderByCondition.ts",
+    "src/globals.ts",
+    "src/index.ts",
+    "src/logger/Logger.ts",
+    "src/metadata-args/ColumnMetadataArgs.ts",
+    "src/metadata/ColumnMetadata.ts",
+    "src/metadata/EntityMetadata.ts",
+    "src/metadata/RelationMetadata.ts",
+    "src/metadata/types/DeferrableType.ts",
+    "src/metadata/types/EventListenerTypes.ts",
+    "src/migration/MigrationInterface.ts",
+    "src/naming-strategy/NamingStrategyInterface.ts",
+    "src/platform/PlatformTools.ts",
+    "src/query-builder/Brackets.ts",
+    "src/query-builder/SelectQueryBuilder.ts",
+    "src/query-runner/QueryResult.ts",
+    "src/query-runner/QueryRunner.ts",
+    "src/schema-builder/table/Table.ts",
+    "src/schema-builder/table/TableCheck.ts",
+    "src/schema-builder/table/TableColumn.ts",
+    "src/schema-builder/table/TableExclusion.ts",
+    "src/schema-builder/table/TableForeignKey.ts",
+    "src/schema-builder/table/TableIndex.ts",
+    "src/schema-builder/table/TableUnique.ts",
+    "src/schema-builder/view/View.ts",
+    "src/util/ApplyValueTransformers.ts",
+    "src/util/DateUtils.ts",
+    "src/util/InstanceChecker.ts",
+    "src/util/ObjectUtils.ts",
+    "src/util/OrmUtils.ts",
+    "src/util/StringUtils.ts"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "count": 33,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "feature": "leaf_utility",
+   "name_implies_consequence": false,
+   "position_name": "imported leaf",
+   "predicate": "fan_out == 0 and fan_in >= p75",
+   "profile": "onboarding",
+   "rooms": [
+    "packages/codemod/src/lib/colors.ts",
+    "packages/codemod/src/transforms/ast-helpers.ts",
+    "packages/codemod/src/transforms/stats.ts",
+    "packages/codemod/src/transforms/todo.ts",
+    "src/cache/QueryResultCacheOptions.ts",
+    "src/common/DeepPartial.ts",
+    "src/common/ObjectLiteral.ts",
+    "src/common/ObjectType.ts",
+    "src/decorator/options/ValueTransformer.ts",
+    "src/driver/Query.ts",
+    "src/driver/sqlserver/MssqlParameter.ts",
+    "src/driver/types/ColumnTypes.ts",
+    "src/driver/types/CteCapabilities.ts",
+    "src/driver/types/DataTypeDefaults.ts",
+    "src/driver/types/IsolationLevel.ts",
+    "src/driver/types/MetadataTableType.ts",
+    "src/driver/types/ReplicationMode.ts",
+    "src/driver/types/ReturningType.ts",
+    "src/driver/types/UpsertType.ts",
+    "src/error/TypeORMError.ts",
+    "src/find-options/OrderByCondition.ts",
+    "src/metadata-args/GeneratedMetadataArgs.ts",
+    "src/metadata/types/DeferrableType.ts",
+    "src/metadata/types/EventListenerTypes.ts",
+    "src/metadata/types/OnDeleteType.ts",
+    "src/metadata/types/OnUpdateType.ts",
+    "src/query-runner/QueryResult.ts",
+    "src/repository/RemoveOptions.ts",
+    "src/repository/SaveOptions.ts",
+    "src/schema-builder/options/TableIndexTypes.ts",
+    "src/subscriber/BroadcasterResult.ts",
+    "src/util/Uint8ArrayUtils.ts",
+    "src/util/VersionUtils.ts"
+   ],
+   "validation_status": "asserted"
+  }
+ ],
+ "gate": {
+  "bug_pressure_index": "unvalidated",
+  "centrality": "asserted",
+  "fan_in": "asserted",
+  "fan_out": "asserted",
+  "last_touched_days": "asserted",
+  "load_index": "asserted",
+  "neglect_index": "asserted",
+  "reinforcement_index": "asserted"
+ },
+ "geometry": "age",
+ "overlays": [
+  "onboarding"
+ ],
+ "population": 583,
+ "profile": "maintainability",
+ "repo": {
+  "head_sha": "ac41823b9e27e3a8079ce487c9772c5ef8f1e226",
+  "name": "typeorm"
+ },
+ "rooms": {
+  ".prettierrc.js": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 9
+  },
+  "docker/oracle/startup/01_init.sql": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 12
+  },
+  "docs/docusaurus.config.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 266
+  },
+  "docs/redirects.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 144
+  },
+  "docs/sidebars.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 99
+  },
+  "docs/src/components/icons/github-icon.tsx": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 13
+  },
+  "docs/src/components/icons/linkedin-icon.tsx": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 13
+  },
+  "docs/src/components/tabs/database-tabs.tsx": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 62
+  },
+  "docs/src/constants/databases.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 45
+  },
+  "docs/src/pages/index.tsx": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 381
+  },
+  "docs/src/pages/maintainers.tsx": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 106
+  },
+  "eslint.config.mjs": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 117
+  },
+  "extra/typeorm-class-transformer-shim.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 216
+  },
+  "extra/typeorm-model-shim.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 235
+  },
+  "gulpfile.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 120
+  },
+  "packages/codemod/.prettierrc.js": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 2
+  },
+  "packages/codemod/eslint.config.mjs": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 37
+  },
+  "packages/codemod/src/cli/list-transforms.ts": {
+   "fan_in": 3,
+   "fan_out": 2,
+   "lines": 26
+  },
+  "packages/codemod/src/cli/parse-args.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 52
+  },
+  "packages/codemod/src/cli/print-guide.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 16
+  },
+  "packages/codemod/src/cli/print-summary.ts": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 96
+  },
+  "packages/codemod/src/cli/print-todos.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 8
+  },
+  "packages/codemod/src/cli/print-usage.ts": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 27
+  },
+  "packages/codemod/src/cli/run-dependencies.ts": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 53
+  },
+  "packages/codemod/src/cli/run-transforms.ts": {
+   "fan_in": 2,
+   "fan_out": 4,
+   "lines": 311
+  },
+  "packages/codemod/src/cli/run.ts": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 33
+  },
+  "packages/codemod/src/dependencies/config.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 18
+  },
+  "packages/codemod/src/dependencies/find-package-json.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 26
+  },
+  "packages/codemod/src/dependencies/index.ts": {
+   "fan_in": 2,
+   "fan_out": 4,
+   "lines": 10
+  },
+  "packages/codemod/src/dependencies/upgrade.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 176
+  },
+  "packages/codemod/src/dependencies/v1.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 57
+  },
+  "packages/codemod/src/index.ts": {
+   "fan_in": 0,
+   "fan_out": 7,
+   "lines": 50
+  },
+  "packages/codemod/src/lib/colors.ts": {
+   "fan_in": 11,
+   "fan_out": 0,
+   "lines": 10
+  },
+  "packages/codemod/src/lib/error.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 6
+  },
+  "packages/codemod/src/lib/format-time.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 6
+  },
+  "packages/codemod/src/lib/highlight.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 3
+  },
+  "packages/codemod/src/lib/spinner.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 36
+  },
+  "packages/codemod/src/transforms/ast-helpers.ts": {
+   "fan_in": 34,
+   "fan_out": 0,
+   "lines": 1333
+  },
+  "packages/codemod/src/transforms/index.ts": {
+   "fan_in": 5,
+   "fan_out": 2,
+   "lines": 10
+  },
+  "packages/codemod/src/transforms/resolve.ts": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 28
+  },
+  "packages/codemod/src/transforms/stats.ts": {
+   "fan_in": 21,
+   "fan_out": 0,
+   "lines": 46
+  },
+  "packages/codemod/src/transforms/todo.ts": {
+   "fan_in": 18,
+   "fan_out": 0,
+   "lines": 54
+  },
+  "packages/codemod/src/transforms/transformer.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 23
+  },
+  "packages/codemod/src/transforms/v1/column-readonly.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 96
+  },
+  "packages/codemod/src/transforms/v1/column-unsigned-numeric.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 62
+  },
+  "packages/codemod/src/transforms/v1/column-width-zerofill.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 49
+  },
+  "packages/codemod/src/transforms/v1/connection-manager.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 93
+  },
+  "packages/codemod/src/transforms/v1/connection-options-reader.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 252
+  },
+  "packages/codemod/src/transforms/v1/connection-to-datasource.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 1360
+  },
+  "packages/codemod/src/transforms/v1/datasource-expo.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 78
+  },
+  "packages/codemod/src/transforms/v1/datasource-mongodb.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 141
+  },
+  "packages/codemod/src/transforms/v1/datasource-mssql.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 132
+  },
+  "packages/codemod/src/transforms/v1/datasource-mysql-connector.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 45
+  },
+  "packages/codemod/src/transforms/v1/datasource-name.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 59
+  },
+  "packages/codemod/src/transforms/v1/datasource-sap.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 83
+  },
+  "packages/codemod/src/transforms/v1/datasource-sqlite-options.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 66
+  },
+  "packages/codemod/src/transforms/v1/datasource-sqlite-type.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 42
+  },
+  "packages/codemod/src/transforms/v1/file-logger.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 172
+  },
+  "packages/codemod/src/transforms/v1/find-options-join.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 79
+  },
+  "packages/codemod/src/transforms/v1/find-options-lock-modes.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 95
+  },
+  "packages/codemod/src/transforms/v1/find-options-string-relations.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 165
+  },
+  "packages/codemod/src/transforms/v1/find-options-string-select.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 119
+  },
+  "packages/codemod/src/transforms/v1/global-functions.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 227
+  },
+  "packages/codemod/src/transforms/v1/index.ts": {
+   "fan_in": 1,
+   "fan_out": 37,
+   "lines": 86
+  },
+  "packages/codemod/src/transforms/v1/migrations-get-all.ts": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 50
+  },
+  "packages/codemod/src/transforms/v1/mongodb-stats.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 54
+  },
+  "packages/codemod/src/transforms/v1/mongodb-types.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 180
+  },
+  "packages/codemod/src/transforms/v1/query-builder-native-parameters.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 19
+  },
+  "packages/codemod/src/transforms/v1/query-builder-on-conflict.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 64
+  },
+  "packages/codemod/src/transforms/v1/query-builder-or-update.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 49
+  },
+  "packages/codemod/src/transforms/v1/query-builder-print-sql.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 50
+  },
+  "packages/codemod/src/transforms/v1/query-builder-replace-property-names.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 39
+  },
+  "packages/codemod/src/transforms/v1/query-builder-where-expression.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 62
+  },
+  "packages/codemod/src/transforms/v1/query-runner-loaded-tables-views.ts": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 50
+  },
+  "packages/codemod/src/transforms/v1/relation-count.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 116
+  },
+  "packages/codemod/src/transforms/v1/repository-abstract.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 247
+  },
+  "packages/codemod/src/transforms/v1/repository-exist.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 32
+  },
+  "packages/codemod/src/transforms/v1/repository-find-by-ids.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 127
+  },
+  "packages/codemod/src/transforms/v1/repository-find-one-by-id.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 58
+  },
+  "packages/codemod/src/transforms/v1/use-container.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 109
+  },
+  "packages/legacy-naming-strategies/eslint.config.mjs": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 27
+  },
+  "packages/legacy-naming-strategies/src/index.ts": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 2
+  },
+  "packages/legacy-naming-strategies/src/legacy-oracle-naming-strategy.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 56
+  },
+  "packages/legacy-naming-strategies/src/naming-strategy-v03.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 9
+  },
+  "playground/src/entity/User.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 14
+  },
+  "playground/src/index.ts": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 24
+  },
+  "playground/src/ormconfig.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 9
+  },
+  "src/cache/DbQueryResultCache.ts": {
+   "fan_in": 1,
+   "fan_out": 8,
+   "lines": 342
+  },
+  "src/cache/QueryResultCache.ts": {
+   "fan_in": 7,
+   "fan_out": 2,
+   "lines": 48
+  },
+  "src/cache/QueryResultCacheFactory.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 39
+  },
+  "src/cache/QueryResultCacheOptions.ts": {
+   "fan_in": 6,
+   "fan_out": 0,
+   "lines": 26
+  },
+  "src/cache/RedisQueryResultCache.ts": {
+   "fan_in": 3,
+   "fan_out": 6,
+   "lines": 212
+  },
+  "src/cli-ts-node-commonjs.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 3
+  },
+  "src/cli-ts-node-esm.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 21
+  },
+  "src/cli.ts": {
+   "fan_in": 2,
+   "fan_out": 14,
+   "lines": 42
+  },
+  "src/commands/CacheClearCommand.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 52
+  },
+  "src/commands/CommandUtils.ts": {
+   "fan_in": 17,
+   "fan_out": 4,
+   "lines": 120
+  },
+  "src/commands/EntityCreateCommand.ts": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 54
+  },
+  "src/commands/InitCommand.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 693
+  },
+  "src/commands/MigrationCreateCommand.ts": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 127
+  },
+  "src/commands/MigrationGenerateCommand.ts": {
+   "fan_in": 4,
+   "fan_out": 4,
+   "lines": 315
+  },
+  "src/commands/MigrationRevertCommand.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 76
+  },
+  "src/commands/MigrationRunCommand.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 80
+  },
+  "src/commands/MigrationShowCommand.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 44
+  },
+  "src/commands/QueryCommand.ts": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 71
+  },
+  "src/commands/SchemaDropCommand.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 48
+  },
+  "src/commands/SchemaLogCommand.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 76
+  },
+  "src/commands/SchemaSyncCommand.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 48
+  },
+  "src/commands/SubscriberCreateCommand.ts": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 56
+  },
+  "src/commands/VersionCommand.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 54
+  },
+  "src/common/DeepPartial.ts": {
+   "fan_in": 6,
+   "fan_out": 0,
+   "lines": 14
+  },
+  "src/common/EntityTarget.ts": {
+   "fan_in": 18,
+   "fan_out": 2,
+   "lines": 10
+  },
+  "src/common/MixedList.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 6
+  },
+  "src/common/NonNever.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 7
+  },
+  "src/common/ObjectLiteral.ts": {
+   "fan_in": 97,
+   "fan_out": 0,
+   "lines": 6
+  },
+  "src/common/ObjectType.ts": {
+   "fan_in": 7,
+   "fan_out": 0,
+   "lines": 4
+  },
+  "src/common/PickKeysByType.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 7
+  },
+  "src/common/PrimitiveCriteria.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 3
+  },
+  "src/common/RelationType.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 16
+  },
+  "src/connection/ConnectionMetadataBuilder.ts": {
+   "fan_in": 5,
+   "fan_out": 11,
+   "lines": 114
+  },
+  "src/connection/ConnectionOptionsReader.ts": {
+   "fan_in": 3,
+   "fan_out": 5,
+   "lines": 199
+  },
+  "src/data-source/BaseDataSourceOptions.ts": {
+   "fan_in": 19,
+   "fan_out": 10,
+   "lines": 195
+  },
+  "src/data-source/DataSource.ts": {
+   "fan_in": 621,
+   "fan_out": 38,
+   "lines": 696
+  },
+  "src/data-source/DataSourceOptions.ts": {
+   "fan_in": 10,
+   "fan_out": 17,
+   "lines": 38
+  },
+  "src/data-source/index.ts": {
+   "fan_in": 18,
+   "fan_out": 2,
+   "lines": 2
+  },
+  "src/decorator/Check.ts": {
+   "fan_in": 8,
+   "fan_out": 3,
+   "lines": 51
+  },
+  "src/decorator/Exclusion.ts": {
+   "fan_in": 8,
+   "fan_out": 4,
+   "lines": 63
+  },
+  "src/decorator/ForeignKey.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 109
+  },
+  "src/decorator/Generated.ts": {
+   "fan_in": 24,
+   "fan_out": 2,
+   "lines": 24
+  },
+  "src/decorator/Index.ts": {
+   "fan_in": 38,
+   "fan_out": 4,
+   "lines": 166
+  },
+  "src/decorator/Unique.ts": {
+   "fan_in": 13,
+   "fan_out": 4,
+   "lines": 114
+  },
+  "src/decorator/columns/Column.ts": {
+   "fan_in": 768,
+   "fan_out": 15,
+   "lines": 233
+  },
+  "src/decorator/columns/CreateDateColumn.ts": {
+   "fan_in": 8,
+   "fan_out": 3,
+   "lines": 20
+  },
+  "src/decorator/columns/DeleteDateColumn.ts": {
+   "fan_in": 16,
+   "fan_out": 3,
+   "lines": 19
+  },
+  "src/decorator/columns/ObjectIdColumn.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 24
+  },
+  "src/decorator/columns/PrimaryColumn.ts": {
+   "fan_in": 209,
+   "fan_out": 7,
+   "lines": 97
+  },
+  "src/decorator/columns/PrimaryGeneratedColumn.ts": {
+   "fan_in": 494,
+   "fan_out": 7,
+   "lines": 118
+  },
+  "src/decorator/columns/UpdateDateColumn.ts": {
+   "fan_in": 14,
+   "fan_out": 3,
+   "lines": 19
+  },
+  "src/decorator/columns/VersionColumn.ts": {
+   "fan_in": 12,
+   "fan_out": 3,
+   "lines": 20
+  },
+  "src/decorator/columns/ViewColumn.ts": {
+   "fan_in": 10,
+   "fan_out": 3,
+   "lines": 18
+  },
+  "src/decorator/columns/VirtualColumn.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 74
+  },
+  "src/decorator/entity-view/ViewEntity.ts": {
+   "fan_in": 10,
+   "fan_out": 4,
+   "lines": 55
+  },
+  "src/decorator/entity/ChildEntity.ts": {
+   "fan_in": 20,
+   "fan_out": 3,
+   "lines": 24
+  },
+  "src/decorator/entity/Entity.ts": {
+   "fan_in": 738,
+   "fan_out": 4,
+   "lines": 51
+  },
+  "src/decorator/entity/TableInheritance.ts": {
+   "fan_in": 7,
+   "fan_out": 3,
+   "lines": 26
+  },
+  "src/decorator/listeners/AfterInsert.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 15
+  },
+  "src/decorator/listeners/AfterLoad.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 15
+  },
+  "src/decorator/listeners/AfterRecover.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 15
+  },
+  "src/decorator/listeners/AfterRemove.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 15
+  },
+  "src/decorator/listeners/AfterSoftRemove.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 15
+  },
+  "src/decorator/listeners/AfterUpdate.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 15
+  },
+  "src/decorator/listeners/BeforeInsert.ts": {
+   "fan_in": 4,
+   "fan_out": 3,
+   "lines": 15
+  },
+  "src/decorator/listeners/BeforeRecover.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 15
+  },
+  "src/decorator/listeners/BeforeRemove.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 15
+  },
+  "src/decorator/listeners/BeforeSoftRemove.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 15
+  },
+  "src/decorator/listeners/BeforeUpdate.ts": {
+   "fan_in": 5,
+   "fan_out": 3,
+   "lines": 15
+  },
+  "src/decorator/listeners/EventSubscriber.ts": {
+   "fan_in": 6,
+   "fan_out": 2,
+   "lines": 13
+  },
+  "src/decorator/options/ColumnCommonOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 57
+  },
+  "src/decorator/options/ColumnEmbeddedOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 16
+  },
+  "src/decorator/options/ColumnEnumOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 13
+  },
+  "src/decorator/options/ColumnHstoreOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 10
+  },
+  "src/decorator/options/ColumnNumericOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 15
+  },
+  "src/decorator/options/ColumnOptions.ts": {
+   "fan_in": 13,
+   "fan_out": 3,
+   "lines": 158
+  },
+  "src/decorator/options/ColumnUnsignedOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 9
+  },
+  "src/decorator/options/ColumnWithLengthOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 10
+  },
+  "src/decorator/options/EntityOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 47
+  },
+  "src/decorator/options/ExclusionOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 10
+  },
+  "src/decorator/options/ForeignKeyOptions.ts": {
+   "fan_in": 3,
+   "fan_out": 3,
+   "lines": 24
+  },
+  "src/decorator/options/IndexOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 64
+  },
+  "src/decorator/options/JoinColumnOptions.ts": {
+   "fan_in": 5,
+   "fan_out": 0,
+   "lines": 17
+  },
+  "src/decorator/options/JoinTableMultipleColumnsOptions.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 35
+  },
+  "src/decorator/options/JoinTableOptions.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 35
+  },
+  "src/decorator/options/PrimaryGeneratedColumnIdentityOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 26
+  },
+  "src/decorator/options/PrimaryGeneratedColumnNumericOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 26
+  },
+  "src/decorator/options/PrimaryGeneratedColumnUUIDOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 17
+  },
+  "src/decorator/options/RelationOptions.ts": {
+   "fan_in": 8,
+   "fan_out": 3,
+   "lines": 67
+  },
+  "src/decorator/options/SpatialColumnOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 20
+  },
+  "src/decorator/options/TransactionOptions.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 5
+  },
+  "src/decorator/options/UniqueOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 10
+  },
+  "src/decorator/options/ValueTransformer.ts": {
+   "fan_in": 13,
+   "fan_out": 0,
+   "lines": 13
+  },
+  "src/decorator/options/ViewColumnOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 15
+  },
+  "src/decorator/options/ViewEntityOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 40
+  },
+  "src/decorator/options/VirtualColumnOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 33
+  },
+  "src/decorator/relations/JoinColumn.ts": {
+   "fan_in": 71,
+   "fan_out": 3,
+   "lines": 50
+  },
+  "src/decorator/relations/JoinTable.ts": {
+   "fan_in": 77,
+   "fan_out": 4,
+   "lines": 57
+  },
+  "src/decorator/relations/ManyToMany.ts": {
+   "fan_in": 111,
+   "fan_out": 5,
+   "lines": 82
+  },
+  "src/decorator/relations/ManyToOne.ts": {
+   "fan_in": 119,
+   "fan_out": 5,
+   "lines": 82
+  },
+  "src/decorator/relations/OneToMany.ts": {
+   "fan_in": 76,
+   "fan_out": 4,
+   "lines": 48
+  },
+  "src/decorator/relations/OneToOne.ts": {
+   "fan_in": 70,
+   "fan_out": 5,
+   "lines": 79
+  },
+  "src/decorator/relations/RelationId.ts": {
+   "fan_in": 10,
+   "fan_out": 3,
+   "lines": 28
+  },
+  "src/decorator/tree/Tree.ts": {
+   "fan_in": 21,
+   "fan_out": 4,
+   "lines": 25
+  },
+  "src/decorator/tree/TreeChildren.ts": {
+   "fan_in": 21,
+   "fan_out": 3,
+   "lines": 38
+  },
+  "src/decorator/tree/TreeLevelColumn.ts": {
+   "fan_in": 3,
+   "fan_out": 2,
+   "lines": 15
+  },
+  "src/decorator/tree/TreeParent.ts": {
+   "fan_in": 21,
+   "fan_out": 4,
+   "lines": 37
+  },
+  "src/driver/Driver.ts": {
+   "fan_in": 23,
+   "fan_out": 23,
+   "lines": 257
+  },
+  "src/driver/DriverFactory.ts": {
+   "fan_in": 1,
+   "fan_out": 20,
+   "lines": 93
+  },
+  "src/driver/DriverUtils.ts": {
+   "fan_in": 91,
+   "fan_out": 3,
+   "lines": 255
+  },
+  "src/driver/Query.ts": {
+   "fan_in": 12,
+   "fan_out": 0,
+   "lines": 10
+  },
+  "src/driver/SqlInMemory.ts": {
+   "fan_in": 6,
+   "fan_out": 1,
+   "lines": 8
+  },
+  "src/driver/aurora-mysql/AuroraMysqlConnectionCredentialsOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 35
+  },
+  "src/driver/aurora-mysql/AuroraMysqlDataSourceOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 31
+  },
+  "src/driver/aurora-mysql/AuroraMysqlDriver.ts": {
+   "fan_in": 5,
+   "fan_out": 27,
+   "lines": 1034
+  },
+  "src/driver/aurora-mysql/AuroraMysqlQueryRunner.ts": {
+   "fan_in": 1,
+   "fan_out": 27,
+   "lines": 2752
+  },
+  "src/driver/aurora-postgres/AuroraPostgresDataSourceOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 34
+  },
+  "src/driver/aurora-postgres/AuroraPostgresDriver.ts": {
+   "fan_in": 2,
+   "fan_out": 10,
+   "lines": 177
+  },
+  "src/driver/aurora-postgres/AuroraPostgresQueryRunner.ts": {
+   "fan_in": 1,
+   "fan_out": 13,
+   "lines": 204
+  },
+  "src/driver/better-sqlite3/BetterSqlite3DataSourceOptions.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 69
+  },
+  "src/driver/better-sqlite3/BetterSqlite3Driver.ts": {
+   "fan_in": 2,
+   "fan_out": 10,
+   "lines": 195
+  },
+  "src/driver/better-sqlite3/BetterSqlite3QueryRunner.ts": {
+   "fan_in": 1,
+   "fan_out": 9,
+   "lines": 196
+  },
+  "src/driver/capacitor/CapacitorDataSourceOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 32
+  },
+  "src/driver/capacitor/CapacitorDriver.ts": {
+   "fan_in": 2,
+   "fan_out": 7,
+   "lines": 94
+  },
+  "src/driver/capacitor/CapacitorQueryRunner.ts": {
+   "fan_in": 1,
+   "fan_out": 8,
+   "lines": 114
+  },
+  "src/driver/cockroachdb/CockroachConnectionCredentialsOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 34
+  },
+  "src/driver/cockroachdb/CockroachDataSourceOptions.ts": {
+   "fan_in": 3,
+   "fan_out": 3,
+   "lines": 65
+  },
+  "src/driver/cockroachdb/CockroachDriver.ts": {
+   "fan_in": 4,
+   "fan_out": 32,
+   "lines": 1135
+  },
+  "src/driver/cockroachdb/CockroachQueryRunner.ts": {
+   "fan_in": 1,
+   "fan_out": 31,
+   "lines": 4144
+  },
+  "src/driver/cordova/CordovaDataSourceOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 24
+  },
+  "src/driver/cordova/CordovaDriver.ts": {
+   "fan_in": 2,
+   "fan_out": 8,
+   "lines": 105
+  },
+  "src/driver/cordova/CordovaQueryRunner.ts": {
+   "fan_in": 1,
+   "fan_out": 9,
+   "lines": 195
+  },
+  "src/driver/expo/ExpoDataSourceOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 21
+  },
+  "src/driver/expo/ExpoDriver.ts": {
+   "fan_in": 2,
+   "fan_out": 7,
+   "lines": 50
+  },
+  "src/driver/expo/ExpoQueryRunner.ts": {
+   "fan_in": 1,
+   "fan_out": 9,
+   "lines": 95
+  },
+  "src/driver/mongodb/MongoDataSourceOptions.ts": {
+   "fan_in": 3,
+   "fan_out": 2,
+   "lines": 205
+  },
+  "src/driver/mongodb/MongoDriver.ts": {
+   "fan_in": 4,
+   "fan_out": 28,
+   "lines": 540
+  },
+  "src/driver/mongodb/MongoQueryRunner.ts": {
+   "fan_in": 4,
+   "fan_out": 17,
+   "lines": 1430
+  },
+  "src/driver/mongodb/bson.typings.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 1695
+  },
+  "src/driver/mongodb/typings.ts": {
+   "fan_in": 13,
+   "fan_out": 2,
+   "lines": 8461
+  },
+  "src/driver/mysql/MysqlConnectionCredentialsOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 44
+  },
+  "src/driver/mysql/MysqlDataSourceOptions.ts": {
+   "fan_in": 4,
+   "fan_out": 3,
+   "lines": 134
+  },
+  "src/driver/mysql/MysqlDriver.ts": {
+   "fan_in": 8,
+   "fan_out": 31,
+   "lines": 1224
+  },
+  "src/driver/mysql/MysqlQueryRunner.ts": {
+   "fan_in": 1,
+   "fan_out": 30,
+   "lines": 3271
+  },
+  "src/driver/nativescript/NativescriptDataSourceOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 45
+  },
+  "src/driver/nativescript/NativescriptDriver.ts": {
+   "fan_in": 2,
+   "fan_out": 8,
+   "lines": 125
+  },
+  "src/driver/nativescript/NativescriptQueryRunner.ts": {
+   "fan_in": 1,
+   "fan_out": 8,
+   "lines": 120
+  },
+  "src/driver/oracle/OracleConnectionCredentialsOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 41
+  },
+  "src/driver/oracle/OracleDataSourceOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 52
+  },
+  "src/driver/oracle/OracleDriver.ts": {
+   "fan_in": 5,
+   "fan_out": 32,
+   "lines": 1029
+  },
+  "src/driver/oracle/OracleQueryRunner.ts": {
+   "fan_in": 1,
+   "fan_out": 28,
+   "lines": 3096
+  },
+  "src/driver/postgres/PostgresConnectionCredentialsOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 39
+  },
+  "src/driver/postgres/PostgresDataSourceOptions.ts": {
+   "fan_in": 6,
+   "fan_out": 3,
+   "lines": 94
+  },
+  "src/driver/postgres/PostgresDriver.ts": {
+   "fan_in": 12,
+   "fan_out": 35,
+   "lines": 1736
+  },
+  "src/driver/postgres/PostgresQueryRunner.ts": {
+   "fan_in": 5,
+   "fan_out": 32,
+   "lines": 4796
+  },
+  "src/driver/react-native/ReactNativeDataSourceOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 28
+  },
+  "src/driver/react-native/ReactNativeDriver.ts": {
+   "fan_in": 5,
+   "fan_out": 26,
+   "lines": 943
+  },
+  "src/driver/react-native/ReactNativeQueryRunner.ts": {
+   "fan_in": 1,
+   "fan_out": 9,
+   "lines": 155
+  },
+  "src/driver/sap/SapConnectionCredentialsOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 45
+  },
+  "src/driver/sap/SapDataSourceOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 60
+  },
+  "src/driver/sap/SapDriver.ts": {
+   "fan_in": 5,
+   "fan_out": 28,
+   "lines": 850
+  },
+  "src/driver/sap/SapQueryRunner.ts": {
+   "fan_in": 1,
+   "fan_out": 31,
+   "lines": 3527
+  },
+  "src/driver/spanner/SpannerConnectionCredentialsOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 30
+  },
+  "src/driver/spanner/SpannerDataSourceOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 126
+  },
+  "src/driver/spanner/SpannerDriver.ts": {
+   "fan_in": 4,
+   "fan_out": 25,
+   "lines": 778
+  },
+  "src/driver/spanner/SpannerQueryRunner.ts": {
+   "fan_in": 1,
+   "fan_out": 29,
+   "lines": 2332
+  },
+  "src/driver/sqlite-abstract/AbstractSqliteDriver.ts": {
+   "fan_in": 12,
+   "fan_out": 25,
+   "lines": 936
+  },
+  "src/driver/sqlite-abstract/AbstractSqliteQueryRunner.ts": {
+   "fan_in": 7,
+   "fan_out": 22,
+   "lines": 2240
+  },
+  "src/driver/sqljs/SqljsDataSourceOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 46
+  },
+  "src/driver/sqljs/SqljsDriver.ts": {
+   "fan_in": 3,
+   "fan_out": 13,
+   "lines": 295
+  },
+  "src/driver/sqljs/SqljsQueryRunner.ts": {
+   "fan_in": 1,
+   "fan_out": 9,
+   "lines": 161
+  },
+  "src/driver/sqlserver/MssqlParameter.ts": {
+   "fan_in": 8,
+   "fan_out": 0,
+   "lines": 56
+  },
+  "src/driver/sqlserver/SqlServerConnectionCredentialsOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 8,
+   "lines": 51
+  },
+  "src/driver/sqlserver/SqlServerDataSourceOptions.ts": {
+   "fan_in": 4,
+   "fan_out": 4,
+   "lines": 271
+  },
+  "src/driver/sqlserver/SqlServerDriver.ts": {
+   "fan_in": 8,
+   "fan_out": 33,
+   "lines": 1190
+  },
+  "src/driver/sqlserver/SqlServerQueryRunner.ts": {
+   "fan_in": 2,
+   "fan_out": 32,
+   "lines": 4052
+  },
+  "src/driver/sqlserver/authentication/AzureActiveDirectoryAccessTokenAuthentication.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 10
+  },
+  "src/driver/sqlserver/authentication/AzureActiveDirectoryDefaultAuthentication.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 12
+  },
+  "src/driver/sqlserver/authentication/AzureActiveDirectoryMsiAppServiceAuthentication.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 20
+  },
+  "src/driver/sqlserver/authentication/AzureActiveDirectoryMsiVmAuthentication.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 16
+  },
+  "src/driver/sqlserver/authentication/AzureActiveDirectoryPasswordAuthentication.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 17
+  },
+  "src/driver/sqlserver/authentication/AzureActiveDirectoryServicePrincipalSecret.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 17
+  },
+  "src/driver/sqlserver/authentication/DefaultAuthentication.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 13
+  },
+  "src/driver/sqlserver/authentication/NtlmAuthentication.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 19
+  },
+  "src/driver/types/ColumnTypes.ts": {
+   "fan_in": 35,
+   "fan_out": 0,
+   "lines": 216
+  },
+  "src/driver/types/CteCapabilities.ts": {
+   "fan_in": 13,
+   "fan_out": 0,
+   "lines": 18
+  },
+  "src/driver/types/DataTypeDefaults.ts": {
+   "fan_in": 12,
+   "fan_out": 0,
+   "lines": 7
+  },
+  "src/driver/types/DatabaseType.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 22
+  },
+  "src/driver/types/GeoJsonTypes.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 104
+  },
+  "src/driver/types/InvalidFindOptionsWhereBehavior.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 15
+  },
+  "src/driver/types/IsolationLevel.ts": {
+   "fan_in": 40,
+   "fan_out": 0,
+   "lines": 8
+  },
+  "src/driver/types/MappedColumnTypes.ts": {
+   "fan_in": 12,
+   "fan_out": 1,
+   "lines": 112
+  },
+  "src/driver/types/MetadataTableType.ts": {
+   "fan_in": 10,
+   "fan_out": 0,
+   "lines": 5
+  },
+  "src/driver/types/ReplicationMode.ts": {
+   "fan_in": 37,
+   "fan_out": 0,
+   "lines": 1
+  },
+  "src/driver/types/ReturningType.ts": {
+   "fan_in": 8,
+   "fan_out": 0,
+   "lines": 1
+  },
+  "src/driver/types/UpsertType.ts": {
+   "fan_in": 15,
+   "fan_out": 0,
+   "lines": 5
+  },
+  "src/driver/validate-isolation-level.ts": {
+   "fan_in": 12,
+   "fan_out": 2,
+   "lines": 25
+  },
+  "src/entity-manager/EntityManager.ts": {
+   "fan_in": 15,
+   "fan_out": 34,
+   "lines": 1474
+  },
+  "src/entity-manager/EntityManagerFactory.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 24
+  },
+  "src/entity-manager/MongoEntityManager.ts": {
+   "fan_in": 8,
+   "fan_out": 22,
+   "lines": 1405
+  },
+  "src/entity-manager/SqljsEntityManager.ts": {
+   "fan_in": 3,
+   "fan_out": 4,
+   "lines": 48
+  },
+  "src/entity-schema/EntitySchema.ts": {
+   "fan_in": 7,
+   "fan_out": 1,
+   "lines": 8
+  },
+  "src/entity-schema/EntitySchemaCheckOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 10
+  },
+  "src/entity-schema/EntitySchemaColumnForeignKeyOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 12
+  },
+  "src/entity-schema/EntitySchemaColumnOptions.ts": {
+   "fan_in": 3,
+   "fan_out": 4,
+   "lines": 170
+  },
+  "src/entity-schema/EntitySchemaEmbeddedColumnOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 18
+  },
+  "src/entity-schema/EntitySchemaEmbeddedError.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 18
+  },
+  "src/entity-schema/EntitySchemaExclusionOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 15
+  },
+  "src/entity-schema/EntitySchemaForeignKeyOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 16
+  },
+  "src/entity-schema/EntitySchemaIndexOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 51
+  },
+  "src/entity-schema/EntitySchemaInheritanceOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 11
+  },
+  "src/entity-schema/EntitySchemaOptions.ts": {
+   "fan_in": 13,
+   "fan_out": 15,
+   "lines": 118
+  },
+  "src/entity-schema/EntitySchemaRelationIdOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 17
+  },
+  "src/entity-schema/EntitySchemaRelationOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 8,
+   "lines": 96
+  },
+  "src/entity-schema/EntitySchemaTransformer.ts": {
+   "fan_in": 2,
+   "fan_out": 21,
+   "lines": 373
+  },
+  "src/entity-schema/EntitySchemaUniqueOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 15
+  },
+  "src/error/AlreadyHasActiveConnectionError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/error/CannotAttachTreeChildrenEntityError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/error/CannotConnectAlreadyConnectedError.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 11
+  },
+  "src/error/CannotCreateEntityIdMapError.ts": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 24
+  },
+  "src/error/CannotDetermineEntityError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/error/CannotExecuteNotConnectedError.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 11
+  },
+  "src/error/CannotGetEntityManagerNotConnectedError.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 11
+  },
+  "src/error/CannotReflectMethodParameterTypeError.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 14
+  },
+  "src/error/CircularRelationsError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/error/ColumnTypeUndefinedError.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 15
+  },
+  "src/error/ConnectionIsNotSetError.ts": {
+   "fan_in": 8,
+   "fan_out": 1,
+   "lines": 11
+  },
+  "src/error/ConnectionNotFoundError.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 9
+  },
+  "src/error/DataTypeNotSupportedError.ts": {
+   "fan_in": 2,
+   "fan_out": 4,
+   "lines": 16
+  },
+  "src/error/DriverOptionNotSetError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/error/DriverPackageNotInstalledError.ts": {
+   "fan_in": 12,
+   "fan_out": 1,
+   "lines": 11
+  },
+  "src/error/EntityMetadataNotFoundError.ts": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 23
+  },
+  "src/error/EntityNotFoundError.ts": {
+   "fan_in": 5,
+   "fan_out": 4,
+   "lines": 37
+  },
+  "src/error/EntityPropertyNotFoundError.ts": {
+   "fan_in": 10,
+   "fan_out": 2,
+   "lines": 12
+  },
+  "src/error/FindRelationsNotFoundError.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 18
+  },
+  "src/error/ForbiddenTransactionModeOverrideError.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 17
+  },
+  "src/error/InitializedRelationError.ts": {
+   "fan_in": 3,
+   "fan_out": 2,
+   "lines": 17
+  },
+  "src/error/InsertValuesMissingError.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/error/LimitOnUpdateNotSupportedError.ts": {
+   "fan_in": 5,
+   "fan_out": 1,
+   "lines": 9
+  },
+  "src/error/LockNotSupportedOnGivenDriverError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 9
+  },
+  "src/error/MetadataAlreadyExistsError.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 18
+  },
+  "src/error/MetadataWithSuchNameAlreadyExistsError.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/error/MissingDeleteDateColumnError.ts": {
+   "fan_in": 5,
+   "fan_out": 2,
+   "lines": 9
+  },
+  "src/error/MissingDriverError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/error/MissingJoinColumnError.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 18
+  },
+  "src/error/MissingJoinTableError.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 18
+  },
+  "src/error/MissingPrimaryColumnError.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 10
+  },
+  "src/error/MustBeEntityError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 11
+  },
+  "src/error/NamedPlaceholdersNotSupportedError.ts": {
+   "fan_in": 12,
+   "fan_out": 1,
+   "lines": 9
+  },
+  "src/error/NestedSetMultipleRootError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 6
+  },
+  "src/error/NoConnectionForRepositoryError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/error/NoConnectionOptionError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/error/NoNeedToReleaseEntityManagerError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 13
+  },
+  "src/error/NoVersionOrUpdateDateColumnError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 9
+  },
+  "src/error/OffsetWithoutLimitNotSupportedError.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 13
+  },
+  "src/error/OptimisticLockCanNotBeUsedError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 9
+  },
+  "src/error/OptimisticLockVersionMismatchError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 15
+  },
+  "src/error/PersistedEntityNotFoundError.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 11
+  },
+  "src/error/PessimisticLockTransactionRequiredError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 9
+  },
+  "src/error/PrimaryColumnCannotBeNullableError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 11
+  },
+  "src/error/QueryFailedError.ts": {
+   "fan_in": 16,
+   "fan_out": 3,
+   "lines": 30
+  },
+  "src/error/QueryRunnerAlreadyReleasedError.ts": {
+   "fan_in": 17,
+   "fan_out": 1,
+   "lines": 6
+  },
+  "src/error/QueryRunnerProviderAlreadyReleasedError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/error/RepositoryNotTreeError.ts": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 26
+  },
+  "src/error/ReturningStatementNotSupportedError.ts": {
+   "fan_in": 5,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/error/SubjectRemovedAndUpdatedError.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 13
+  },
+  "src/error/SubjectWithoutIdentifierError.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 14
+  },
+  "src/error/TransactionAlreadyStartedError.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 11
+  },
+  "src/error/TransactionNotStartedError.ts": {
+   "fan_in": 11,
+   "fan_out": 1,
+   "lines": 11
+  },
+  "src/error/TreeRepositoryNotSupportedError.ts": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 9
+  },
+  "src/error/TypeORMError.ts": {
+   "fan_in": 71,
+   "fan_out": 0,
+   "lines": 15
+  },
+  "src/error/UpdateValuesMissingError.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 8
+  },
+  "src/error/UsingJoinColumnIsNotAllowedError.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 11
+  },
+  "src/error/UsingJoinColumnOnlyOnOneSideAllowedError.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 14
+  },
+  "src/error/UsingJoinTableIsNotAllowedError.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 12
+  },
+  "src/error/UsingJoinTableOnlyOnOneSideAllowedError.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 14
+  },
+  "src/error/index.ts": {
+   "fan_in": 64,
+   "fan_out": 59,
+   "lines": 59
+  },
+  "src/find-options/EqualOperator.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 7
+  },
+  "src/find-options/FindManyOptions.ts": {
+   "fan_in": 9,
+   "fan_out": 1,
+   "lines": 14
+  },
+  "src/find-options/FindOneOptions.ts": {
+   "fan_in": 8,
+   "fan_out": 4,
+   "lines": 79
+  },
+  "src/find-options/FindOperator.ts": {
+   "fan_in": 25,
+   "fan_out": 5,
+   "lines": 135
+  },
+  "src/find-options/FindOperatorType.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 23
+  },
+  "src/find-options/FindOptionsOrder.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 48
+  },
+  "src/find-options/FindOptionsRelations.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 34
+  },
+  "src/find-options/FindOptionsSelect.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 34
+  },
+  "src/find-options/FindOptionsUtils.ts": {
+   "fan_in": 5,
+   "fan_out": 9,
+   "lines": 389
+  },
+  "src/find-options/FindOptionsWhere.ts": {
+   "fan_in": 6,
+   "fan_out": 3,
+   "lines": 48
+  },
+  "src/find-options/FindTreeOptions.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 13
+  },
+  "src/find-options/OrderByCondition.ts": {
+   "fan_in": 10,
+   "fan_out": 0,
+   "lines": 18
+  },
+  "src/find-options/mongodb/MongoFindManyOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 16
+  },
+  "src/find-options/mongodb/MongoFindOneOptions.ts": {
+   "fan_in": 3,
+   "fan_out": 2,
+   "lines": 14
+  },
+  "src/find-options/operator/And.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 8
+  },
+  "src/find-options/operator/Any.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/find-options/operator/ArrayContainedBy.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 14
+  },
+  "src/find-options/operator/ArrayContains.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 14
+  },
+  "src/find-options/operator/ArrayOverlap.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 14
+  },
+  "src/find-options/operator/Between.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 16
+  },
+  "src/find-options/operator/Equal.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 17
+  },
+  "src/find-options/operator/ILike.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/find-options/operator/In.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 14
+  },
+  "src/find-options/operator/IsNull.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 11
+  },
+  "src/find-options/operator/JsonContains.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 14
+  },
+  "src/find-options/operator/LessThan.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/find-options/operator/LessThanOrEqual.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/find-options/operator/Like.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/find-options/operator/MoreThan.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/find-options/operator/MoreThanOrEqual.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 12
+  },
+  "src/find-options/operator/Not.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 13
+  },
+  "src/find-options/operator/Or.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 8
+  },
+  "src/find-options/operator/Raw.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 52
+  },
+  "src/globals.ts": {
+   "fan_in": 45,
+   "fan_out": 2,
+   "lines": 15
+  },
+  "src/index.ts": {
+   "fan_in": 1374,
+   "fan_out": 174,
+   "lines": 183
+  },
+  "src/logger/AbstractLogger.ts": {
+   "fan_in": 6,
+   "fan_out": 5,
+   "lines": 355
+  },
+  "src/logger/AdvancedConsoleLogger.ts": {
+   "fan_in": 2,
+   "fan_out": 4,
+   "lines": 64
+  },
+  "src/logger/DebugLogger.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 91
+  },
+  "src/logger/FileLogger.ts": {
+   "fan_in": 2,
+   "fan_out": 5,
+   "lines": 107
+  },
+  "src/logger/FormattedConsoleLogger.ts": {
+   "fan_in": 2,
+   "fan_out": 4,
+   "lines": 71
+  },
+  "src/logger/Logger.ts": {
+   "fan_in": 16,
+   "fan_out": 2,
+   "lines": 92
+  },
+  "src/logger/LoggerFactory.ts": {
+   "fan_in": 2,
+   "fan_out": 8,
+   "lines": 46
+  },
+  "src/logger/LoggerOptions.ts": {
+   "fan_in": 5,
+   "fan_out": 1,
+   "lines": 5
+  },
+  "src/logger/SimpleConsoleLogger.ts": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 58
+  },
+  "src/metadata-args/CheckMetadataArgs.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 17
+  },
+  "src/metadata-args/ColumnMetadataArgs.ts": {
+   "fan_in": 15,
+   "fan_out": 2,
+   "lines": 25
+  },
+  "src/metadata-args/DiscriminatorValueMetadataArgs.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 13
+  },
+  "src/metadata-args/EmbeddedMetadataArgs.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 26
+  },
+  "src/metadata-args/EntityListenerMetadataArgs.ts": {
+   "fan_in": 13,
+   "fan_out": 1,
+   "lines": 18
+  },
+  "src/metadata-args/EntitySubscriberMetadataArgs.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 9
+  },
+  "src/metadata-args/ExclusionMetadataArgs.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 22
+  },
+  "src/metadata-args/ForeignKeyMetadataArgs.ts": {
+   "fan_in": 3,
+   "fan_out": 5,
+   "lines": 54
+  },
+  "src/metadata-args/GeneratedMetadataArgs.ts": {
+   "fan_in": 6,
+   "fan_out": 0,
+   "lines": 17
+  },
+  "src/metadata-args/IndexMetadataArgs.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 80
+  },
+  "src/metadata-args/InheritanceMetadataArgs.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 18
+  },
+  "src/metadata-args/JoinColumnMetadataArgs.ts": {
+   "fan_in": 5,
+   "fan_out": 0,
+   "lines": 26
+  },
+  "src/metadata-args/JoinTableMetadataArgs.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 43
+  },
+  "src/metadata-args/MetadataArgsStorage.ts": {
+   "fan_in": 3,
+   "fan_out": 22,
+   "lines": 392
+  },
+  "src/metadata-args/NamingStrategyMetadataArgs.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 13
+  },
+  "src/metadata-args/RelationIdMetadataArgs.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 28
+  },
+  "src/metadata-args/RelationMetadataArgs.ts": {
+   "fan_in": 9,
+   "fan_out": 4,
+   "lines": 57
+  },
+  "src/metadata-args/TableMetadataArgs.ts": {
+   "fan_in": 7,
+   "fan_out": 4,
+   "lines": 66
+  },
+  "src/metadata-args/TransactionEntityMetadataArgs.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 17
+  },
+  "src/metadata-args/TransactionRepositoryMetadataArgs.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 25
+  },
+  "src/metadata-args/TreeMetadataArgs.ts": {
+   "fan_in": 4,
+   "fan_out": 2,
+   "lines": 19
+  },
+  "src/metadata-args/UniqueMetadataArgs.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 22
+  },
+  "src/metadata-args/types/ColumnMode.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 18
+  },
+  "src/metadata-builder/ClosureJunctionEntityMetadataBuilder.ts": {
+   "fan_in": 1,
+   "fan_out": 6,
+   "lines": 168
+  },
+  "src/metadata-builder/EntityMetadataBuilder.ts": {
+   "fan_in": 1,
+   "fan_out": 23,
+   "lines": 1192
+  },
+  "src/metadata-builder/EntityMetadataValidator.ts": {
+   "fan_in": 5,
+   "fan_out": 11,
+   "lines": 298
+  },
+  "src/metadata-builder/JunctionEntityMetadataBuilder.ts": {
+   "fan_in": 1,
+   "fan_out": 9,
+   "lines": 399
+  },
+  "src/metadata-builder/MetadataUtils.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 50
+  },
+  "src/metadata-builder/RelationJoinColumnBuilder.ts": {
+   "fan_in": 1,
+   "fan_out": 9,
+   "lines": 263
+  },
+  "src/metadata/CheckMetadata.ts": {
+   "fan_in": 4,
+   "fan_out": 3,
+   "lines": 65
+  },
+  "src/metadata/ColumnMetadata.ts": {
+   "fan_in": 48,
+   "fan_out": 14,
+   "lines": 893
+  },
+  "src/metadata/EmbeddedMetadata.ts": {
+   "fan_in": 8,
+   "fan_out": 10,
+   "lines": 283
+  },
+  "src/metadata/EntityListenerMetadata.ts": {
+   "fan_in": 3,
+   "fan_out": 5,
+   "lines": 127
+  },
+  "src/metadata/EntityMetadata.ts": {
+   "fan_in": 70,
+   "fan_out": 25,
+   "lines": 1014
+  },
+  "src/metadata/ExclusionMetadata.ts": {
+   "fan_in": 4,
+   "fan_out": 4,
+   "lines": 71
+  },
+  "src/metadata/ForeignKeyMetadata.ts": {
+   "fan_in": 9,
+   "fan_out": 6,
+   "lines": 112
+  },
+  "src/metadata/IndexMetadata.ts": {
+   "fan_in": 15,
+   "fan_out": 7,
+   "lines": 259
+  },
+  "src/metadata/RelationIdMetadata.ts": {
+   "fan_in": 4,
+   "fan_out": 6,
+   "lines": 106
+  },
+  "src/metadata/RelationMetadata.ts": {
+   "fan_in": 31,
+   "fan_out": 15,
+   "lines": 597
+  },
+  "src/metadata/UniqueMetadata.ts": {
+   "fan_in": 7,
+   "fan_out": 7,
+   "lines": 170
+  },
+  "src/metadata/types/ClosureTreeOptions.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 11
+  },
+  "src/metadata/types/DeferrableType.ts": {
+   "fan_in": 14,
+   "fan_out": 0,
+   "lines": 4
+  },
+  "src/metadata/types/EventListenerTypes.ts": {
+   "fan_in": 14,
+   "fan_out": 0,
+   "lines": 31
+  },
+  "src/metadata/types/OnDeleteType.ts": {
+   "fan_in": 9,
+   "fan_out": 0,
+   "lines": 5
+  },
+  "src/metadata/types/OnUpdateType.ts": {
+   "fan_in": 8,
+   "fan_out": 0,
+   "lines": 5
+  },
+  "src/metadata/types/PropertyTypeInFunction.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 4
+  },
+  "src/metadata/types/RelationTypeInFunction.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 6
+  },
+  "src/metadata/types/RelationTypes.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 5
+  },
+  "src/metadata/types/TableTypes.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 10
+  },
+  "src/metadata/types/TreeTypes.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 6
+  },
+  "src/migration/Migration.ts": {
+   "fan_in": 7,
+   "fan_out": 1,
+   "lines": 46
+  },
+  "src/migration/MigrationExecutor.ts": {
+   "fan_in": 2,
+   "fan_out": 9,
+   "lines": 681
+  },
+  "src/migration/MigrationInterface.ts": {
+   "fan_in": 17,
+   "fan_out": 1,
+   "lines": 25
+  },
+  "src/naming-strategy/DefaultNamingStrategy.ts": {
+   "fan_in": 7,
+   "fan_out": 3,
+   "lines": 173
+  },
+  "src/naming-strategy/NamingStrategyInterface.ts": {
+   "fan_in": 14,
+   "fan_out": 2,
+   "lines": 149
+  },
+  "src/persistence/EntityPersistExecutor.ts": {
+   "fan_in": 1,
+   "fan_out": 15,
+   "lines": 193
+  },
+  "src/persistence/Subject.ts": {
+   "fan_in": 16,
+   "fan_out": 9,
+   "lines": 302
+  },
+  "src/persistence/SubjectChangeMap.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 23
+  },
+  "src/persistence/SubjectChangedColumnsComputer.ts": {
+   "fan_in": 1,
+   "fan_out": 7,
+   "lines": 282
+  },
+  "src/persistence/SubjectDatabaseEntityLoader.ts": {
+   "fan_in": 1,
+   "fan_out": 6,
+   "lines": 173
+  },
+  "src/persistence/SubjectExecutor.ts": {
+   "fan_in": 1,
+   "fan_out": 18,
+   "lines": 1012
+  },
+  "src/persistence/SubjectTopologicalSorter.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 210
+  },
+  "src/persistence/subject-builder/CascadesSubjectBuilder.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 158
+  },
+  "src/persistence/subject-builder/ManyToManySubjectBuilder.ts": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 271
+  },
+  "src/persistence/subject-builder/OneToManySubjectBuilder.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 205
+  },
+  "src/persistence/subject-builder/OneToOneInverseSideSubjectBuilder.ts": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 166
+  },
+  "src/persistence/tree/ClosureSubjectExecutor.ts": {
+   "fan_in": 1,
+   "fan_out": 7,
+   "lines": 341
+  },
+  "src/persistence/tree/MaterializedPathSubjectExecutor.ts": {
+   "fan_in": 1,
+   "fan_out": 7,
+   "lines": 164
+  },
+  "src/persistence/tree/NestedSetSubjectExecutor.ts": {
+   "fan_in": 1,
+   "fan_out": 6,
+   "lines": 346
+  },
+  "src/platform/PlatformTools.ts": {
+   "fan_in": 57,
+   "fan_out": 1,
+   "lines": 214
+  },
+  "src/query-builder/Alias.ts": {
+   "fan_in": 4,
+   "fan_out": 3,
+   "lines": 38
+  },
+  "src/query-builder/Brackets.ts": {
+   "fan_in": 12,
+   "fan_out": 1,
+   "lines": 20
+  },
+  "src/query-builder/DeleteQueryBuilder.ts": {
+   "fan_in": 5,
+   "fan_out": 10,
+   "lines": 288
+  },
+  "src/query-builder/InsertOrUpdateOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 18
+  },
+  "src/query-builder/InsertQueryBuilder.ts": {
+   "fan_in": 4,
+   "fan_out": 23,
+   "lines": 1526
+  },
+  "src/query-builder/JoinAttribute.ts": {
+   "fan_in": 2,
+   "fan_out": 9,
+   "lines": 229
+  },
+  "src/query-builder/JoinOptions.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 3
+  },
+  "src/query-builder/NotBrackets.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 8
+  },
+  "src/query-builder/QueryBuilder.ts": {
+   "fan_in": 12,
+   "fan_out": 29,
+   "lines": 1559
+  },
+  "src/query-builder/QueryBuilderCte.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 17
+  },
+  "src/query-builder/QueryBuilderUtils.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 25
+  },
+  "src/query-builder/QueryExpressionMap.ts": {
+   "fan_in": 9,
+   "fan_out": 17,
+   "lines": 476
+  },
+  "src/query-builder/QueryPartialEntity.ts": {
+   "fan_in": 9,
+   "fan_out": 1,
+   "lines": 22
+  },
+  "src/query-builder/RelationIdLoader.ts": {
+   "fan_in": 2,
+   "fan_out": 8,
+   "lines": 746
+  },
+  "src/query-builder/RelationLoader.ts": {
+   "fan_in": 1,
+   "fan_out": 7,
+   "lines": 493
+  },
+  "src/query-builder/RelationQueryBuilder.ts": {
+   "fan_in": 4,
+   "fan_out": 6,
+   "lines": 177
+  },
+  "src/query-builder/RelationRemover.ts": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 166
+  },
+  "src/query-builder/RelationUpdater.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 173
+  },
+  "src/query-builder/ReturningOption.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 4
+  },
+  "src/query-builder/ReturningResultsEntityUpdator.ts": {
+   "fan_in": 3,
+   "fan_out": 7,
+   "lines": 291
+  },
+  "src/query-builder/SelectQuery.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 5
+  },
+  "src/query-builder/SelectQueryBuilder.ts": {
+   "fan_in": 25,
+   "fan_out": 46,
+   "lines": 4304
+  },
+  "src/query-builder/SelectQueryBuilderOption.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 1
+  },
+  "src/query-builder/SoftDeleteQueryBuilder.ts": {
+   "fan_in": 3,
+   "fan_out": 17,
+   "lines": 554
+  },
+  "src/query-builder/UpdateQueryBuilder.ts": {
+   "fan_in": 4,
+   "fan_out": 23,
+   "lines": 745
+  },
+  "src/query-builder/WhereClause.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 34
+  },
+  "src/query-builder/WhereExpressionBuilder.ts": {
+   "fan_in": 6,
+   "fan_out": 2,
+   "lines": 121
+  },
+  "src/query-builder/index.ts": {
+   "fan_in": 1,
+   "fan_out": 7,
+   "lines": 36
+  },
+  "src/query-builder/relation-id/RelationIdAttribute.ts": {
+   "fan_in": 5,
+   "fan_out": 7,
+   "lines": 122
+  },
+  "src/query-builder/relation-id/RelationIdLoadResult.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 5
+  },
+  "src/query-builder/relation-id/RelationIdLoader.ts": {
+   "fan_in": 1,
+   "fan_out": 8,
+   "lines": 377
+  },
+  "src/query-builder/relation-id/RelationIdMetadataToAttributeTransformer.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 60
+  },
+  "src/query-builder/result/DeleteResult.ts": {
+   "fan_in": 6,
+   "fan_out": 1,
+   "lines": 21
+  },
+  "src/query-builder/result/InsertResult.ts": {
+   "fan_in": 7,
+   "fan_out": 2,
+   "lines": 26
+  },
+  "src/query-builder/result/UpdateResult.ts": {
+   "fan_in": 9,
+   "fan_out": 2,
+   "lines": 32
+  },
+  "src/query-builder/transformer/DocumentToEntityTransformer.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 127
+  },
+  "src/query-builder/transformer/PlainObjectToDatabaseEntityTransformer.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 169
+  },
+  "src/query-builder/transformer/PlainObjectToNewEntityTransformer.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 132
+  },
+  "src/query-builder/transformer/RawSqlResultsToEntityTransformer.ts": {
+   "fan_in": 1,
+   "fan_out": 13,
+   "lines": 598
+  },
+  "src/query-runner/BaseQueryRunner.ts": {
+   "fan_in": 10,
+   "fan_out": 21,
+   "lines": 730
+  },
+  "src/query-runner/QueryLock.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 23
+  },
+  "src/query-runner/QueryResult.ts": {
+   "fan_in": 21,
+   "fan_out": 0,
+   "lines": 17
+  },
+  "src/query-runner/QueryRunner.ts": {
+   "fan_in": 72,
+   "fan_out": 17,
+   "lines": 508
+  },
+  "src/repository/BaseEntity.ts": {
+   "fan_in": 18,
+   "fan_out": 20,
+   "lines": 614
+  },
+  "src/repository/EntityId.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 2
+  },
+  "src/repository/FindTreesOptions.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 9
+  },
+  "src/repository/MongoRepository.ts": {
+   "fan_in": 5,
+   "fan_out": 11,
+   "lines": 579
+  },
+  "src/repository/RemoveOptions.ts": {
+   "fan_in": 6,
+   "fan_out": 0,
+   "lines": 27
+  },
+  "src/repository/Repository.ts": {
+   "fan_in": 7,
+   "fan_out": 20,
+   "lines": 770
+  },
+  "src/repository/SaveOptions.ts": {
+   "fan_in": 6,
+   "fan_out": 0,
+   "lines": 35
+  },
+  "src/repository/TreeRepository.ts": {
+   "fan_in": 4,
+   "fan_out": 8,
+   "lines": 415
+  },
+  "src/repository/UpdateOptions.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 11
+  },
+  "src/repository/UpsertOptions.ts": {
+   "fan_in": 5,
+   "fan_out": 3,
+   "lines": 24
+  },
+  "src/schema-builder/MongoSchemaBuilder.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 79
+  },
+  "src/schema-builder/RdbmsSchemaBuilder.ts": {
+   "fan_in": 11,
+   "fan_out": 21,
+   "lines": 1298
+  },
+  "src/schema-builder/SchemaBuilder.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 14
+  },
+  "src/schema-builder/options/TableCheckOptions.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 20
+  },
+  "src/schema-builder/options/TableColumnOptions.ts": {
+   "fan_in": 5,
+   "fan_out": 0,
+   "lines": 115
+  },
+  "src/schema-builder/options/TableExclusionOptions.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 21
+  },
+  "src/schema-builder/options/TableForeignKeyOptions.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 47
+  },
+  "src/schema-builder/options/TableIndexOptions.ts": {
+   "fan_in": 11,
+   "fan_out": 1,
+   "lines": 59
+  },
+  "src/schema-builder/options/TableIndexTypes.ts": {
+   "fan_in": 7,
+   "fan_out": 0,
+   "lines": 7
+  },
+  "src/schema-builder/options/TableOptions.ts": {
+   "fan_in": 3,
+   "fan_out": 6,
+   "lines": 68
+  },
+  "src/schema-builder/options/TableUniqueOptions.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 21
+  },
+  "src/schema-builder/options/ViewOptions.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 30
+  },
+  "src/schema-builder/table/Table.ts": {
+   "fan_in": 43,
+   "fan_out": 10,
+   "lines": 410
+  },
+  "src/schema-builder/table/TableCheck.ts": {
+   "fan_in": 16,
+   "fan_out": 2,
+   "lines": 58
+  },
+  "src/schema-builder/table/TableColumn.ts": {
+   "fan_in": 30,
+   "fan_out": 1,
+   "lines": 181
+  },
+  "src/schema-builder/table/TableExclusion.ts": {
+   "fan_in": 16,
+   "fan_out": 2,
+   "lines": 60
+  },
+  "src/schema-builder/table/TableForeignKey.ts": {
+   "fan_in": 29,
+   "fan_out": 3,
+   "lines": 109
+  },
+  "src/schema-builder/table/TableIndex.ts": {
+   "fan_in": 21,
+   "fan_out": 3,
+   "lines": 121
+  },
+  "src/schema-builder/table/TableUnique.ts": {
+   "fan_in": 16,
+   "fan_out": 2,
+   "lines": 62
+  },
+  "src/schema-builder/util/TableUtils.ts": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 39
+  },
+  "src/schema-builder/util/ViewUtils.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 32
+  },
+  "src/schema-builder/view/View.ts": {
+   "fan_in": 30,
+   "fan_out": 6,
+   "lines": 111
+  },
+  "src/subscriber/Broadcaster.ts": {
+   "fan_in": 18,
+   "fan_out": 8,
+   "lines": 964
+  },
+  "src/subscriber/BroadcasterResult.ts": {
+   "fan_in": 15,
+   "fan_out": 0,
+   "lines": 22
+  },
+  "src/subscriber/EntitySubscriberInterface.ts": {
+   "fan_in": 9,
+   "fan_out": 10,
+   "lines": 105
+  },
+  "src/subscriber/event/BaseEvent.ts": {
+   "fan_in": 8,
+   "fan_out": 3,
+   "lines": 28
+  },
+  "src/subscriber/event/InsertEvent.ts": {
+   "fan_in": 3,
+   "fan_out": 3,
+   "lines": 20
+  },
+  "src/subscriber/event/LoadEvent.ts": {
+   "fan_in": 4,
+   "fan_out": 2,
+   "lines": 15
+  },
+  "src/subscriber/event/QueryEvent.ts": {
+   "fan_in": 3,
+   "fan_out": 2,
+   "lines": 34
+  },
+  "src/subscriber/event/RecoverEvent.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 5
+  },
+  "src/subscriber/event/RemoveEvent.ts": {
+   "fan_in": 4,
+   "fan_out": 2,
+   "lines": 24
+  },
+  "src/subscriber/event/SoftRemoveEvent.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 5
+  },
+  "src/subscriber/event/TransactionCommitEvent.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 5
+  },
+  "src/subscriber/event/TransactionRollbackEvent.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 5
+  },
+  "src/subscriber/event/TransactionStartEvent.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 5
+  },
+  "src/subscriber/event/UpdateEvent.ts": {
+   "fan_in": 3,
+   "fan_out": 5,
+   "lines": 34
+  },
+  "src/util/ApplyValueTransformers.ts": {
+   "fan_in": 17,
+   "fan_out": 2,
+   "lines": 34
+  },
+  "src/util/DateUtils.ts": {
+   "fan_in": 17,
+   "fan_out": 1,
+   "lines": 324
+  },
+  "src/util/DepGraph.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 247
+  },
+  "src/util/DirectoryExportedClassesLoader.ts": {
+   "fan_in": 2,
+   "fan_out": 5,
+   "lines": 70
+  },
+  "src/util/ImportUtils.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 101
+  },
+  "src/util/InstanceChecker.ts": {
+   "fan_in": 41,
+   "fan_out": 29,
+   "lines": 137
+  },
+  "src/util/ObjectUtils.ts": {
+   "fan_in": 40,
+   "fan_out": 1,
+   "lines": 85
+  },
+  "src/util/OrmUtils.ts": {
+   "fan_in": 42,
+   "fan_out": 7,
+   "lines": 660
+  },
+  "src/util/PathUtils.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 36
+  },
+  "src/util/RandomGenerator.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 186
+  },
+  "src/util/SqlTagUtils.ts": {
+   "fan_in": 5,
+   "fan_out": 1,
+   "lines": 60
+  },
+  "src/util/StringUtils.ts": {
+   "fan_in": 9,
+   "fan_out": 1,
+   "lines": 111
+  },
+  "src/util/TreeRepositoryUtils.ts": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 111
+  },
+  "src/util/Uint8ArrayUtils.ts": {
+   "fan_in": 7,
+   "fan_out": 0,
+   "lines": 46
+  },
+  "src/util/VersionUtils.ts": {
+   "fan_in": 8,
+   "fan_out": 0,
+   "lines": 30
+  },
+  "src/util/escapeRegExp.ts": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 4
+  }
+ },
+ "skeleton_hash": "5c122943226d24519f893a5845774fa53cb0222058508dcfa35c11c73548baa0",
+ "stance": "The building is drawn as it is, warts and all. The diagnosis presupposes a norm of health — load should be reinforced, old load-bearing code should be visited, fixes should not concentrate — and that norm is a maintenance stance the reader may reject, stated so it reads as an ought, not a fact (system spec, stance disclosure).",
+ "wings": {
+  "(root)": 3,
+  "docker": 1,
+  "docs": 9,
+  "extra": 2,
+  "packages": 69,
+  "playground": 3,
+  "src": 496
+ }
+}
