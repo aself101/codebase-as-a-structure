@@ -21,7 +21,7 @@ Testable contracts for Phase 1. Tags: `[NOW]` required for the phase; `[TL]` tim
 - [x] `[NOW][TL]` Ripple splits into clock, rank, and mixed by the predicate's signals (`CLOCK_SIGNALS` pinned by test); untouched strata moves are rank; the budget judges jitter = rank + mixed and is `untested: beyond_pinned_k` past K = 10. *(§4, D-024)* `(unit: test_clock_signals_are_pinned_to_the_substrate_spec_list, test_feature_kinds_read_from_the_skeleton_match_the_ruleset, test_budget_is_untested_beyond_its_pinned_k)`
 - [x] `[NOW][DET]` A renamed room that changed floor is counted; skeletons that differ in repo, geometry, or ruleset are refused; a gate without a fingerprint is refused. *(D-024)* `(unit: test_diff_counts_a_renamed_room_that_changed_floor, test_diff_refuses_incomparable_skeletons, test_timelapse_refuses_a_gate_without_a_fingerprint)`
 - [x] `[NOW][TL]` Every room sits at the cutaway's x and width on the change sheet. *(D-023, D-024)* `(unit: test_change_sheet_keeps_every_room_where_the_cutaway_put_it)`
-- [x] `[TL][BUDGET]` The report states the K of every transition and that the budget was pinned at K = 5. *(§4)* `(review: reports/2026-09-05-phase1/*.timelapse.md, 2026-09-05)`
+- [x] `[TL][BUDGET]` The report states the K of every transition and the budget's pinned K (25, applied 25–50 since D-026/D-032; verdicts outside that range are `untested`). *(§4)* `(unit: test_budget_is_untested_beyond_its_pinned_k, test_budget_is_untested_below_its_pinned_k; review: reports/2026-09-06-phase1x/)`
 
 ## D. Outputs (§5)
 

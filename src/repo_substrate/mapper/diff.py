@@ -275,11 +275,15 @@ def skeleton_diff(
         verdict, reason = "untested", unavailable_reason
     elif commits_between > budget["max_k"]:
         verdict, reason = "untested", "beyond_pinned_k"
+    elif commits_between < budget["pinned_k"]:
+        # D-032: the token travels neither above nor below the K it was pinned at — at K = 5
+        # the ceiling cannot fire (D-024), so a verdict there is vacuous
+        verdict, reason = "untested", "below_pinned_k"
     elif touched_frac > budget["max_touched_frac"]:
         verdict, reason = "untested", "touched_fraction_exceeds_floor"
     elif len(untouched) < budget["min_untouched_n"]:
         verdict, reason = "untested", "insufficient_untouched_population"
-    elif jitter_union < budget.get("min_jitter_union", 0):
+    elif jitter_union < budget["min_jitter_union"]:
         verdict, reason = "untested", "insufficient_jitter_population"
     elif jitter_churn > budget["feature_churn_max"] or u_strata > budget["strata_moved_max"]:
         verdict, reason = "over_budget", None

@@ -28,12 +28,12 @@
 
 ## C. The anti-horoscope gate, end to end (§3 system invariant; validation §5; mapper §3)
 
-- [ ] `[HOR]` No named feature in `skeleton.json` rests on a signal whose `validation_status` is `unvalidated`/`untested` unless the rule is `decorative: true`; otherwise C3 refuses to emit. *(mapper §3; validation §5)* `(unit)`
-- [ ] `[HOR]` The gate is checked at **signal level** — every signal in a predicate, including bare percentiles and raw metrics, not just composite indices. *(sys §3; validation §5; mapper §3)* `(unit)`
-- [ ] `[HOR]` A `kind`/`status` mismatch in `validation.json` is rejected **before** the gate runs — a failed predictor cannot relabel as `asserted` to slip through. *(validation §3.8; mapper §3)* `(unit)`
-- [ ] `[HOR]` A feature's `validation_status` is the most conservative claim type across all signals it reads (any FAIL-tier signal → feature fails; all-pass but mixed → `asserted`). *(mapper §5)* `(unit)`
+- [x] `[HOR]` No named feature in `skeleton.json` rests on a signal whose `validation_status` is `unvalidated`/`untested` unless the rule is `decorative: true`; otherwise C3 refuses to emit. `(unit: test_gate_refuses_unvalidated_signal_in_non_decorative_rule, test_decorative_reason_must_name_the_ungrounded_signal_at_the_gate)` *(mapper §3; validation §5)* `(unit)`
+- [x] `[HOR]` The gate is checked at **signal level** — every signal in a predicate, including bare percentiles and raw metrics, not just composite indices. `(unit: test_mapper_refuses_a_percentile_over_a_flag, test_signal_value_reaches_percentile_only_signals)` *(sys §3; validation §5; mapper §3)* `(unit)`
+- [x] `[HOR]` A `kind`/`status` mismatch in `validation.json` is rejected **before** the gate runs — a failed predictor cannot relabel as `asserted` to slip through. `(unit: test_predictive_can_never_be_asserted_and_descriptive_never_validated at the producer; test_gate_refuses_a_relabelled_signal at the consumer, D-032)` *(validation §3.8; mapper §3)* `(unit)`
+- [x] `[HOR]` A feature's `validation_status` is the most conservative claim type across all signals it reads (any FAIL-tier signal → feature fails; all-pass but mixed → `asserted`). `(unit: test_feature_status_is_the_most_conservative)` *(mapper §5)* `(unit)`
 - [ ] `[HOR]` **Register binding crosses the C3→C5 seam:** C5 may voice a forecast only from a `validated` signal and only a present-structural statement from an `asserted` one; a hybrid feature draws forecast strictly from its validated half. *(mapper §3, §5; validation §2.1.1)* `(review)`
-- [ ] `[HOR]` A `decorative: true` feature renders with an unvalidated marker and is excluded from diagnostic claims in the brief. *(validation §5; mapper §3)* `(unit, review)`
+- [x] `[HOR]` A `decorative: true` feature renders with an unvalidated marker and is excluded from diagnostic claims in the brief. `(unit: test_decorative_passes_the_gate_but_is_not_diagnostic; brief lint R4)` *(validation §5; mapper §3)* `(unit, review)`
 - [ ] `[HOR]` Graph-dependent features (foundation, corridor, bridge, tower) suppress or flag `degraded` when `graph_available: false`, `graph_degraded: true`, or node `load_index_degraded: true`. *(mapper §4.1; substrate §6.3)* `(unit)`
 - [ ] `[HOR]` A `contested`/divergent §3A corroboration does **not** change any `validation_status` and therefore does not change what the gate admits — it is a report-level finding only. *(validation §3A.1, §3A.8, §5)* `(unit)`
 

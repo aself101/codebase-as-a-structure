@@ -256,7 +256,7 @@ def test_skeleton_budget_is_judged_over_the_untouched_population(sub):
     # the budget judges jitter (rank + mixed); this test is about the population split, so
     # classify the victim's feature as rank explicitly whatever its signals are
     kinds = {**feature_kinds_from_skeleton(a), f"{victim['profile']}/{victim['feature']}": "rank"}
-    loose = {**SKELETON_BUDGET, "min_untouched_n": 1, "min_jitter_union": 0}
+    loose = {**SKELETON_BUDGET, "min_untouched_n": 1, "min_jitter_union": 0, "pinned_k": 1}
     # Without a touched set the verdict is untested, never a pass.
     assert skeleton_diff(a, b)["budget"]["verdict"] == "untested"
     assert skeleton_diff(a, b)["budget"]["reason"] == "touched_set_unavailable"
@@ -283,7 +283,7 @@ def test_skeleton_budget_floors_refuse_to_get_easier(sub):
         a,
         a,
         touched=set(),
-        commits_between=1,
+        commits_between=SKELETON_BUDGET["pinned_k"],
         budget={**SKELETON_BUDGET, "min_untouched_n": len(nodes) + 1},
     )
     assert small["budget"]["verdict"] == "untested"
@@ -293,7 +293,7 @@ def test_skeleton_budget_floors_refuse_to_get_easier(sub):
         a,
         a,
         touched=set(nodes[: len(nodes) * 3 // 4]),
-        commits_between=1,
+        commits_between=SKELETON_BUDGET["pinned_k"],
         budget={**SKELETON_BUDGET, "min_untouched_n": 1},
     )
     assert wide["budget"]["verdict"] == "untested"
@@ -490,7 +490,7 @@ def test_budget_refuses_a_tiny_jitter_population(sub):
         a,
         a,
         touched=set(),
-        commits_between=1,
+        commits_between=SKELETON_BUDGET["pinned_k"],
         budget={**SKELETON_BUDGET, "min_untouched_n": 1, "min_jitter_union": 10**6},
     )
     assert d["budget"]["verdict"] == "untested"
@@ -545,8 +545,60 @@ def test_decorative_churn_is_measured_and_never_judged(sub):
         a,
         b,
         touched=set(),
-        commits_between=1,
+        commits_between=SKELETON_BUDGET["pinned_k"],
         budget={**SKELETON_BUDGET, "min_untouched_n": 1, "min_jitter_union": 0},
     )
     assert d["untouched"]["decorative_changes"] == 1 and d["untouched"]["decorative_churn"] > 0
     assert d["untouched"]["jitter_churn"] == 0.0 and d["budget"]["verdict"] == "within_budget"
+
+
+def test_decorative_reason_must_name_the_ungrounded_signal_at_the_gate(sub, tmp_path):
+    """D-032 (Machiavelli C6): naming a grounded signal of the predicate excuses nothing."""
+    p = _write_ruleset(
+        tmp_path,
+        '[[feature]]\nname = "x"\npredicate = "load_index >= p90 and bug_pressure_index >= p90"\n'
+        'decorative = true\ndecorative_reason = "load_index is a blend (test)"\n',
+    )
+    rs = load_ruleset(p)  # the loader is satisfied: a signal is named
+    v = _validation(load_index="asserted", bug_pressure_index="unvalidated")
+    with pytest.raises(RulesetError, match="ungrounded"):
+        map_skeleton(sub, v, rs)
+    p2 = _write_ruleset(
+        tmp_path,
+        '[[feature]]\nname = "x"\npredicate = "load_index >= p90 and bug_pressure_index >= p90"\n'
+        'decorative = true\ndecorative_reason = "bug_pressure_index is unvalidated (test)"\n',
+    )
+    assert map_skeleton(sub, v, load_ruleset(p2))["summary"]["decorative_count"] >= 0
+
+
+def test_stability_k_cannot_be_loosened_below_spec():
+    from repo_substrate.validation.config import ValidationConfig
+
+    with pytest.raises(ValueError, match="stability_perturbation_k"):
+        ValidationConfig(stability_perturbation_k=5).validate()
+
+
+def test_gate_refuses_a_relabelled_signal(sub, tmp_path):
+    """D-032 (Wang Yangming G-1): the consumer checks kind/status legality, not only the producer."""
+    p = _write_ruleset(tmp_path, '[[feature]]\nname = "x"\npredicate = "centrality >= p90"\n')
+    v = _validation(centrality="asserted", bug_pressure_index="asserted")
+    v["signals"]["bug_pressure_index"]["kind"] = "predictive"
+    with pytest.raises(GateError, match="malformed validation.json"):
+        map_skeleton(sub, v, load_ruleset(p))
+
+
+def test_budget_is_untested_below_its_pinned_k(sub):
+    from repo_substrate.mapper.diff import SKELETON_BUDGET, skeleton_diff
+
+    base = load_ruleset(RULESET)
+    a = map_skeleton(sub, _all_asserted(base), base)
+    d = skeleton_diff(a, a, touched=set(), commits_between=5)
+    assert d["budget"]["verdict"] == "untested" and d["budget"]["reason"] == "below_pinned_k"
+    d2 = skeleton_diff(
+        a,
+        a,
+        touched=set(),
+        commits_between=SKELETON_BUDGET["pinned_k"],
+        budget={**SKELETON_BUDGET, "min_untouched_n": 1, "min_jitter_union": 0},
+    )
+    assert d2["budget"]["verdict"] == "within_budget"

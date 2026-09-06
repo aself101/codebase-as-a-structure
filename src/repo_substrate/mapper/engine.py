@@ -58,12 +58,31 @@ def check_gate(ruleset: Ruleset, validation: dict[str, Any]) -> dict[str, str]:
     """Return signal→status for every signal the ruleset reads; raise on a violation."""
     statuses: dict[str, str] = {}
     problems: list[str] = []
+    # validation §3.8 / §5 (D-032): a predictive signal may not arrive labelled asserted, nor a
+    # descriptive one validated — the relabel route by which a failed predictor re-enters as a
+    # description. The producer asserts this; the consumer, which is handed the document, checks it.
+    for name, rec in (validation.get("signals") or {}).items():
+        kind, status = rec.get("kind"), rec.get("status")
+        if (kind == "predictive" and status == "asserted") or (
+            kind == "descriptive" and status == "validated"
+        ):
+            raise GateError(
+                f"malformed validation.json: signal {name!r} is {kind} but carries status {status!r} (validation §3.8)"
+            )
     for f in ruleset.features:
         for sig in f.signals:
             st = _signal_status(validation, sig)
             statuses[sig] = st
             if not f.decorative and st not in OK_STATUSES:
                 problems.append(f"feature {f.name!r} reads {sig!r} with status {st!r}")
+        if f.decorative:
+            # D-030/D-032: the reason must name the signal that is actually ungrounded here —
+            # the loader cannot know which one that is; the gate can
+            ungrounded = [s for s in f.signals if statuses[s] not in OK_STATUSES]
+            if ungrounded and not any(s in str(f.decorative_reason) for s in ungrounded):
+                raise RulesetError(
+                    f"feature {f.name!r}: decorative_reason names none of its ungrounded signals {ungrounded}"
+                )
         for t in f.terms:
             if t.percentile is not None and (
                 (validation.get("signals") or {}).get(t.signal) or {}

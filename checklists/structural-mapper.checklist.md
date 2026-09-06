@@ -21,7 +21,7 @@
 - [ ] `[NOW][HOR]` A rule may reference a signal only if its `validation_status` is `validated` or `asserted`, **or** the rule is `decorative: true`. *(§3)* `(unit)`
 - [ ] `[NOW][HOR]` The gate is **signal-level**: every signal a predicate reads — composite index, percentile, **and** raw metric — is checked, closing the bare-percentile leak. *(§3)* `(unit)`
 - [ ] `[NOW][GATE]` An `unvalidated` or `untested` signal feeding a non-decorative feature is a **hard error** — C3 refuses to emit the skeleton until re-grounded or tagged decorative. *(§3)* `(unit)`
-- [ ] `[NOW][HOR]` `validated` and `asserted` **both fully license** a diagnostic feature; the distinction rides through provenance as a *register*, not a discount. *(§3)* `(review)`
+- [x] `[NOW][HOR]` `validated` and `asserted` both license a diagnostic feature; they are two *kinds* of grounding and `validated` is the stronger — the distinction rides through provenance as a register (D-004 Q1 withdrew the parity wording). *(§3)* `(unit: test_feature_status_is_the_most_conservative; review)`
 - [ ] `[NOW][HOR]` Register constraint is binding: an `asserted` signal licenses only a present-structural statement; a consequence/forecast may be voiced only from a `validated` signal; a hybrid draws its forecast strictly from its validated half. *(§3, validation §2.1.1)* `(review)`
 - [ ] `[NOW][GATE]` A `decorative: true` feature (neither predictive validation nor present-tense grounding) still renders but is flagged unvalidated and excluded from diagnostic claims in the brief. *(§3)* `(unit, review)`
 
@@ -51,7 +51,7 @@
 
 - [x] `[NOW][HOR]` **Archetype resolution** — not claimed in v0: `archetype` is `null` and a ruleset with an `[archetype]` table is refused (D-019; corpus-relative, Phase 3). *(§7 Q1)* `(unit: test_archetype_is_not_claimed_and_cannot_be_smuggled_in)`
 - [ ] `[RULESET]` **Predicate threshold defaults** — `p`/`q` cutoffs for conjunctive features, set per-profile, interacting with the substrate percentile distribution (start from substrate §9 `p=0.90`, `q=0.10`). *(§7 Q2)* `(fixture)`
-- [x] `[NOW][DET]` **Stability budget** — untouched feature churn ≤ 0.05 and untouched strata movement ≤ 0.05 per comparison, floors ≥ 30 untouched / ≤ 0.5 touched; verdict `untested` without a touched set, never a silent pass (D-018). *(§7 Q3)* `(unit: test_skeleton_budget_is_judged_over_the_untouched_population, test_skeleton_budget_floors_refuse_to_get_easier; fixture: reports/2026-09-05-m2/skeleton-budget.md)`
+- [x] `[NOW][DET]` **Stability budget** — jitter (rank + mixed feature churn) ≤ 0.05 and untouched strata movement ≤ 0.05 per comparison, floors ≥ 30 untouched / ≤ 0.5 touched / ≥ 20 in the jitter union, judged only at K 25–50; verdict `untested` with a reason otherwise, never a silent pass (D-018, D-024, D-026, D-032). *(§7 Q3)* `(unit: test_skeleton_budget_is_judged_over_the_untouched_population, test_skeleton_budget_floors_refuse_to_get_easier; fixture: reports/2026-09-05-m2/skeleton-budget.md)`
 - [ ] `[RULESET]` **C2 (signal) coupling** — which features may read `signal.json` and which become unavailable when C2 is skipped (C2 optional in v0). *(§7 Q4)* `(unit)`
 
 ---

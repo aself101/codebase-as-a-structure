@@ -1,0 +1,901 @@
+{
+ "after": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "ac41823b9e27e3a8079ce487c9772c5ef8f1e226",
+   "name": "typeorm"
+  },
+  "skeleton_hash": "a005ccd25b123dfb45d584088302215085c7b5252d88337e814545844c6d6130"
+ },
+ "before": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "f5c6aa3bfe9ca402e595cbced6e48cd65ec2bea5",
+   "name": "typeorm"
+  },
+  "skeleton_hash": "fb1f06f9f784e9e926c250d2a59e85cd20ac0b60571e889098a11e1c6fe40b0d"
+ },
+ "born": 0,
+ "budget": {
+  "feature_churn_max": 0.05,
+  "k": 25,
+  "max_k": 50,
+  "max_touched_frac": 0.5,
+  "min_jitter_union": 20,
+  "min_untouched_n": 30,
+  "operand": "jitter: rank + mixed feature churn, and strata moves, over untouched rooms",
+  "pinned_k": 25,
+  "reason": null,
+  "strata_moved_max": 0.05,
+  "verdict": "within_budget"
+ },
+ "commits_between": 25,
+ "common_nodes": 583,
+ "deleted": 0,
+ "feature_churn": 0.13493253373313344,
+ "kinds": {
+  "maintainability/crack": "rank",
+  "maintainability/dark_room": "clock",
+  "maintainability/flooded_basement": "mixed",
+  "maintainability/foundation": "rank",
+  "maintainability/hub": "rank",
+  "maintainability/lit_room": "clock",
+  "maintainability/scaffolding": "rank",
+  "maintainability/toothpick_wing": "rank",
+  "onboarding/corridor": "rank",
+  "onboarding/foundation": "rank",
+  "onboarding/import_root": "rank",
+  "onboarding/leaf_utility": "rank",
+  "onboarding/package_entry": "rank"
+ },
+ "per_feature": {
+  "maintainability/dark_room": {
+   "added": [],
+   "after": 70,
+   "before": 74,
+   "evidence": {
+    "src/metadata/types/OnDeleteType.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 1574.2371
+     }
+    },
+    "src/metadata/types/OnUpdateType.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 1574.2371
+     }
+    },
+    "src/metadata/types/RelationTypes.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 1574.2371
+     }
+    },
+    "src/metadata/types/TreeTypes.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 1574.2371
+     }
+    }
+   },
+   "jaccard": 0.9459459459459459,
+   "kind": "clock",
+   "removed": [
+    "src/metadata/types/OnDeleteType.ts",
+    "src/metadata/types/OnUpdateType.ts",
+    "src/metadata/types/RelationTypes.ts",
+    "src/metadata/types/TreeTypes.ts"
+   ],
+   "untouched_changes": 0
+  },
+  "maintainability/flooded_basement": {
+   "added": [],
+   "after": 70,
+   "before": 74,
+   "evidence": {
+    "src/metadata/types/OnDeleteType.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 1574.2371,
+      "load_index": 0.7668
+     }
+    },
+    "src/metadata/types/OnUpdateType.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 1574.2371,
+      "load_index": 0.7488
+     }
+    },
+    "src/metadata/types/RelationTypes.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 1574.2371,
+      "load_index": 0.5967
+     }
+    },
+    "src/metadata/types/TreeTypes.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 1574.2371,
+      "load_index": 0.6113
+     }
+    }
+   },
+   "jaccard": 0.9459459459459459,
+   "kind": "mixed",
+   "removed": [
+    "src/metadata/types/OnDeleteType.ts",
+    "src/metadata/types/OnUpdateType.ts",
+    "src/metadata/types/RelationTypes.ts",
+    "src/metadata/types/TreeTypes.ts"
+   ],
+   "untouched_changes": 0
+  },
+  "maintainability/foundation": {
+   "added": [
+    "src/util/DateUtils.ts"
+   ],
+   "after": 59,
+   "before": 59,
+   "evidence": {
+    "packages/codemod/src/transforms/todo.ts": {
+     "after": null,
+     "before": {
+      "load_index": 0.8022
+     }
+    },
+    "src/util/DateUtils.ts": {
+     "after": {
+      "load_index": 0.8202
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.9666666666666667,
+   "kind": "rank",
+   "removed": [
+    "packages/codemod/src/transforms/todo.ts"
+   ],
+   "untouched_changes": 2
+  },
+  "maintainability/hub": {
+   "added": [],
+   "after": 60,
+   "before": 60,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/lit_room": {
+   "added": [
+    "packages/codemod/src/transforms/v1/mongodb-types.ts",
+    "src/commands/MigrationGenerateCommand.ts",
+    "src/common/PrimitiveCriteria.ts",
+    "src/connection/ConnectionMetadataBuilder.ts",
+    "src/data-source/DataSource.ts",
+    "src/decorator/ForeignKey.ts",
+    "src/decorator/columns/PrimaryGeneratedColumn.ts",
+    "src/decorator/options/RelationOptions.ts",
+    "src/decorator/options/SpatialColumnOptions.ts",
+    "src/decorator/tree/TreeChildren.ts",
+    "src/driver/aurora-mysql/AuroraMysqlDriver.ts",
+    "src/driver/better-sqlite3/BetterSqlite3QueryRunner.ts",
+    "src/driver/capacitor/CapacitorDataSourceOptions.ts",
+    "src/driver/cockroachdb/CockroachDriver.ts",
+    "src/driver/sqljs/SqljsQueryRunner.ts",
+    "src/entity-schema/EntitySchemaRelationOptions.ts",
+    "src/find-options/FindOneOptions.ts",
+    "src/find-options/FindOptionsWhere.ts",
+    "src/logger/AbstractLogger.ts",
+    "src/logger/Logger.ts",
+    "src/metadata-builder/JunctionEntityMetadataBuilder.ts",
+    "src/metadata/ColumnMetadata.ts",
+    "src/metadata/IndexMetadata.ts",
+    "src/metadata/UniqueMetadata.ts",
+    "src/metadata/types/OnDeleteType.ts",
+    "src/metadata/types/OnUpdateType.ts",
+    "src/metadata/types/RelationTypeInFunction.ts",
+    "src/metadata/types/RelationTypes.ts",
+    "src/metadata/types/TreeTypes.ts",
+    "src/persistence/subject-builder/ManyToManySubjectBuilder.ts",
+    "src/persistence/subject-builder/OneToManySubjectBuilder.ts",
+    "src/query-builder/InsertQueryBuilder.ts",
+    "src/query-builder/WhereClause.ts",
+    "src/query-builder/transformer/RawSqlResultsToEntityTransformer.ts",
+    "src/repository/BaseEntity.ts",
+    "src/repository/MongoRepository.ts",
+    "src/repository/Repository.ts",
+    "src/schema-builder/RdbmsSchemaBuilder.ts",
+    "src/util/VersionUtils.ts"
+   ],
+   "after": 60,
+   "before": 59,
+   "evidence": {
+    "docs/docusaurus.config.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 50.4391
+     }
+    },
+    "gulpfile.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 2.5082
+     }
+    },
+    "packages/codemod/src/transforms/ast-helpers.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 74.9295
+     }
+    },
+    "packages/codemod/src/transforms/v1/column-readonly.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 74.9295
+     }
+    },
+    "packages/codemod/src/transforms/v1/column-width-zerofill.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 74.9295
+     }
+    },
+    "packages/codemod/src/transforms/v1/connection-to-datasource.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 76.5025
+     }
+    },
+    "packages/codemod/src/transforms/v1/datasource-sqlite-options.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 74.9295
+     }
+    },
+    "packages/codemod/src/transforms/v1/mongodb-types.ts": {
+     "after": {
+      "last_touched_days": 0.0
+     },
+     "before": null
+    },
+    "packages/legacy-naming-strategies/eslint.config.mjs": {
+     "after": null,
+     "before": {
+      "last_touched_days": 64.6508
+     }
+    },
+    "packages/legacy-naming-strategies/src/index.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 64.6508
+     }
+    },
+    "packages/legacy-naming-strategies/src/legacy-oracle-naming-strategy.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 64.6508
+     }
+    },
+    "packages/legacy-naming-strategies/src/naming-strategy-v03.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 64.6508
+     }
+    },
+    "playground/src/entity/User.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 76.3294
+     }
+    },
+    "playground/src/index.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 76.3294
+     }
+    },
+    "playground/src/ormconfig.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 76.3294
+     }
+    },
+    "src/commands/MigrationGenerateCommand.ts": {
+     "after": {
+      "last_touched_days": 50.662
+     },
+     "before": null
+    },
+    "src/common/PrimitiveCriteria.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/connection/ConnectionMetadataBuilder.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/data-source/DataSource.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/decorator/ForeignKey.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/decorator/columns/PrimaryGeneratedColumn.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/decorator/options/RelationOptions.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/decorator/options/SpatialColumnOptions.ts": {
+     "after": {
+      "last_touched_days": 6.1311
+     },
+     "before": null
+    },
+    "src/decorator/tree/TreeChildren.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/driver/aurora-mysql/AuroraMysqlDriver.ts": {
+     "after": {
+      "last_touched_days": 7.0495
+     },
+     "before": null
+    },
+    "src/driver/better-sqlite3/BetterSqlite3QueryRunner.ts": {
+     "after": {
+      "last_touched_days": 6.7779
+     },
+     "before": null
+    },
+    "src/driver/capacitor/CapacitorDataSourceOptions.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/driver/cockroachdb/CockroachDriver.ts": {
+     "after": {
+      "last_touched_days": 7.0495
+     },
+     "before": null
+    },
+    "src/driver/mongodb/typings.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 20.2385
+     }
+    },
+    "src/driver/mysql/MysqlQueryRunner.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 75.3291
+     }
+    },
+    "src/driver/sap/SapQueryRunner.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 75.3291
+     }
+    },
+    "src/driver/sqljs/SqljsQueryRunner.ts": {
+     "after": {
+      "last_touched_days": 6.8035
+     },
+     "before": null
+    },
+    "src/driver/sqlserver/SqlServerQueryRunner.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 51.1611
+     }
+    },
+    "src/driver/types/InvalidFindOptionsWhereBehavior.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 26.1697
+     }
+    },
+    "src/entity-schema/EntitySchemaRelationOptions.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/error/AlreadyHasActiveConnectionError.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 28.1232
+     }
+    },
+    "src/find-options/FindOneOptions.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/find-options/FindOptionsWhere.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/find-options/operator/JsonContains.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 54.4752
+     }
+    },
+    "src/logger/AbstractLogger.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/logger/Logger.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/metadata-builder/ClosureJunctionEntityMetadataBuilder.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 14.0983
+     }
+    },
+    "src/metadata-builder/JunctionEntityMetadataBuilder.ts": {
+     "after": {
+      "last_touched_days": 43.9204
+     },
+     "before": null
+    },
+    "src/metadata/ColumnMetadata.ts": {
+     "after": {
+      "last_touched_days": 41.9801
+     },
+     "before": null
+    },
+    "src/metadata/IndexMetadata.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/metadata/UniqueMetadata.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/metadata/types/ClosureTreeOptions.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 14.0983
+     }
+    },
+    "src/metadata/types/OnDeleteType.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/metadata/types/OnUpdateType.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/metadata/types/RelationTypeInFunction.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/metadata/types/RelationTypes.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/metadata/types/TreeTypes.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/naming-strategy/DefaultNamingStrategy.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 64.6508
+     }
+    },
+    "src/naming-strategy/NamingStrategyInterface.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 64.6508
+     }
+    },
+    "src/persistence/EntityPersistExecutor.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 64.5648
+     }
+    },
+    "src/persistence/SubjectChangedColumnsComputer.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 59.3295
+     }
+    },
+    "src/persistence/SubjectDatabaseEntityLoader.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 64.5648
+     }
+    },
+    "src/persistence/SubjectExecutor.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 35.1767
+     }
+    },
+    "src/persistence/subject-builder/ManyToManySubjectBuilder.ts": {
+     "after": {
+      "last_touched_days": 35.0354
+     },
+     "before": null
+    },
+    "src/persistence/subject-builder/OneToManySubjectBuilder.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/query-builder/InsertQueryBuilder.ts": {
+     "after": {
+      "last_touched_days": 41.6524
+     },
+     "before": null
+    },
+    "src/query-builder/JoinAttribute.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 20.1615
+     }
+    },
+    "src/query-builder/QueryExpressionMap.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 54.498
+     }
+    },
+    "src/query-builder/SoftDeleteQueryBuilder.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 58.1279
+     }
+    },
+    "src/query-builder/WhereClause.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/query-builder/relation-id/RelationIdLoader.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 64.5648
+     }
+    },
+    "src/query-builder/transformer/DocumentToEntityTransformer.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 20.2385
+     }
+    },
+    "src/query-builder/transformer/RawSqlResultsToEntityTransformer.ts": {
+     "after": {
+      "last_touched_days": 5.9492
+     },
+     "before": null
+    },
+    "src/query-runner/BaseQueryRunner.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 75.3291
+     }
+    },
+    "src/repository/BaseEntity.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/repository/MongoRepository.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/repository/Repository.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/repository/TreeRepository.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 14.0983
+     }
+    },
+    "src/schema-builder/RdbmsSchemaBuilder.ts": {
+     "after": {
+      "last_touched_days": 54.6981
+     },
+     "before": null
+    },
+    "src/util/RandomGenerator.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 2.5082
+     }
+    },
+    "src/util/StringUtils.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 2.5082
+     }
+    },
+    "src/util/VersionUtils.ts": {
+     "after": {
+      "last_touched_days": 46.4375
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.21428571428571427,
+   "kind": "clock",
+   "removed": [
+    "docs/docusaurus.config.ts",
+    "gulpfile.ts",
+    "packages/codemod/src/transforms/ast-helpers.ts",
+    "packages/codemod/src/transforms/v1/column-readonly.ts",
+    "packages/codemod/src/transforms/v1/column-width-zerofill.ts",
+    "packages/codemod/src/transforms/v1/connection-to-datasource.ts",
+    "packages/codemod/src/transforms/v1/datasource-sqlite-options.ts",
+    "packages/legacy-naming-strategies/eslint.config.mjs",
+    "packages/legacy-naming-strategies/src/index.ts",
+    "packages/legacy-naming-strategies/src/legacy-oracle-naming-strategy.ts",
+    "packages/legacy-naming-strategies/src/naming-strategy-v03.ts",
+    "playground/src/entity/User.ts",
+    "playground/src/index.ts",
+    "playground/src/ormconfig.ts",
+    "src/driver/mongodb/typings.ts",
+    "src/driver/mysql/MysqlQueryRunner.ts",
+    "src/driver/sap/SapQueryRunner.ts",
+    "src/driver/sqlserver/SqlServerQueryRunner.ts",
+    "src/driver/types/InvalidFindOptionsWhereBehavior.ts",
+    "src/error/AlreadyHasActiveConnectionError.ts",
+    "src/find-options/operator/JsonContains.ts",
+    "src/metadata-builder/ClosureJunctionEntityMetadataBuilder.ts",
+    "src/metadata/types/ClosureTreeOptions.ts",
+    "src/naming-strategy/DefaultNamingStrategy.ts",
+    "src/naming-strategy/NamingStrategyInterface.ts",
+    "src/persistence/EntityPersistExecutor.ts",
+    "src/persistence/SubjectChangedColumnsComputer.ts",
+    "src/persistence/SubjectDatabaseEntityLoader.ts",
+    "src/persistence/SubjectExecutor.ts",
+    "src/query-builder/JoinAttribute.ts",
+    "src/query-builder/QueryExpressionMap.ts",
+    "src/query-builder/SoftDeleteQueryBuilder.ts",
+    "src/query-builder/relation-id/RelationIdLoader.ts",
+    "src/query-builder/transformer/DocumentToEntityTransformer.ts",
+    "src/query-runner/BaseQueryRunner.ts",
+    "src/repository/TreeRepository.ts",
+    "src/util/RandomGenerator.ts",
+    "src/util/StringUtils.ts"
+   ],
+   "untouched_changes": 38
+  },
+  "maintainability/scaffolding": {
+   "added": [
+    "src/driver/types/ReplicationMode.ts"
+   ],
+   "after": 164,
+   "before": 163,
+   "evidence": {
+    "src/driver/types/ReplicationMode.ts": {
+     "after": {
+      "reinforcement_index": 0.6098
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.9939024390243902,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 1
+  },
+  "onboarding/corridor": {
+   "added": [],
+   "after": 37,
+   "before": 37,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/foundation": {
+   "added": [
+    "src/util/DateUtils.ts"
+   ],
+   "after": 59,
+   "before": 59,
+   "evidence": {
+    "packages/codemod/src/transforms/todo.ts": {
+     "after": null,
+     "before": {
+      "load_index": 0.8022
+     }
+    },
+    "src/util/DateUtils.ts": {
+     "after": {
+      "load_index": 0.8202
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.9666666666666667,
+   "kind": "rank",
+   "removed": [
+    "packages/codemod/src/transforms/todo.ts"
+   ],
+   "untouched_changes": 2
+  },
+  "onboarding/import_root": {
+   "added": [],
+   "after": 1,
+   "before": 1,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/leaf_utility": {
+   "added": [],
+   "after": 33,
+   "before": 33,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/package_entry": {
+   "added": [],
+   "after": 6,
+   "before": 6,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  }
+ },
+ "strata_moved": [],
+ "strata_moved_frac": 0.0,
+ "touched": {
+  "frac": 0.09262435677530018,
+  "n": 54,
+  "nodes": [
+   "eslint.config.mjs",
+   "packages/codemod/eslint.config.mjs",
+   "packages/codemod/src/transforms/v1/mongodb-types.ts",
+   "src/cache/DbQueryResultCache.ts",
+   "src/commands/MigrationGenerateCommand.ts",
+   "src/common/PrimitiveCriteria.ts",
+   "src/connection/ConnectionMetadataBuilder.ts",
+   "src/connection/ConnectionOptionsReader.ts",
+   "src/data-source/BaseDataSourceOptions.ts",
+   "src/data-source/DataSource.ts",
+   "src/decorator/ForeignKey.ts",
+   "src/decorator/columns/PrimaryGeneratedColumn.ts",
+   "src/decorator/options/RelationOptions.ts",
+   "src/decorator/options/SpatialColumnOptions.ts",
+   "src/decorator/tree/TreeChildren.ts",
+   "src/driver/aurora-mysql/AuroraMysqlDriver.ts",
+   "src/driver/better-sqlite3/BetterSqlite3QueryRunner.ts",
+   "src/driver/capacitor/CapacitorDataSourceOptions.ts",
+   "src/driver/cockroachdb/CockroachDriver.ts",
+   "src/driver/cockroachdb/CockroachQueryRunner.ts",
+   "src/driver/mysql/MysqlDriver.ts",
+   "src/driver/postgres/PostgresDriver.ts",
+   "src/driver/postgres/PostgresQueryRunner.ts",
+   "src/driver/sqljs/SqljsQueryRunner.ts",
+   "src/entity-manager/EntityManager.ts",
+   "src/entity-manager/MongoEntityManager.ts",
+   "src/entity-schema/EntitySchemaRelationOptions.ts",
+   "src/find-options/FindOneOptions.ts",
+   "src/find-options/FindOptionsWhere.ts",
+   "src/index.ts",
+   "src/logger/AbstractLogger.ts",
+   "src/logger/Logger.ts",
+   "src/metadata-builder/JunctionEntityMetadataBuilder.ts",
+   "src/metadata/ColumnMetadata.ts",
+   "src/metadata/IndexMetadata.ts",
+   "src/metadata/UniqueMetadata.ts",
+   "src/metadata/types/OnDeleteType.ts",
+   "src/metadata/types/OnUpdateType.ts",
+   "src/metadata/types/RelationTypeInFunction.ts",
+   "src/metadata/types/RelationTypes.ts",
+   "src/metadata/types/TreeTypes.ts",
+   "src/persistence/subject-builder/ManyToManySubjectBuilder.ts",
+   "src/persistence/subject-builder/OneToManySubjectBuilder.ts",
+   "src/query-builder/InsertQueryBuilder.ts",
+   "src/query-builder/SelectQueryBuilder.ts",
+   "src/query-builder/UpdateQueryBuilder.ts",
+   "src/query-builder/WhereClause.ts",
+   "src/query-builder/transformer/RawSqlResultsToEntityTransformer.ts",
+   "src/repository/BaseEntity.ts",
+   "src/repository/MongoRepository.ts",
+   "src/repository/Repository.ts",
+   "src/schema-builder/RdbmsSchemaBuilder.ts",
+   "src/util/OrmUtils.ts",
+   "src/util/VersionUtils.ts"
+  ]
+ },
+ "untouched": {
+  "by_kind": {
+   "clock": {
+    "changes": 38,
+    "churn": 0.3333333333333333,
+    "union": 114
+   },
+   "mixed": {
+    "changes": 0,
+    "churn": 0.0,
+    "union": 70
+   },
+   "rank": {
+    "changes": 5,
+    "churn": 0.013888888888888888,
+    "union": 360
+   }
+  },
+  "clock_churn": 0.3333333333333333,
+  "decorative_changes": 8,
+  "decorative_churn": 0.18604651162790697,
+  "feature_churn": 0.07904411764705882,
+  "jitter_churn": 0.011627906976744186,
+  "n": 529,
+  "strata_moved": [],
+  "strata_moved_frac": 0.0
+ }
+}

@@ -261,7 +261,10 @@ class ValidationConfig:
             (self.signal_floor_mult >= 1.0, "signal_floor_mult must be >= 1"),
             (self.min_repos >= 2, "min_repos must be >= 2"),
             (self.m_asserted >= 2, "m_asserted must be >= 2"),
-            (self.stability_perturbation_k >= 1, "stability_perturbation_k must be >= 1"),
+            (
+                self.stability_perturbation_k >= 25,
+                "stability_perturbation_k may not be below the spec default 25 (D-031; D-024 showed K = 5 cannot fire)",
+            ),
             (0.0 < self.stability_eps <= 0.05, "stability_eps must be in (0, 0.05]"),
             (
                 self.stability_eps < self.stability_delta <= 0.15,

@@ -1,0 +1,443 @@
+{
+ "after": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "3f20a57c6293371b6193d3fb6746c2b7b2ac2689",
+   "name": "eslint"
+  },
+  "skeleton_hash": "091fd3d14cdb8abd3629dd986e0abd1a15a72654d919a4b60c70f2c323de64bb"
+ },
+ "before": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "5c8c2417b9ff462f2dc4e54a062c59135b45b845",
+   "name": "eslint"
+  },
+  "skeleton_hash": "a3de6ca86f745e0e29f92cbf66357ed0b1f6d13ea1a1d228847e207ceab98c17"
+ },
+ "born": 1,
+ "budget": {
+  "feature_churn_max": 0.05,
+  "k": 25,
+  "max_k": 50,
+  "max_touched_frac": 0.5,
+  "min_jitter_union": 20,
+  "min_untouched_n": 30,
+  "operand": "jitter: rank + mixed feature churn, and strata moves, over untouched rooms",
+  "pinned_k": 25,
+  "reason": null,
+  "strata_moved_max": 0.05,
+  "verdict": "within_budget"
+ },
+ "commits_between": 25,
+ "common_nodes": 472,
+ "deleted": 0,
+ "feature_churn": 0.03304904051172708,
+ "kinds": {
+  "maintainability/crack": "rank",
+  "maintainability/dark_room": "clock",
+  "maintainability/flooded_basement": "mixed",
+  "maintainability/foundation": "rank",
+  "maintainability/hub": "rank",
+  "maintainability/lit_room": "clock",
+  "maintainability/scaffolding": "rank",
+  "maintainability/toothpick_wing": "rank",
+  "onboarding/corridor": "rank",
+  "onboarding/foundation": "rank",
+  "onboarding/import_root": "rank",
+  "onboarding/leaf_utility": "rank",
+  "onboarding/package_entry": "rank"
+ },
+ "per_feature": {
+  "maintainability/dark_room": {
+   "added": [],
+   "after": 83,
+   "before": 83,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "clock",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/flooded_basement": {
+   "added": [],
+   "after": 75,
+   "before": 75,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "mixed",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/foundation": {
+   "added": [
+    "lib/cli-engine/lint-result-cache.js"
+   ],
+   "after": 48,
+   "before": 48,
+   "evidence": {
+    "lib/api.js": {
+     "after": null,
+     "before": {
+      "load_index": 0.7711
+     }
+    },
+    "lib/cli-engine/lint-result-cache.js": {
+     "after": {
+      "load_index": 0.7709
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.9591836734693877,
+   "kind": "rank",
+   "removed": [
+    "lib/api.js"
+   ],
+   "untouched_changes": 1
+  },
+  "maintainability/hub": {
+   "added": [],
+   "after": 50,
+   "before": 50,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/lit_room": {
+   "added": [
+    "lib/cli-engine/lint-result-cache.js",
+    "lib/cli.js",
+    "lib/eslint/eslint-helpers.js",
+    "lib/languages/js/source-code/source-code.js",
+    "lib/linter/code-path-analysis/code-path-analyzer.js",
+    "lib/linter/linter.js",
+    "lib/rules/new-cap.js",
+    "lib/rules/no-extra-bind.js",
+    "lib/rules/no-unexpected-multiline.js",
+    "lib/rules/no-unreachable.js",
+    "tools/check-emfile-handling.js"
+   ],
+   "after": 47,
+   "before": 51,
+   "evidence": {
+    "docs/src/assets/js/css-vars-ponyfill@2.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 51.0454
+     }
+    },
+    "docs/src/assets/js/inert-polyfill.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 51.0454
+     }
+    },
+    "lib/cli-engine/lint-result-cache.js": {
+     "after": {
+      "last_touched_days": 0.0169
+     },
+     "before": null
+    },
+    "lib/cli.js": {
+     "after": {
+      "last_touched_days": 0.0626
+     },
+     "before": null
+    },
+    "lib/eslint/eslint-helpers.js": {
+     "after": {
+      "last_touched_days": 0.0626
+     },
+     "before": null
+    },
+    "lib/languages/js/source-code/source-code.js": {
+     "after": {
+      "last_touched_days": 0.2652
+     },
+     "before": null
+    },
+    "lib/linter/code-path-analysis/code-path-analyzer.js": {
+     "after": {
+      "last_touched_days": 0.0626
+     },
+     "before": null
+    },
+    "lib/linter/linter.js": {
+     "after": {
+      "last_touched_days": 0.0626
+     },
+     "before": null
+    },
+    "lib/rules/class-methods-use-this.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 37.3754
+     }
+    },
+    "lib/rules/eqeqeq.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 49.8924
+     }
+    },
+    "lib/rules/func-name-matching.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 51.0454
+     }
+    },
+    "lib/rules/generator-star-spacing.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 51.0454
+     }
+    },
+    "lib/rules/indent.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 51.0454
+     }
+    },
+    "lib/rules/max-nested-callbacks.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 46.8307
+     }
+    },
+    "lib/rules/new-cap.js": {
+     "after": {
+      "last_touched_days": 3.0196
+     },
+     "before": null
+    },
+    "lib/rules/no-extra-bind.js": {
+     "after": {
+      "last_touched_days": 6.2566
+     },
+     "before": null
+    },
+    "lib/rules/no-mixed-spaces-and-tabs.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 51.0454
+     }
+    },
+    "lib/rules/no-promise-executor-return.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 51.0454
+     }
+    },
+    "lib/rules/no-script-url.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 51.0454
+     }
+    },
+    "lib/rules/no-shadow.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 51.0454
+     }
+    },
+    "lib/rules/no-unexpected-multiline.js": {
+     "after": {
+      "last_touched_days": 0.2818
+     },
+     "before": null
+    },
+    "lib/rules/no-unreachable.js": {
+     "after": {
+      "last_touched_days": 3.2895
+     },
+     "before": null
+    },
+    "lib/rules/preserve-caught-error.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 38.5489
+     }
+    },
+    "lib/shared/serialization.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 38.1022
+     }
+    },
+    "tools/check-emfile-handling.js": {
+     "after": {
+      "last_touched_days": 0.9913
+     },
+     "before": null
+    },
+    "tools/config-rule.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 46.1184
+     }
+    }
+   },
+   "jaccard": 0.5806451612903226,
+   "kind": "clock",
+   "removed": [
+    "docs/src/assets/js/css-vars-ponyfill@2.js",
+    "docs/src/assets/js/inert-polyfill.js",
+    "lib/rules/class-methods-use-this.js",
+    "lib/rules/eqeqeq.js",
+    "lib/rules/func-name-matching.js",
+    "lib/rules/generator-star-spacing.js",
+    "lib/rules/indent.js",
+    "lib/rules/max-nested-callbacks.js",
+    "lib/rules/no-mixed-spaces-and-tabs.js",
+    "lib/rules/no-promise-executor-return.js",
+    "lib/rules/no-script-url.js",
+    "lib/rules/no-shadow.js",
+    "lib/rules/preserve-caught-error.js",
+    "lib/shared/serialization.js",
+    "tools/config-rule.js"
+   ],
+   "untouched_changes": 15
+  },
+  "maintainability/scaffolding": {
+   "added": [
+    "lib/cli-engine/lint-result-cache.js"
+   ],
+   "after": 370,
+   "before": 369,
+   "evidence": {
+    "lib/cli-engine/lint-result-cache.js": {
+     "after": {
+      "reinforcement_index": 0.9805
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.9972972972972973,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/corridor": {
+   "added": [],
+   "after": 22,
+   "before": 22,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/foundation": {
+   "added": [
+    "lib/cli-engine/lint-result-cache.js"
+   ],
+   "after": 48,
+   "before": 48,
+   "evidence": {
+    "lib/api.js": {
+     "after": null,
+     "before": {
+      "load_index": 0.7711
+     }
+    },
+    "lib/cli-engine/lint-result-cache.js": {
+     "after": {
+      "load_index": 0.7709
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.9591836734693877,
+   "kind": "rank",
+   "removed": [
+    "lib/api.js"
+   ],
+   "untouched_changes": 1
+  },
+  "onboarding/import_root": {
+   "added": [],
+   "after": 19,
+   "before": 19,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/leaf_utility": {
+   "added": [],
+   "after": 148,
+   "before": 148,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/package_entry": {
+   "added": [],
+   "after": 11,
+   "before": 11,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  }
+ },
+ "strata_moved": [],
+ "strata_moved_frac": 0.0,
+ "touched": {
+  "frac": 0.036016949152542374,
+  "n": 17,
+  "nodes": [
+   "eslint.config.js",
+   "lib/cli-engine/lint-result-cache.js",
+   "lib/cli.js",
+   "lib/config/config-loader.js",
+   "lib/eslint/eslint-helpers.js",
+   "lib/eslint/eslint.js",
+   "lib/languages/js/source-code/source-code.js",
+   "lib/linter/code-path-analysis/code-path-analyzer.js",
+   "lib/linter/code-path-analysis/debug-helpers.js",
+   "lib/linter/linter.js",
+   "lib/rules/new-cap.js",
+   "lib/rules/no-extra-bind.js",
+   "lib/rules/no-unexpected-multiline.js",
+   "lib/rules/no-unreachable.js",
+   "lib/rules/prefer-object-has-own.js",
+   "tools/check-emfile-handling.js",
+   "tools/test-ecosystem/index.mjs"
+  ]
+ },
+ "untouched": {
+  "by_kind": {
+   "clock": {
+    "changes": 15,
+    "churn": 0.1171875,
+    "union": 128
+   },
+   "mixed": {
+    "changes": 0,
+    "churn": 0.0,
+    "union": 75
+   },
+   "rank": {
+    "changes": 2,
+    "churn": 0.00291970802919708,
+    "union": 685
+   }
+  },
+  "clock_churn": 0.1171875,
+  "decorative_changes": 1,
+  "decorative_churn": 0.024390243902439025,
+  "feature_churn": 0.019144144144144143,
+  "jitter_churn": 0.002631578947368421,
+  "n": 455,
+  "strata_moved": [],
+  "strata_moved_frac": 0.0
+ }
+}

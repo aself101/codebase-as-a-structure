@@ -95,6 +95,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "features": sorted(s.get("decorative_features") or []),
         },
         "co_located_count": s.get("co_located_count", 0),
+        "calibration": "in-repo, self-relative (system spec §5.3); one frame — stability is read from a time-lapse, not from this page",
         "features": [feats[k] for k in sorted(feats)],
         "rooms": {
             nid: {
@@ -652,7 +653,8 @@ def render_brief(
         f"numbers come from the facts sheet; decorative features are cited by count only and never as diagnosis; a consequence-implying name carries its position name where first used; no whole-building label. "
         f"What it cannot check: a consequence voiced without a listed word, a computed number that happens to match, a room's function inferred from its name. Profile {facts_doc['profile']}"
         + (f" + {', '.join(facts_doc['overlays'])}" if facts_doc["overlays"] else "")
-        + f", geometry {facts_doc['geometry']}, skeleton `{facts_doc['skeleton_hash'][:12]}…`, facts `{facts_doc['facts_hash'][:12]}…`.*\n\n"
+        + f", geometry {facts_doc['geometry']}, skeleton `{facts_doc['skeleton_hash'][:12]}…`, facts `{facts_doc['facts_hash'][:12]}…`. "
+        f"Calibration: {facts_doc.get('calibration', 'in-repo, self-relative')}.*\n\n"
     )
     prov = (
         "\n## Provenance\n\n"
