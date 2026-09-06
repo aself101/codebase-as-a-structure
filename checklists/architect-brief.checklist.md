@@ -11,6 +11,6 @@ Tags: `[NOW]` required for M3; `[HOR]` anti-horoscope; `[PROV]` provenance; `[DE
 - [x] `[NOW][HOR]` R6: no whole-building label. *(§1, D-019)* `(unit)`
 - [x] `[NOW][HOR]` A failing brief is written marked FAILED, exit 1; the violations are fed back once. *(§2.4)* `(unit: test_run_brief_regenerates_once_and_marks_failure)`
 - [x] `[NOW][PROV]` Provenance (model served, request id, attempt, facts hash, skeleton hash) is on the page. *(§2.2)* `(unit)`
-- [ ] `[NOW][HOR]` Real briefs over the four reference skeletons pass the lint. *(§2)* `(fixture: reports/2026-09-06-m3/)`
+- [x] `[NOW][HOR]` Real briefs over the four reference skeletons pass the lint. *(§2)* `(fixture: reports/2026-09-06-m3/, 2026-09-06, second attempt on each)`
 - [ ] `[HOR]` Hostile-reader model pass. *(§5 Q1)*
 - [ ] `[HOR]` Per-signal lexicon widening when an index is validated. *(§5 Q3)*

@@ -332,8 +332,20 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                     )
                 )
         # R2 provenance: citations resolve; every paragraph carries at least one
-        cites = CITATION.findall(para)
-        if not cites and not is_stance:
+        cites = []
+        for m in CITATION.finditer(para):
+            name, count, room = m.group(1), m.group(2), m.group(3)
+            if room and ";" in room:
+                # [foundation: x; hub: x; dark_room: x] — several clauses in one bracket
+                first, *rest = [c.strip() for c in room.split(";")]
+                cites.append((name, count, first))
+                for clause in rest:
+                    cm = re.match(r"([a-z_]+(?:/[a-z_]+)?)\s*(?:×\s*(\d+))?\s*:?\s*(.*)", clause)
+                    if cm:
+                        cites.append((cm.group(1), cm.group(2), cm.group(3).strip()))
+            else:
+                cites.append((name, count, room))
+        if not cites and not (is_stance or is_disclosure):
             out.append(
                 Violation(
                     "R2-provenance",

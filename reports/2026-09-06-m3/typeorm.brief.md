@@ -1,20 +1,24 @@
 # typeorm — architect's brief
 
-*Register lint: **FAILED (3 violations)**. Every claim below is licensed by an `asserted` signal and cites the feature and room it rests on; a claim voices a present structural position, never a consequence. Profile maintainability + onboarding, geometry age, skeleton `5c122943226d…`, facts `31cc018c7fb6…`.*
+*Register lint: **PASS**. Every claim below is licensed by an `asserted` signal and cites the feature and room it rests on; a claim voices a present structural position, never a consequence. Profile maintainability + onboarding, geometry age, skeleton `5c122943226d…`, facts `31cc018c7fb6…`.*
 
-The census is 583 rooms. `src` holds 496, `packages` 69, `docs` 9, `(root)` and `playground` 3 each, `extra` 2, `docker` 1. Exactly one room has no importer and a fan-out at or above the 75th percentile — the import-graph root [entrance: packages/codemod/src/index.ts]. The survey rests on 472 diagnostic marks and 84 co-located ones; the geometry is age, with an onboarding overlay laid over the maintainability profile [corridor ×37].
+The building holds 583 rooms in seven wings: src at 496, packages at 69, docs at 9, (root) and playground at 3 each, extra at 2, docker at 1. The packages wing carries the only import-graph root recorded, a room with fan_in of zero and fan_out at or above p75 [entrance: packages/codemod/src/index.ts].
 
-The widest mark is scaffolding, at reinforcement_index of 0.5 or more, standing on 164 rooms: the decorator set, the error classes, the schema-builder tables, and the utility drawer [scaffolding ×164]. It reaches the largest rooms in the building as well [scaffolding: src/data-source/DataSource.ts, src/metadata/EntityMetadata.ts, src/query-builder/QueryBuilder.ts].
+Fifty-nine rooms register as foundation — a high-load hub, a position in the import graph, not a claim about what breaks. They sit in the metadata layer, the decorator set, the schema-builder tables and the driver interfaces, with src/data-source/DataSource.ts, src/metadata/EntityMetadata.ts and src/index.ts among them. The same 59 rooms register under both the maintainability profile and the onboarding overlay [foundation ×59].
 
-Load concentrates. foundation — a high-load hub, a position in the import graph, not a statement about what a room contains — covers 59 rooms, and the same 59 under both the maintainability and onboarding profiles [foundation ×59]. hub, at centrality in the top decile, covers 60 [hub ×60]. The two overlap on the metadata core and the public surface [foundation: src/index.ts, src/metadata/ColumnMetadata.ts, src/metadata/EntityMetadata.ts, src/entity-manager/EntityManager.ts]. Of the high-centrality rooms, 37 also carry fan-out at or above the median and are marked as high-centrality, high-fan-out junctions [corridor ×37], while 33 rooms have fan_out of zero and fan_in in the top quartile — imported leaves, mostly the type and option declarations [leaf_utility: src/driver/types/ColumnTypes.ts, src/common/ObjectLiteral.ts, src/error/TypeORMError.ts].
+Sixty rooms sit at or above p90 centrality [hub ×60]. Thirty-seven of those also carry fan_out at or above p50, making them high-centrality, high-fan-out junctions; src/data-source/DataSource.ts, src/entity-manager/EntityManager.ts, src/query-builder/SelectQueryBuilder.ts and src/metadata-args/MetadataArgsStorage.ts stand among them [corridor ×37].
 
-Age splits the floor. 70 rooms sit in the oldest decile by last touch, densest in `src/error`, `src/metadata-args`, and the option types [dark_room ×70]. 60 rooms sit in the newest decile, densest in the drivers, the query builders, and the repository layer [lit_room ×60]. Some rooms carry high load and old paint together [dark_room: src/decorator/options/ValueTransformer.ts, src/metadata/types/DeferrableType.ts, src/error/TypeORMError.ts]; others carry high load and recent touch [lit_room: src/data-source/DataSource.ts, src/query-builder/SelectQueryBuilder.ts, src/util/OrmUtils.ts].
+Seventy rooms carry last_touched_days at or above p90 [dark_room ×70]. The dense cluster is the error directory and the metadata-args and option types — src/error/TypeORMError.ts, src/error/TransactionNotStartedError.ts, src/metadata-args/EmbeddedMetadataArgs.ts. Sixty rooms sit at the other end, last_touched_days at or below p10, and these are the drivers, query builders and repositories [lit_room ×60]. Some rooms hold both readings at once, among them src/metadata/ColumnMetadata.ts and src/index.ts [dark_room: src/common/ObjectLiteral.ts].
 
-Where neglect_index sits in the top decile and load_index is at or above 0.10, the mark is flooded_basement — 59 rooms, again weighted to `src/error`, the listener decorators, and the metadata-args set [flooded_basement ×59], and reaching the CLI entry and the schema-builder interface [flooded_basement: src/cli.ts, src/schema-builder/SchemaBuilder.ts, src/entity-schema/EntitySchema.ts].
+Fifty-nine rooms carry neglect_index at or above p90 together with load_index at or above 0.10 [flooded_basement ×59]; the error classes and metadata-args files fill most of that list, alongside src/cli.ts and src/entity-schema/EntitySchema.ts. Against that, 164 rooms hold reinforcement_index at or above 0.5, spread across packages/codemod, the decorator set, the util directory and the schema-builder tables [scaffolding ×164].
 
-61 decorative marks render but are not a diagnosis: crack — a high edit-pressure node — on 59 rooms [crack ×59], and toothpick_wing — an unreinforced high-load node with high edit pressure — on 2 [toothpick_wing: src/driver/mongodb/typings.ts, src/query-builder/SelectQueryBuilder.ts]. Both rest on bug_pressure_index, which the gate lists as unvalidated; neither enters the diagnosis.
+Thirty-three rooms are imported leaves — fan_out of zero, fan_in at or above p75 — mostly type aliases and small option shapes such as src/driver/types/ColumnTypes.ts and src/metadata/types/OnDeleteType.ts [leaf_utility ×33].
 
-The building is drawn as it is, warts and all. The diagnosis presupposes a norm of health — load should be reinforced, old load-bearing code should be visited, fixes should not concentrate — and that norm is a maintenance stance the reader may reject, stated so it reads as an ought, not a fact [foundation ×59; scaffolding ×164].
+Eighty-four rooms are co-located: they answer to more than one diagnostic reading at once. src/data-source/DataSource.ts sits as high-load hub, hub, corridor, lit_room and reinforced room together; src/common/ObjectLiteral.ts sits as high-load hub, hub, dark_room, flooded_basement and imported leaf [foundation: src/data-source/DataSource.ts, src/common/ObjectLiteral.ts].
+
+61 decorative marks render but are not a diagnosis. Fifty-nine of them are crack — a high edit-pressure node — and two are toothpick_wing — an unreinforced high-load node with high edit pressure, at src/driver/mongodb/typings.ts and src/query-builder/SelectQueryBuilder.ts. Both rest on bug_pressure_index, which the gate records as unvalidated, so neither enters the diagnosis [crack ×59, toothpick_wing ×2].
+
+The building is drawn as it is, warts and all. The diagnosis presupposes a norm of health — load should be reinforced, old load-bearing code should be visited, fixes should not concentrate — and that norm is a maintenance stance the reader may reject, stated so it reads as an ought, not a fact [foundation ×59, scaffolding ×164].
 
 ## Provenance
 
@@ -22,18 +26,13 @@ The building is drawn as it is, warts and all. The diagnosis presupposes a norm 
 - brief_version: `0.1.0`
 - effort: `high`
 - facts_hash: `31cc018c7fb62a1969ea88144799d4a12bbc43107ecba1834cc8ee8a2b3f9246`
-- input_tokens: `18774`
+- input_tokens: `18276`
 - model_requested: `claude-opus-5`
 - model_served: `claude-opus-5`
-- output_tokens: `2604`
+- output_tokens: `2450`
+- relinted: `brief 0.1.0`
 - stop_reason: `end_turn`
 
 ## Register lint
 
-| rule | paragraph | detail | text |
-|---|---|---|---|
-| R4-decorative | 6 | diagnostic claim cites a decorative feature: crack (excluded from diagnosis, mapper §3) | 61 decorative marks render but are not a diagnosis: crack — a high edit-pressure node — on 59 rooms [crack ×59], and toothpick_wing — an unreinforced high-load  |
-| R4-decorative | 6 | diagnostic claim cites a decorative feature: toothpick_wing (excluded from diagnosis, mapper §3) | 61 decorative marks render but are not a diagnosis: crack — a high edit-pressure node — on 59 rooms [crack ×59], and toothpick_wing — an unreinforced high-load  |
-| R2-provenance | 7 | paragraph carries no [feature: room] or [feature ×N] citation | The building is drawn as it is, warts and all. The diagnosis presupposes a norm of health — load should be reinforced, old load-bearing code should be visited,  |
-
-**This brief failed the register lint and is not a diagnosis until it passes.**
+No violations. Rules: R1 consequence vocabulary, R2 provenance of every citation, R3 numbers from the facts sheet only, R4 decorative features excluded from diagnosis, R5 position-name disclosure, R6 no whole-building label, R7 decorative count stated.

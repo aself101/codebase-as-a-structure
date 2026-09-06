@@ -1,24 +1,24 @@
 # mcp-secure-server — architect's brief
 
-*Register lint: **FAILED (16 violations)**. Every claim below is licensed by an `asserted` signal and cites the feature and room it rests on; a claim voices a present structural position, never a consequence. Profile maintainability + onboarding, geometry age, skeleton `5aa582547012…`, facts `987906877c8e…`.*
+*Register lint: **PASS**. Every claim below is licensed by an `asserted` signal and cites the feature and room it rests on; a claim voices a present structural position, never a consequence. Profile maintainability + onboarding, geometry age, skeleton `5aa582547012…`, facts `987906877c8e…`.*
 
-The building has three wings. cookbook holds 136 rooms, src holds 64, and the root holds 2, out of a population of 202. The survey is drawn on the age geometry with an onboarding overlay, and 196 of the marks are diagnostic [scaffolding ×53, dark_room ×42, flooded_basement ×37].
+The building holds 202 rooms in three wings: 136 in cookbook, 64 in src, 2 at the root. Seventeen rooms sit as import-graph roots — nothing imports them and their fan-out stands at or above the 75th percentile — and every one of them is a cookbook entry file or a tools index [entrance: cookbook/database-server/src/index.ts, cookbook/image-gen-server/src/index.ts, cookbook/nba-server/src/tools/index.ts]. Sixteen of the seventeen are named index or index-variant [entrance ×17].
 
-Load lands in two clusters. foundation — a high-load hub, a position in the import graph, not a claim about what breaks — sits on 21 rooms, half of them the security core and half the cookbook utilities [feature: src/security/utils/validation-pipeline.ts, src/security/layers/validation-layer-base.ts, cookbook/monitoring-server/src/utils/alert-manager.ts]. hub, a centrality position, sits on 22 rooms, and the type declarations occupy that position as a block [feature: src/types/index.ts, src/types/layers.ts, src/types/policies.ts, src/types/server.ts, src/types/validation.ts].
+Twenty-two rooms sit at or above the 90th percentile of centrality [hub ×22]. Eighteen of those also carry fan-out at or above the median, making them high-centrality, high-fan-out junctions [corridor ×18]. The junctions cluster in two places: the image-gen provider set and the src type and policy files [corridor: cookbook/image-gen-server/src/providers/index.ts, src/types/index.ts, src/security/config/tool-policies.ts].
 
-Age reads across the cookbook wing. dark_room marks 42 rooms at or beyond the p90 last-touched threshold, nearly all of them cookbook tools, utils and vitest configs [feature: cookbook/api-wrapper-server/src/tools/weather.ts, cookbook/database-server/src/utils/database.ts, cookbook/filesystem-server/vitest.config.ts]. Seven of those rooms are in src [feature: src/security/layers/layer-utils/content/unicode.ts, src/security/utils/tool-registry.ts, src/types/messages.ts].
+Twenty-one rooms sit at or above the 90th percentile of load index — the position name is high-load hub, a position in the import graph, not a claim about what breaks [foundation ×21]. Seven sit in cookbook, fourteen in src, and the src set concentrates on the security utilities and the shared type declarations [foundation: src/security/utils/error-sanitizer.ts, src/security/utils/security-logger.ts, src/types/policies.ts].
 
-flooded_basement, which requires neglect at p90 together with load at or above 0.10, sits on 37 rooms and overlaps the dark set closely [feature: cookbook/filesystem-server/src/utils/path-validator.ts, cookbook/image-gen-server/src/providers/stability.ts, src/security/layers/layer2-validators/base64-css.ts]. The recently touched rooms are elsewhere: lit_room covers 21 rooms, every one of them under src/security or src/types [feature: src/security/layers/layer1-structure.ts, src/security/presets.ts, src/types/server.ts].
+Forty-two rooms carry last-touched days at or above the 90th percentile [dark_room ×42]; thirty-five of them are cookbook rooms, including every vitest config in that wing [dark_room: cookbook/nba-server/vitest.config.ts, cookbook/kenpom-server/vitest.config.ts]. Twenty-one rooms sit at or below the 10th percentile of last-touched days, and all twenty-one are in src, under security and types [lit_room ×21].
 
-Reinforcement is the widest mark. scaffolding sits on 53 rooms spanning both wings, including cookbook tool handlers and the security pipeline [feature: cookbook/kenpom-server/src/tools/team.ts, cookbook/monitoring-server/src/utils/audit-logger.ts, src/security/utils/response-validator.ts, src/index.ts].
+Thirty-seven rooms hold neglect index at or above the 90th percentile together with load index at or above 0.10 [flooded_basement ×37]. The overlap with the untouched set is close to total; the src members are the content and semantics helpers and the tool registry [flooded_basement: src/security/utils/tool-registry.ts, src/security/layers/layer-utils/content/unicode.ts].
 
-The onboarding overlay adds three positions. entrance — an import-graph root, fan-in zero with fan-out at or above p75 — sits on 17 rooms, all of them cookbook server and tool indexes [feature: cookbook/http-server/src/index.ts, cookbook/nba-server/src/tools/index.ts]. corridor, a high-centrality, high-fan-out junction, sits on 18 rooms, concentrated in the image-gen providers and the security config [feature: cookbook/image-gen-server/src/providers/index.ts, src/security/config/tool-policy-validation.ts]. leaf_utility, an imported leaf, sits on 19 rooms [feature: src/security/constants.ts, cookbook/nba-server/src/tools/live.ts, src/types/policies.ts].
+Fifty-three rooms carry a reinforcement index of 0.5 or higher [scaffolding ×53]. Nineteen rooms have zero fan-out and fan-in at or above the 75th percentile — imported leaves, terminal in the graph [leaf_utility ×19]. Several leaves are also high-load hubs [foundation: cookbook/monitoring-server/src/utils/alert-manager.ts, cookbook/monitoring-server/src/utils/metrics-collector.ts, src/security/constants.ts].
 
-47 rooms carry more than one mark. One room carries foundation, hub, corridor, scaffolding and lit_room together [feature: src/security/utils/error-sanitizer.ts], and another carries foundation, hub, corridor and leaf_utility [feature: src/types/policies.ts].
+Forty-seven rooms are co-located across more than one of these positions, and 196 marks in total are diagnostic [hub: src/security/config/tool-policies-config.ts, src/types/server.ts, src/security/utils/error-sanitizer.ts].
 
-24 decorative marks render but are not a diagnosis [crack ×21, toothpick_wing ×3]. crack — a high edit-pressure node — sits on 21 rooms [feature: src/security/layers/layer3-behavior.ts, eslint.config.js], and toothpick_wing — an unreinforced high-load node with high edit pressure — sits on 3 [feature: src/security/config/tool-policies-config.ts, src/security/constants.ts, src/types/server.ts]. Both rest on an index the gate records as unvalidated (D-015), and neither enters any diagnosis here.
+24 decorative marks render but are not a diagnosis: 21 high edit-pressure nodes [crack ×21] and 3 unreinforced high-load nodes with high edit pressure [toothpick_wing ×3]. Both rest on bug_pressure_index, which the gate records as unvalidated; neither is used in any reading above.
 
-The building is drawn as it is, warts and all. The diagnosis presupposes a norm of health — load should be reinforced, old load-bearing code should be visited, fixes should not concentrate — and that norm is a maintenance stance the reader may reject, stated so it reads as an ought, not a fact [foundation ×21, scaffolding ×53, flooded_basement ×37].
+The stance is disclosed here rather than assumed [foundation ×21]. The building is drawn as it is, warts and all. The diagnosis presupposes a norm of health — load should be reinforced, old load-bearing code should be visited, fixes should not concentrate — and that norm is a maintenance stance the reader may reject, stated so it reads as an ought, not a fact.
 
 ## Provenance
 
@@ -26,31 +26,13 @@ The building is drawn as it is, warts and all. The diagnosis presupposes a norm 
 - brief_version: `0.1.0`
 - effort: `high`
 - facts_hash: `987906877c8ec5193cfc29f27077392d4f9637d2f429b57536317f875e0991ed`
-- input_tokens: `10378`
+- input_tokens: `10349`
 - model_requested: `claude-opus-5`
 - model_served: `claude-opus-5`
-- output_tokens: `3012`
+- output_tokens: `2373`
+- relinted: `brief 0.1.0`
 - stop_reason: `end_turn`
 
 ## Register lint
 
-| rule | paragraph | detail | text |
-|---|---|---|---|
-| R2-provenance | 1 | paragraph carries no [feature: room] or [feature ×N] citation | The building has three wings. cookbook holds 136 rooms, src holds 64, and the root holds 2, out of a population of 202. The survey is drawn on the age geometry  |
-| R2-provenance | 2 | citation names a feature not in the skeleton: feature | Load lands in two clusters. foundation — a high-load hub, a position in the import graph, not a claim about what breaks — sits on 21 rooms, half of them the sec |
-| R2-provenance | 2 | citation names a feature not in the skeleton: feature | Load lands in two clusters. foundation — a high-load hub, a position in the import graph, not a claim about what breaks — sits on 21 rooms, half of them the sec |
-| R2-provenance | 3 | citation names a feature not in the skeleton: feature | Age reads across the cookbook wing. dark_room marks 42 rooms at or beyond the p90 last-touched threshold, nearly all of them cookbook tools, utils and vitest co |
-| R2-provenance | 3 | citation names a feature not in the skeleton: feature | Age reads across the cookbook wing. dark_room marks 42 rooms at or beyond the p90 last-touched threshold, nearly all of them cookbook tools, utils and vitest co |
-| R2-provenance | 4 | citation names a feature not in the skeleton: feature | flooded_basement, which requires neglect at p90 together with load at or above 0.10, sits on 37 rooms and overlaps the dark set closely [feature: cookbook/files |
-| R2-provenance | 4 | citation names a feature not in the skeleton: feature | flooded_basement, which requires neglect at p90 together with load at or above 0.10, sits on 37 rooms and overlaps the dark set closely [feature: cookbook/files |
-| R2-provenance | 5 | citation names a feature not in the skeleton: feature | Reinforcement is the widest mark. scaffolding sits on 53 rooms spanning both wings, including cookbook tool handlers and the security pipeline [feature: cookboo |
-| R2-provenance | 6 | citation names a feature not in the skeleton: feature | The onboarding overlay adds three positions. entrance — an import-graph root, fan-in zero with fan-out at or above p75 — sits on 17 rooms, all of them cookbook  |
-| R2-provenance | 6 | citation names a feature not in the skeleton: feature | The onboarding overlay adds three positions. entrance — an import-graph root, fan-in zero with fan-out at or above p75 — sits on 17 rooms, all of them cookbook  |
-| R2-provenance | 6 | citation names a feature not in the skeleton: feature | The onboarding overlay adds three positions. entrance — an import-graph root, fan-in zero with fan-out at or above p75 — sits on 17 rooms, all of them cookbook  |
-| R2-provenance | 7 | citation names a feature not in the skeleton: feature | 47 rooms carry more than one mark. One room carries foundation, hub, corridor, scaffolding and lit_room together [feature: src/security/utils/error-sanitizer.ts |
-| R2-provenance | 7 | citation names a feature not in the skeleton: feature | 47 rooms carry more than one mark. One room carries foundation, hub, corridor, scaffolding and lit_room together [feature: src/security/utils/error-sanitizer.ts |
-| R2-provenance | 8 | citation names a feature not in the skeleton: feature | 24 decorative marks render but are not a diagnosis [crack ×21, toothpick_wing ×3]. crack — a high edit-pressure node — sits on 21 rooms [feature: src/security/l |
-| R2-provenance | 8 | citation names a feature not in the skeleton: feature | 24 decorative marks render but are not a diagnosis [crack ×21, toothpick_wing ×3]. crack — a high edit-pressure node — sits on 21 rooms [feature: src/security/l |
-| R2-provenance | 9 | paragraph carries no [feature: room] or [feature ×N] citation | The building is drawn as it is, warts and all. The diagnosis presupposes a norm of health — load should be reinforced, old load-bearing code should be visited,  |
-
-**This brief failed the register lint and is not a diagnosis until it passes.**
+No violations. Rules: R1 consequence vocabulary, R2 provenance of every citation, R3 numbers from the facts sheet only, R4 decorative features excluded from diagnosis, R5 position-name disclosure, R6 no whole-building label, R7 decorative count stated.

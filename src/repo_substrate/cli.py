@@ -162,17 +162,20 @@ def _load_json(path: Path, what: str) -> dict:
 
 def _dispatch(args: argparse.Namespace) -> int:
     if args.cmd == "brief":
-        from .brief import anthropic_generator, run_brief
+        from .brief import anthropic_generator, relint, run_brief
 
         skel = _load_json(args.skeleton, "skeleton")
         sub_doc = _load_json(args.substrate, "substrate") if args.substrate else None
-        draft = args.draft.read_text(encoding="utf-8") if args.draft else None
-        gen = (
-            None
-            if draft is not None
-            else anthropic_generator(args.model or DEFAULT_MODEL, args.effort)
-        )
-        r = run_brief(skel, sub_doc, gen, draft, args.max_attempts)
+        if args.relint:
+            r = relint(args.relint.read_text(encoding="utf-8"), skel, sub_doc)
+        else:
+            draft = args.draft.read_text(encoding="utf-8") if args.draft else None
+            gen = (
+                None
+                if draft is not None
+                else anthropic_generator(args.model or DEFAULT_MODEL, args.effort)
+            )
+            r = run_brief(skel, sub_doc, gen, draft, args.max_attempts)
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(r["markdown"], encoding="utf-8")
         if args.facts:
