@@ -1,0 +1,3737 @@
+{
+ "brief_version": "0.4.0",
+ "calibration": "in-repo, self-relative (system spec §5.3); one frame — stability is read from a time-lapse, not from this page",
+ "co_located_rooms": 254,
+ "co_located_rooms_base_profile": 184,
+ "decorative": {
+  "count": 49,
+  "features": [
+   "crack",
+   "toothpick_wing"
+  ]
+ },
+ "diagnostic_count": 923,
+ "diagnostic_count_base": 675,
+ "facts_hash": "6cc074beec25fc3c7ae666d620d0170972bce58be51dbf5f1070c9c3c2135cc1",
+ "features": [
+  {
+   "by_wing": {
+    "(root)": 2,
+    "bin": 1,
+    "lib": 44,
+    "packages": 1
+   },
+   "count": 48,
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated (D-015).",
+   "diagnostic": false,
+   "dominant_dir": {
+    "dir": "lib/rules",
+    "n": 35
+   },
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "profile": "maintainability",
+   "rooms": [
+    "Makefile.js",
+    "bin/eslint.js",
+    "eslint.config.js",
+    "lib/cli.js",
+    "lib/eslint/eslint-helpers.js",
+    "lib/eslint/eslint.js",
+    "lib/languages/js/source-code/source-code.js",
+    "lib/linter/code-path-analysis/code-path.js",
+    "lib/linter/linter.js",
+    "lib/options.js",
+    "lib/rule-tester/rule-tester.js",
+    "lib/rules/array-callback-return.js",
+    "lib/rules/arrow-body-style.js",
+    "lib/rules/block-scoped-var.js",
+    "lib/rules/complexity.js",
+    "lib/rules/eqeqeq.js",
+    "lib/rules/id-match.js",
+    "lib/rules/indent.js",
+    "lib/rules/key-spacing.js",
+    "lib/rules/max-len.js",
+    "lib/rules/max-statements.js",
+    "lib/rules/new-cap.js",
+    "lib/rules/newline-before-return.js",
+    "lib/rules/no-eval.js",
+    "lib/rules/no-extra-boolean-cast.js",
+    "lib/rules/no-extra-parens.js",
+    "lib/rules/no-fallthrough.js",
+    "lib/rules/no-implicit-coercion.js",
+    "lib/rules/no-invalid-regexp.js",
+    "lib/rules/no-invalid-this.js",
+    "lib/rules/no-loop-func.js",
+    "lib/rules/no-shadow.js",
+    "lib/rules/no-unmodified-loop-condition.js",
+    "lib/rules/no-unreachable.js",
+    "lib/rules/no-unused-expressions.js",
+    "lib/rules/no-unused-vars.js",
+    "lib/rules/no-use-before-define.js",
+    "lib/rules/no-useless-escape.js",
+    "lib/rules/no-var.js",
+    "lib/rules/object-shorthand.js",
+    "lib/rules/one-var.js",
+    "lib/rules/prefer-arrow-callback.js",
+    "lib/rules/prefer-const.js",
+    "lib/rules/quotes.js",
+    "lib/rules/radix.js",
+    "lib/rules/strict.js",
+    "lib/rules/utils/ast-utils.js",
+    "packages/js/src/configs/eslint-recommended.js"
+   ],
+   "validation_status": "unvalidated"
+  },
+  {
+   "by_wing": {
+    "(root)": 2,
+    "docs": 22,
+    "lib": 40,
+    "messages": 11,
+    "packages": 5,
+    "tools": 3
+   },
+   "count": 83,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "lib/shared",
+    "n": 12
+   },
+   "feature": "dark_room",
+   "name_implies_consequence": true,
+   "position_name": "long-untouched room",
+   "predicate": "last_touched_days >= p90",
+   "profile": "maintainability",
+   "rooms": [
+    "cypress.config.js",
+    "docs/_examples/custom-rule-tutorial-code/eslint-plugin-example.js",
+    "docs/_examples/custom-rule-tutorial-code/example.js",
+    "docs/_examples/integration-tutorial-code/example-eslint-integration.js",
+    "docs/_examples/integration-tutorial-code/sample-data/test-file.js",
+    "docs/postcss.config.js",
+    "docs/src/_data/eslintVersions.js",
+    "docs/src/_data/flags.js",
+    "docs/src/_data/helpers.js",
+    "docs/src/_data/layout.js",
+    "docs/src/_data/rules_categories.js",
+    "docs/src/_data/site.js",
+    "docs/src/_plugins/md-syntax-highlighter.js",
+    "docs/src/_plugins/pre-wrapper.js",
+    "docs/src/assets/js/components-index.js",
+    "docs/src/assets/js/focus-visible.js",
+    "docs/src/assets/js/main.js",
+    "docs/src/assets/js/scroll-up-btn.js",
+    "docs/src/assets/js/search.js",
+    "docs/src/assets/js/tabs.js",
+    "docs/src/assets/js/themes.js",
+    "docs/src/static/serviceworker.js",
+    "docs/tools/code-block-utils.js",
+    "lib/cli-engine/formatters/json-with-metadata.js",
+    "lib/cli-engine/formatters/json.js",
+    "lib/cli-engine/hash.js",
+    "lib/config/default-config.js",
+    "lib/languages/js/source-code/index.js",
+    "lib/languages/js/source-code/token-store/backward-token-comment-cursor.js",
+    "lib/languages/js/source-code/token-store/backward-token-cursor.js",
+    "lib/languages/js/source-code/token-store/cursor.js",
+    "lib/languages/js/source-code/token-store/cursors.js",
+    "lib/languages/js/source-code/token-store/decorative-cursor.js",
+    "lib/languages/js/source-code/token-store/filter-cursor.js",
+    "lib/languages/js/source-code/token-store/forward-token-comment-cursor.js",
+    "lib/languages/js/source-code/token-store/forward-token-cursor.js",
+    "lib/languages/js/source-code/token-store/limit-cursor.js",
+    "lib/languages/js/source-code/token-store/padded-token-cursor.js",
+    "lib/languages/js/source-code/token-store/skip-cursor.js",
+    "lib/languages/js/validate-language-options.js",
+    "lib/linter/code-path-analysis/code-path-segment.js",
+    "lib/linter/code-path-analysis/fork-context.js",
+    "lib/linter/index.js",
+    "lib/rule-tester/index.js",
+    "lib/rules/utils/keywords.js",
+    "lib/rules/utils/regular-expressions.js",
+    "lib/rules/utils/unicode/index.js",
+    "lib/rules/utils/unicode/is-emoji-modifier.js",
+    "lib/rules/utils/unicode/is-regional-indicator-symbol.js",
+    "lib/rules/utils/unicode/is-surrogate-pair.js",
+    "lib/shared/ajv.js",
+    "lib/shared/assert.js",
+    "lib/shared/ast-utils.js",
+    "lib/shared/deep-merge-arrays.js",
+    "lib/shared/directives.js",
+    "lib/shared/logging.js",
+    "lib/shared/option-utils.js",
+    "lib/shared/severity.js",
+    "lib/shared/stats.js",
+    "lib/shared/string-utils.js",
+    "lib/shared/text-table.js",
+    "lib/shared/traverser.js",
+    "lib/universal.js",
+    "messages/config-plugin-missing.js",
+    "messages/config-serialize-function.js",
+    "messages/extend-config-missing.js",
+    "messages/failed-to-read-json.js",
+    "messages/file-not-found.js",
+    "messages/no-config-found.js",
+    "messages/plugin-conflict.js",
+    "messages/plugin-invalid.js",
+    "messages/plugin-missing.js",
+    "messages/shared.js",
+    "messages/whitespace-found.js",
+    "packages/eslint-config-eslint/cjs.js",
+    "packages/eslint-config-eslint/formatting.js",
+    "packages/eslint-config-eslint/index.js",
+    "packages/eslint-config-eslint/nodejs.js",
+    "packages/js/src/index.js",
+    "tools/commit-readme.sh",
+    "tools/internal-rules/index.js",
+    "tools/internal-rules/no-invalid-meta.js",
+    "webpack.config.js"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "by_wing": {
+    "(root)": 2,
+    "docs": 18,
+    "lib": 38,
+    "messages": 11,
+    "packages": 3,
+    "tools": 3
+   },
+   "count": 75,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "lib/shared",
+    "n": 12
+   },
+   "feature": "flooded_basement",
+   "name_implies_consequence": true,
+   "position_name": "long-untouched, still-imported room",
+   "predicate": "last_touched_days >= p90 and load_index >= 0.10",
+   "profile": "maintainability",
+   "rooms": [
+    "cypress.config.js",
+    "docs/_examples/custom-rule-tutorial-code/eslint-plugin-example.js",
+    "docs/_examples/custom-rule-tutorial-code/example.js",
+    "docs/_examples/integration-tutorial-code/example-eslint-integration.js",
+    "docs/_examples/integration-tutorial-code/sample-data/test-file.js",
+    "docs/src/_data/eslintVersions.js",
+    "docs/src/_data/helpers.js",
+    "docs/src/_data/rules_categories.js",
+    "docs/src/_data/site.js",
+    "docs/src/_plugins/md-syntax-highlighter.js",
+    "docs/src/_plugins/pre-wrapper.js",
+    "docs/src/assets/js/components-index.js",
+    "docs/src/assets/js/focus-visible.js",
+    "docs/src/assets/js/main.js",
+    "docs/src/assets/js/scroll-up-btn.js",
+    "docs/src/assets/js/search.js",
+    "docs/src/assets/js/tabs.js",
+    "docs/src/assets/js/themes.js",
+    "docs/tools/code-block-utils.js",
+    "lib/cli-engine/formatters/json-with-metadata.js",
+    "lib/cli-engine/formatters/json.js",
+    "lib/cli-engine/hash.js",
+    "lib/config/default-config.js",
+    "lib/languages/js/source-code/index.js",
+    "lib/languages/js/source-code/token-store/backward-token-comment-cursor.js",
+    "lib/languages/js/source-code/token-store/backward-token-cursor.js",
+    "lib/languages/js/source-code/token-store/cursor.js",
+    "lib/languages/js/source-code/token-store/cursors.js",
+    "lib/languages/js/source-code/token-store/decorative-cursor.js",
+    "lib/languages/js/source-code/token-store/filter-cursor.js",
+    "lib/languages/js/source-code/token-store/forward-token-comment-cursor.js",
+    "lib/languages/js/source-code/token-store/forward-token-cursor.js",
+    "lib/languages/js/source-code/token-store/limit-cursor.js",
+    "lib/languages/js/source-code/token-store/padded-token-cursor.js",
+    "lib/languages/js/source-code/token-store/skip-cursor.js",
+    "lib/languages/js/validate-language-options.js",
+    "lib/linter/code-path-analysis/code-path-segment.js",
+    "lib/linter/code-path-analysis/fork-context.js",
+    "lib/linter/index.js",
+    "lib/rule-tester/index.js",
+    "lib/rules/utils/keywords.js",
+    "lib/rules/utils/regular-expressions.js",
+    "lib/rules/utils/unicode/is-emoji-modifier.js",
+    "lib/rules/utils/unicode/is-regional-indicator-symbol.js",
+    "lib/rules/utils/unicode/is-surrogate-pair.js",
+    "lib/shared/ajv.js",
+    "lib/shared/assert.js",
+    "lib/shared/ast-utils.js",
+    "lib/shared/deep-merge-arrays.js",
+    "lib/shared/directives.js",
+    "lib/shared/logging.js",
+    "lib/shared/option-utils.js",
+    "lib/shared/severity.js",
+    "lib/shared/stats.js",
+    "lib/shared/string-utils.js",
+    "lib/shared/text-table.js",
+    "lib/shared/traverser.js",
+    "messages/config-plugin-missing.js",
+    "messages/config-serialize-function.js",
+    "messages/extend-config-missing.js",
+    "messages/failed-to-read-json.js",
+    "messages/file-not-found.js",
+    "messages/no-config-found.js",
+    "messages/plugin-conflict.js",
+    "messages/plugin-invalid.js",
+    "messages/plugin-missing.js",
+    "messages/shared.js",
+    "messages/whitespace-found.js",
+    "packages/eslint-config-eslint/formatting.js",
+    "packages/eslint-config-eslint/nodejs.js",
+    "packages/js/src/index.js",
+    "tools/commit-readme.sh",
+    "tools/internal-rules/index.js",
+    "tools/internal-rules/no-invalid-meta.js",
+    "webpack.config.js"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "by_wing": {
+    "conf": 2,
+    "lib": 45,
+    "tools": 1
+   },
+   "count": 48,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "lib/shared",
+    "n": 9
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "profile": "maintainability",
+   "rooms": [
+    "conf/ecma-version.js",
+    "conf/globals.js",
+    "lib/cli-engine/hash.js",
+    "lib/cli-engine/lint-result-cache.js",
+    "lib/config-api.js",
+    "lib/config/config-loader.js",
+    "lib/config/config.js",
+    "lib/config/default-config.js",
+    "lib/config/flat-config-array.js",
+    "lib/config/flat-config-schema.js",
+    "lib/eslint/eslint-helpers.js",
+    "lib/eslint/eslint.js",
+    "lib/languages/js/index.js",
+    "lib/languages/js/source-code/index.js",
+    "lib/languages/js/source-code/token-store/cursor.js",
+    "lib/languages/js/source-code/token-store/decorative-cursor.js",
+    "lib/languages/js/source-code/token-store/utils.js",
+    "lib/linter/code-path-analysis/code-path-segment.js",
+    "lib/linter/code-path-analysis/debug-helpers.js",
+    "lib/linter/code-path-analysis/id-generator.js",
+    "lib/linter/index.js",
+    "lib/linter/interpolate.js",
+    "lib/linter/rule-fixer.js",
+    "lib/linter/source-code-fixer.js",
+    "lib/linter/source-code-visitor.js",
+    "lib/linter/timing.js",
+    "lib/linter/vfile.js",
+    "lib/rule-tester/index.js",
+    "lib/rule-tester/rule-tester.js",
+    "lib/rules/index.js",
+    "lib/rules/multiline-comment-style.js",
+    "lib/rules/utils/ast-utils.js",
+    "lib/rules/utils/code-path-utils.js",
+    "lib/rules/utils/fix-tracker.js",
+    "lib/rules/utils/keywords.js",
+    "lib/rules/utils/regular-expressions.js",
+    "lib/services/suppressions-service.js",
+    "lib/services/warning-service.js",
+    "lib/shared/assert.js",
+    "lib/shared/ast-utils.js",
+    "lib/shared/deep-merge-arrays.js",
+    "lib/shared/logging.js",
+    "lib/shared/message-counts.js",
+    "lib/shared/naming.js",
+    "lib/shared/severity.js",
+    "lib/shared/string-utils.js",
+    "lib/shared/traverser.js",
+    "tools/config-rule.js"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "by_wing": {
+    "conf": 2,
+    "docs": 1,
+    "lib": 46,
+    "packages": 1
+   },
+   "count": 50,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "lib/shared",
+    "n": 13
+   },
+   "feature": "hub",
+   "name_implies_consequence": false,
+   "position_name": null,
+   "predicate": "centrality >= p90",
+   "profile": "maintainability",
+   "rooms": [
+    "conf/ecma-version.js",
+    "conf/globals.js",
+    "docs/_examples/custom-rule-tutorial-code/enforce-foo-bar.js",
+    "lib/api.js",
+    "lib/config/config.js",
+    "lib/config/default-config.js",
+    "lib/config/flat-config-array.js",
+    "lib/config/flat-config-schema.js",
+    "lib/eslint/eslint.js",
+    "lib/languages/js/index.js",
+    "lib/languages/js/source-code/index.js",
+    "lib/languages/js/source-code/source-code.js",
+    "lib/languages/js/source-code/token-store/cursor.js",
+    "lib/languages/js/source-code/token-store/decorative-cursor.js",
+    "lib/languages/js/source-code/token-store/forward-token-cursor.js",
+    "lib/languages/js/source-code/token-store/index.js",
+    "lib/languages/js/source-code/token-store/utils.js",
+    "lib/languages/js/validate-language-options.js",
+    "lib/linter/code-path-analysis/code-path-analyzer.js",
+    "lib/linter/code-path-analysis/code-path-segment.js",
+    "lib/linter/code-path-analysis/debug-helpers.js",
+    "lib/linter/code-path-analysis/id-generator.js",
+    "lib/linter/esquery.js",
+    "lib/linter/index.js",
+    "lib/linter/interpolate.js",
+    "lib/linter/linter.js",
+    "lib/linter/source-code-fixer.js",
+    "lib/linter/vfile.js",
+    "lib/rule-tester/index.js",
+    "lib/rule-tester/rule-tester.js",
+    "lib/rules/index.js",
+    "lib/rules/utils/ast-utils.js",
+    "lib/rules/utils/code-path-utils.js",
+    "lib/rules/utils/fix-tracker.js",
+    "lib/rules/utils/regular-expressions.js",
+    "lib/services/warning-service.js",
+    "lib/shared/ajv.js",
+    "lib/shared/assert.js",
+    "lib/shared/ast-utils.js",
+    "lib/shared/deep-merge-arrays.js",
+    "lib/shared/directives.js",
+    "lib/shared/logging.js",
+    "lib/shared/message-counts.js",
+    "lib/shared/naming.js",
+    "lib/shared/serialization.js",
+    "lib/shared/severity.js",
+    "lib/shared/stats.js",
+    "lib/shared/string-utils.js",
+    "lib/shared/traverser.js",
+    "packages/js/src/index.js"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "by_wing": {
+    "(root)": 2,
+    "lib": 40,
+    "messages": 1,
+    "tools": 5
+   },
+   "count": 48,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "lib/rules",
+    "n": 24
+   },
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "position_name": null,
+   "predicate": "last_touched_days <= p10",
+   "profile": "maintainability",
+   "rooms": [
+    "Makefile.js",
+    "eslint.config.js",
+    "lib/cli-engine/formatters/html.js",
+    "lib/cli-engine/lint-result-cache.js",
+    "lib/cli.js",
+    "lib/config/config-loader.js",
+    "lib/config/config.js",
+    "lib/eslint/eslint-helpers.js",
+    "lib/eslint/eslint.js",
+    "lib/languages/js/index.js",
+    "lib/languages/js/source-code/source-code.js",
+    "lib/linter/code-path-analysis/code-path-analyzer.js",
+    "lib/linter/code-path-analysis/debug-helpers.js",
+    "lib/linter/linter.js",
+    "lib/linter/vfile.js",
+    "lib/options.js",
+    "lib/rules/accessor-pairs.js",
+    "lib/rules/complexity.js",
+    "lib/rules/getter-return.js",
+    "lib/rules/id-denylist.js",
+    "lib/rules/id-match.js",
+    "lib/rules/key-spacing.js",
+    "lib/rules/max-len.js",
+    "lib/rules/new-cap.js",
+    "lib/rules/no-duplicate-imports.js",
+    "lib/rules/no-extra-bind.js",
+    "lib/rules/no-loss-of-precision.js",
+    "lib/rules/no-setter-return.js",
+    "lib/rules/no-unexpected-multiline.js",
+    "lib/rules/no-unmodified-loop-condition.js",
+    "lib/rules/no-unreachable-loop.js",
+    "lib/rules/no-unreachable.js",
+    "lib/rules/no-unused-labels.js",
+    "lib/rules/no-unused-vars.js",
+    "lib/rules/no-useless-escape.js",
+    "lib/rules/no-var.js",
+    "lib/rules/prefer-object-has-own.js",
+    "lib/rules/prefer-object-spread.js",
+    "lib/rules/prefer-template.js",
+    "lib/rules/quotes.js",
+    "lib/rules/utils/ast-utils.js",
+    "lib/shared/translate-cli-options.js",
+    "messages/config-file-missing.js",
+    "tools/check-emfile-handling.js",
+    "tools/internal-rules/no-debug-template-literals.js",
+    "tools/test-ecosystem/build-failure-summary.js",
+    "tools/test-ecosystem/index.mjs",
+    "tools/test-ecosystem/sync-ecosystem-issue.js"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "by_wing": {
+    "conf": 2,
+    "docs": 2,
+    "lib": 360,
+    "packages": 1,
+    "tools": 6
+   },
+   "count": 371,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "lib/rules",
+    "n": 293
+   },
+   "feature": "scaffolding",
+   "name_implies_consequence": false,
+   "position_name": null,
+   "predicate": "reinforcement_index >= 0.5",
+   "profile": "maintainability",
+   "rooms": [
+    "conf/ecma-version.js",
+    "conf/globals.js",
+    "docs/_examples/custom-rule-tutorial-code/enforce-foo-bar.js",
+    "docs/_examples/integration-tutorial-code/example-eslint-integration.js",
+    "lib/api.js",
+    "lib/cli-engine/formatters/html.js",
+    "lib/cli-engine/formatters/json-with-metadata.js",
+    "lib/cli-engine/formatters/json.js",
+    "lib/cli-engine/formatters/stylish.js",
+    "lib/cli-engine/hash.js",
+    "lib/cli-engine/lint-result-cache.js",
+    "lib/cli.js",
+    "lib/config-api.js",
+    "lib/config/config-loader.js",
+    "lib/config/config.js",
+    "lib/config/default-config.js",
+    "lib/config/flat-config-array.js",
+    "lib/config/flat-config-schema.js",
+    "lib/eslint/eslint.js",
+    "lib/eslint/index.js",
+    "lib/languages/js/index.js",
+    "lib/languages/js/source-code/index.js",
+    "lib/languages/js/source-code/source-code.js",
+    "lib/languages/js/source-code/token-store/index.js",
+    "lib/linter/apply-disable-directives.js",
+    "lib/linter/code-path-analysis/code-path-segment.js",
+    "lib/linter/code-path-analysis/code-path.js",
+    "lib/linter/code-path-analysis/debug-helpers.js",
+    "lib/linter/code-path-analysis/fork-context.js",
+    "lib/linter/code-path-analysis/id-generator.js",
+    "lib/linter/esquery.js",
+    "lib/linter/file-context.js",
+    "lib/linter/file-report.js",
+    "lib/linter/index.js",
+    "lib/linter/interpolate.js",
+    "lib/linter/rule-fixer.js",
+    "lib/linter/source-code-fixer.js",
+    "lib/linter/source-code-traverser.js",
+    "lib/linter/source-code-visitor.js",
+    "lib/linter/timing.js",
+    "lib/linter/vfile.js",
+    "lib/options.js",
+    "lib/rule-tester/index.js",
+    "lib/rule-tester/rule-tester.js",
+    "lib/rules/accessor-pairs.js",
+    "lib/rules/array-bracket-newline.js",
+    "lib/rules/array-bracket-spacing.js",
+    "lib/rules/array-callback-return.js",
+    "lib/rules/array-element-newline.js",
+    "lib/rules/arrow-body-style.js",
+    "lib/rules/arrow-parens.js",
+    "lib/rules/arrow-spacing.js",
+    "lib/rules/block-scoped-var.js",
+    "lib/rules/block-spacing.js",
+    "lib/rules/brace-style.js",
+    "lib/rules/callback-return.js",
+    "lib/rules/camelcase.js",
+    "lib/rules/capitalized-comments.js",
+    "lib/rules/class-methods-use-this.js",
+    "lib/rules/comma-dangle.js",
+    "lib/rules/comma-spacing.js",
+    "lib/rules/comma-style.js",
+    "lib/rules/complexity.js",
+    "lib/rules/computed-property-spacing.js",
+    "lib/rules/consistent-return.js",
+    "lib/rules/consistent-this.js",
+    "lib/rules/constructor-super.js",
+    "lib/rules/curly.js",
+    "lib/rules/default-case-last.js",
+    "lib/rules/default-case.js",
+    "lib/rules/default-param-last.js",
+    "lib/rules/dot-location.js",
+    "lib/rules/dot-notation.js",
+    "lib/rules/eol-last.js",
+    "lib/rules/eqeqeq.js",
+    "lib/rules/for-direction.js",
+    "lib/rules/func-call-spacing.js",
+    "lib/rules/func-name-matching.js",
+    "lib/rules/func-names.js",
+    "lib/rules/func-style.js",
+    "lib/rules/function-call-argument-newline.js",
+    "lib/rules/function-paren-newline.js",
+    "lib/rules/generator-star-spacing.js",
+    "lib/rules/getter-return.js",
+    "lib/rules/global-require.js",
+    "lib/rules/grouped-accessor-pairs.js",
+    "lib/rules/guard-for-in.js",
+    "lib/rules/handle-callback-err.js",
+    "lib/rules/id-blacklist.js",
+    "lib/rules/id-denylist.js",
+    "lib/rules/id-length.js",
+    "lib/rules/id-match.js",
+    "lib/rules/implicit-arrow-linebreak.js",
+    "lib/rules/indent-legacy.js",
+    "lib/rules/indent.js",
+    "lib/rules/index.js",
+    "lib/rules/init-declarations.js",
+    "lib/rules/jsx-quotes.js",
+    "lib/rules/key-spacing.js",
+    "lib/rules/keyword-spacing.js",
+    "lib/rules/line-comment-position.js",
+    "lib/rules/linebreak-style.js",
+    "lib/rules/lines-around-comment.js",
+    "lib/rules/lines-around-directive.js",
+    "lib/rules/lines-between-class-members.js",
+    "lib/rules/logical-assignment-operators.js",
+    "lib/rules/max-classes-per-file.js",
+    "lib/rules/max-depth.js",
+    "lib/rules/max-len.js",
+    "lib/rules/max-lines-per-function.js",
+    "lib/rules/max-lines.js",
+    "lib/rules/max-nested-callbacks.js",
+    "lib/rules/max-params.js",
+    "lib/rules/max-statements-per-line.js",
+    "lib/rules/max-statements.js",
+    "lib/rules/multiline-comment-style.js",
+    "lib/rules/multiline-ternary.js",
+    "lib/rules/new-cap.js",
+    "lib/rules/new-parens.js",
+    "lib/rules/newline-after-var.js",
+    "lib/rules/newline-before-return.js",
+    "lib/rules/newline-per-chained-call.js",
+    "lib/rules/no-alert.js",
+    "lib/rules/no-array-constructor.js",
+    "lib/rules/no-async-promise-executor.js",
+    "lib/rules/no-await-in-loop.js",
+    "lib/rules/no-bitwise.js",
+    "lib/rules/no-buffer-constructor.js",
+    "lib/rules/no-caller.js",
+    "lib/rules/no-case-declarations.js",
+    "lib/rules/no-catch-shadow.js",
+    "lib/rules/no-class-assign.js",
+    "lib/rules/no-compare-neg-zero.js",
+    "lib/rules/no-cond-assign.js",
+    "lib/rules/no-confusing-arrow.js",
+    "lib/rules/no-console.js",
+    "lib/rules/no-const-assign.js",
+    "lib/rules/no-constant-binary-expression.js",
+    "lib/rules/no-constant-condition.js",
+    "lib/rules/no-constructor-return.js",
+    "lib/rules/no-continue.js",
+    "lib/rules/no-control-regex.js",
+    "lib/rules/no-debugger.js",
+    "lib/rules/no-delete-var.js",
+    "lib/rules/no-div-regex.js",
+    "lib/rules/no-dupe-args.js",
+    "lib/rules/no-dupe-class-members.js",
+    "lib/rules/no-dupe-else-if.js",
+    "lib/rules/no-dupe-keys.js",
+    "lib/rules/no-duplicate-case.js",
+    "lib/rules/no-duplicate-imports.js",
+    "lib/rules/no-else-return.js",
+    "lib/rules/no-empty-character-class.js",
+    "lib/rules/no-empty-function.js",
+    "lib/rules/no-empty-pattern.js",
+    "lib/rules/no-empty-static-block.js",
+    "lib/rules/no-empty.js",
+    "lib/rules/no-eq-null.js",
+    "lib/rules/no-eval.js",
+    "lib/rules/no-ex-assign.js",
+    "lib/rules/no-extend-native.js",
+    "lib/rules/no-extra-bind.js",
+    "lib/rules/no-extra-boolean-cast.js",
+    "lib/rules/no-extra-label.js",
+    "lib/rules/no-extra-parens.js",
+    "lib/rules/no-extra-semi.js",
+    "lib/rules/no-fallthrough.js",
+    "lib/rules/no-floating-decimal.js",
+    "lib/rules/no-func-assign.js",
+    "lib/rules/no-global-assign.js",
+    "lib/rules/no-implicit-coercion.js",
+    "lib/rules/no-implicit-globals.js",
+    "lib/rules/no-implied-eval.js",
+    "lib/rules/no-import-assign.js",
+    "lib/rules/no-inline-comments.js",
+    "lib/rules/no-inner-declarations.js",
+    "lib/rules/no-invalid-regexp.js",
+    "lib/rules/no-invalid-this.js",
+    "lib/rules/no-irregular-whitespace.js",
+    "lib/rules/no-iterator.js",
+    "lib/rules/no-label-var.js",
+    "lib/rules/no-labels.js",
+    "lib/rules/no-lone-blocks.js",
+    "lib/rules/no-lonely-if.js",
+    "lib/rules/no-loop-func.js",
+    "lib/rules/no-loss-of-precision.js",
+    "lib/rules/no-magic-numbers.js",
+    "lib/rules/no-misleading-character-class.js",
+    "lib/rules/no-mixed-operators.js",
+    "lib/rules/no-mixed-requires.js",
+    "lib/rules/no-mixed-spaces-and-tabs.js",
+    "lib/rules/no-multi-assign.js",
+    "lib/rules/no-multi-spaces.js",
+    "lib/rules/no-multi-str.js",
+    "lib/rules/no-multiple-empty-lines.js",
+    "lib/rules/no-native-reassign.js",
+    "lib/rules/no-negated-condition.js",
+    "lib/rules/no-negated-in-lhs.js",
+    "lib/rules/no-nested-ternary.js",
+    "lib/rules/no-new-func.js",
+    "lib/rules/no-new-native-nonconstructor.js",
+    "lib/rules/no-new-object.js",
+    "lib/rules/no-new-require.js",
+    "lib/rules/no-new-symbol.js",
+    "lib/rules/no-new-wrappers.js",
+    "lib/rules/no-new.js",
+    "lib/rules/no-nonoctal-decimal-escape.js",
+    "lib/rules/no-obj-calls.js",
+    "lib/rules/no-object-constructor.js",
+    "lib/rules/no-octal-escape.js",
+    "lib/rules/no-octal.js",
+    "lib/rules/no-param-reassign.js",
+    "lib/rules/no-path-concat.js",
+    "lib/rules/no-plusplus.js",
+    "lib/rules/no-process-env.js",
+    "lib/rules/no-process-exit.js",
+    "lib/rules/no-promise-executor-return.js",
+    "lib/rules/no-proto.js",
+    "lib/rules/no-prototype-builtins.js",
+    "lib/rules/no-redeclare.js",
+    "lib/rules/no-regex-spaces.js",
+    "lib/rules/no-restricted-exports.js",
+    "lib/rules/no-restricted-globals.js",
+    "lib/rules/no-restricted-imports.js",
+    "lib/rules/no-restricted-modules.js",
+    "lib/rules/no-restricted-properties.js",
+    "lib/rules/no-restricted-syntax.js",
+    "lib/rules/no-return-assign.js",
+    "lib/rules/no-return-await.js",
+    "lib/rules/no-script-url.js",
+    "lib/rules/no-self-assign.js",
+    "lib/rules/no-self-compare.js",
+    "lib/rules/no-sequences.js",
+    "lib/rules/no-setter-return.js",
+    "lib/rules/no-shadow-restricted-names.js",
+    "lib/rules/no-shadow.js",
+    "lib/rules/no-spaced-func.js",
+    "lib/rules/no-sparse-arrays.js",
+    "lib/rules/no-sync.js",
+    "lib/rules/no-tabs.js",
+    "lib/rules/no-template-curly-in-string.js",
+    "lib/rules/no-ternary.js",
+    "lib/rules/no-this-before-super.js",
+    "lib/rules/no-throw-literal.js",
+    "lib/rules/no-trailing-spaces.js",
+    "lib/rules/no-unassigned-vars.js",
+    "lib/rules/no-undef-init.js",
+    "lib/rules/no-undef.js",
+    "lib/rules/no-undefined.js",
+    "lib/rules/no-underscore-dangle.js",
+    "lib/rules/no-unexpected-multiline.js",
+    "lib/rules/no-unmodified-loop-condition.js",
+    "lib/rules/no-unneeded-ternary.js",
+    "lib/rules/no-unreachable-loop.js",
+    "lib/rules/no-unreachable.js",
+    "lib/rules/no-unsafe-finally.js",
+    "lib/rules/no-unsafe-negation.js",
+    "lib/rules/no-unsafe-optional-chaining.js",
+    "lib/rules/no-unused-expressions.js",
+    "lib/rules/no-unused-labels.js",
+    "lib/rules/no-unused-private-class-members.js",
+    "lib/rules/no-unused-vars.js",
+    "lib/rules/no-use-before-define.js",
+    "lib/rules/no-useless-assignment.js",
+    "lib/rules/no-useless-backreference.js",
+    "lib/rules/no-useless-call.js",
+    "lib/rules/no-useless-catch.js",
+    "lib/rules/no-useless-computed-key.js",
+    "lib/rules/no-useless-concat.js",
+    "lib/rules/no-useless-constructor.js",
+    "lib/rules/no-useless-escape.js",
+    "lib/rules/no-useless-rename.js",
+    "lib/rules/no-useless-return.js",
+    "lib/rules/no-var.js",
+    "lib/rules/no-void.js",
+    "lib/rules/no-warning-comments.js",
+    "lib/rules/no-whitespace-before-property.js",
+    "lib/rules/no-with.js",
+    "lib/rules/nonblock-statement-body-position.js",
+    "lib/rules/object-curly-newline.js",
+    "lib/rules/object-curly-spacing.js",
+    "lib/rules/object-property-newline.js",
+    "lib/rules/object-shorthand.js",
+    "lib/rules/one-var-declaration-per-line.js",
+    "lib/rules/one-var.js",
+    "lib/rules/operator-assignment.js",
+    "lib/rules/operator-linebreak.js",
+    "lib/rules/padded-blocks.js",
+    "lib/rules/padding-line-between-statements.js",
+    "lib/rules/prefer-arrow-callback.js",
+    "lib/rules/prefer-const.js",
+    "lib/rules/prefer-destructuring.js",
+    "lib/rules/prefer-exponentiation-operator.js",
+    "lib/rules/prefer-named-capture-group.js",
+    "lib/rules/prefer-numeric-literals.js",
+    "lib/rules/prefer-object-has-own.js",
+    "lib/rules/prefer-object-spread.js",
+    "lib/rules/prefer-promise-reject-errors.js",
+    "lib/rules/prefer-reflect.js",
+    "lib/rules/prefer-regex-literals.js",
+    "lib/rules/prefer-rest-params.js",
+    "lib/rules/prefer-spread.js",
+    "lib/rules/prefer-template.js",
+    "lib/rules/preserve-caught-error.js",
+    "lib/rules/quote-props.js",
+    "lib/rules/quotes.js",
+    "lib/rules/radix.js",
+    "lib/rules/require-atomic-updates.js",
+    "lib/rules/require-await.js",
+    "lib/rules/require-unicode-regexp.js",
+    "lib/rules/require-yield.js",
+    "lib/rules/rest-spread-spacing.js",
+    "lib/rules/semi-spacing.js",
+    "lib/rules/semi-style.js",
+    "lib/rules/semi.js",
+    "lib/rules/sort-imports.js",
+    "lib/rules/sort-keys.js",
+    "lib/rules/sort-vars.js",
+    "lib/rules/space-before-blocks.js",
+    "lib/rules/space-before-function-paren.js",
+    "lib/rules/space-in-parens.js",
+    "lib/rules/space-infix-ops.js",
+    "lib/rules/space-unary-ops.js",
+    "lib/rules/spaced-comment.js",
+    "lib/rules/strict.js",
+    "lib/rules/switch-colon-spacing.js",
+    "lib/rules/symbol-description.js",
+    "lib/rules/template-curly-spacing.js",
+    "lib/rules/template-tag-spacing.js",
+    "lib/rules/unicode-bom.js",
+    "lib/rules/use-isnan.js",
+    "lib/rules/utils/ast-utils.js",
+    "lib/rules/utils/char-source.js",
+    "lib/rules/utils/code-path-utils.js",
+    "lib/rules/utils/fix-tracker.js",
+    "lib/rules/utils/lazy-loading-rule-map.js",
+    "lib/rules/utils/regular-expressions.js",
+    "lib/rules/utils/unicode/is-combining-character.js",
+    "lib/rules/utils/unicode/is-emoji-modifier.js",
+    "lib/rules/utils/unicode/is-regional-indicator-symbol.js",
+    "lib/rules/utils/unicode/is-surrogate-pair.js",
+    "lib/rules/valid-typeof.js",
+    "lib/rules/vars-on-top.js",
+    "lib/rules/wrap-iife.js",
+    "lib/rules/wrap-regex.js",
+    "lib/rules/yield-star-spacing.js",
+    "lib/rules/yoda.js",
+    "lib/services/parser-service.js",
+    "lib/services/processor-service.js",
+    "lib/services/suppressions-service.js",
+    "lib/services/warning-service.js",
+    "lib/shared/ast-utils.js",
+    "lib/shared/deep-merge-arrays.js",
+    "lib/shared/logging.js",
+    "lib/shared/message-counts.js",
+    "lib/shared/naming.js",
+    "lib/shared/option-utils.js",
+    "lib/shared/relative-module-resolver.js",
+    "lib/shared/runtime-info.js",
+    "lib/shared/serialization.js",
+    "lib/shared/severity.js",
+    "lib/shared/string-utils.js",
+    "lib/shared/traverser.js",
+    "lib/unsupported-api.js",
+    "packages/js/src/index.js",
+    "tools/code-sample-minimizer.js",
+    "tools/config-rule.js",
+    "tools/eslint-fuzzer.js",
+    "tools/internal-rules/multiline-comment-style.js",
+    "tools/internal-rules/no-debug-template-literals.js",
+    "tools/internal-rules/no-invalid-meta.js"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "by_wing": {
+    "lib": 1
+   },
+   "count": 1,
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated on the pre-registered test set (D-015): its tuned weights assign zero to fix history and it does not beat busyness by the margin. The fragility half of this feature has no forecast to stand on; it renders as decorative, counted, and excluded from diagnostic claims until a reference repo validates the index.",
+   "diagnostic": false,
+   "dominant_dir": {
+    "dir": "lib/eslint",
+    "n": 1
+   },
+   "feature": "toothpick_wing",
+   "name_implies_consequence": true,
+   "position_name": "unreinforced high-load node with high edit pressure",
+   "predicate": "load_index >= p90 and bug_pressure_index >= p90 and reinforcement_index <= 0.0",
+   "profile": "maintainability",
+   "rooms": [
+    "lib/eslint/eslint-helpers.js"
+   ],
+   "validation_status": "unvalidated"
+  },
+  {
+   "by_wing": {
+    "lib": 21,
+    "packages": 1
+   },
+   "count": 22,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "lib/config",
+    "n": 4
+   },
+   "feature": "corridor",
+   "name_implies_consequence": false,
+   "position_name": "high-centrality, high-fan-out junction",
+   "predicate": "centrality >= p90 and fan_out >= p50",
+   "profile": "onboarding",
+   "rooms": [
+    "lib/api.js",
+    "lib/config/config.js",
+    "lib/config/default-config.js",
+    "lib/config/flat-config-array.js",
+    "lib/config/flat-config-schema.js",
+    "lib/eslint/eslint.js",
+    "lib/languages/js/index.js",
+    "lib/languages/js/source-code/index.js",
+    "lib/languages/js/source-code/source-code.js",
+    "lib/languages/js/source-code/token-store/decorative-cursor.js",
+    "lib/languages/js/source-code/token-store/forward-token-cursor.js",
+    "lib/languages/js/source-code/token-store/index.js",
+    "lib/linter/code-path-analysis/code-path-analyzer.js",
+    "lib/linter/code-path-analysis/code-path-segment.js",
+    "lib/linter/index.js",
+    "lib/linter/linter.js",
+    "lib/rule-tester/index.js",
+    "lib/rule-tester/rule-tester.js",
+    "lib/rules/index.js",
+    "lib/rules/utils/ast-utils.js",
+    "lib/rules/utils/fix-tracker.js",
+    "packages/js/src/index.js"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "by_wing": {
+    "conf": 2,
+    "lib": 45,
+    "tools": 1
+   },
+   "count": 48,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "lib/shared",
+    "n": 9
+   },
+   "feature": "foundation",
+   "name_implies_consequence": true,
+   "position_name": "high-load hub",
+   "predicate": "load_index >= p90",
+   "profile": "onboarding",
+   "rooms": [
+    "conf/ecma-version.js",
+    "conf/globals.js",
+    "lib/cli-engine/hash.js",
+    "lib/cli-engine/lint-result-cache.js",
+    "lib/config-api.js",
+    "lib/config/config-loader.js",
+    "lib/config/config.js",
+    "lib/config/default-config.js",
+    "lib/config/flat-config-array.js",
+    "lib/config/flat-config-schema.js",
+    "lib/eslint/eslint-helpers.js",
+    "lib/eslint/eslint.js",
+    "lib/languages/js/index.js",
+    "lib/languages/js/source-code/index.js",
+    "lib/languages/js/source-code/token-store/cursor.js",
+    "lib/languages/js/source-code/token-store/decorative-cursor.js",
+    "lib/languages/js/source-code/token-store/utils.js",
+    "lib/linter/code-path-analysis/code-path-segment.js",
+    "lib/linter/code-path-analysis/debug-helpers.js",
+    "lib/linter/code-path-analysis/id-generator.js",
+    "lib/linter/index.js",
+    "lib/linter/interpolate.js",
+    "lib/linter/rule-fixer.js",
+    "lib/linter/source-code-fixer.js",
+    "lib/linter/source-code-visitor.js",
+    "lib/linter/timing.js",
+    "lib/linter/vfile.js",
+    "lib/rule-tester/index.js",
+    "lib/rule-tester/rule-tester.js",
+    "lib/rules/index.js",
+    "lib/rules/multiline-comment-style.js",
+    "lib/rules/utils/ast-utils.js",
+    "lib/rules/utils/code-path-utils.js",
+    "lib/rules/utils/fix-tracker.js",
+    "lib/rules/utils/keywords.js",
+    "lib/rules/utils/regular-expressions.js",
+    "lib/services/suppressions-service.js",
+    "lib/services/warning-service.js",
+    "lib/shared/assert.js",
+    "lib/shared/ast-utils.js",
+    "lib/shared/deep-merge-arrays.js",
+    "lib/shared/logging.js",
+    "lib/shared/message-counts.js",
+    "lib/shared/naming.js",
+    "lib/shared/severity.js",
+    "lib/shared/string-utils.js",
+    "lib/shared/traverser.js",
+    "tools/config-rule.js"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "by_wing": {
+    "(root)": 2,
+    "bin": 1,
+    "docs": 3,
+    "lib": 2,
+    "messages": 2,
+    "packages": 2,
+    "tools": 7
+   },
+   "count": 19,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "tools",
+    "n": 5
+   },
+   "feature": "import_root",
+   "name_implies_consequence": false,
+   "position_name": "import-graph root",
+   "predicate": "fan_in == 0 and fan_out >= p75",
+   "profile": "onboarding",
+   "rooms": [
+    "Makefile.js",
+    "bin/eslint.js",
+    "docs/.eleventy.js",
+    "docs/_examples/custom-rule-tutorial-code/eslint.config.js",
+    "docs/src/_data/flags.js",
+    "eslint.config.js",
+    "lib/eslint/worker.js",
+    "lib/universal.js",
+    "messages/invalid-rule-options.js",
+    "messages/invalid-rule-severity.js",
+    "packages/eslint-config-eslint/cjs.js",
+    "packages/eslint-config-eslint/index.js",
+    "tools/check-rule-examples.js",
+    "tools/generate-formatter-examples.js",
+    "tools/test-ecosystem/index.mjs",
+    "tools/test-ecosystem/update.mjs",
+    "tools/update-eslint-all.js",
+    "tools/update-eslint-recommended.js",
+    "tools/update-rule-type-headers.js"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "by_wing": {
+    "conf": 2,
+    "docs": 2,
+    "lib": 139,
+    "messages": 1,
+    "packages": 2,
+    "tools": 2
+   },
+   "count": 148,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "lib/rules",
+    "n": 98
+   },
+   "feature": "leaf_utility",
+   "name_implies_consequence": false,
+   "position_name": "imported leaf",
+   "predicate": "fan_out == 0 and fan_in >= p75",
+   "profile": "onboarding",
+   "rooms": [
+    "conf/ecma-version.js",
+    "conf/globals.js",
+    "docs/_examples/custom-rule-tutorial-code/enforce-foo-bar.js",
+    "docs/tools/code-block-utils.js",
+    "lib/cli-engine/hash.js",
+    "lib/config-api.js",
+    "lib/languages/js/source-code/token-store/cursor.js",
+    "lib/languages/js/source-code/token-store/utils.js",
+    "lib/linter/code-path-analysis/debug-helpers.js",
+    "lib/linter/code-path-analysis/id-generator.js",
+    "lib/linter/esquery.js",
+    "lib/linter/file-context.js",
+    "lib/linter/interpolate.js",
+    "lib/linter/rule-fixer.js",
+    "lib/linter/source-code-fixer.js",
+    "lib/linter/source-code-visitor.js",
+    "lib/linter/vfile.js",
+    "lib/options.js",
+    "lib/rules/block-scoped-var.js",
+    "lib/rules/callback-return.js",
+    "lib/rules/consistent-this.js",
+    "lib/rules/constructor-super.js",
+    "lib/rules/default-case-last.js",
+    "lib/rules/default-case.js",
+    "lib/rules/default-param-last.js",
+    "lib/rules/eol-last.js",
+    "lib/rules/for-direction.js",
+    "lib/rules/func-style.js",
+    "lib/rules/function-call-argument-newline.js",
+    "lib/rules/generator-star-spacing.js",
+    "lib/rules/global-require.js",
+    "lib/rules/guard-for-in.js",
+    "lib/rules/handle-callback-err.js",
+    "lib/rules/id-blacklist.js",
+    "lib/rules/init-declarations.js",
+    "lib/rules/max-classes-per-file.js",
+    "lib/rules/max-depth.js",
+    "lib/rules/max-len.js",
+    "lib/rules/newline-before-return.js",
+    "lib/rules/no-async-promise-executor.js",
+    "lib/rules/no-await-in-loop.js",
+    "lib/rules/no-bitwise.js",
+    "lib/rules/no-buffer-constructor.js",
+    "lib/rules/no-caller.js",
+    "lib/rules/no-case-declarations.js",
+    "lib/rules/no-constructor-return.js",
+    "lib/rules/no-continue.js",
+    "lib/rules/no-control-regex.js",
+    "lib/rules/no-debugger.js",
+    "lib/rules/no-delete-var.js",
+    "lib/rules/no-div-regex.js",
+    "lib/rules/no-duplicate-imports.js",
+    "lib/rules/no-empty-character-class.js",
+    "lib/rules/no-empty-static-block.js",
+    "lib/rules/no-eq-null.js",
+    "lib/rules/no-global-assign.js",
+    "lib/rules/no-implicit-globals.js",
+    "lib/rules/no-invalid-regexp.js",
+    "lib/rules/no-lone-blocks.js",
+    "lib/rules/no-loop-func.js",
+    "lib/rules/no-loss-of-precision.js",
+    "lib/rules/no-mixed-requires.js",
+    "lib/rules/no-mixed-spaces-and-tabs.js",
+    "lib/rules/no-multi-assign.js",
+    "lib/rules/no-multiple-empty-lines.js",
+    "lib/rules/no-native-reassign.js",
+    "lib/rules/no-negated-condition.js",
+    "lib/rules/no-negated-in-lhs.js",
+    "lib/rules/no-nested-ternary.js",
+    "lib/rules/no-new-native-nonconstructor.js",
+    "lib/rules/no-new-require.js",
+    "lib/rules/no-new-symbol.js",
+    "lib/rules/no-new.js",
+    "lib/rules/no-nonoctal-decimal-escape.js",
+    "lib/rules/no-octal-escape.js",
+    "lib/rules/no-octal.js",
+    "lib/rules/no-param-reassign.js",
+    "lib/rules/no-path-concat.js",
+    "lib/rules/no-plusplus.js",
+    "lib/rules/no-process-env.js",
+    "lib/rules/no-process-exit.js",
+    "lib/rules/no-restricted-syntax.js",
+    "lib/rules/no-self-compare.js",
+    "lib/rules/no-shadow-restricted-names.js",
+    "lib/rules/no-spaced-func.js",
+    "lib/rules/no-sync.js",
+    "lib/rules/no-tabs.js",
+    "lib/rules/no-template-curly-in-string.js",
+    "lib/rules/no-ternary.js",
+    "lib/rules/no-unassigned-vars.js",
+    "lib/rules/no-undef.js",
+    "lib/rules/no-undefined.js",
+    "lib/rules/no-underscore-dangle.js",
+    "lib/rules/no-unsafe-finally.js",
+    "lib/rules/no-unsafe-optional-chaining.js",
+    "lib/rules/no-use-before-define.js",
+    "lib/rules/no-useless-assignment.js",
+    "lib/rules/no-useless-backreference.js",
+    "lib/rules/no-useless-catch.js",
+    "lib/rules/no-void.js",
+    "lib/rules/no-with.js",
+    "lib/rules/nonblock-statement-body-position.js",
+    "lib/rules/object-property-newline.js",
+    "lib/rules/one-var-declaration-per-line.js",
+    "lib/rules/prefer-named-capture-group.js",
+    "lib/rules/prefer-reflect.js",
+    "lib/rules/prefer-rest-params.js",
+    "lib/rules/require-atomic-updates.js",
+    "lib/rules/rest-spread-spacing.js",
+    "lib/rules/sort-imports.js",
+    "lib/rules/sort-vars.js",
+    "lib/rules/template-tag-spacing.js",
+    "lib/rules/unicode-bom.js",
+    "lib/rules/utils/char-source.js",
+    "lib/rules/utils/code-path-utils.js",
+    "lib/rules/utils/keywords.js",
+    "lib/rules/utils/lazy-loading-rule-map.js",
+    "lib/rules/utils/regular-expressions.js",
+    "lib/rules/utils/unicode/is-combining-character.js",
+    "lib/rules/utils/unicode/is-emoji-modifier.js",
+    "lib/rules/utils/unicode/is-regional-indicator-symbol.js",
+    "lib/rules/utils/unicode/is-surrogate-pair.js",
+    "lib/rules/vars-on-top.js",
+    "lib/rules/wrap-regex.js",
+    "lib/rules/yield-star-spacing.js",
+    "lib/services/parser-service.js",
+    "lib/services/warning-service.js",
+    "lib/shared/ajv.js",
+    "lib/shared/assert.js",
+    "lib/shared/ast-utils.js",
+    "lib/shared/deep-merge-arrays.js",
+    "lib/shared/directives.js",
+    "lib/shared/flags.js",
+    "lib/shared/logging.js",
+    "lib/shared/message-counts.js",
+    "lib/shared/naming.js",
+    "lib/shared/option-utils.js",
+    "lib/shared/relative-module-resolver.js",
+    "lib/shared/serialization.js",
+    "lib/shared/severity.js",
+    "lib/shared/stats.js",
+    "lib/shared/string-utils.js",
+    "lib/shared/traverser.js",
+    "messages/shared.js",
+    "packages/eslint-config-eslint/base.js",
+    "packages/eslint-config-eslint/nodejs.js",
+    "tools/code-sample-minimizer.js",
+    "tools/test-ecosystem/data.mjs"
+   ],
+   "validation_status": "asserted"
+  },
+  {
+   "by_wing": {
+    "bin": 1,
+    "docs": 1,
+    "lib": 4,
+    "packages": 5
+   },
+   "count": 11,
+   "decorative": false,
+   "decorative_reason": null,
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "packages/eslint-config-eslint",
+    "n": 4
+   },
+   "feature": "package_entry",
+   "name_implies_consequence": false,
+   "position_name": "declared package entry",
+   "predicate": "is_package_entry == 1",
+   "profile": "onboarding",
+   "rooms": [
+    "bin/eslint.js",
+    "docs/_examples/custom-rule-tutorial-code/eslint-plugin-example.js",
+    "lib/api.js",
+    "lib/config-api.js",
+    "lib/universal.js",
+    "lib/unsupported-api.js",
+    "packages/eslint-config-eslint/base.js",
+    "packages/eslint-config-eslint/cjs.js",
+    "packages/eslint-config-eslint/formatting.js",
+    "packages/eslint-config-eslint/index.js",
+    "packages/js/src/index.js"
+   ],
+   "validation_status": "asserted"
+  }
+ ],
+ "gate": {
+  "bug_pressure_index": "unvalidated",
+  "centrality": "asserted",
+  "fan_in": "asserted",
+  "fan_out": "asserted",
+  "is_package_entry": "asserted",
+  "last_touched_days": "asserted",
+  "load_index": "asserted",
+  "reinforcement_index": "asserted"
+ },
+ "gate_fingerprint": "179d8acb7b0c553c3f1a03039f83e5b8cb93b23bda0835bbcac8d9ba7fbf775a",
+ "geometry": "age",
+ "overlaps": [
+  {
+   "a": "maintainability/flooded_basement",
+   "b": "maintainability/dark_room",
+   "n": 75,
+   "relation": "within"
+  },
+  {
+   "a": "maintainability/foundation",
+   "b": "onboarding/foundation",
+   "inert_terms": [],
+   "n": 48,
+   "relation": "identical"
+  },
+  {
+   "a": "onboarding/corridor",
+   "b": "maintainability/hub",
+   "n": 22,
+   "relation": "within"
+  }
+ ],
+ "overlays": [
+  "onboarding"
+ ],
+ "population": 473,
+ "profile": "maintainability",
+ "repo": {
+  "head_sha": "3f20a57c6293371b6193d3fb6746c2b7b2ac2689",
+  "name": "eslint"
+ },
+ "rooms": {
+  "Makefile.js": {
+   "fan_in": 0,
+   "fan_out": 3,
+   "lines": 989
+  },
+  "bin/eslint.js": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 177
+  },
+  "conf/ecma-version.js": {
+   "fan_in": 6,
+   "fan_out": 0,
+   "lines": 13
+  },
+  "conf/globals.js": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 151
+  },
+  "cypress.config.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 48
+  },
+  "docs/.eleventy.js": {
+   "fan_in": 0,
+   "fan_out": 4,
+   "lines": 504
+  },
+  "docs/_examples/custom-rule-tutorial-code/enforce-foo-bar.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 62
+  },
+  "docs/_examples/custom-rule-tutorial-code/eslint-plugin-example.js": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 8
+  },
+  "docs/_examples/custom-rule-tutorial-code/eslint.config.js": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 23
+  },
+  "docs/_examples/custom-rule-tutorial-code/example.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 16
+  },
+  "docs/_examples/integration-tutorial-code/example-eslint-integration.js": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 55
+  },
+  "docs/_examples/integration-tutorial-code/sample-data/test-file.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 24
+  },
+  "docs/postcss.config.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 5
+  },
+  "docs/src/_data/eslintVersions.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 58
+  },
+  "docs/src/_data/flags.js": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 43
+  },
+  "docs/src/_data/helpers.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 29
+  },
+  "docs/src/_data/layout.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 2
+  },
+  "docs/src/_data/rules_categories.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 27
+  },
+  "docs/src/_data/site.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 20
+  },
+  "docs/src/_plugins/md-syntax-highlighter.js": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 80
+  },
+  "docs/src/_plugins/pre-wrapper.js": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 20
+  },
+  "docs/src/assets/js/components-index.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 31
+  },
+  "docs/src/assets/js/css-vars-ponyfill@2.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 1489
+  },
+  "docs/src/assets/js/focus-visible.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 273
+  },
+  "docs/src/assets/js/inert-polyfill.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 96
+  },
+  "docs/src/assets/js/main.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 264
+  },
+  "docs/src/assets/js/scroll-up-btn.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 15
+  },
+  "docs/src/assets/js/search.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 255
+  },
+  "docs/src/assets/js/tabs.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 287
+  },
+  "docs/src/assets/js/themes.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 69
+  },
+  "docs/src/static/serviceworker.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 0
+  },
+  "docs/tools/code-block-utils.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 26
+  },
+  "docs/tools/markdown-it-rule-example.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 89
+  },
+  "docs/tools/prism-eslint-hook.js": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 448
+  },
+  "docs/tools/validate-links.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 55
+  },
+  "eslint.config.js": {
+   "fan_in": 0,
+   "fan_out": 3,
+   "lines": 387
+  },
+  "lib/api.js": {
+   "fan_in": 5,
+   "fan_out": 4,
+   "lines": 32
+  },
+  "lib/cli-engine/formatters/html.js": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 317
+  },
+  "lib/cli-engine/formatters/json-with-metadata.js": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 14
+  },
+  "lib/cli-engine/formatters/json.js": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 11
+  },
+  "lib/cli-engine/formatters/stylish.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 135
+  },
+  "lib/cli-engine/hash.js": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 27
+  },
+  "lib/cli-engine/lint-result-cache.js": {
+   "fan_in": 3,
+   "fan_out": 2,
+   "lines": 212
+  },
+  "lib/cli.js": {
+   "fan_in": 2,
+   "fan_out": 7,
+   "lines": 447
+  },
+  "lib/config-api.js": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 15
+  },
+  "lib/config/config-loader.js": {
+   "fan_in": 4,
+   "fan_out": 2,
+   "lines": 575
+  },
+  "lib/config/config.js": {
+   "fan_in": 6,
+   "fan_out": 3,
+   "lines": 676
+  },
+  "lib/config/default-config.js": {
+   "fan_in": 4,
+   "fan_out": 2,
+   "lines": 66
+  },
+  "lib/config/flat-config-array.js": {
+   "fan_in": 5,
+   "fan_out": 3,
+   "lines": 192
+  },
+  "lib/config/flat-config-schema.js": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 523
+  },
+  "lib/eslint/eslint-helpers.js": {
+   "fan_in": 3,
+   "fan_out": 7,
+   "lines": 1287
+  },
+  "lib/eslint/eslint.js": {
+   "fan_in": 5,
+   "fan_out": 9,
+   "lines": 1230
+  },
+  "lib/eslint/index.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 5
+  },
+  "lib/eslint/worker.js": {
+   "fan_in": 0,
+   "fan_out": 3,
+   "lines": 140
+  },
+  "lib/languages/js/index.js": {
+   "fan_in": 6,
+   "fan_out": 4,
+   "lines": 293
+  },
+  "lib/languages/js/source-code/index.js": {
+   "fan_in": 8,
+   "fan_out": 1,
+   "lines": 5
+  },
+  "lib/languages/js/source-code/source-code.js": {
+   "fan_in": 2,
+   "fan_out": 6,
+   "lines": 1014
+  },
+  "lib/languages/js/source-code/token-store/backward-token-comment-cursor.js": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 54
+  },
+  "lib/languages/js/source-code/token-store/backward-token-cursor.js": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 50
+  },
+  "lib/languages/js/source-code/token-store/cursor.js": {
+   "fan_in": 5,
+   "fan_out": 0,
+   "lines": 69
+  },
+  "lib/languages/js/source-code/token-store/cursors.js": {
+   "fan_in": 1,
+   "fan_out": 7,
+   "lines": 109
+  },
+  "lib/languages/js/source-code/token-store/decorative-cursor.js": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 31
+  },
+  "lib/languages/js/source-code/token-store/filter-cursor.js": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 36
+  },
+  "lib/languages/js/source-code/token-store/forward-token-comment-cursor.js": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 58
+  },
+  "lib/languages/js/source-code/token-store/forward-token-cursor.js": {
+   "fan_in": 3,
+   "fan_out": 2,
+   "lines": 54
+  },
+  "lib/languages/js/source-code/token-store/index.js": {
+   "fan_in": 2,
+   "fan_out": 5,
+   "lines": 649
+  },
+  "lib/languages/js/source-code/token-store/limit-cursor.js": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 34
+  },
+  "lib/languages/js/source-code/token-store/padded-token-cursor.js": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 41
+  },
+  "lib/languages/js/source-code/token-store/skip-cursor.js": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 36
+  },
+  "lib/languages/js/source-code/token-store/utils.js": {
+   "fan_in": 5,
+   "fan_out": 0,
+   "lines": 118
+  },
+  "lib/languages/js/validate-language-options.js": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 170
+  },
+  "lib/linter/apply-disable-directives.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 522
+  },
+  "lib/linter/code-path-analysis/code-path-analyzer.js": {
+   "fan_in": 1,
+   "fan_out": 6,
+   "lines": 722
+  },
+  "lib/linter/code-path-analysis/code-path-segment.js": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 228
+  },
+  "lib/linter/code-path-analysis/code-path-state.js": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 2097
+  },
+  "lib/linter/code-path-analysis/code-path.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 297
+  },
+  "lib/linter/code-path-analysis/debug-helpers.js": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 200
+  },
+  "lib/linter/code-path-analysis/fork-context.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 335
+  },
+  "lib/linter/code-path-analysis/id-generator.js": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 36
+  },
+  "lib/linter/esquery.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 287
+  },
+  "lib/linter/file-context.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 77
+  },
+  "lib/linter/file-report.js": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 531
+  },
+  "lib/linter/index.js": {
+   "fan_in": 9,
+   "fan_out": 2,
+   "lines": 8
+  },
+  "lib/linter/interpolate.js": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 41
+  },
+  "lib/linter/linter.js": {
+   "fan_in": 2,
+   "fan_out": 21,
+   "lines": 1437
+  },
+  "lib/linter/rule-fixer.js": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 169
+  },
+  "lib/linter/source-code-fixer.js": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 132
+  },
+  "lib/linter/source-code-traverser.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 291
+  },
+  "lib/linter/source-code-visitor.js": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 70
+  },
+  "lib/linter/timing.js": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 174
+  },
+  "lib/linter/vfile.js": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 99
+  },
+  "lib/options.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 408
+  },
+  "lib/rule-tester/index.js": {
+   "fan_in": 6,
+   "fan_out": 1,
+   "lines": 5
+  },
+  "lib/rule-tester/rule-tester.js": {
+   "fan_in": 293,
+   "fan_out": 10,
+   "lines": 1800
+  },
+  "lib/rules/accessor-pairs.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 330
+  },
+  "lib/rules/array-bracket-newline.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 262
+  },
+  "lib/rules/array-bracket-spacing.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 275
+  },
+  "lib/rules/array-callback-return.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 443
+  },
+  "lib/rules/array-element-newline.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 329
+  },
+  "lib/rules/arrow-body-style.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 382
+  },
+  "lib/rules/arrow-parens.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 212
+  },
+  "lib/rules/arrow-spacing.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 168
+  },
+  "lib/rules/block-scoped-var.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 123
+  },
+  "lib/rules/block-spacing.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 179
+  },
+  "lib/rules/brace-style.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 254
+  },
+  "lib/rules/callback-return.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 189
+  },
+  "lib/rules/camelcase.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 376
+  },
+  "lib/rules/capitalized-comments.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 282
+  },
+  "lib/rules/class-methods-use-this.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 223
+  },
+  "lib/rules/comma-dangle.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 382
+  },
+  "lib/rules/comma-spacing.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 181
+  },
+  "lib/rules/comma-style.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 359
+  },
+  "lib/rules/complexity.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 172
+  },
+  "lib/rules/computed-property-spacing.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 228
+  },
+  "lib/rules/consistent-return.js": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 182
+  },
+  "lib/rules/consistent-this.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 156
+  },
+  "lib/rules/constructor-super.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 388
+  },
+  "lib/rules/curly.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 377
+  },
+  "lib/rules/default-case-last.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 42
+  },
+  "lib/rules/default-case.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 85
+  },
+  "lib/rules/default-param-last.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 66
+  },
+  "lib/rules/dot-location.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 122
+  },
+  "lib/rules/dot-notation.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 193
+  },
+  "lib/rules/eol-last.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 123
+  },
+  "lib/rules/eqeqeq.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 204
+  },
+  "lib/rules/for-direction.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 190
+  },
+  "lib/rules/func-call-spacing.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 258
+  },
+  "lib/rules/func-name-matching.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 310
+  },
+  "lib/rules/func-names.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 177
+  },
+  "lib/rules/func-style.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 197
+  },
+  "lib/rules/function-call-argument-newline.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 148
+  },
+  "lib/rules/function-paren-newline.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 333
+  },
+  "lib/rules/generator-star-spacing.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 218
+  },
+  "lib/rules/getter-return.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 163
+  },
+  "lib/rules/global-require.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 102
+  },
+  "lib/rules/grouped-accessor-pairs.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 238
+  },
+  "lib/rules/guard-for-in.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 71
+  },
+  "lib/rules/handle-callback-err.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 107
+  },
+  "lib/rules/id-blacklist.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 215
+  },
+  "lib/rules/id-denylist.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 198
+  },
+  "lib/rules/id-length.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 196
+  },
+  "lib/rules/id-match.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 322
+  },
+  "lib/rules/implicit-arrow-linebreak.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 114
+  },
+  "lib/rules/indent-legacy.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 1221
+  },
+  "lib/rules/indent.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 2110
+  },
+  "lib/rules/index.js": {
+   "fan_in": 12,
+   "fan_out": 293,
+   "lines": 328
+  },
+  "lib/rules/init-declarations.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 149
+  },
+  "lib/rules/jsx-quotes.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 114
+  },
+  "lib/rules/key-spacing.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 751
+  },
+  "lib/rules/keyword-spacing.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 622
+  },
+  "lib/rules/line-comment-position.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 141
+  },
+  "lib/rules/linebreak-style.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 116
+  },
+  "lib/rules/lines-around-comment.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 524
+  },
+  "lib/rules/lines-around-directive.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 221
+  },
+  "lib/rules/lines-between-class-members.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 330
+  },
+  "lib/rules/logical-assignment-operators.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 620
+  },
+  "lib/rules/max-classes-per-file.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 87
+  },
+  "lib/rules/max-depth.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 159
+  },
+  "lib/rules/max-len.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 441
+  },
+  "lib/rules/max-lines-per-function.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 210
+  },
+  "lib/rules/max-lines.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 162
+  },
+  "lib/rules/max-nested-callbacks.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 123
+  },
+  "lib/rules/max-params.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 134
+  },
+  "lib/rules/max-statements-per-line.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 203
+  },
+  "lib/rules/max-statements.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 166
+  },
+  "lib/rules/multiline-comment-style.js": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 585
+  },
+  "lib/rules/multiline-ternary.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 235
+  },
+  "lib/rules/new-cap.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 223
+  },
+  "lib/rules/new-parens.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 106
+  },
+  "lib/rules/newline-after-var.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 271
+  },
+  "lib/rules/newline-before-return.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 211
+  },
+  "lib/rules/newline-per-chained-call.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 141
+  },
+  "lib/rules/no-alert.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 129
+  },
+  "lib/rules/no-array-constructor.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 164
+  },
+  "lib/rules/no-async-promise-executor.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 44
+  },
+  "lib/rules/no-await-in-loop.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 101
+  },
+  "lib/rules/no-bitwise.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 130
+  },
+  "lib/rules/no-buffer-constructor.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 66
+  },
+  "lib/rules/no-caller.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 44
+  },
+  "lib/rules/no-case-declarations.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 71
+  },
+  "lib/rules/no-catch-shadow.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 81
+  },
+  "lib/rules/no-class-assign.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 55
+  },
+  "lib/rules/no-compare-neg-zero.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 136
+  },
+  "lib/rules/no-cond-assign.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 150
+  },
+  "lib/rules/no-confusing-arrow.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 113
+  },
+  "lib/rules/no-console.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 197
+  },
+  "lib/rules/no-const-assign.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 60
+  },
+  "lib/rules/no-constant-binary-expression.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 631
+  },
+  "lib/rules/no-constant-condition.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 155
+  },
+  "lib/rules/no-constructor-return.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 51
+  },
+  "lib/rules/no-continue.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 31
+  },
+  "lib/rules/no-control-regex.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 126
+  },
+  "lib/rules/no-debugger.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 34
+  },
+  "lib/rules/no-delete-var.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 35
+  },
+  "lib/rules/no-div-regex.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 50
+  },
+  "lib/rules/no-dupe-args.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 79
+  },
+  "lib/rules/no-dupe-class-members.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 96
+  },
+  "lib/rules/no-dupe-else-if.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 123
+  },
+  "lib/rules/no-dupe-keys.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 140
+  },
+  "lib/rules/no-duplicate-case.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 65
+  },
+  "lib/rules/no-duplicate-imports.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 334
+  },
+  "lib/rules/no-else-return.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 394
+  },
+  "lib/rules/no-empty-character-class.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 68
+  },
+  "lib/rules/no-empty-function.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 208
+  },
+  "lib/rules/no-empty-pattern.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 74
+  },
+  "lib/rules/no-empty-static-block.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 64
+  },
+  "lib/rules/no-empty.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 133
+  },
+  "lib/rules/no-eq-null.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 43
+  },
+  "lib/rules/no-eval.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 257
+  },
+  "lib/rules/no-ex-assign.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 47
+  },
+  "lib/rules/no-extend-native.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 160
+  },
+  "lib/rules/no-extra-bind.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 204
+  },
+  "lib/rules/no-extra-boolean-cast.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 369
+  },
+  "lib/rules/no-extra-label.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 150
+  },
+  "lib/rules/no-extra-parens.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 1494
+  },
+  "lib/rules/no-extra-semi.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 149
+  },
+  "lib/rules/no-fallthrough.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 215
+  },
+  "lib/rules/no-floating-decimal.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 89
+  },
+  "lib/rules/no-func-assign.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 65
+  },
+  "lib/rules/no-global-assign.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 88
+  },
+  "lib/rules/no-implicit-coercion.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 419
+  },
+  "lib/rules/no-implicit-globals.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 166
+  },
+  "lib/rules/no-implied-eval.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 150
+  },
+  "lib/rules/no-import-assign.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 197
+  },
+  "lib/rules/no-inline-comments.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 98
+  },
+  "lib/rules/no-inner-declarations.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 123
+  },
+  "lib/rules/no-invalid-regexp.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 214
+  },
+  "lib/rules/no-invalid-this.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 151
+  },
+  "lib/rules/no-irregular-whitespace.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 258
+  },
+  "lib/rules/no-iterator.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 39
+  },
+  "lib/rules/no-label-var.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 64
+  },
+  "lib/rules/no-labels.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 136
+  },
+  "lib/rules/no-lone-blocks.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 121
+  },
+  "lib/rules/no-lonely-if.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 113
+  },
+  "lib/rules/no-loop-func.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 234
+  },
+  "lib/rules/no-loss-of-precision.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 221
+  },
+  "lib/rules/no-magic-numbers.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 333
+  },
+  "lib/rules/no-misleading-character-class.js": {
+   "fan_in": 2,
+   "fan_out": 4,
+   "lines": 524
+  },
+  "lib/rules/no-mixed-operators.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 230
+  },
+  "lib/rules/no-mixed-requires.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 238
+  },
+  "lib/rules/no-mixed-spaces-and-tabs.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 129
+  },
+  "lib/rules/no-multi-assign.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 56
+  },
+  "lib/rules/no-multi-spaces.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 159
+  },
+  "lib/rules/no-multi-str.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 56
+  },
+  "lib/rules/no-multiple-empty-lines.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 190
+  },
+  "lib/rules/no-native-reassign.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 101
+  },
+  "lib/rules/no-negated-condition.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 89
+  },
+  "lib/rules/no-negated-in-lhs.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 52
+  },
+  "lib/rules/no-nested-ternary.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 39
+  },
+  "lib/rules/no-new-func.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 80
+  },
+  "lib/rules/no-new-native-nonconstructor.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 57
+  },
+  "lib/rules/no-new-object.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 63
+  },
+  "lib/rules/no-new-require.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 59
+  },
+  "lib/rules/no-new-symbol.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 63
+  },
+  "lib/rules/no-new-wrappers.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 50
+  },
+  "lib/rules/no-new.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 35
+  },
+  "lib/rules/no-nonoctal-decimal-escape.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 154
+  },
+  "lib/rules/no-obj-calls.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 90
+  },
+  "lib/rules/no-object-constructor.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 104
+  },
+  "lib/rules/no-octal-escape.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 44
+  },
+  "lib/rules/no-octal.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 35
+  },
+  "lib/rules/no-param-reassign.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 220
+  },
+  "lib/rules/no-path-concat.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 69
+  },
+  "lib/rules/no-plusplus.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 86
+  },
+  "lib/rules/no-process-env.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 60
+  },
+  "lib/rules/no-process-exit.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 59
+  },
+  "lib/rules/no-promise-executor-return.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 228
+  },
+  "lib/rules/no-proto.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 36
+  },
+  "lib/rules/no-prototype-builtins.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 156
+  },
+  "lib/rules/no-redeclare.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 147
+  },
+  "lib/rules/no-regex-spaces.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 191
+  },
+  "lib/rules/no-restricted-exports.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 201
+  },
+  "lib/rules/no-restricted-globals.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 232
+  },
+  "lib/rules/no-restricted-imports.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 823
+  },
+  "lib/rules/no-restricted-modules.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 222
+  },
+  "lib/rules/no-restricted-properties.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 212
+  },
+  "lib/rules/no-restricted-syntax.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 67
+  },
+  "lib/rules/no-return-assign.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 72
+  },
+  "lib/rules/no-return-await.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 141
+  },
+  "lib/rules/no-script-url.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 57
+  },
+  "lib/rules/no-self-assign.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 163
+  },
+  "lib/rules/no-self-compare.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 66
+  },
+  "lib/rules/no-sequences.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 137
+  },
+  "lib/rules/no-setter-return.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 115
+  },
+  "lib/rules/no-shadow-restricted-names.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 99
+  },
+  "lib/rules/no-shadow.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 599
+  },
+  "lib/rules/no-spaced-func.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 93
+  },
+  "lib/rules/no-sparse-arrays.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 55
+  },
+  "lib/rules/no-sync.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 72
+  },
+  "lib/rules/no-tabs.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 99
+  },
+  "lib/rules/no-template-curly-in-string.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 38
+  },
+  "lib/rules/no-ternary.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 31
+  },
+  "lib/rules/no-this-before-super.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 317
+  },
+  "lib/rules/no-throw-literal.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 42
+  },
+  "lib/rules/no-trailing-spaces.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 195
+  },
+  "lib/rules/no-unassigned-vars.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 73
+  },
+  "lib/rules/no-undef-init.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 85
+  },
+  "lib/rules/no-undef.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 71
+  },
+  "lib/rules/no-undefined.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 72
+  },
+  "lib/rules/no-underscore-dangle.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 351
+  },
+  "lib/rules/no-unexpected-multiline.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 112
+  },
+  "lib/rules/no-unmodified-loop-condition.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 333
+  },
+  "lib/rules/no-unneeded-ternary.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 210
+  },
+  "lib/rules/no-unreachable-loop.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 151
+  },
+  "lib/rules/no-unreachable.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 247
+  },
+  "lib/rules/no-unsafe-finally.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 106
+  },
+  "lib/rules/no-unsafe-negation.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 133
+  },
+  "lib/rules/no-unsafe-optional-chaining.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 208
+  },
+  "lib/rules/no-unused-expressions.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 209
+  },
+  "lib/rules/no-unused-labels.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 152
+  },
+  "lib/rules/no-unused-private-class-members.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 366
+  },
+  "lib/rules/no-unused-vars.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 1605
+  },
+  "lib/rules/no-use-before-define.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 392
+  },
+  "lib/rules/no-useless-assignment.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 592
+  },
+  "lib/rules/no-useless-backreference.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 227
+  },
+  "lib/rules/no-useless-call.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 80
+  },
+  "lib/rules/no-useless-catch.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 50
+  },
+  "lib/rules/no-useless-computed-key.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 175
+  },
+  "lib/rules/no-useless-concat.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 102
+  },
+  "lib/rules/no-useless-constructor.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 235
+  },
+  "lib/rules/no-useless-escape.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 365
+  },
+  "lib/rules/no-useless-rename.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 175
+  },
+  "lib/rules/no-useless-return.js": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 342
+  },
+  "lib/rules/no-var.js": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 431
+  },
+  "lib/rules/no-void.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 60
+  },
+  "lib/rules/no-warning-comments.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 180
+  },
+  "lib/rules/no-whitespace-before-property.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 131
+  },
+  "lib/rules/no-with.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 35
+  },
+  "lib/rules/nonblock-statement-body-position.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 147
+  },
+  "lib/rules/object-curly-newline.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 344
+  },
+  "lib/rules/object-curly-spacing.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 328
+  },
+  "lib/rules/object-property-newline.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 136
+  },
+  "lib/rules/object-shorthand.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 590
+  },
+  "lib/rules/one-var-declaration-per-line.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 103
+  },
+  "lib/rules/one-var.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 656
+  },
+  "lib/rules/operator-assignment.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 243
+  },
+  "lib/rules/operator-linebreak.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 289
+  },
+  "lib/rules/padded-blocks.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 330
+  },
+  "lib/rules/padding-line-between-statements.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 553
+  },
+  "lib/rules/prefer-arrow-callback.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 390
+  },
+  "lib/rules/prefer-const.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 477
+  },
+  "lib/rules/prefer-destructuring.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 298
+  },
+  "lib/rules/prefer-exponentiation-operator.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 242
+  },
+  "lib/rules/prefer-named-capture-group.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 172
+  },
+  "lib/rules/prefer-numeric-literals.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 139
+  },
+  "lib/rules/prefer-object-has-own.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 130
+  },
+  "lib/rules/prefer-object-spread.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 289
+  },
+  "lib/rules/prefer-promise-reject-errors.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 143
+  },
+  "lib/rules/prefer-reflect.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 137
+  },
+  "lib/rules/prefer-regex-literals.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 539
+  },
+  "lib/rules/prefer-rest-params.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 105
+  },
+  "lib/rules/prefer-spread.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 77
+  },
+  "lib/rules/prefer-template.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 314
+  },
+  "lib/rules/preserve-caught-error.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 613
+  },
+  "lib/rules/quote-props.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 362
+  },
+  "lib/rules/quotes.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 371
+  },
+  "lib/rules/radix.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 175
+  },
+  "lib/rules/require-atomic-updates.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 314
+  },
+  "lib/rules/require-await.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 163
+  },
+  "lib/rules/require-unicode-regexp.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 282
+  },
+  "lib/rules/require-yield.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 71
+  },
+  "lib/rules/rest-spread-spacing.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 136
+  },
+  "lib/rules/semi-spacing.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 267
+  },
+  "lib/rules/semi-style.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 194
+  },
+  "lib/rules/semi.js": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 427
+  },
+  "lib/rules/sort-imports.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 293
+  },
+  "lib/rules/sort-keys.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 235
+  },
+  "lib/rules/sort-vars.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 123
+  },
+  "lib/rules/space-before-blocks.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 209
+  },
+  "lib/rules/space-before-function-paren.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 181
+  },
+  "lib/rules/space-in-parens.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 334
+  },
+  "lib/rules/space-infix-ops.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 219
+  },
+  "lib/rules/space-unary-ops.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 371
+  },
+  "lib/rules/spaced-comment.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 405
+  },
+  "lib/rules/strict.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 288
+  },
+  "lib/rules/switch-colon-spacing.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 145
+  },
+  "lib/rules/symbol-description.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 59
+  },
+  "lib/rules/template-curly-spacing.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 147
+  },
+  "lib/rules/template-tag-spacing.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 109
+  },
+  "lib/rules/unicode-bom.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 64
+  },
+  "lib/rules/use-isnan.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 237
+  },
+  "lib/rules/utils/ast-utils.js": {
+   "fan_in": 193,
+   "fan_out": 3,
+   "lines": 2673
+  },
+  "lib/rules/utils/char-source.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 213
+  },
+  "lib/rules/utils/code-path-utils.js": {
+   "fan_in": 8,
+   "fan_out": 0,
+   "lines": 18
+  },
+  "lib/rules/utils/fix-tracker.js": {
+   "fan_in": 6,
+   "fan_out": 1,
+   "lines": 109
+  },
+  "lib/rules/utils/keywords.js": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 66
+  },
+  "lib/rules/utils/lazy-loading-rule-map.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 105
+  },
+  "lib/rules/utils/regular-expressions.js": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 50
+  },
+  "lib/rules/utils/unicode/index.js": {
+   "fan_in": 1,
+   "fan_out": 4,
+   "lines": 14
+  },
+  "lib/rules/utils/unicode/is-combining-character.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 12
+  },
+  "lib/rules/utils/unicode/is-emoji-modifier.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 12
+  },
+  "lib/rules/utils/unicode/is-regional-indicator-symbol.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 12
+  },
+  "lib/rules/utils/unicode/is-surrogate-pair.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 13
+  },
+  "lib/rules/valid-typeof.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 152
+  },
+  "lib/rules/vars-on-top.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 146
+  },
+  "lib/rules/wrap-iife.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 208
+  },
+  "lib/rules/wrap-regex.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 81
+  },
+  "lib/rules/yield-star-spacing.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 143
+  },
+  "lib/rules/yoda.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 320
+  },
+  "lib/services/parser-service.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 55
+  },
+  "lib/services/processor-service.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 84
+  },
+  "lib/services/suppressions-service.js": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 259
+  },
+  "lib/services/warning-service.js": {
+   "fan_in": 8,
+   "fan_out": 0,
+   "lines": 78
+  },
+  "lib/shared/ajv.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 28
+  },
+  "lib/shared/assert.js": {
+   "fan_in": 5,
+   "fan_out": 0,
+   "lines": 18
+  },
+  "lib/shared/ast-utils.js": {
+   "fan_in": 7,
+   "fan_out": 0,
+   "lines": 27
+  },
+  "lib/shared/deep-merge-arrays.js": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 52
+  },
+  "lib/shared/directives.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 14
+  },
+  "lib/shared/flags.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 79
+  },
+  "lib/shared/logging.js": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 33
+  },
+  "lib/shared/message-counts.js": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 41
+  },
+  "lib/shared/naming.js": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 94
+  },
+  "lib/shared/option-utils.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 54
+  },
+  "lib/shared/relative-module-resolver.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 23
+  },
+  "lib/shared/runtime-info.js": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 149
+  },
+  "lib/shared/serialization.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 74
+  },
+  "lib/shared/severity.js": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 45
+  },
+  "lib/shared/stats.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 26
+  },
+  "lib/shared/string-utils.js": {
+   "fan_in": 8,
+   "fan_out": 0,
+   "lines": 47
+  },
+  "lib/shared/text-table.js": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 60
+  },
+  "lib/shared/translate-cli-options.js": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 193
+  },
+  "lib/shared/traverser.js": {
+   "fan_in": 7,
+   "fan_out": 0,
+   "lines": 177
+  },
+  "lib/universal.js": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 7
+  },
+  "lib/unsupported-api.js": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 16
+  },
+  "messages/all-matched-files-ignored.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 14
+  },
+  "messages/config-file-missing.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 12
+  },
+  "messages/config-plugin-missing.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 10
+  },
+  "messages/config-serialize-function.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 25
+  },
+  "messages/eslintrc-incompat.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 79
+  },
+  "messages/eslintrc-plugins.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 20
+  },
+  "messages/extend-config-missing.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 9
+  },
+  "messages/failed-to-read-json.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 8
+  },
+  "messages/file-not-found.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 8
+  },
+  "messages/invalid-rule-options.js": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 11
+  },
+  "messages/invalid-rule-severity.js": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 9
+  },
+  "messages/no-config-found.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 10
+  },
+  "messages/plugin-conflict.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 15
+  },
+  "messages/plugin-invalid.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 11
+  },
+  "messages/plugin-missing.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 12
+  },
+  "messages/rule-unsupported-language.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 15
+  },
+  "messages/shared.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 20
+  },
+  "messages/whitespace-found.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 8
+  },
+  "packages/eslint-config-eslint/base.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 315
+  },
+  "packages/eslint-config-eslint/cjs.js": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 7
+  },
+  "packages/eslint-config-eslint/formatting.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 136
+  },
+  "packages/eslint-config-eslint/index.js": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 17
+  },
+  "packages/eslint-config-eslint/nodejs.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 44
+  },
+  "packages/js/src/configs/eslint-all.js": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 209
+  },
+  "packages/js/src/configs/eslint-recommended.js": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 74
+  },
+  "packages/js/src/index.js": {
+   "fan_in": 4,
+   "fan_out": 2,
+   "lines": 19
+  },
+  "tools/check-emfile-handling.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 121
+  },
+  "tools/check-rule-examples.js": {
+   "fan_in": 0,
+   "fan_out": 5,
+   "lines": 308
+  },
+  "tools/code-sample-minimizer.js": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 263
+  },
+  "tools/commit-readme.sh": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 14
+  },
+  "tools/config-rule.js": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 429
+  },
+  "tools/eslint-fuzzer.js": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 255
+  },
+  "tools/fetch-docs-links.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 91
+  },
+  "tools/fuzzer-runner.js": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 73
+  },
+  "tools/generate-formatter-examples.js": {
+   "fan_in": 0,
+   "fan_out": 3,
+   "lines": 96
+  },
+  "tools/internal-rules/index.js": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 18
+  },
+  "tools/internal-rules/multiline-comment-style.js": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 29
+  },
+  "tools/internal-rules/no-debug-template-literals.js": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 133
+  },
+  "tools/internal-rules/no-invalid-meta.js": {
+   "fan_in": 1,
+   "fan_out": 0,
+   "lines": 121
+  },
+  "tools/test-ecosystem/build-failure-summary.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 53
+  },
+  "tools/test-ecosystem/data.mjs": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 70
+  },
+  "tools/test-ecosystem/index.mjs": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 168
+  },
+  "tools/test-ecosystem/sync-ecosystem-issue.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 49
+  },
+  "tools/test-ecosystem/update.mjs": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 81
+  },
+  "tools/update-eslint-all.js": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 36
+  },
+  "tools/update-eslint-recommended.js": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 44
+  },
+  "tools/update-readme.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 110
+  },
+  "tools/update-rule-type-headers.js": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 311
+  },
+  "webpack.config.js": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 63
+  }
+ },
+ "skeleton_hash": "865b9a71c08a82245557303b9896ef13a0110074423b25d6cc64065510d6117c",
+ "stance": "The building is drawn as it is, warts and all. The diagnosis presupposes a norm of health — load should be reinforced, old load-bearing code should be visited — and that norm is a maintenance stance the reader may reject, stated so it reads as an ought, not a fact (system spec, stance disclosure).",
+ "units": {
+  "co_located_rooms": "rooms carrying two or more diagnostic marks, across all profiles",
+  "co_located_rooms_base_profile": "rooms marked in more than one profile (base summary)",
+  "decorative.count": "marks",
+  "diagnostic_count": "marks",
+  "diagnostic_count_base": "marks",
+  "feature.count": "rooms (one mark per room)",
+  "population": "rooms",
+  "wings": "rooms"
+ },
+ "wing_count": 8,
+ "wings": {
+  "(root)": 4,
+  "bin": 1,
+  "conf": 2,
+  "docs": 30,
+  "lib": 388,
+  "messages": 18,
+  "packages": 8,
+  "tools": 22
+ }
+}

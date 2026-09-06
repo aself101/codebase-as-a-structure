@@ -705,6 +705,8 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
             for span, val in _spelled_numbers(stripped):
                 if span.lower() == "one":
                     continue  # the determiner, not a measurement (D-032 addendum)
+                if re.search(rf"\b{re.escape(span)}\s+or\s+more\b", stripped, re.IGNORECASE):
+                    continue  # "two or more" is the sheet's own unit phrase for co_located_rooms (D-037)
                 if val not in sent_allowed:
                     out.append(
                         Violation(
