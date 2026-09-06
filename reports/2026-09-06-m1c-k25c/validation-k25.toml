@@ -1,0 +1,3 @@
+# D-031: the signal-level stability budget re-read at the K the skeleton budget was pinned at (D-026).
+# Everything else is the spec default; this file exists for the comparison run only.
+stability_perturbation_k = 25

@@ -10,6 +10,8 @@ from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
 from statistics import median
+
+from repo_substrate.derived import ecdf_percentiles
 from typing import Any
 
 import numpy as np
@@ -66,6 +68,31 @@ def _stability_value(node: dict[str, Any], sig: str) -> float | None:
     return v
 
 
+def _compare_values(nodes: dict[str, dict[str, Any]], sig: str) -> dict[str, float | None]:
+    """The value each node carries into the stability comparison (D-033): an index or a flag
+    as itself; a `_nonzero` percentile re-ranked among the given nodes whose base metric is
+    nonzero; every other metric re-ranked as a percentile among the given nodes."""
+    first = next(iter(nodes.values()), None)
+    idx = ((first or {}).get("derived") or {}).get("indices") or {}
+    if sig in idx:
+        return {
+            p: ((nd.get("derived") or {}).get("indices") or {}).get(sig) for p, nd in nodes.items()
+        }
+    base = sig[: -len("_nonzero")] if sig.endswith("_nonzero") else sig
+    raw: dict[str, float | None] = {}
+    for p, nd in nodes.items():
+        v = nd["metrics"].get(base)
+        if isinstance(v, bool):
+            raw[p] = 1.0 if v else 0.0
+            continue
+        if base != sig and (v is None or v <= 0):
+            v = None
+        raw[p] = v
+    if GROUNDING.get(sig, {}).get("flag"):
+        return raw
+    return ecdf_percentiles(raw)
+
+
 def population(sub: dict[str, Any], exclude_tests: bool = True) -> list[dict[str, Any]]:
     return [
         nd
@@ -98,11 +125,15 @@ def run_stability(
     )
     out: dict[str, dict[str, Any]] = {}
     for sig in GROUNDING:
+        # D-033: compare on percentiles ranked over the untouched population in *both* runs, so a
+        # touched file's own movement cannot re-rank the untouched ones (that re-ranking was the
+        # residual every local signal used to show); indices and flags compare as themselves.
+        a_vals = _compare_values({p: head_pop[p] for p in common}, sig)
+        b_vals = _compare_values({p: pert_pop[p] for p in common}, sig)
         deltas = []
         head_vals: list[float] = []
         for p in common:
-            a = _stability_value(head_pop[p], sig)
-            b = _stability_value(pert_pop[p], sig)
+            a, b = a_vals.get(p), b_vals.get(p)
             if a is None or b is None:
                 continue
             head_vals.append(float(a))
@@ -142,18 +173,25 @@ def run_stability(
                 "median_abs_delta": 0.0,
                 "max_abs_delta": 0.0,
                 "p95_abs_delta": 0.0,
+                "ripple": GROUNDING[sig].get("ripple", "own"),
+                "operand": "p95" if GROUNDING[sig].get("ripple") == "coupled" else "max",
                 "passed": False,
                 "reason": "degenerate",
             }
             continue
         med, mx = float(median(deltas)), float(max(deltas))
         p95 = float(np.quantile(deltas, 0.95))
-        passed = bool(med <= vcfg.stability_eps and mx <= vcfg.stability_delta)
+        # D-033: the tail operand follows the signal's ripple class (config.GROUNDING: own | coupled)
+        ripple = GROUNDING[sig].get("ripple", "own")
+        tail = p95 if ripple == "coupled" else mx
+        passed = bool(med <= vcfg.stability_eps and tail <= vcfg.stability_delta)
         out[sig] = {
             **base,
             "median_abs_delta": med,
             "max_abs_delta": mx,
             "p95_abs_delta": p95,
+            "ripple": ripple,
+            "operand": "p95" if ripple == "coupled" else "max",
             "passed": passed,
             "reason": None if passed else "unstable",
         }

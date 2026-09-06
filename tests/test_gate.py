@@ -215,13 +215,14 @@ def _asserted(name, stable=True, corroborated=True, degenerate=False) -> RepoAss
 def test_predictive_can_never_be_asserted_and_descriptive_never_validated():
     v = _vcfg()
     doc = build_validation(
-        [_holdout("a", True), _holdout("b", True)],
-        [_asserted("a"), _asserted("b")],
+        [_holdout("a", True), _holdout("b", True), _holdout("c", True)],
+        [_asserted("a"), _asserted("b"), _asserted("c")],  # M_asserted = 3 since D-033
         v,
         "fp",
         [
             {"name": "a", "head_sha": "h", "role": "test"},
             {"name": "b", "head_sha": "h", "role": "test"},
+            {"name": "c", "head_sha": "h", "role": "test"},
         ],
     )
     for name, s in doc["signals"].items():
@@ -345,3 +346,23 @@ def test_cache_key_separates_truncated_from_tip(scripted_repo, small_cfg, tmp_pa
     repo, shas = scripted_repo
     c = SubstrateCache(tmp_path / "ck", small_cfg, None, scratch_dir=tmp_path, blame_workers=2)
     assert c.path_for(Path(repo.path), shas[5], True) != c.path_for(Path(repo.path), shas[5], False)
+
+
+def test_local_signals_read_zero_after_reranking(scripted_repo, cache):
+    """D-033: once percentiles are ranked over the untouched population in both runs, a signal
+    computed from the file's own content and history cannot move — the local signals are the
+    instrument's null check, and the tail operand for graph signals is p95."""
+    from repo_substrate.validation.config import GROUNDING
+
+    repo, shas = scripted_repo
+    full = cache.get(repo.path, "HEAD")
+    pert = cache.get(repo.path, shas[-2], truncate=True)
+    v = _vcfg(stability_perturbation_k=1, stability_min_n=1, stability_max_excluded_frac=0.9)
+    out, _, _ = run_stability(full, pert, v)
+    for sig, st in out.items():
+        if st.get("max_abs_delta") is None or st.get("reason") == "degenerate":
+            continue
+        ripple = GROUNDING[sig].get("ripple", "own")
+        assert st["ripple"] == ripple and st["operand"] == ("p95" if ripple == "coupled" else "max")
+        if ripple == "own":
+            assert st["max_abs_delta"] == 0.0, (sig, st)

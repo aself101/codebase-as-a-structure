@@ -30,6 +30,12 @@ from typing import Any
 PREDICTIVE_SIGNALS: tuple[str, ...] = ("bug_pressure_index", "change_pressure_index")
 
 # signal -> grounding spec. `counterpart` for G2/G3; `inputs` for G4 (and G3 blends); `correlates` reported only.
+# `ripple` (D-033): "coupled" when a node's value can change without the node itself being edited —
+# an importer added, a test written, a manifest pointed at it, the repository's recent window
+# sliding — so the stability budget's tail operand is p95 (an edit elsewhere moving this value is
+# the signal working, and a single node's flip is a fact about one edge); "own" (the default) when
+# the value is a function of the file's own content and history, where any movement over the
+# untouched population is the instrument failing and the operand is max.
 GROUNDING: dict[str, dict[str, Any]] = {
     # G1 measurements
     "commit_count": {"class": "G1", "instrument": "git log"},
@@ -47,6 +53,7 @@ GROUNDING: dict[str, dict[str, Any]] = {
     },
     "last_touched_days": {"class": "G1", "instrument": "git log author_date"},
     "recent_commit_share": {
+        "ripple": "coupled",
         "class": "G1",
         "instrument": "git log (timeline-relative window, §6.2.2)",
     },
@@ -63,6 +70,7 @@ GROUNDING: dict[str, dict[str, Any]] = {
         "heuristic": "blame line attribution; no -M/-C",
     },
     "has_sibling_test": {
+        "ripple": "coupled",
         "class": "G1",
         "instrument": "path convention config (§6.2.2)",
         "heuristic": "filename adjacency; literal name, convention-dependent",
@@ -70,6 +78,7 @@ GROUNDING: dict[str, dict[str, Any]] = {
     # D-029: a FLAG — a boolean that is never ranked. Stability applies; the degeneracy bar
     # (which guards percentiles) does not; a ruleset may use it only with an absolute term.
     "is_package_entry": {
+        "ripple": "coupled",
         "class": "G1",
         "instrument": "package.json main/module/browser/types/bin/exports",
         "heuristic": "built entry → source mapping (./index.js → src/index.ts, dir → index)",
@@ -77,16 +86,19 @@ GROUNDING: dict[str, dict[str, Any]] = {
     },
     # G2 instrument-checked (counterparts come from altdeps.py, which shares no code with dependency-cruiser)
     "fan_in": {
+        "ripple": "coupled",
         "class": "G2",
         "counterpart": "fan_in_alt",
         "adversarial_fixture": "tests/test_instruments.py",
     },
     "fan_out": {
+        "ripple": "coupled",
         "class": "G2",
         "counterpart": "fan_out_alt",
         "adversarial_fixture": "tests/test_instruments.py",
     },
     "test_fan_in": {
+        "ripple": "coupled",
         "class": "G2",
         "counterpart": "test_fan_in_alt",
         "adversarial_fixture": "tests/test_instruments.py",
@@ -94,21 +106,33 @@ GROUNDING: dict[str, dict[str, Any]] = {
     # G3 cross-modal
     "age_days": {"class": "G3", "counterpart": "blame_age_median"},
     "neglect_index": {
+        "ripple": "coupled",
         "class": "G3",
         "counterpart": "blame_age_median",
         "inputs": ["age_days", "last_touched_days", "recent_commit_share"],
         "correlates": ["cochange_degree"],
     },
     # G4 derived from asserted inputs
-    "fan_in_nonzero": {"class": "G4", "inputs": ["fan_in"]},
-    "centrality": {"class": "G4", "inputs": ["fan_in"], "correlates": ["cochange_degree"]},
+    "fan_in_nonzero": {"ripple": "coupled", "class": "G4", "inputs": ["fan_in"]},
+    "centrality": {
+        "ripple": "coupled",
+        "class": "G4",
+        "inputs": ["fan_in"],
+        "correlates": ["cochange_degree"],
+    },
     "load_index": {
+        "ripple": "coupled",
         "class": "G4",
         "inputs": ["fan_in_nonzero", "centrality", "fan_out", "size_loc"],
         "correlates": ["cochange_degree", "test_fan_in"],
     },
-    "complexity_proxy_index": {"class": "G4", "inputs": ["size_loc", "nesting_proxy", "fan_out"]},
+    "complexity_proxy_index": {
+        "ripple": "coupled",
+        "class": "G4",
+        "inputs": ["size_loc", "nesting_proxy", "fan_out"],
+    },
     "reinforcement_index": {
+        "ripple": "coupled",
         "class": "G4",
         "inputs": ["test_fan_in"],
         "correlates": ["has_sibling_test"],
@@ -213,8 +237,8 @@ class ValidationConfig:
     min_repos: int = 2  # test-role repos that must pass (D-009)
     # §2.4 asserted bar
     stability_perturbation_k: int = 25  # D-031: the K the skeleton budget is pinned at (D-026)
-    stability_eps: float = 0.05
-    stability_delta: float = 0.15
+    stability_eps: float = 0.01  # D-033
+    stability_delta: float = 0.05  # D-033
     stability_min_n: int = 30  # D-011: untested (insufficient_stability_population) below this
     stability_max_excluded_frac: float = 0.5
     # D-011/D-014: a signal whose modal value covers more than this share of the population is
@@ -225,7 +249,7 @@ class ValidationConfig:
     tau_retire: float = (
         0.85  # D-011: G2/G3 pair with min lower-CI tau >= this on all repos is non-discriminating
     )
-    m_asserted: int = 2
+    m_asserted: int = 3  # D-033: a majority of the four-repository reference set
     # uncertainty
     bootstrap_n: int = 1000
     permutation_n: int = 1000
@@ -260,15 +284,15 @@ class ValidationConfig:
             (0.0 < self.coverage_min <= 1.0, "coverage_min must be in (0, 1]"),
             (self.signal_floor_mult >= 1.0, "signal_floor_mult must be >= 1"),
             (self.min_repos >= 2, "min_repos must be >= 2"),
-            (self.m_asserted >= 2, "m_asserted must be >= 2"),
+            (self.m_asserted >= 3, "m_asserted must be >= 3 (D-033)"),
             (
                 self.stability_perturbation_k >= 25,
                 "stability_perturbation_k may not be below the spec default 25 (D-031; D-024 showed K = 5 cannot fire)",
             ),
-            (0.0 < self.stability_eps <= 0.05, "stability_eps must be in (0, 0.05]"),
+            (0.0 < self.stability_eps <= 0.01, "stability_eps must be in (0, 0.01] (D-033)"),
             (
-                self.stability_eps < self.stability_delta <= 0.15,
-                "stability_delta must be in (eps, 0.15]",
+                self.stability_eps < self.stability_delta <= 0.05,
+                "stability_delta must be in (eps, 0.05] (D-033)",
             ),
             (self.stability_min_n >= 30, "stability_min_n must be >= 30"),
             (

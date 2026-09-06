@@ -48,6 +48,11 @@ def main() -> int:
     ap.add_argument("--frames", type=int, default=12)
     ap.add_argument("--skip-timelapse", action="store_true")
     ap.add_argument("--skip-briefs", action="store_true")
+    ap.add_argument(
+        "--relint-from",
+        type=Path,
+        help="directory of earlier briefs: relint each <short>.brief.md against the new skeleton instead of generating",
+    )
     args = ap.parse_args()
 
     v = json.loads(args.validation.read_text(encoding="utf-8"))
@@ -196,6 +201,11 @@ def main() -> int:
                     str(m3 / f"{short}.facts.json"),
                     "--max-attempts",
                     "3",
+                    *(
+                        ["--relint", str(args.relint_from / f"{short}.brief.md")]
+                        if args.relint_from
+                        else []
+                    ),
                 ]
             )
             if r.returncode:

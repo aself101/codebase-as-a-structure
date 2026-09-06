@@ -154,7 +154,7 @@ def render_holdout_report(doc: dict[str, Any]) -> str:
         "claim beyond its inputs). Stability compares nodes untouched by the K removed commits.*\n"
     )
     out.append(
-        "| signal | class | status | repo | reason | stability med / p95 / max Δ (n) | distinct | stable | counterpart | n | τ-b | 95% CI | perm p | corroborated |"
+        "| signal | class | status | repo | reason | stability med / p95 / max Δ (n; tail operand) | distinct | stable | counterpart | n | τ-b | 95% CI | perm p | corroborated |"
     )
     out.append("|---|---|---|---|---|---:|---:|---|---|---:|---:|---|---:|---|")
     for name, s in sig.items():
@@ -170,7 +170,7 @@ def render_holdout_report(doc: dict[str, Any]) -> str:
             inst = cm.get("counterpart") or s.get("instrument") or "–"
             out.append(
                 f"| `{name}` | {s['grounding_class']} | **{s['status']}** | `{r['name']}` | {r.get('reason') or '–'} | "
-                f"{_f(st.get('median_abs_delta'))} / {_f(st.get('p95_abs_delta'))} / {_f(st.get('max_abs_delta'))} ({st.get('n', '–')}) | {st.get('distinct_values', '–')} | {_f(st.get('passed'))} | "
+                f"{_f(st.get('median_abs_delta'))} / {_f(st.get('p95_abs_delta'))} / {_f(st.get('max_abs_delta'))} ({st.get('n', '–')}; {st.get('operand', 'max')}) | {st.get('distinct_values', '–')} | {_f(st.get('passed'))} | "
                 f"`{inst}` | {cm.get('n', '–')} | {_f(cm.get('tau_b'))} | {ci_s} | {_f(cm.get('permutation_p'))} | {corro} |"
             )
     out.append("")
