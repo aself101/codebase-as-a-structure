@@ -84,7 +84,9 @@ def render(d: dict) -> str:
         else:
             verdict = "between median and p90 — can fail"
         fires = sum(1 for x in xs if x > thr)
-        out.append(f"| {name} | {thr:.3f} | {m:.4f} | {p90:.4f} | {mx:.4f} | {fires} of {len(xs)} | {verdict} |")
+        out.append(
+            f"| {name} | {thr:.3f} | {m:.4f} | {p90:.4f} | {mx:.4f} | {fires} of {len(xs)} | {verdict} |"
+        )
     out.append("")
     out.append("| signal | ripple | repo | median \\|Δ\\| | p95 | max | operand | n | status |")
     out.append("|---|---|---|---|---|---|---|---|---|")

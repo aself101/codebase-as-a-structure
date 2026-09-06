@@ -1,3 +1,5 @@
+# Every pNN below ranks the mapped repository's own population (in-repo, self-relative, D-019):
+# a top decile exists in every repository, so a count of marks is a share, not a condition.
 # Structural mapper ruleset — maintainability profile (structural-mapper-spec §4, D-016).
 #
 # Every feature reads signals from substrate.json and is admitted only if validation.json

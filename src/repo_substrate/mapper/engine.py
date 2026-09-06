@@ -36,6 +36,15 @@ def _signal_status(validation: dict[str, Any], sig: str) -> str:
     return ((validation.get("signals") or {}).get(sig) or {}).get("status", "untested")
 
 
+def _signal_reason(validation: dict[str, Any], sig: str) -> str | None:
+    """The gate's reason travels with the status (D-035): eight evidential situations share the
+    token `untested`; the consumer that acts on the token carries the reason it came with."""
+    return ((validation.get("signals") or {}).get(sig) or {}).get("reason")
+
+
+MIN_POPULATION = 30  # D-034: below this a percentile threshold ranks too few rooms to mean much
+
+
 def _node_value(node: dict[str, Any], sig: str) -> float | None:
     """The value a predicate name denotes (D-017): an index by its index name; otherwise the
     RAW metric (so `fan_out == 0` means what it says); a percentile only for names that exist
@@ -212,6 +221,19 @@ def map_skeleton(
     """Base profile → `features`; further profiles → `overlays[]`, each gated on its own.
     Geometry (strata, wings) comes from the substrate and the `geometry` choice, never from
     a profile (mapper §6: layering, never unification)."""
+    # D-034: a validation document licenses only substrates extracted under the config it was
+    # earned on; the statuses are portable across repositories (they are properties of the signal
+    # under the config, earned on the reference set), the config is not. timelapse already refused
+    # the mismatch; map did not.
+    vfp = validation.get("substrate_config_fingerprint")
+    sfp = (substrate.get("repo") or {}).get("config_fingerprint")
+    if not vfp:
+        raise GateError("malformed validation.json: no substrate_config_fingerprint (D-034)")
+    if vfp != sfp:
+        raise GateError(
+            f"validation.json was earned under substrate config {vfp[:12]}; this substrate was extracted under "
+            f"{(sfp or '?')[:12]} — the gate licenses nothing about it (D-034)"
+        )
     if geometry not in GEOMETRIES:
         raise RulesetError(f"unknown geometry {geometry!r}")
     profiles = [ruleset.profile] + [o.profile for o in overlays]
@@ -260,7 +282,25 @@ def map_skeleton(
         "validation_config_fingerprint": validation.get("validation_config_fingerprint"),
         "repo": {"name": substrate["repo"]["name"], "head_sha": substrate["repo"]["head_sha"]},
         "archetype": None,  # D-019: not claimed in v0 — a whole-building label is corpus-relative (Phase 3)
-        "gate": {"signals": dict(sorted(statuses.items())), "graph_degraded": graph_degraded},
+        "archetype_reason": "not claimed: no measurement of repository kind exists independently of the features it would aggregate; a whole-building label is corpus-relative (D-019, Phase 3)",
+        "gate": {
+            "signals": dict(sorted(statuses.items())),
+            "reasons": {
+                sig: r for sig in sorted(statuses) if (r := _signal_reason(validation, sig))
+            },
+            "graph_degraded": graph_degraded,
+            # D-034: the statuses were earned on these repositories, not on the one mapped here
+            "reference_set": [
+                {"name": r.get("name"), "role": r.get("role")}
+                for r in validation.get("reference_repos") or []
+            ],
+            "population_floor": {
+                "n": len(population),
+                "min": MIN_POPULATION,
+                "met": len(population) >= MIN_POPULATION,
+            },
+        },
+        "calibration": "in-repo, self-relative: every pNN ranks this repository's own population (D-019)",
         "geometry": {"name": geometry, "wing_depth": ruleset.wing_depth},
         "strata": {
             "geometry": geometry,

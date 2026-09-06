@@ -13,12 +13,15 @@ from repo_substrate.mapper import RulesetError, load_ruleset, map_skeleton
 from repo_substrate.mapper.engine import GateError
 from repo_substrate.mapper.ruleset import parse_predicate
 
+TEST_FP = "t" * 64  # the fingerprint the test substrates and validation documents share (D-034)
+
 RULESET = Path(__file__).resolve().parents[1] / "rulesets" / "maintainability.toml"
 
 
 def _validation(**statuses: str) -> dict:
     return {
         "validation_config_fingerprint": "v" * 64,
+        "substrate_config_fingerprint": TEST_FP,
         "signals": {k: {"status": v} for k, v in statuses.items()},
     }
 
@@ -73,10 +76,15 @@ def test_shipped_ruleset_loads():
 # --- the gate ------------------------------------------------------------------------------------
 
 
+TEST_FP = "t" * 64
+
+
 @pytest.fixture
 def sub(scripted_repo, small_cfg, tmp_path):
     repo, _ = scripted_repo
-    return run_extract(repo, small_cfg, tmp_path)
+    doc = run_extract(repo, small_cfg, tmp_path)
+    doc["repo"]["config_fingerprint"] = TEST_FP  # bound to the test validation documents (D-034)
+    return doc
 
 
 def test_gate_refuses_unvalidated_signal_in_non_decorative_rule(sub, tmp_path):
@@ -602,3 +610,15 @@ def test_budget_is_untested_below_its_pinned_k(sub):
         budget={**SKELETON_BUDGET, "min_untouched_n": 1, "min_jitter_union": 0},
     )
     assert d2["budget"]["verdict"] == "within_budget"
+
+
+def test_mapper_refuses_a_validation_document_from_another_config(sub):
+    """D-034: the gate licenses only substrates extracted under the config it was earned on."""
+    base = load_ruleset(RULESET)
+    v = _all_asserted(base)
+    v["substrate_config_fingerprint"] = "x" * 64
+    with pytest.raises(GateError, match="earned under substrate config"):
+        map_skeleton(sub, v, base)
+    v.pop("substrate_config_fingerprint")
+    with pytest.raises(GateError, match="no substrate_config_fingerprint"):
+        map_skeleton(sub, v, base)

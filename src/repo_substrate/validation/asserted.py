@@ -168,11 +168,13 @@ def run_stability(
         if modal_share > vcfg.degenerate_max_modal_share and (
             not GROUNDING[sig].get("flag") or modal_share >= 1.0
         ):
+            # D-035: the deltas that were computed are published, not overwritten with 0.0 — a
+            # degeneracy refusal is a fact about the distribution, not a zero measurement
             out[sig] = {
                 **base,
-                "median_abs_delta": 0.0,
-                "max_abs_delta": 0.0,
-                "p95_abs_delta": 0.0,
+                "median_abs_delta": float(median(deltas)),
+                "max_abs_delta": float(max(deltas)),
+                "p95_abs_delta": float(np.quantile(deltas, 0.95)),
                 "ripple": GROUNDING[sig].get("ripple", "own"),
                 "operand": "p95" if GROUNDING[sig].get("ripple") == "coupled" else "max",
                 "passed": False,

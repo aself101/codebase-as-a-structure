@@ -187,13 +187,23 @@ def render_cutaway(skeleton: dict[str, Any], substrate: dict[str, Any]) -> str:
     )
     # --- legend
     lx, ly = MARGIN, 128
+    # D-034/D-035: the legend is the surface that travels (a screenshot, a slide); it carries each
+    # feature's position name the way the brief does (D-004 Q3), read from the skeleton's features
+    positions = {
+        f["feature"]: f.get("position_name") for f in skeleton["features"] if f.get("position_name")
+    }
+
+    def _label(feature: str, label: str) -> str:
+        pos = positions.get(feature)
+        return f"{label} — {pos}" if pos else label
+
     legend = [
-        ("foundation / high-load hub", "stroke:#2b2b2b;stroke-width:3;fill:#d9cfb8"),
-        ("hub", "stroke:#8a4b00;stroke-width:2;fill:#d9cfb8"),
-        ("flooded basement", "fill:url(#water);stroke:#888"),
-        ("scaffolding", "fill:url(#scaffold);stroke:#888"),
-        ("dark room", "fill:#d9cfb8;opacity:0.45;stroke:#888"),
-        ("lit room", "stroke:#f2c14e;stroke-width:2;fill:#d9cfb8"),
+        (_label("foundation", "foundation"), "stroke:#2b2b2b;stroke-width:3;fill:#d9cfb8"),
+        (_label("hub", "hub"), "stroke:#8a4b00;stroke-width:2;fill:#d9cfb8"),
+        (_label("flooded_basement", "flooded basement"), "fill:url(#water);stroke:#888"),
+        (_label("scaffolding", "scaffolding"), "fill:url(#scaffold);stroke:#888"),
+        (_label("dark_room", "dark room"), "fill:#d9cfb8;opacity:0.45;stroke:#888"),
+        (_label("lit_room", "lit room"), "stroke:#f2c14e;stroke-width:2;fill:#d9cfb8"),
         (
             "decorative (ungrounded)",
             "stroke:#c2185b;stroke-width:1.5;stroke-dasharray:4 3;fill:#d9cfb8",

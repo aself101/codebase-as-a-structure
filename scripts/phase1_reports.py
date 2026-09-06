@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import shutil
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -15,8 +16,16 @@ DST.mkdir(parents=True, exist_ok=True)
 
 rows = []
 runs = sorted(p for p in SRC.iterdir() if (p / "frames.json").exists())
+gates: set[tuple] = set()
 for run in runs:
     m = json.loads((run / "frames.json").read_text(encoding="utf-8"))
+    gates.add(
+        (
+            m["gate"]["substrate_config_fingerprint"],
+            m["gate"]["validation_config_fingerprint"],
+            m["gate"].get("validated_at"),
+        )
+    )
     for name in ("frames.json", "timelapse.md", "timelapse.html"):
         shutil.copy(run / name, DST / f"{run.name}.{name}")
     t = m["totals"]
@@ -29,10 +38,16 @@ for run in runs:
         f"{t['ripple_rank_share']:.2f} | {t['ripple_mixed_share']:.2f} | **{t['jitter_share']:.2f}** | {t['structural_share']:.2f} | {tally} |"
     )
 
+if len(gates) != 1:
+    raise SystemExit(
+        f"the runs under {SRC} were made under {len(gates)} different gates; one reading needs one gate"
+    )
+(gate_fp, val_fp, validated_at) = next(iter(gates))
+generated = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 (DST / "phase1-reading.md").write_text(
-    f"""# Phase 1 — time-lapse reading across the reference set under substrate 0.3.0 (D-021, D-022 addendum)
+    f"""# Phase 1 — time-lapse reading across the reference set (D-021; gate `{gate_fp[:12]}`)
 
-*2026-09-05. `substrate timelapse`, twelve evenly spaced first-parent checkpoints per repository, maintainability + onboarding overlay, `reports/2026-09-05-m1b/validation.json` at HEAD governing every frame, substrate config `config/tuned.toml` under substrate 0.3.0 (fingerprint `5f5554e36d4a`; age and recency fractional days, D-022). Supersedes `reports/2026-09-05-phase1/` where the numbers differ; the first reading is kept as the record of the instrument that found the artefact. Per-run reports, manifests, and scrubber pages sit beside this file as `<repo>.<geometry>.*`. Spec: `time-lapse-spec.md`.*
+*Generated {generated}. `substrate timelapse`, twelve evenly spaced first-parent checkpoints per repository, maintainability + onboarding overlay; every frame governed by the gate at HEAD — substrate fingerprint `{gate_fp[:12]}`, validation config `{val_fp[:12]}`, validated {validated_at} — read from the manifests beside this file (D-035: the header states what the rows state, or it states nothing). Earlier readings (`reports/2026-09-05-phase1/`, `-phase1b/`, `2026-09-06-phase1x/`, `2026-09-06b-phase1x/`) are kept as the record of the instruments that produced them. Per-run reports, manifests, and scrubber pages sit beside this file as `<repo>.<geometry>.*`. Spec: `time-lapse-spec.md`.*
 
 The question (D-020): over a repository's history, is the named structure structural change or the budget's jitter? Movement between adjacent frames decomposes into **edits** (feature changes and strata moves on rooms the intervening commits touched — the skeleton reporting the edit), **ripple** on rooms they did not touch, split into **clock** (clock-relative signals and age-geometry strata: the skeleton reporting time) and **rank** (the percentile or the dependency layer moved under an untouched room — jitter), and **structural** (rooms born or deleted). The rank share is the answer.
 

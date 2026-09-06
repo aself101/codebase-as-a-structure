@@ -16,10 +16,15 @@ RULESET = Path(__file__).resolve().parents[1] / "rulesets" / "maintainability.to
 ONBOARDING = RULESET.parent / "onboarding.toml"
 
 
+TEST_FP = "t" * 64
+
+
 @pytest.fixture
 def sub(scripted_repo, small_cfg, tmp_path):
     repo, _ = scripted_repo
-    return run_extract(repo, small_cfg, tmp_path)
+    doc = run_extract(repo, small_cfg, tmp_path)
+    doc["repo"]["config_fingerprint"] = TEST_FP  # bound to the test validation documents (D-034)
+    return doc
 
 
 def _validation(*rulesets, **override):
@@ -27,6 +32,7 @@ def _validation(*rulesets, **override):
     st.update(override)
     return {
         "validation_config_fingerprint": "v" * 64,
+        "substrate_config_fingerprint": TEST_FP,
         "signals": {k: {"status": v} for k, v in st.items()},
     }
 

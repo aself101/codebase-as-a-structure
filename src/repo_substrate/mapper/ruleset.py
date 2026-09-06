@@ -11,7 +11,11 @@ each with a predicate over substrate signals. Predicate grammar (deliberately sm
 
 A signal name denotes an index (by its index name) or else the RAW metric — `fan_out == 0`
 means no in-repo imports — never the percentile of a raw metric; `pNN` ranks the raw values.
-Names that exist only as percentiles (`fan_in_nonzero`) resolve to those.
+Names that exist only as percentiles (`fan_in_nonzero`) resolve to those. Why (D-017 addendum):
+an ECDF percentile is never 0, so on the first layer-geometry render `entrance` (`fan_out == 0`)
+never fired while the name resolved to a percentile; the raw metric is the only thing `== 0` can
+be true of. `pNN` is ranked over the mapped repository's own population (in-repo, self-relative,
+D-019): a top decile exists in every repository.
 
 `and` may also be written `∧`. There is no `or` and no `not`: a feature is a conjunction,
 and a different feature is a different conjunction.

@@ -221,6 +221,8 @@ SPEC_G1: frozenset[str] = frozenset(
 )
 
 # D-009 pre-registered roles. The gate warns loudly when the repos it is handed differ.
+# The four-repository reference set every floor in this file was read on (D-009 roles; D-033 placement).
+# A floor here is a measurement of these four; Phase 3's corpus calibration re-reads all of them (D-019).
 EXPECTED_TUNING_REPOS: tuple[str, ...] = ("uluops-registry-api", "eslint")
 EXPECTED_TEST_REPOS: tuple[str, ...] = ("typeorm", "mcp-secure-server")
 
@@ -236,9 +238,11 @@ class ValidationConfig:
     signal_floor_mult: float = 1.5
     min_repos: int = 2  # test-role repos that must pass (D-009)
     # §2.4 asserted bar
-    stability_perturbation_k: int = 25  # D-031: the K the skeleton budget is pinned at (D-026)
-    stability_eps: float = 0.01  # D-033
-    stability_delta: float = 0.05  # D-033
+    stability_perturbation_k: int = 25  # D-031 · the K D-026 pinned the skeleton budget at (reports/2026-09-05-kstudy); floor: validate()
+    stability_eps: float = 0.01  # D-033 · reports/2026-09-06-eps-delta/reading-d033.md (48 coupled readings at K = 25; fires on 3)
+    stability_delta: float = (
+        0.05  # D-033 · same reading (fires on 2); D-026 letter would say 0.02 — see the entry
+    )
     stability_min_n: int = 30  # D-011: untested (insufficient_stability_population) below this
     stability_max_excluded_frac: float = 0.5
     # D-011/D-014: a signal whose modal value covers more than this share of the population is
@@ -249,7 +253,7 @@ class ValidationConfig:
     tau_retire: float = (
         0.85  # D-011: G2/G3 pair with min lower-CI tau >= this on all repos is non-discriminating
     )
-    m_asserted: int = 3  # D-033: a majority of the four-repository reference set
+    m_asserted: int = 3  # D-033: a majority of the four-repository reference set (2 of 4 let centrality through failing on half)
     # uncertainty
     bootstrap_n: int = 1000
     permutation_n: int = 1000
