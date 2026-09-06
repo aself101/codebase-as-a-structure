@@ -304,3 +304,75 @@ def test_lint_reads_compound_spelled_numbers(sub):
         + f"The building holds one thousand rooms [{feat['feature']} ×{feat['count']}].\n\n"
     )
     assert "R3-number" in {v.rule for v in lint(bad, f)}
+
+
+def test_lint_reads_the_connective_prose(sub):
+    """D-036 (hostile reading, run 17): the sentences between the brackets are checked —
+    identical or nested room sets named together (R9), a named directory contains a cited
+    room (R10), no distributional adverb (R11), and a number binds to the sentence that cites
+    its feature (R3)."""
+    f = facts(_skeleton(sub), sub)
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    room = feat["rooms"][0]
+    base = _good_draft(f)
+    assert lint(base, f) == []
+    # R3: a feature's count in a sentence that cites another feature is refused
+    other = next(
+        (
+            x
+            for x in f["features"]
+            if x["diagnostic"] and x is not feat and x["count"] != feat["count"]
+        ),
+        None,
+    )
+    if other is not None:
+        loose = (
+            base
+            + f"There are {other['count']} such rooms [{feat['feature']} ×{feat['count']}].\n\n"
+        )
+        assert "R3-number" in {v.rule for v in lint(loose, f)}
+    # R11
+    adverb = base + f"They sit mostly in src [{feat['feature']} ×{feat['count']}].\n\n"
+    assert "R11-share" in {v.rule for v in lint(adverb, f)}
+    # R9: declare an overlap the prose does not name together
+    g = dict(f)
+    g["overlaps"] = [
+        {
+            "a": f"{feat['profile']}/{feat['feature']}",
+            "b": "p/other_mark",
+            "relation": "identical",
+            "n": feat["count"],
+        }
+    ]
+    assert "R9-overlap" in {v.rule for v in lint(base, g)}
+    named = (
+        base
+        + f"The {feat['feature']} rooms are the other_mark rooms [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R9-overlap" not in {v.rule for v in lint(named, g)}
+    # R10: a directory of the building named without a cited room inside it
+    h = json.loads(json.dumps(f))
+    deep = dict(feat)
+    deep.update(
+        {
+            "feature": "deep_mark",
+            "profile": feat["profile"],
+            "rooms": ["lib/inner/a.js", "lib/inner/b.js"],
+            "count": 2,
+            "by_wing": {"lib": 2},
+        }
+    )
+    h["features"].append(deep)
+    prefix = base + f"Two rooms sit in lib/inner [{feat['feature']} ×{feat['count']}].\n\n"
+    rules = {v.rule for v in lint(prefix, h)}
+    assert "R10-prefix" in rules
+    ok = base + f"Two rooms sit in lib/inner [deep_mark: lib/inner/a.js, lib/inner/b.js].\n\n"
+    assert "R10-prefix" not in {v.rule for v in lint(ok, h)}
+
+
+def test_facts_sheet_carries_overlaps_wing_counts_and_all_profile_co_location(sub):
+    f = facts(_skeleton(sub), sub)
+    assert "overlaps" in f and "co_located_count_base" in f and f["gate_fingerprint"]
+    for x in f["features"]:
+        assert sum(x["by_wing"].values()) == x["count"]
+    assert f["co_located_count"] >= f["co_located_count_base"]

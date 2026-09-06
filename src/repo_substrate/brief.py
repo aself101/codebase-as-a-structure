@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.2.1"
+BRIEF_VERSION = "0.3.0"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -68,15 +68,51 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
                 },
             )
             entry["rooms"].append(f["node"])
+    depth = int((skeleton.get("geometry") or {}).get("wing_depth", 1))
+
+    def wing_of(nid: str) -> str:
+        parts = nid.split("/")
+        return "/".join(parts[:depth]) if len(parts) > depth else "(root)"
+
     for e in feats.values():
         e["rooms"] = sorted(set(e["rooms"]))
         e["count"] = len(e["rooms"])
+        # D-036: the share of a mark per wing is on the sheet, so the prose can state a count
+        # per wing instead of an adverb ("mostly", "concentrated") the sheet cannot carry
+        bw: dict[str, int] = {}
+        for r in e["rooms"]:
+            bw[wing_of(r)] = bw.get(wing_of(r), 0) + 1
+        e["by_wing"] = dict(sorted(bw.items()))
     wings: dict[str, int] = {}
-    depth = int((skeleton.get("geometry") or {}).get("wing_depth", 1))
     for nid in skeleton["strata"]["by_node"]:
-        parts = nid.split("/")
-        w = "/".join(parts[:depth]) if len(parts) > depth else "(root)"
+        w = wing_of(nid)
         wings[w] = wings.get(w, 0) + 1
+    # D-036: co-location across every profile (the base summary counts the base profile only)
+    marks: dict[str, int] = {}
+    for e in feats.values():
+        if e["diagnostic"]:
+            for r in e["rooms"]:
+                marks[r] = marks.get(r, 0) + 1
+    co_located_all = sum(1 for v in marks.values() if v >= 2)
+    # D-036: two diagnostic features whose room sets coincide, or nest, are one set of rooms;
+    # the sheet says so and R9 makes the prose say so
+    overlaps: list[dict[str, Any]] = []
+    diag = [
+        (k, set(e["rooms"])) for k, e in sorted(feats.items()) if e["diagnostic"] and e["rooms"]
+    ]
+    for i, (ka, ra) in enumerate(diag):
+        for kb, rb in diag[i + 1 :]:
+            if ra == rb:
+                overlaps.append({"a": ka, "b": kb, "relation": "identical", "n": len(ra)})
+            elif ra < rb:
+                overlaps.append({"a": ka, "b": kb, "relation": "within", "n": len(ra)})
+            elif rb < ra:
+                overlaps.append({"a": kb, "b": ka, "relation": "within", "n": len(rb)})
+    gate_fp = skeleton.get("substrate_config_fingerprint")
+    if not gate_fp:
+        raise ValueError(
+            "skeleton carries no substrate_config_fingerprint; the brief cannot name its gate (D-036)"
+        )
     s = skeleton["summary"]
     doc = {
         "brief_version": BRIEF_VERSION,
@@ -95,9 +131,11 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "count": s["decorative_count"],
             "features": sorted(s.get("decorative_features") or []),
         },
-        "co_located_count": s.get("co_located_count", 0),
+        "co_located_count": co_located_all,
+        "co_located_count_base": s.get("co_located_count", 0),
+        "overlaps": overlaps,
         "calibration": "in-repo, self-relative (system spec §5.3); one frame — stability is read from a time-lapse, not from this page",
-        "gate_fingerprint": (skeleton.get("provenance") or {}).get("substrate_config_fingerprint"),
+        "gate_fingerprint": gate_fp,
         "features": [feats[k] for k in sorted(feats)],
         "rooms": {
             nid: {
@@ -235,6 +273,13 @@ BUILDING_LABELS = {
 # "are not a diagnosis", "enter no part of this diagnosis", "nothing confirmed … diagnosis":
 # the disclosure sentence negates diagnosis in its own words (R4).
 NEGATED_DIAGNOSIS = re.compile(r"\b(?:not|no|nothing|never|neither|nor)\b[^.;]{0,60}\bdiagnos")
+# D-036: distributional words the sheet cannot carry (it carries counts per wing instead)
+DISTRIBUTION = re.compile(
+    r"\b(?:mostly|most of|largely|predominantly|mainly|chiefly|concentrated in|the bulk|"
+    r"spread across|scattered|throughout|every wing|all wings|all of the wings|reaches into every)\b"
+)
+# a directory-like token: two or more path segments, not ending in a file extension
+DIRECTORY = re.compile(r"(?<![\w/@.-])([A-Za-z0-9_@.-]+(?:/[A-Za-z0-9_@.-]+)+)(?![\w/])")
 BRACKET = re.compile(r"\[([a-z_][^\]]*)\]")
 CLAUSE = re.compile(r"^([a-z_]+(?:/[a-z_]+)?)\s*(?:×\s*(\d+))?\s*(?::\s*(.+))?$")
 
@@ -343,10 +388,18 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
     allowed_numbers.add(facts_doc.get("diagnostic_count_base", facts_doc["diagnostic_count"]))
     allowed_numbers.add(facts_doc["decorative"]["count"])
     allowed_numbers.add(facts_doc["co_located_count"])
+    allowed_numbers.add(facts_doc.get("co_located_count_base", facts_doc["co_located_count"]))
     allowed_numbers.update(facts_doc["wings"].values())
     allowed_numbers.add(facts_doc.get("wing_count", len(facts_doc["wings"])))
+    # D-036 (hostile reading, run 17): a feature's numbers are admitted in the sentence that
+    # cites the feature, not anywhere in the paragraph — "two sit outside src" passed because
+    # 2 was some other feature's count
+    feature_numbers: dict[str, set[int]] = {}
     for f in facts_doc["features"]:
-        allowed_numbers.add(f["count"])
+        nums = {f["count"], *f.get("by_wing", {}).values()}
+        feature_numbers[f["feature"]] = nums
+        feature_numbers[f"{f['profile']}/{f['feature']}"] = nums
+    wing_names = set(facts_doc["wings"])
     room_metrics = facts_doc.get("rooms", {})
     used_consequence_names: set[str] = set()
     first_use: dict[str, tuple[int, str]] = {}  # feature → (paragraph, paragraph text)
@@ -403,12 +456,39 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                 )
             # R8 attribution: a room named in a sentence is covered by a feature cited in it
             named = [rid for rid in room_ids if _mentions(sent, rid)]
+            covered: set[str] = set()
+            for cname, _c, _r in _citations(sent):
+                cf = by_key.get(cname) or by_feature.get(cname)
+                if cf:
+                    covered.update(cf["rooms"])
+            # R10 (D-036): a directory named in a sentence contains a room cited in it — R8 covered
+            # rooms, and a distribution over four directories was asserted on the warrant of two
+            for d in sorted(set(DIRECTORY.findall(BRACKET.sub("", sent)))):
+                if d in room_ids or d in wing_names:
+                    continue
+                if not any(r.startswith(d + "/") for r in room_ids):
+                    continue  # not a directory of this building; R2/R8 territory if it is a room
+                if not any(r.startswith(d + "/") for r in covered):
+                    out.append(
+                        Violation(
+                            "R10-prefix",
+                            i,
+                            sent[:160],
+                            f"names the directory {d} but no room cited in the sentence sits in it",
+                        )
+                    )
+            # R11 (D-036): a share is a number on the sheet (by_wing), not an adverb
+            low_sent = BRACKET.sub("", sent).lower().replace("across all profiles", "")
+            for m in DISTRIBUTION.finditer(low_sent):
+                out.append(
+                    Violation(
+                        "R11-share",
+                        i,
+                        sent[:160],
+                        f"'{m.group(0)}' asserts a share the sheet does not carry; state the count per wing (by_wing)",
+                    )
+                )
             if named:
-                covered: set[str] = set()
-                for cname, _c, _r in _citations(sent):
-                    cf = by_key.get(cname) or by_feature.get(cname)
-                    if cf:
-                        covered.update(cf["rooms"])
                 for rid in named:
                     if rid not in covered:
                         out.append(
@@ -507,28 +587,54 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                 used_consequence_names.add(f["feature"])
         # R3 numbers — digits and number words alike; a room's own metrics are admitted only
         # in a paragraph that names the room (D-030: otherwise any small integer passes)
-        stripped = BRACKET.sub("", para)
-        para_allowed = set(allowed_numbers)
-        for rid in room_ids:
-            if rid in room_metrics and _mentions(para, rid):
-                para_allowed.update(v for v in room_metrics[rid].values() if isinstance(v, int))
-        for n in INTEGER.findall(stripped):
-            if int(n) not in para_allowed:
-                out.append(
-                    Violation("R3-number", i, para[:160], f"number {n} is not in the facts sheet")
-                )
-        for span, val in _spelled_numbers(stripped):
-            if span.lower() == "one":
-                continue  # the determiner, not a measurement (D-032 addendum)
-            if val not in para_allowed:
-                out.append(
-                    Violation(
-                        "R3-number",
-                        i,
-                        para[:160],
-                        f"number '{span}' ({val}) is not in the facts sheet",
+        for sent in SENTENCE.split(para):
+            stripped = BRACKET.sub("", sent)
+            sent_allowed = set(allowed_numbers)
+            for cname, _c, _r in _citations(sent):
+                sent_allowed |= feature_numbers.get(cname, set())
+            for rid in room_ids:
+                if rid in room_metrics and _mentions(sent, rid):
+                    sent_allowed.update(v for v in room_metrics[rid].values() if isinstance(v, int))
+            for n in INTEGER.findall(stripped):
+                if int(n) not in sent_allowed:
+                    out.append(
+                        Violation(
+                            "R3-number",
+                            i,
+                            sent[:160],
+                            f"number {n} is not in the facts sheet, or its feature is not cited in this sentence",
+                        )
                     )
+            for span, val in _spelled_numbers(stripped):
+                if span.lower() == "one":
+                    continue  # the determiner, not a measurement (D-032 addendum)
+                if val not in sent_allowed:
+                    out.append(
+                        Violation(
+                            "R3-number",
+                            i,
+                            sent[:160],
+                            f"number '{span}' ({val}) is not in the facts sheet, or its feature is not cited in this sentence",
+                        )
+                    )
+    # R9 (D-036): two diagnostic features whose room sets coincide or nest are one set of rooms;
+    # some sentence must name both features together (the sheet's `overlaps` says which)
+    sentences_all = [snt for p in _paragraphs(text) for snt in SENTENCE.split(p)]
+    for ov in facts_doc.get("overlaps") or []:
+        fa, fb = ov["a"].split("/")[-1], ov["b"].split("/")[-1]
+        together = any(
+            re.search(rf"\b{re.escape(fa)}\b", snt) and re.search(rf"\b{re.escape(fb)}\b", snt)
+            for snt in sentences_all
+        )
+        if not together:
+            out.append(
+                Violation(
+                    "R9-overlap",
+                    0,
+                    "",
+                    f"{ov['a']} and {ov['b']} mark {'the same' if ov['relation'] == 'identical' else 'nested'} rooms ({ov['n']}); no sentence names both",
                 )
+            )
     # R5 disclosure: a consequence-implying name carries its position name in the paragraph
     # where it is first used (a disclosure in paragraph 1 does not license paragraph 9)
     low_all = text.lower()
@@ -589,6 +695,9 @@ Register, binding (validation-spec §2.1.1, mapper §3):
 - Name rooms; do not say what they do. A path is not a function: "src/error/QueryFailedError.ts" is a room, not "the error classes". Describe position and marks, not purpose.
 - Do not set two features against each other ("against that", "offsets", "compensates"): the sets are independent measurements and the brief does not know their intersection unless the facts sheet states it.
 - Disclose a consequence-implying name's position name in the same paragraph where the name first appears; the disclosure clause covers only itself, not the rest of the sentence.
+- If the facts sheet lists `overlaps`, say so in one sentence naming both features: "The 70 flooded_basement rooms are the same 70 rooms as dark_room" — two marks on one set of rooms are one finding, not two.
+- Never use "mostly", "concentrated", "the bulk", "spread across", "throughout", "every wing"; the sheet carries `by_wing` counts per feature — state those ("39 of the 70 sit in src, 31 in packages") in the sentence that cites the feature.
+- A directory you name must contain a room you cite in the same sentence. A count you state must be the count (or a by_wing count) of a feature you cite in the same sentence, or a building-level count.
 - Write every count as digits (267 rooms, not "two hundred sixty-seven"); every number must be a value on the facts sheet — never add, subtract, or count for yourself.
 - The stance paragraph carries no citation.
 - Use only numbers that appear in the facts sheet (counts, lines, fan-in, fan-out). No estimates, no percentages, no counts you computed yourself ("sixteen of the seventeen").
@@ -668,7 +777,7 @@ def render_brief(
         f"# {facts_doc['repo']['name']} — architect's brief\n\n"
         f"*Register lint: **{status}**. What the lint checked: every paragraph cites a feature and a room it fired on, or a count the skeleton records; "
         f"a room named in a sentence is covered by a feature cited in that sentence; consequence and forecast vocabulary is refused outside a struck disclosure clause; "
-        f"numbers come from the facts sheet; decorative features are cited by count only and never as diagnosis; a consequence-implying name carries its position name where first used; no whole-building label. "
+        f"numbers come from the facts sheet and sit in the sentence that cites their feature; features with the same or nested rooms are named together; a directory named contains a cited room; no distributional adverb; decorative features are cited by count only and never as diagnosis; a consequence-implying name carries its position name where first used; no whole-building label. "
         f"What it cannot check: a consequence voiced without a listed word, a computed number that happens to match, a room's function inferred from its name. Profile {facts_doc['profile']}"
         + (f" + {', '.join(facts_doc['overlays'])}" if facts_doc["overlays"] else "")
         + f", geometry {facts_doc['geometry']}, skeleton `{facts_doc['skeleton_hash'][:12]}…`, facts `{facts_doc['facts_hash'][:12]}…`. "
@@ -691,7 +800,7 @@ def render_brief(
             + "\n\n**This brief failed the register lint and is not a diagnosis until it passes.**\n"
         )
     else:
-        lint_md += "No violations. Rules: R1 consequence vocabulary and phrases (citations stripped, disclosure clause struck), R2 provenance of every citation, R3 numbers from the facts sheet only, R4 decorative features cited by count only and never as diagnosis, R5 position-name disclosure at first use, R6 no whole-building label, R7 diagnostic and decorative counts stated, R8 rooms named in a sentence covered by that sentence's citations.\n"
+        lint_md += "No violations. Rules: R1 consequence vocabulary and phrases (citations stripped, disclosure clause struck), R2 provenance of every citation, R3 numbers from the facts sheet only, R4 decorative features cited by count only and never as diagnosis, R5 position-name disclosure at first use, R6 no whole-building label, R7 diagnostic and decorative counts stated, R8 rooms named in a sentence covered by that sentence's citations, R9 features with the same or nested rooms named together, R10 a directory named contains a cited room, R11 no distributional adverb — shares are by_wing counts (D-036).\n"
     return head + text.strip() + "\n" + prov + lint_md
 
 
