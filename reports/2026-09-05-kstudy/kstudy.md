@@ -36,3 +36,24 @@
 ## What this decides
 
 `SKELETON_BUDGET` is re-pinned at `pinned_k = 25`, `max_k = 50`, ceilings unchanged, `min_jitter_union = 20` (D-026). Under it the budget fires on a substantial share of transitions on every repository — it is an instrument that can fail — and what it fails on is a fact about self-relative calibration on growing populations: the maintainability ruleset's percentile features and the age geometry's quantile floors are not stable at K = 25 on a repository that grows by a tenth between frames. That is the finding; the ceiling is not tuned to hide it.
+
+## Verdicts under the re-pinned budget (D-026 addendum)
+
+*Regenerated from cache after D-026: `pinned_k = 25`, `max_k = 50`, `min_jitter_union = 20`. Runs at K > 50 are `untested: beyond_pinned_k` throughout and are not listed.*
+
+| repo | geometry | K | transitions | judged | over | within | untested (reason × n) |
+|---|---|---|---|---|---|---|---|
+| mcp-secure-server | age | 10 | 13 | 12 | 5 | 7 | touched_fraction_exceeds_floor × 1 |
+| mcp-secure-server | age | 5 | 26 | 25 | 6 | 19 | touched_fraction_exceeds_floor × 1 |
+| mcp-secure-server | layer | 10 | 13 | 12 | 3 | 9 | touched_fraction_exceeds_floor × 1 |
+| mcp-secure-server | layer | 5 | 26 | 25 | 4 | 21 | touched_fraction_exceeds_floor × 1 |
+| uluops-registry-api | age | 10 | 80 | 78 | 21 | 57 | beyond_pinned_k × 1, touched_fraction_exceeds_floor × 1 |
+| uluops-registry-api | age | 25 | 32 | 30 | 15 | 15 | beyond_pinned_k × 1, touched_fraction_exceeds_floor × 1 |
+| uluops-registry-api | age | 50 | 16 | 10 | 8 | 2 | beyond_pinned_k × 5, insufficient_untouched_population × 1 |
+| uluops-registry-api | layer | 10 | 80 | 78 | 19 | 59 | beyond_pinned_k × 1, touched_fraction_exceeds_floor × 1 |
+| uluops-registry-api | layer | 25 | 32 | 30 | 13 | 17 | beyond_pinned_k × 1, touched_fraction_exceeds_floor × 1 |
+| uluops-registry-api | layer | 50 | 16 | 10 | 7 | 3 | beyond_pinned_k × 5, insufficient_untouched_population × 1 |
+| typeorm | age | 50 | 76 | 36 | 6 | 30 | beyond_pinned_k × 36, touched_fraction_exceeds_floor × 4 |
+| typeorm | layer | 50 | 76 | 36 | 7 | 29 | beyond_pinned_k × 36, touched_fraction_exceeds_floor × 4 |
+
+The budget now fails on a substantial share of the transitions it judges on every repository. What it fails on is stated above: percentile features and quantile age floors under growth.
