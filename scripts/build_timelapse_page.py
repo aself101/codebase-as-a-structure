@@ -39,7 +39,7 @@ def load(key: str):
             if f.get("change_stem"):
                 raw = (d / f"{f['change_stem']}.change.svg").read_text(encoding="utf-8")
                 # the marks carry the reading; drop per-room tooltips to keep the page small
-                f["change_svg"] = re.sub(r"<title>.*?</title>", "", raw, flags=re.S).replace(
+                f["change_svg"] = re.sub(r"<title>.*?</title>", "", raw, flags=re.DOTALL).replace(
                     "\n", ""
                 )
     return m
@@ -59,7 +59,7 @@ def share_bar(t: dict, height: int = 14) -> str:
         ("mixed", t.get("ripple_mixed_share", 0.0), "mixed"),
         ("structural", t["structural_share"], "structural"),
     ]
-    out = ['<div class="bar" style="height:%dpx">' % height]
+    out = [f'<div class="bar" style="height:{height}px">']
     for cls, share, label in segs:
         if share <= 0:
             continue
@@ -321,19 +321,12 @@ def _cls(m):
     return f'class="{styles[st]}"'
 
 
-page = (
-    re.sub(r'style="([^"]*)"(?=[^>]*>)', lambda m: _cls(m) if page_svg_region else m.group(0), page)
-    if False
-    else page
-)
-
-
 # apply only inside <svg ...>...</svg> so the page's own inline styles are untouched
 def _hoist(svg_m):
     return re.sub(r'style="([^"]*)"', _cls, svg_m.group(0))
 
 
-page = re.sub(r"<svg\b.*?</svg>", _hoist, page, flags=re.S)
+page = re.sub(r"<svg\b.*?</svg>", _hoist, page, flags=re.DOTALL)
 sheet = "<style>" + "".join(f".{c}{{{st}}}" for st, c in styles.items()) + "</style>"
 page = page.replace("</style>", "</style>" + sheet, 1)
 OUT.write_text(page, encoding="utf-8")

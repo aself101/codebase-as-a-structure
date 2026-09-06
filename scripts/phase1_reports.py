@@ -7,8 +7,10 @@ import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "out" / "timelapse-b"
-DST = ROOT / "reports" / "2026-09-05-phase1b"
+import os
+
+SRC = Path(os.environ.get("PHASE1_SRC", ROOT / "out" / "timelapse-b"))
+DST = Path(os.environ.get("PHASE1_DST", ROOT / "reports" / "2026-09-05-phase1b"))
 DST.mkdir(parents=True, exist_ok=True)
 
 rows = []
@@ -38,18 +40,13 @@ The question (D-020): over a repository's history, is the named structure struct
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 {chr(10).join(rows)}
 
-## Readings (regenerated under the D-024 operand, judged against the ceilings pre-registered in D-024)
+## How to read it
 
-- **"Jitter is a few percent" is refuted for the young repositories and stands for the mature ones.** Pre-registered: a jitter share above 0.20 on any (repository, geometry), or above 0.10 on two repositories, refutes it. Observed: mcp-secure-server 0.32 / 0.19, uluops-registry-api 0.30 / 0.20 (age / layer); typeorm 0.12 / 0.08; eslint 0.05 / 0.05. Both conditions fire. The first reading's 2–7% was the one-sided classifier and the integer-day artefact together.
-- **What the jitter is.** On the young repositories the rank column is dominated by floor moves of untouched rooms under age geometry: a population that grows by a fifth between frames re-ranks every age band, and a room keeps its floor by keeping its rank, not its age. That is movement of what did not itself change — jitter by D-018's definition — and it is caused by births, structural change propagating through in-repo percentiles (time-lapse §6.2; D-024, Nagarjuna TL-1). Under layer geometry the same repositories jitter at 0.19–0.20, the dependency-layer propagation D-018 noted. The mature repositories, whose populations grow by a few percent between frames, sit at 0.05–0.12.
-- **The schedule is not averaging jitter away.** Pre-registered: every-5 exceeding twelve frames by more than 2× or 0.10 absolute refutes it. mcp-secure-server: 0.33 at every 5 against 0.32 at twelve frames. Stands.
-- **Clock ripple** is now 0.03–0.23 and no longer the dominant non-edit movement anywhere; the tie artefact (D-022) and the age-strata reclassification account for the fall from the first reading's 0.44–0.61.
-- **The budget at time-lapse K is `untested: beyond_pinned_k`** on every twelve-frame transition of every repository, by construction (K ≥ 12 > max_k = 10); only the every-5 run renders verdicts, and there the budget fired on the transitions where births re-ranked the bands. At K = 5 the adversarial ruleset could not make it fire (`reports/2026-09-05-m2b/adversarial-ruleset.md`); the ceiling's K is the open question (time-lapse §7 Q2).
-- **The change sheets** (`<repo>.<geometry>.timelapse.html`, toggle "change sheet"; D-023) put the decomposition on the rooms, with each mark's evidence values in its tooltip; a room takes its strongest mark, rank > mixed > clock.
-
-## What this decides
-
-The phase's conclusion is restated with the corrected instrument. Over a **mature** repository's history the named structure is edits and births, with jitter at 5–12%: worth narrating on D-003's condition, as far as a mechanical test can say. Over a **young, fast-growing** repository the picture re-ranks by a fifth to a third between frames under self-relative calibration, and a narrative over it would be narrating the calibration as much as the building. That is a finding about in-repo percentiles on small growing populations, not about the repositories; corpus-relative calibration (Phase 3) is where it would change. Whether M3 is built, and for which class of repository, is a product judgment (D-020, D-024).
+- **The jitter share is the answer** to the phase's question, per (repository, geometry, schedule), and it is quoted with its median K because it is a joint value of repository and schedule (D-024, D-026).
+- **Clock** is the skeleton reporting time; **edits** are the skeleton reporting edits; **structural** is births and deletions; only **rank + mixed** is jitter.
+- **The budget's verdicts** are rendered only at K ≤ 50 (D-026); on twelve-frame schedules every transition is `untested: beyond_pinned_k` by construction, and the numbers stand on their own.
+- The pre-registered ceilings of D-024 (jitter above 0.20 on any repository/geometry, or above 0.10 on two, refutes "a few percent") are judged in the decision log, not here; this file is the reading.
+- Per-run pages beside this file carry the frames, the change sheets (D-023), and the per-transition tables.
 """,
     encoding="utf-8",
 )
