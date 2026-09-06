@@ -71,7 +71,7 @@ def render(d: dict) -> str:
     out.append(
         "| operand | threshold | reference-set median | p90 | max | fires on | verdict under the D-026 rule (letter) |"
     )
-    out.append("|---|---|---|---|---|---|")
+    out.append("|---|---|---|---|---|---|---|")
     for name, thr, xs in (
         ("eps over median \\|Δ\\|", d["eps"], meds),
         ("delta over the tail operand", d["delta"], tails),
