@@ -372,10 +372,9 @@ def test_lint_reads_the_connective_prose(sub):
 
 def test_facts_sheet_carries_overlaps_wing_counts_and_all_profile_co_location(sub):
     f = facts(_skeleton(sub), sub)
-    assert "overlaps" in f and "co_located_rooms_base_profile" in f and f["gate_fingerprint"]
+    assert "overlaps" in f and "co_located_rooms" in f and f["gate_fingerprint"]
     for x in f["features"]:
         assert sum(x["by_wing"].values()) == x["count"]
-    assert f["co_located_rooms"] >= f["co_located_rooms_base_profile"]
     assert f["units"]["co_located_rooms"].startswith("rooms")
     for x in f["features"]:
         assert x["dominant_dir"]["n"] <= x["count"]
@@ -443,14 +442,60 @@ def test_lint_types_the_sheet(sub):
             "rooms": rooms,
             "count": 6,
             "by_wing": {"lib": 6},
-            "dominant_dir": {"dir": "lib/inner", "n": 6},
+            "dominant_dir": {"dir": "lib/inner", "n": 6, "population": 9},
         }
     )
     h["features"].append(deep)
     silent = base + f"Six rooms carry deep_mark [deep_mark ×6].\n\n"
     assert "R15-composition" in {v.rule for v in lint(silent, h)}
     shown = (
-        base + f"Six rooms carry deep_mark, all 6 in lib/inner [deep_mark ×6: lib/inner/0.js].\n\n"
+        base
+        + f"Six rooms carry deep_mark, all 6 in lib/inner, which holds 9 rooms [deep_mark ×6: lib/inner/0.js].\n\n"
     )
     rules = {v.rule for v in lint(shown, h)}
     assert "R15-composition" not in rules and "R10-prefix" not in rules
+
+
+def test_lint_reads_nestings_shared_predicates_and_the_decorative_reason(sub):
+    """D-038 (third seating, run 19): a within overlap states the rooms outside and no identity
+    noun; an identical overlap with a shared predicate says so; 'findings' is not a unit."""
+    f = facts(_skeleton(sub), sub)
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    base = _good_draft(f)
+    key = f"{feat['profile']}/{feat['feature']}"
+    g = dict(f)
+    g["overlaps"] = [
+        {"a": key, "b": "p/wider_mark", "relation": "within", "n": feat["count"], "n_outside": 8}
+    ]
+    ident = (
+        base
+        + f"The {feat['feature']} rooms and the wider_mark rooms are one set of rooms [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R13-inert" in {v.rule for v in lint(ident, g)}
+    nested = (
+        base
+        + f"The {feat['feature']} rooms sit within wider_mark, which marks 8 rooms outside them [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R13-inert" not in {v.rule for v in lint(nested, g)}
+    g["overlaps"] = [
+        {
+            "a": key,
+            "b": "p/twin_mark",
+            "relation": "identical",
+            "n": feat["count"],
+            "inert_terms": [],
+            "shared_predicate": True,
+        }
+    ]
+    agree = (
+        base
+        + f"The {feat['feature']} rooms are the twin_mark rooms [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R13-inert" in {v.rule for v in lint(agree, g)}
+    same = (
+        base
+        + f"The {feat['feature']} rooms are the twin_mark rooms: the same predicate under two profiles [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R13-inert" not in {v.rule for v in lint(same, g)}
+    finding = base + f"One finding, two marks [{feat['feature']} ×{feat['count']}].\n\n"
+    assert "R12-unit" in {v.rule for v in lint(finding, f)}

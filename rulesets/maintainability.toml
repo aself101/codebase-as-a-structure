@@ -14,7 +14,7 @@
 
 [ruleset]
 name = "maintainability"
-version = "0.2.0"
+version = "0.2.1"
 profile = "maintainability"
 description = "v0 maintainability lens: load, neglect, reinforcement, activity — over asserted signals only; the two pressure indices are unvalidated (D-015) and appear only as decorative features."
 wing_depth = 1
@@ -44,6 +44,8 @@ note = "Long untouched and still imported: the position name says exactly what t
 [[feature]]
 name = "scaffolding"
 predicate = "reinforcement_index >= 0.5"
+name_implies_consequence = true  # D-035 (enacted D-038): scaffolding is a temporary structure; the name carries its position
+position_name = "test-imported room at or above the median reinforcement"
 graph_dependent = true
 note = "At least one test file imports the node (import-graph reading of reinforcement, D-011)."
 

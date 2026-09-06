@@ -36,6 +36,7 @@ _SPLIT = re.compile(r"\s+(?:and|∧)\s+")
 # containing one must be declared name_implies_consequence and carry a position_name. The
 # list is the audit surface; a new metaphor that implies damage is added here.
 NAME_CONSEQUENCE_WORDS = (
+    "scaffold",  # temporary structure erected to be removed (D-035; written D-038)
     "crack",
     "flood",
     "toothpick",
