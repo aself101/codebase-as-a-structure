@@ -69,7 +69,7 @@ def render(d: dict) -> str:
     )
     out.append("")
     out.append(
-        "| operand | threshold | reference-set median | p90 | max | verdict under the D-026 rule |"
+        "| operand | threshold | reference-set median | p90 | max | fires on | verdict under the D-026 rule (letter) |"
     )
     out.append("|---|---|---|---|---|---|")
     for name, thr, xs in (
@@ -83,7 +83,8 @@ def render(d: dict) -> str:
             verdict = "below the median — cannot pass on this set"
         else:
             verdict = "between median and p90 — can fail"
-        out.append(f"| {name} | {thr:.3f} | {m:.4f} | {p90:.4f} | {mx:.4f} | {verdict} |")
+        fires = sum(1 for x in xs if x > thr)
+        out.append(f"| {name} | {thr:.3f} | {m:.4f} | {p90:.4f} | {mx:.4f} | {fires} of {len(xs)} | {verdict} |")
     out.append("")
     out.append("| signal | ripple | repo | median \\|Δ\\| | p95 | max | operand | n | status |")
     out.append("|---|---|---|---|---|---|---|---|---|")

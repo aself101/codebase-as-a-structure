@@ -6,10 +6,10 @@
 
 92 (signal, repo) readings reached the stability test: 44 own (null check — 0 read above 0.000), 48 coupled (the bars are placed over these).
 
-| operand | threshold | reference-set median | p90 | max | verdict under the D-026 rule |
+| operand | threshold | reference-set median | p90 | max | fires on | verdict under the D-026 rule (letter) |
 |---|---|---|---|---|---|
-| eps over median \|Δ\| | 0.010 | 0.0000 | 0.0043 | 0.0162 | above p90 — cannot fail on this set |
-| delta over the tail operand | 0.050 | 0.0010 | 0.0203 | 0.1195 | above p90 — cannot fail on this set |
+| eps over median \|Δ\| | 0.010 | 0.0000 | 0.0043 | 0.0162 | 3 of 48 | above p90 — cannot fail on this set |
+| delta over the tail operand | 0.050 | 0.0010 | 0.0203 | 0.1195 | 2 of 48 | above p90 — cannot fail on this set |
 
 | signal | ripple | repo | median \|Δ\| | p95 | max | operand | n | status |
 |---|---|---|---|---|---|---|---|---|

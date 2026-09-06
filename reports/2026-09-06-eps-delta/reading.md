@@ -6,10 +6,10 @@
 
 92 (signal, repo) readings reached the stability test: 92 own (null check — 75 read above 0.000: age_days@mcp-secure-server, age_days@uluops-registry-api, age_days@eslint, author_count@typeorm, author_count@mcp-secure-server, author_count@eslint, blame_age_median@typeorm, blame_age_median@mcp-secure-server, blame_age_median@uluops-registry-api, blame_age_median@eslint, centrality@typeorm, centrality@mcp-secure-server, centrality@uluops-registry-api, centrality@eslint, churn_lines@typeorm, churn_lines@mcp-secure-server, churn_lines@uluops-registry-api, churn_lines@eslint, cochange_degree@typeorm, cochange_degree@mcp-secure-server, cochange_degree@uluops-registry-api, cochange_degree@eslint, commit_count@typeorm, commit_count@mcp-secure-server, commit_count@uluops-registry-api, commit_count@eslint, complexity_proxy_index@typeorm, complexity_proxy_index@mcp-secure-server, complexity_proxy_index@uluops-registry-api, complexity_proxy_index@eslint, fan_in@typeorm, fan_in@mcp-secure-server, fan_in@uluops-registry-api, fan_in@eslint, fan_in_nonzero@typeorm, fan_in_nonzero@mcp-secure-server, fan_in_nonzero@uluops-registry-api, fan_in_nonzero@eslint, fan_out@mcp-secure-server, fan_out@uluops-registry-api, fan_out@eslint, fix_count@typeorm, fix_count@mcp-secure-server, fix_count@uluops-registry-api, fix_count@eslint, last_touched_days@typeorm, last_touched_days@mcp-secure-server, last_touched_days@uluops-registry-api, last_touched_days@eslint, load_index@typeorm, load_index@mcp-secure-server, load_index@uluops-registry-api, load_index@eslint, neglect_index@typeorm, neglect_index@mcp-secure-server, neglect_index@uluops-registry-api, neglect_index@eslint, nesting_proxy@typeorm, nesting_proxy@mcp-secure-server, nesting_proxy@uluops-registry-api, nesting_proxy@eslint, recent_commit_share@typeorm, recent_commit_share@uluops-registry-api, recent_commit_share@eslint, reinforcement_index@typeorm, reinforcement_index@uluops-registry-api, reinforcement_index@eslint, size_loc@typeorm, size_loc@mcp-secure-server, size_loc@uluops-registry-api, size_loc@eslint, test_fan_in@typeorm, test_fan_in@mcp-secure-server, test_fan_in@uluops-registry-api, test_fan_in@eslint), 0 coupled (the bars are placed over these).
 
-| operand | threshold | reference-set median | p90 | max | verdict under the D-026 rule |
+| operand | threshold | reference-set median | p90 | max | fires on | verdict under the D-026 rule (letter) |
 |---|---|---|---|---|---|
-| eps over median \|Δ\| | 0.050 | 0.0012 | 0.0095 | 0.0322 | above p90 — cannot fail on this set |
-| delta over the tail operand | 0.150 | 0.0082 | 0.2278 | 1.0000 | between median and p90 — can fail |
+| eps over median \|Δ\| | 0.050 | 0.0012 | 0.0095 | 0.0322 | 0 of 92 | above p90 — cannot fail on this set |
+| delta over the tail operand | 0.150 | 0.0082 | 0.2278 | 1.0000 | 14 of 92 | between median and p90 — can fail |
 
 | signal | ripple | repo | median \|Δ\| | p95 | max | operand | n | status |
 |---|---|---|---|---|---|---|---|---|
@@ -110,10 +110,10 @@
 
 92 (signal, repo) readings reached the stability test: 92 own (null check — 48 read above 0.000: age_days@eslint, author_count@typeorm, author_count@eslint, blame_age_median@mcp-secure-server, blame_age_median@eslint, centrality@mcp-secure-server, centrality@eslint, churn_lines@typeorm, churn_lines@mcp-secure-server, churn_lines@eslint, cochange_degree@mcp-secure-server, cochange_degree@eslint, commit_count@typeorm, commit_count@mcp-secure-server, commit_count@eslint, complexity_proxy_index@typeorm, complexity_proxy_index@mcp-secure-server, complexity_proxy_index@eslint, fan_in@mcp-secure-server, fan_in@eslint, fan_in_nonzero@mcp-secure-server, fan_in_nonzero@eslint, fan_out@mcp-secure-server, fan_out@eslint, fix_count@typeorm, fix_count@eslint, last_touched_days@typeorm, last_touched_days@mcp-secure-server, last_touched_days@eslint, load_index@typeorm, load_index@mcp-secure-server, load_index@eslint, neglect_index@typeorm, neglect_index@mcp-secure-server, neglect_index@uluops-registry-api, neglect_index@eslint, nesting_proxy@typeorm, nesting_proxy@mcp-secure-server, nesting_proxy@eslint, recent_commit_share@typeorm, recent_commit_share@mcp-secure-server, recent_commit_share@uluops-registry-api, recent_commit_share@eslint, reinforcement_index@eslint, size_loc@typeorm, size_loc@mcp-secure-server, size_loc@eslint, test_fan_in@eslint), 0 coupled (the bars are placed over these).
 
-| operand | threshold | reference-set median | p90 | max | verdict under the D-026 rule |
+| operand | threshold | reference-set median | p90 | max | fires on | verdict under the D-026 rule (letter) |
 |---|---|---|---|---|---|
-| eps over median \|Δ\| | 0.050 | 0.0000 | 0.0011 | 0.0050 | above p90 — cannot fail on this set |
-| delta over the tail operand | 0.150 | 0.0008 | 0.0289 | 1.0000 | above p90 — cannot fail on this set |
+| eps over median \|Δ\| | 0.050 | 0.0000 | 0.0011 | 0.0050 | 0 of 92 | above p90 — cannot fail on this set |
+| delta over the tail operand | 0.150 | 0.0008 | 0.0289 | 1.0000 | 3 of 92 | above p90 — cannot fail on this set |
 
 | signal | ripple | repo | median \|Δ\| | p95 | max | operand | n | status |
 |---|---|---|---|---|---|---|---|---|

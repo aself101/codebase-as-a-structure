@@ -1,0 +1,525 @@
+{
+ "after": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "ecb30716b87ed127f0412956738afb7af385b267",
+   "name": "mcp-secure-server"
+  },
+  "skeleton_hash": "71159a30b2a49c16a069b370f26eb85c274853d0bc9d8b26513d66a0d8987a8e"
+ },
+ "before": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "205ab1b4ffff3c58b960f1c7bd4384f837299fb5",
+   "name": "mcp-secure-server"
+  },
+  "skeleton_hash": "362bba086c3a58da6587b6ef79b5f8cab81400bf18a1aa78bc0efc1483bc6e39"
+ },
+ "born": 1,
+ "budget": {
+  "feature_churn_max": 0.05,
+  "k": 25,
+  "max_k": 50,
+  "max_touched_frac": 0.5,
+  "min_jitter_union": 20,
+  "min_untouched_n": 30,
+  "operand": "jitter: rank + mixed feature churn, and strata moves, over untouched rooms",
+  "pinned_k": 25,
+  "reason": null,
+  "strata_moved_max": 0.05,
+  "verdict": "within_budget"
+ },
+ "commits_between": 25,
+ "common_nodes": 201,
+ "deleted": 0,
+ "feature_churn": 0.12944983818770225,
+ "kinds": {
+  "maintainability/crack": "rank",
+  "maintainability/dark_room": "clock",
+  "maintainability/flooded_basement": "mixed",
+  "maintainability/foundation": "rank",
+  "maintainability/hub": "rank",
+  "maintainability/lit_room": "clock",
+  "maintainability/scaffolding": "rank",
+  "maintainability/toothpick_wing": "rank",
+  "onboarding/corridor": "rank",
+  "onboarding/foundation": "rank",
+  "onboarding/import_root": "rank",
+  "onboarding/leaf_utility": "rank",
+  "onboarding/package_entry": "rank"
+ },
+ "per_feature": {
+  "maintainability/dark_room": {
+   "added": [],
+   "after": 42,
+   "before": 45,
+   "evidence": {
+    "src/security/layers/layer-utils/content/utils/hash-utils.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 31.983
+     }
+    },
+    "src/security/layers/layer-utils/content/utils/structural-analysis.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 31.983
+     }
+    },
+    "src/security/layers/layer-utils/content/utils/text-decoding.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 31.983
+     }
+    }
+   },
+   "jaccard": 0.9333333333333333,
+   "kind": "clock",
+   "removed": [
+    "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+    "src/security/layers/layer-utils/content/utils/structural-analysis.ts",
+    "src/security/layers/layer-utils/content/utils/text-decoding.ts"
+   ],
+   "untouched_changes": 0
+  },
+  "maintainability/flooded_basement": {
+   "added": [],
+   "after": 37,
+   "before": 40,
+   "evidence": {
+    "src/security/layers/layer-utils/content/utils/hash-utils.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 31.983,
+      "load_index": 0.6186
+     }
+    },
+    "src/security/layers/layer-utils/content/utils/structural-analysis.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 31.983,
+      "load_index": 0.4193
+     }
+    },
+    "src/security/layers/layer-utils/content/utils/text-decoding.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 31.983,
+      "load_index": 0.6751
+     }
+    }
+   },
+   "jaccard": 0.925,
+   "kind": "mixed",
+   "removed": [
+    "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+    "src/security/layers/layer-utils/content/utils/structural-analysis.ts",
+    "src/security/layers/layer-utils/content/utils/text-decoding.ts"
+   ],
+   "untouched_changes": 0
+  },
+  "maintainability/foundation": {
+   "added": [],
+   "after": 21,
+   "before": 21,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/hub": {
+   "added": [
+    "src/types/validation.ts"
+   ],
+   "after": 22,
+   "before": 21,
+   "evidence": {
+    "src/types/validation.ts": {
+     "after": {
+      "centrality": 0.0097
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.9545454545454546,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 1
+  },
+  "maintainability/lit_room": {
+   "added": [
+    "src/security/config/tool-policies-config.ts",
+    "src/security/config/tool-policies.ts",
+    "src/security/constants.ts",
+    "src/security/layers/builtin-validators.ts",
+    "src/security/layers/layer-utils/content/patterns/path-traversal.ts",
+    "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+    "src/security/layers/layer-utils/content/utils/structural-analysis.ts",
+    "src/security/layers/layer-utils/content/utils/text-decoding.ts",
+    "src/security/layers/layer2-validators/data-semantics.ts",
+    "src/security/layers/layer2-validators/pattern-detection.ts",
+    "src/security/layers/validation-layer-base.ts",
+    "src/security/presets.ts",
+    "src/security/utils/security-logger-types.ts",
+    "src/types/layers.ts",
+    "src/types/server.ts"
+   ],
+   "after": 21,
+   "before": 22,
+   "evidence": {
+    "eslint.config.js": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.0
+     }
+    },
+    "src/index.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.0709
+     }
+    },
+    "src/security/config/tool-policies-config.ts": {
+     "after": {
+      "last_touched_days": 37.5721
+     },
+     "before": null
+    },
+    "src/security/config/tool-policies.ts": {
+     "after": {
+      "last_touched_days": 37.5721
+     },
+     "before": null
+    },
+    "src/security/constants.ts": {
+     "after": {
+      "last_touched_days": 37.5721
+     },
+     "before": null
+    },
+    "src/security/index.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.0814
+     }
+    },
+    "src/security/layers/builtin-validators.ts": {
+     "after": {
+      "last_touched_days": 130.9011
+     },
+     "before": null
+    },
+    "src/security/layers/layer-utils/content/patterns/path-traversal.ts": {
+     "after": {
+      "last_touched_days": 37.5721
+     },
+     "before": null
+    },
+    "src/security/layers/layer-utils/content/utils/hash-utils.ts": {
+     "after": {
+      "last_touched_days": 224.618
+     },
+     "before": null
+    },
+    "src/security/layers/layer-utils/content/utils/structural-analysis.ts": {
+     "after": {
+      "last_touched_days": 224.618
+     },
+     "before": null
+    },
+    "src/security/layers/layer-utils/content/utils/text-decoding.ts": {
+     "after": {
+      "last_touched_days": 224.618
+     },
+     "before": null
+    },
+    "src/security/layers/layer2-validators/data-semantics.ts": {
+     "after": {
+      "last_touched_days": 37.5721
+     },
+     "before": null
+    },
+    "src/security/layers/layer2-validators/pattern-detection.ts": {
+     "after": {
+      "last_touched_days": 117.6363
+     },
+     "before": null
+    },
+    "src/security/layers/layer3-behavior.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.0
+     }
+    },
+    "src/security/layers/layer4-semantics.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.0814
+     }
+    },
+    "src/security/layers/layer5-contextual.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.1534
+     }
+    },
+    "src/security/layers/validation-layer-base.ts": {
+     "after": {
+      "last_touched_days": 37.5721
+     },
+     "before": null
+    },
+    "src/security/presets.ts": {
+     "after": {
+      "last_touched_days": 37.5721
+     },
+     "before": null
+    },
+    "src/security/transport/error-rate-limiter.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.0949
+     }
+    },
+    "src/security/transport/http-body-parser.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 1.2851
+     }
+    },
+    "src/security/transport/http-server-types.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 1.2851
+     }
+    },
+    "src/security/transport/http-server.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.0
+     }
+    },
+    "src/security/transport/http-transport-manager.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.0814
+     }
+    },
+    "src/security/transport/index.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.0949
+     }
+    },
+    "src/security/transport/secure-transport.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.0814
+     }
+    },
+    "src/security/transport/transport-validator.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 1.3042
+     }
+    },
+    "src/security/utils/request-normalizer.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 1.3042
+     }
+    },
+    "src/security/utils/security-logger-types.ts": {
+     "after": {
+      "last_touched_days": 63.6242
+     },
+     "before": null
+    },
+    "src/security/utils/validation-pipeline.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.0814
+     }
+    },
+    "src/types/layers.ts": {
+     "after": {
+      "last_touched_days": 37.5721
+     },
+     "before": null
+    },
+    "src/types/server.ts": {
+     "after": {
+      "last_touched_days": 37.5721
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.16216216216216217,
+   "kind": "clock",
+   "removed": [
+    "eslint.config.js",
+    "src/index.ts",
+    "src/security/index.ts",
+    "src/security/layers/layer3-behavior.ts",
+    "src/security/layers/layer4-semantics.ts",
+    "src/security/layers/layer5-contextual.ts",
+    "src/security/transport/error-rate-limiter.ts",
+    "src/security/transport/http-body-parser.ts",
+    "src/security/transport/http-server-types.ts",
+    "src/security/transport/http-server.ts",
+    "src/security/transport/http-transport-manager.ts",
+    "src/security/transport/index.ts",
+    "src/security/transport/secure-transport.ts",
+    "src/security/transport/transport-validator.ts",
+    "src/security/utils/request-normalizer.ts",
+    "src/security/utils/validation-pipeline.ts"
+   ],
+   "untouched_changes": 15
+  },
+  "maintainability/scaffolding": {
+   "added": [],
+   "after": 53,
+   "before": 53,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/corridor": {
+   "added": [],
+   "after": 18,
+   "before": 18,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/foundation": {
+   "added": [],
+   "after": 21,
+   "before": 21,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/import_root": {
+   "added": [],
+   "after": 17,
+   "before": 17,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/leaf_utility": {
+   "added": [
+    "src/security/layers/contextual-config-builder.ts",
+    "src/security/utils/security-logger-types.ts"
+   ],
+   "after": 19,
+   "before": 17,
+   "evidence": {
+    "src/security/layers/contextual-config-builder.ts": {
+     "after": {
+      "fan_in": 3,
+      "fan_out": 0
+     },
+     "before": null
+    },
+    "src/security/utils/security-logger-types.ts": {
+     "after": {
+      "fan_in": 3,
+      "fan_out": 0
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.8947368421052632,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 1
+  },
+  "onboarding/package_entry": {
+   "added": [],
+   "after": 16,
+   "before": 16,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  }
+ },
+ "strata_moved": [
+  "src/security/layers/layer-utils/content/patterns/injection.ts",
+  "src/security/layers/layer-utils/semantics/semantic-policies-types.ts",
+  "src/security/presets.ts",
+  "src/security/utils/error-sanitizer.ts",
+  "src/types/server.ts"
+ ],
+ "strata_moved_frac": 0.024875621890547265,
+ "touched": {
+  "frac": 0.10945273631840796,
+  "n": 22,
+  "nodes": [
+   "src/security/config/tool-policies-config.ts",
+   "src/security/config/tool-policies.ts",
+   "src/security/constants.ts",
+   "src/security/layers/builtin-validators.ts",
+   "src/security/layers/layer-utils/content/patterns/path-traversal.ts",
+   "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+   "src/security/layers/layer-utils/content/utils/structural-analysis.ts",
+   "src/security/layers/layer-utils/content/utils/text-decoding.ts",
+   "src/security/layers/layer1-structure.ts",
+   "src/security/layers/layer2-content.ts",
+   "src/security/layers/layer2-validators/data-semantics.ts",
+   "src/security/layers/layer2-validators/pattern-detection.ts",
+   "src/security/layers/layer5-contextual.ts",
+   "src/security/layers/validation-layer-base.ts",
+   "src/security/mcp-secure-server.ts",
+   "src/security/presets.ts",
+   "src/security/utils/error-sanitizer.ts",
+   "src/security/utils/pipeline-factory.ts",
+   "src/security/utils/security-logger-types.ts",
+   "src/security/utils/security-logger.ts",
+   "src/types/layers.ts",
+   "src/types/server.ts"
+  ]
+ },
+ "untouched": {
+  "by_kind": {
+   "clock": {
+    "changes": 15,
+    "churn": 0.2631578947368421,
+    "union": 57
+   },
+   "mixed": {
+    "changes": 0,
+    "churn": 0.0,
+    "union": 37
+   },
+   "rank": {
+    "changes": 2,
+    "churn": 0.013245033112582781,
+    "union": 151
+   }
+  },
+  "clock_churn": 0.2631578947368421,
+  "decorative_changes": 3,
+  "decorative_churn": 0.25,
+  "feature_churn": 0.06938775510204082,
+  "jitter_churn": 0.010638297872340425,
+  "n": 179,
+  "strata_moved": [
+   "src/security/layers/layer-utils/content/patterns/injection.ts",
+   "src/security/layers/layer-utils/semantics/semantic-policies-types.ts"
+  ],
+  "strata_moved_frac": 0.0111731843575419
+ }
+}
