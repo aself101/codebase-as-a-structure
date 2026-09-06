@@ -12,7 +12,7 @@
 
 [ruleset]
 name = "maintainability"
-version = "0.1.0"
+version = "0.2.0"
 profile = "maintainability"
 description = "v0 maintainability lens: load, neglect, reinforcement, activity — over asserted signals only; the two pressure indices are unvalidated (D-015) and appear only as decorative features."
 wing_depth = 1
@@ -33,11 +33,11 @@ note = "Top-decile PageRank over the import graph. A pure position name needs no
 
 [[feature]]
 name = "flooded_basement"
-predicate = "neglect_index >= p90 and load_index >= 0.10"
+predicate = "last_touched_days >= p90 and load_index >= 0.10"
 graph_dependent = true
 name_implies_consequence = true
 position_name = "long-untouched, still-imported room"
-note = "Old, long-untouched, and still imported. neglect_index is cross-modally corroborated against blame age (G3); load_index is a G4 blend of checked measurements. Present-tense: this is where the water is, not a prediction that it rises."
+note = "Long untouched and still imported: the position name says exactly what the predicate reads. D-031 replaced neglect_index (a blend whose recent_commit_share input is a window over the last fifth of commits and cannot be stable at K = 25 by construction) with the stable primitive last_touched_days, which the position name already meant. load_index is a G4 blend of checked measurements. Present-tense: this is where the water is, not a prediction that it rises."
 
 [[feature]]
 name = "scaffolding"

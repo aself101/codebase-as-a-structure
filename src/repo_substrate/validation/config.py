@@ -212,7 +212,7 @@ class ValidationConfig:
     signal_floor_mult: float = 1.5
     min_repos: int = 2  # test-role repos that must pass (D-009)
     # §2.4 asserted bar
-    stability_perturbation_k: int = 5
+    stability_perturbation_k: int = 25  # D-031: the K the skeleton budget is pinned at (D-026)
     stability_eps: float = 0.05
     stability_delta: float = 0.15
     stability_min_n: int = 30  # D-011: untested (insufficient_stability_population) below this
