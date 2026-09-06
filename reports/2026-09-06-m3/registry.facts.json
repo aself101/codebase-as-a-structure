@@ -7,8 +7,9 @@
    "crack"
   ]
  },
- "diagnostic_count": 281,
- "facts_hash": "d90c412fdc3e6db9a940c823ad181b5132ce06529b14b6b2f07240b9ada1c099",
+ "diagnostic_count": 352,
+ "diagnostic_count_base": 281,
+ "facts_hash": "3357ba2f353773fa1b511eda08b59b84c6a19052f38a5355b4cda99d748404f5",
  "features": [
   {
    "count": 27,

@@ -8,8 +8,9 @@
    "toothpick_wing"
   ]
  },
- "diagnostic_count": 196,
- "facts_hash": "987906877c8ec5193cfc29f27077392d4f9637d2f429b57536317f875e0991ed",
+ "diagnostic_count": 271,
+ "diagnostic_count_base": 196,
+ "facts_hash": "e8d92650c4e104e4384d14fee2f88024fa3ca32f1dc91710e183316cbd384ec5",
  "features": [
   {
    "count": 21,

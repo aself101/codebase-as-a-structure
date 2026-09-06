@@ -1,38 +1,35 @@
 # mcp-secure-server — architect's brief
 
-*Register lint: **PASS**. Every claim below is licensed by an `asserted` signal and cites the feature and room it rests on; a claim voices a present structural position, never a consequence. Profile maintainability + onboarding, geometry age, skeleton `5aa582547012…`, facts `987906877c8e…`.*
+*Register lint: **PASS on attempt 2**. What the lint checked: every paragraph cites a feature and a room it fired on, or a count the skeleton records; a room named in a sentence is covered by a feature cited in that sentence; consequence and forecast vocabulary is refused outside a struck disclosure clause; numbers come from the facts sheet; decorative features are cited by count only and never as diagnosis; a consequence-implying name carries its position name where first used; no whole-building label. What it cannot check: a consequence voiced without a listed word, a computed number that happens to match, a room's function inferred from its name. Profile maintainability + onboarding, geometry age, skeleton `5aa582547012…`, facts `e8d92650c4e1…`.*
 
-The building holds 202 rooms in three wings: 136 in cookbook, 64 in src, 2 at the root. Seventeen rooms sit as import-graph roots — nothing imports them and their fan-out stands at or above the 75th percentile — and every one of them is a cookbook entry file or a tools index [entrance: cookbook/database-server/src/index.ts, cookbook/image-gen-server/src/index.ts, cookbook/nba-server/src/tools/index.ts]. Sixteen of the seventeen are named index or index-variant [entrance ×17].
+The building holds 202 rooms across three wings: 136 in cookbook, 64 in src, 2 at the root. Across all profiles, 271 diagnostic marks land, 47 of them co-located on rooms carrying more than one. Every import-graph root sits in the cookbook wing — cookbook/nba-server/src/index.ts, cookbook/transaction-server/src/index.ts, cookbook/http-server/src/index.ts, cookbook/multi-endpoint-server/src/tools/index.ts among them [entrance ×17].
 
-Twenty-two rooms sit at or above the 90th percentile of centrality [hub ×22]. Eighteen of those also carry fan-out at or above the median, making them high-centrality, high-fan-out junctions [corridor ×18]. The junctions cluster in two places: the image-gen provider set and the src type and policy files [corridor: cookbook/image-gen-server/src/providers/index.ts, src/types/index.ts, src/security/config/tool-policies.ts].
+Twenty-one rooms occupy the position the facts sheet calls a high-load hub — a measured position in the import graph, not a verdict about anything downstream. They sit on both sides of the building: cookbook/monitoring-server/src/utils/alert-manager.ts, cookbook/image-gen-server/src/tools/generate.ts, src/security/layers/validation-layer-base.ts, src/security/utils/validation-pipeline.ts, src/types/index.ts, src/types/policies.ts [foundation ×21].
 
-Twenty-one rooms sit at or above the 90th percentile of load index — the position name is high-load hub, a position in the import graph, not a claim about what breaks [foundation ×21]. Seven sit in cookbook, fourteen in src, and the src set concentrates on the security utilities and the shared type declarations [foundation: src/security/utils/error-sanitizer.ts, src/security/utils/security-logger.ts, src/types/policies.ts].
+Centrality gathers in the type and provider rooms. src/types/index.ts, src/types/validation.ts, src/types/layers.ts, cookbook/image-gen-server/src/providers/openai.ts and cookbook/image-gen-server/src/providers/bfl.ts hold the hub position [hub ×22]. The high-centrality, high-fan-out junction lands on a narrower set, including src/security/config/tool-policy-validation.ts, src/security/layers/layer-utils/content/patterns/injection.ts and cookbook/transaction-server/src/utils/index.ts [corridor ×18].
 
-Forty-two rooms carry last-touched days at or above the 90th percentile [dark_room ×42]; thirty-five of them are cookbook rooms, including every vitest config in that wing [dark_room: cookbook/nba-server/vitest.config.ts, cookbook/kenpom-server/vitest.config.ts]. Twenty-one rooms sit at or below the 10th percentile of last-touched days, and all twenty-one are in src, under security and types [lit_room ×21].
+At the other end of the graph sit the imported leaves, fan-out zero and fan-in at or above the third quartile: src/security/layers/contextual-config-builder.ts, src/security/layers/layer-utils/semantics/glob-utils.ts, cookbook/kenpom-server/src/tools/ratings.ts, cookbook/nba-server/src/tools/live.ts [leaf_utility ×19].
 
-Thirty-seven rooms hold neglect index at or above the 90th percentile together with load index at or above 0.10 [flooded_basement ×37]. The overlap with the untouched set is close to total; the src members are the content and semantics helpers and the tool registry [flooded_basement: src/security/utils/tool-registry.ts, src/security/layers/layer-utils/content/unicode.ts].
+Forty-two rooms carry last-touch ages at or above the ninetieth percentile, nearly all of them in cookbook — cookbook/api-wrapper-server/src/tools/weather.ts, cookbook/filesystem-server/src/tools/read-file.ts, cookbook/database-server/src/utils/database.ts — with src/types/messages.ts and src/security/utils/tool-registry.ts among the src rooms [dark_room ×42]. Thirty-seven rooms sit where neglect at that percentile meets a load index of at least 0.10, including cookbook/filesystem-server/src/utils/path-validator.ts, cookbook/image-gen-server/src/providers/stability.ts, src/security/layers/layer-utils/content/unicode.ts and src/security/layers/layer2-validators/base64-css.ts [flooded_basement ×37].
 
-Fifty-three rooms carry a reinforcement index of 0.5 or higher [scaffolding ×53]. Nineteen rooms have zero fan-out and fan-in at or above the 75th percentile — imported leaves, terminal in the graph [leaf_utility ×19]. Several leaves are also high-load hubs [foundation: cookbook/monitoring-server/src/utils/alert-manager.ts, cookbook/monitoring-server/src/utils/metrics-collector.ts, src/security/constants.ts].
+The most recently touched rooms cluster in src: src/security/presets.ts, src/security/layers/layer1-structure.ts, src/security/layers/builtin-validators.ts, src/security/utils/security-logger-types.ts, src/types/server.ts [lit_room ×21]. Fifty-three rooms carry a reinforcement index of 0.5 or higher, spread across both wings — cookbook/monitoring-server/src/utils/audit-logger.ts, cookbook/kenpom-server/src/tools/team.ts, cookbook/multi-endpoint-server/src/servers/admin-server.ts, src/security/utils/response-validator.ts, src/security/layers/layer-utils/content/canonicalize.ts [scaffolding ×53].
 
-Forty-seven rooms are co-located across more than one of these positions, and 196 marks in total are diagnostic [hub: src/security/config/tool-policies-config.ts, src/types/server.ts, src/security/utils/error-sanitizer.ts].
+Twenty-four decorative marks render but are not a diagnosis [crack ×21, toothpick_wing ×3]. Crack sits at the position named high edit-pressure node; toothpick_wing sits at the position named unreinforced high-load node with high edit pressure. Both rest on bug_pressure_index, which the gate records as unvalidated, so neither carries a diagnostic claim here and the rooms they mark go unnamed.
 
-24 decorative marks render but are not a diagnosis: 21 high edit-pressure nodes [crack ×21] and 3 unreinforced high-load nodes with high edit pressure [toothpick_wing ×3]. Both rest on bug_pressure_index, which the gate records as unvalidated; neither is used in any reading above.
-
-The stance is disclosed here rather than assumed [foundation ×21]. The building is drawn as it is, warts and all. The diagnosis presupposes a norm of health — load should be reinforced, old load-bearing code should be visited, fixes should not concentrate — and that norm is a maintenance stance the reader may reject, stated so it reads as an ought, not a fact.
+The building is drawn as it is, warts and all. The diagnosis presupposes a norm of health — load should be reinforced, old load-bearing code should be visited, fixes should not concentrate — and that norm is a maintenance stance the reader may reject, stated so it reads as an ought, not a fact.
 
 ## Provenance
 
 - attempt: `2`
 - brief_version: `0.1.0`
 - effort: `high`
-- facts_hash: `987906877c8ec5193cfc29f27077392d4f9637d2f429b57536317f875e0991ed`
-- input_tokens: `10349`
+- facts_hash: `e8d92650c4e104e4384d14fee2f88024fa3ca32f1dc91710e183316cbd384ec5`
+- input_tokens: `10654`
 - model_requested: `claude-opus-5`
 - model_served: `claude-opus-5`
-- output_tokens: `2373`
-- relinted: `brief 0.1.0`
+- output_tokens: `3299`
 - stop_reason: `end_turn`
 
 ## Register lint
 
-No violations. Rules: R1 consequence vocabulary, R2 provenance of every citation, R3 numbers from the facts sheet only, R4 decorative features excluded from diagnosis, R5 position-name disclosure, R6 no whole-building label, R7 decorative count stated.
+No violations. Rules: R1 consequence vocabulary and phrases (citations stripped, disclosure clause struck), R2 provenance of every citation, R3 numbers from the facts sheet only, R4 decorative features cited by count only and never as diagnosis, R5 position-name disclosure at first use, R6 no whole-building label, R7 diagnostic and decorative counts stated, R8 rooms named in a sentence covered by that sentence's citations.
