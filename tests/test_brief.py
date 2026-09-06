@@ -265,3 +265,36 @@ def test_lint_reads_chained_brackets_and_the_determiner_one(sub):
         + f"A count here [{feat['feature']} ×{feat['count']}]. The room {room} is named here without one.\n\n"
     )
     assert "R8-attribution" in {v.rule for v in lint(later, f)}
+
+
+def test_lint_reads_compound_spelled_numbers(sub):
+    """D-032 addendum: 'two hundred sixty-seven' is one number, checked against the sheet as 267."""
+    from repo_substrate.brief import _spelled_numbers
+
+    assert dict(
+        _spelled_numbers(
+            "two hundred sixty-seven rooms, one hundred and thirty-three marks, twenty-one"
+        )
+    ) == {
+        "two hundred sixty-seven": 267,
+        "one hundred and thirty-three": 133,
+        "twenty-one": 21,
+    }
+    assert list(_spelled_numbers("the seventy-fifth percentile")) == []
+    f = facts(_skeleton(sub), sub)
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    pop_words = {7: "seven", 8: "eight", 9: "nine", 10: "ten", 11: "eleven", 12: "twelve"}.get(
+        f["population"]
+    )
+    if pop_words is None:
+        pytest.skip("scripted repo population outside the spelled range")
+    ok = (
+        _good_draft(f)
+        + f"The building holds {pop_words} rooms in all [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R3-number" not in {v.rule for v in lint(ok, f)}
+    bad = (
+        _good_draft(f)
+        + f"The building holds one thousand rooms [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R3-number" in {v.rule for v in lint(bad, f)}

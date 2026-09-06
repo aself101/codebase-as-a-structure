@@ -177,6 +177,7 @@ def main() -> int:
     if not args.skip_briefs:
         m3 = ROOT / "reports" / f"{args.tag}-m3x"
         m3.mkdir(parents=True, exist_ok=True)
+        failed = False
         for name, (tip, _) in repos.items():
             short = SHORT.get(name, name)
             skel = work / f"{short}.age.head.skeleton.json"
@@ -197,8 +198,12 @@ def main() -> int:
                     "3",
                 ]
             )
-            print((r.stderr.strip().splitlines() or [""])[0][:160])
-    return 0
+            if r.returncode:
+                print(r.stderr[-1200:], file=sys.stderr)
+                failed = True
+            else:
+                print((r.stderr.strip().splitlines() or [""])[0][:160])
+    return 3 if failed else 0
 
 
 if __name__ == "__main__":

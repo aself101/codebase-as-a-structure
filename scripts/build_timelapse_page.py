@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 from html import escape
@@ -21,7 +22,7 @@ REPOS = [
 
 
 def load(key: str):
-    d = ROOT / "out" / "timelapse-b" / f"{key}.age"
+    d = ROOT / "out" / os.environ.get("TIMELAPSE_SRC", "timelapse-b") / f"{key}.age"
     if not (d / "frames.json").exists():
         return None
     m = json.loads((d / "frames.json").read_text(encoding="utf-8"))
@@ -254,7 +255,7 @@ nav{{display:flex;gap:2px;padding:14px clamp(16px,4vw,48px) 0;border-bottom:1px 
 </header>
 <nav role="tablist">{tabs}</nav>
 {blocks}
-<p class="foot">Age geometry (strata are age bands, oldest at the bottom), maintainability profile with the onboarding overlay as corner badges. Substrate 0.3.0: age and recency are fractional days (D-022), after the time-lapse found integer-day ties flipping whole birth cohorts between floors. The change sheet (D-023) is one drawing per transition on the after frame's layout. Gate: <code>validation.json</code> at HEAD, substrate fingerprint <code>{escape((gate["substrate_config_fingerprint"] or "")[:12])}</code>, governs every frame — an early frame shows what HEAD's licensed structure looked like then, not what was licensed then. Percentiles re-rank per frame. The budget (D-018) was pinned at K = 5 commits; between these frames K runs from a dozen to fifteen hundred, so its verdicts here read as ripple accumulated over K, and its floors refuse most transitions on the large repositories. Arrow keys step frames. Spec: <code>time-lapse-spec.md</code>; decision: D-021.</p>
+<p class="foot">Age geometry (strata are age bands, oldest at the bottom), maintainability profile with the onboarding overlay as corner badges. Substrate 0.4.1: age and recency are fractional days (D-022) and declared package entries are a flag signal (D-029); the gate is the K = 25 run (D-031), after the time-lapse found integer-day ties flipping whole birth cohorts between floors. The change sheet (D-023) is one drawing per transition on the after frame's layout. Gate: <code>validation.json</code> at HEAD, substrate fingerprint <code>{escape((gate["substrate_config_fingerprint"] or "")[:12])}</code>, governs every frame — an early frame shows what HEAD's licensed structure looked like then, not what was licensed then. Percentiles re-rank per frame. The budget (D-018) is pinned at K = 25 commits and judged from 25 to 50 (D-026, D-032); between these frames K runs from a dozen to fifteen hundred, so nearly every transition is <code>untested</code> — <code>beyond_pinned_k</code> on the long histories, <code>below_pinned_k</code> on the short one; the numbers stand, labelled with their K. Arrow keys step frames. Spec: <code>time-lapse-spec.md</code>; decision: D-021.</p>
 <script>
 (function(){{
   const sections = Array.from(document.querySelectorAll('.repo'));

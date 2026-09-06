@@ -87,6 +87,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         "geometry": skeleton["geometry"]["name"],
         "population": s["population"],
         "wings": dict(sorted(wings.items())),
+        "wing_count": len(wings),
         "gate": dict(sorted(skeleton["gate"]["signals"].items())),
         "diagnostic_count": sum(e["count"] for e in feats.values() if e["diagnostic"]),
         "diagnostic_count_base": s["diagnostic_count"],
@@ -230,6 +231,9 @@ BUILDING_LABELS = {
 }
 # [feature: a, b] · [feature ×N] · [feature ×N: a, b] · [f ×N; g ×M] · [f ×N, g ×M] — one bracket
 # may chain several clauses; the count and the rooms of each are checked (D-032 addendum)
+# "are not a diagnosis", "enter no part of this diagnosis", "nothing confirmed … diagnosis":
+# the disclosure sentence negates diagnosis in its own words (R4).
+NEGATED_DIAGNOSIS = re.compile(r"\b(?:not|no|nothing|never|neither|nor)\b[^.;]{0,60}\bdiagnos")
 BRACKET = re.compile(r"\[([a-z_][^\]]*)\]")
 CLAUSE = re.compile(r"^([a-z_]+(?:/[a-z_]+)?)\s*(?:×\s*(\d+))?\s*(?::\s*(.+))?$")
 
@@ -261,47 +265,42 @@ INTEGER = re.compile(r"(?<![\w./-])(\d{1,7})(?![\w./%-])")
 WORD_NUMBERS = {
     w: i
     for i, w in enumerate(
-        [
-            "zero",
-            "one",
-            "two",
-            "three",
-            "four",
-            "five",
-            "six",
-            "seven",
-            "eight",
-            "nine",
-            "ten",
-            "eleven",
-            "twelve",
-            "thirteen",
-            "fourteen",
-            "fifteen",
-            "sixteen",
-            "seventeen",
-            "eighteen",
-            "nineteen",
-            "twenty",
-        ]
+        "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen "
+        "fifteen sixteen seventeen eighteen nineteen twenty".split()
     )
 }
 WORD_NUMBERS.update(
     {
-        "thirty": 30,
-        "forty": 40,
-        "fifty": 50,
-        "sixty": 60,
-        "seventy": 70,
-        "eighty": 80,
-        "ninety": 90,
-        "hundred": 100,
+        w: 10 * (i + 3)
+        for i, w in enumerate("thirty forty fifty sixty seventy eighty ninety".split())
     }
 )
-WORD_NUMBER = re.compile(
-    r"\b(" + "|".join(WORD_NUMBERS) + r")(?:-(one|two|three|four|five|six|seven|eight|nine))?\b",
+_NUM_WORD = "|".join(sorted(list(WORD_NUMBERS) + ["hundred", "thousand"], key=len, reverse=True))
+# "two hundred sixty-seven", "one hundred and thirty-three", "twenty-one": one span, one value.
+# An ordinal ("seventy-fifth percentile") is a rank, not a count, and is left alone.
+SPELLED_NUMBER = re.compile(
+    rf"\b((?:(?:{_NUM_WORD})(?:[\s-]+(?:and[\s-]+)?(?=(?:{_NUM_WORD})\b))?)+)"
+    r"\b(?!-?(?:first|second|third|fifth|[a-z]+th)\b)",
     re.IGNORECASE,
 )
+
+
+def _spelled_numbers(text: str):
+    """Yield (span, value) for every number written in words."""
+    for m in SPELLED_NUMBER.finditer(text):
+        span = m.group(1).strip(" -")
+        total = cur = 0
+        for w in re.split(r"[\s-]+", span.lower()):
+            if w in WORD_NUMBERS:
+                cur += WORD_NUMBERS[w]
+            elif w == "hundred":
+                cur = (cur or 1) * 100
+            elif w == "thousand":
+                total += (cur or 1) * 1000
+                cur = 0
+        yield span, total + cur
+
+
 SENTENCE = re.compile(r"(?<=[.!?])\s+(?=[A-Z\[])")
 
 
@@ -344,6 +343,7 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
     allowed_numbers.add(facts_doc["decorative"]["count"])
     allowed_numbers.add(facts_doc["co_located_count"])
     allowed_numbers.update(facts_doc["wings"].values())
+    allowed_numbers.add(facts_doc.get("wing_count", len(facts_doc["wings"])))
     for f in facts_doc["features"]:
         allowed_numbers.add(f["count"])
     room_metrics = facts_doc.get("rooms", {})
@@ -461,14 +461,21 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                         f"a decorative feature is cited by count only; [{name}: …] singles out rooms it may not",
                     )
                 )
+            # A decorative feature is disclosed, not diagnosed, when the sentence that cites it
+            # cites decorative features by count only and names no room — the wording is the
+            # register's, the rule is the citation's (D-032 addendum; before, a phrase match).
             cite_sentences = [
                 sent
                 for sent in SENTENCE.split(para)
-                if re.search(r"\[" + re.escape(name) + r"\b", sent)
+                if any(n == name for n, _c, _r in _citations(sent))
             ]
             disclosed_here = any(
-                "decorative" in sent.lower()
-                and ("not a diagnosis" in sent.lower() or "no diagnosis" in sent.lower())
+                all(
+                    (by_key.get(n) or by_feature.get(n) or {}).get("decorative") and c and not r
+                    for n, c, r in _citations(sent)
+                )
+                and not any(_mentions(sent, rid) for rid in room_ids)
+                and NEGATED_DIAGNOSIS.search(sent.lower())
                 for sent in cite_sentences
             )
             if f["decorative"] and not disclosed_here:
@@ -509,19 +516,16 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                 out.append(
                     Violation("R3-number", i, para[:160], f"number {n} is not in the facts sheet")
                 )
-        for m in WORD_NUMBER.finditer(stripped):
-            if m.group(0).lower() == "one":
+        for span, val in _spelled_numbers(stripped):
+            if span.lower() == "one":
                 continue  # the determiner, not a measurement (D-032 addendum)
-            val = WORD_NUMBERS[m.group(1).lower()] + (
-                WORD_NUMBERS[m.group(2).lower()] if m.group(2) else 0
-            )
             if val not in para_allowed:
                 out.append(
                     Violation(
                         "R3-number",
                         i,
                         para[:160],
-                        f"number '{m.group(0)}' ({val}) is not in the facts sheet",
+                        f"number '{span}' ({val}) is not in the facts sheet",
                     )
                 )
     # R5 disclosure: a consequence-implying name carries its position name in the paragraph
@@ -545,19 +549,13 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
             )
     # R7 decorative count must be stated when there are decorative features
     dec_count = facts_doc["decorative"]["count"]
-    dec_words = {w for w, v in WORD_NUMBERS.items() if v == dec_count} | {
-        f"{tens}-{ones}"
-        for tens, tv in WORD_NUMBERS.items()
-        for ones, ov in WORD_NUMBERS.items()
-        if tv >= 20 and 0 < ov < 10 and tv + ov == dec_count
-    }
     prose_only = BRACKET.sub("", text)
-    low_prose = prose_only.lower()
-    stated = str(dec_count) in prose_only or any(
-        re.search(rf"\b{w}\b", low_prose) for w in dec_words
-    )
+    in_prose = {int(d) for d in INTEGER.findall(prose_only)} | {
+        v for _, v in _spelled_numbers(prose_only)
+    }
+    stated = dec_count in in_prose
     diag = facts_doc["diagnostic_count"]
-    if str(diag) not in prose_only:
+    if diag not in in_prose:
         out.append(
             Violation(
                 "R7-counts",
@@ -590,6 +588,7 @@ Register, binding (validation-spec §2.1.1, mapper §3):
 - Name rooms; do not say what they do. A path is not a function: "src/error/QueryFailedError.ts" is a room, not "the error classes". Describe position and marks, not purpose.
 - Do not set two features against each other ("against that", "offsets", "compensates"): the sets are independent measurements and the brief does not know their intersection unless the facts sheet states it.
 - Disclose a consequence-implying name's position name in the same paragraph where the name first appears; the disclosure clause covers only itself, not the rest of the sentence.
+- Write every count as digits (267 rooms, not "two hundred sixty-seven"); every number must be a value on the facts sheet — never add, subtract, or count for yourself.
 - The stance paragraph carries no citation.
 - Use only numbers that appear in the facts sheet (counts, lines, fan-in, fan-out). No estimates, no percentages, no counts you computed yourself ("sixteen of the seventeen").
 - Decorative features rest on nothing confirmed. Do not use them in any diagnosis and do not name the rooms they fired on. State the decorative count once, plainly, citing by count only, e.g. "27 decorative marks render but are not a diagnosis [crack ×27]."
