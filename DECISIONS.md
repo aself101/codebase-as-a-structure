@@ -616,3 +616,5 @@ Re-judged under the strengthened lint, all four D-027 briefs fail — on exactly
 
 **Assumes.** The connective-prose rules are the next layer, not the last: the reading named scope, quantity and sample as the classes, and R9–R11 cover the instances found, not the classes. **Breaks if.** The second seating finds the same classes again with new instances the rules do not reach — then the rules are chasing the prose and the register needs a structural change (a brief that is a table with one sentence per row, say) rather than another rule.
 
+**Addendum to D-036 (same day).** The four briefs regenerated under 0.3.0 (`reports/2026-09-06e-m3x/`): typeorm and mcp-secure-server pass on attempt 1, eslint on 2, registry on 3. The typeorm brief now opens its age paragraph with "Age marks two sets that coincide", states the by-wing counts in place of the adverbs, and — unprompted — names `src/error/TypeORMError.ts` as the first `dark_room` exemplar, the population the previous brief's sample avoided. Whether that survives a reader is the second seating's question.
+
