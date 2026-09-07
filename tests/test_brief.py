@@ -499,3 +499,41 @@ def test_lint_reads_nestings_shared_predicates_and_the_decorative_reason(sub):
     assert "R13-inert" not in {v.rule for v in lint(same, g)}
     finding = base + f"One finding, two marks [{feat['feature']} ×{feat['count']}].\n\n"
     assert "R12-unit" in {v.rule for v in lint(finding, f)}
+
+
+def test_register_table_carries_the_inventory_and_the_prose_is_the_reading(sub):
+    """D-039: the page carries a register rendered by code; relint recovers only the prose; with
+    the register present the inventory obligations (R7, R9/R13 naming, R15, R4b) are met by it
+    while the refusals still bind the prose."""
+    from repo_substrate.brief import relint, render_brief, render_register
+
+    f = facts(_skeleton(sub), sub)
+    table = render_register(f)
+    for x in f["features"]:
+        assert x["feature"] in table and (x["position_name"] or "–") in table
+        assert f"{x['count']} |" in table
+    assert str(f["co_located_rooms"]) in table and "none validated" in table
+    prose = _good_draft(f)
+    page = render_brief(prose, f, [], {"generator": "draft"})
+    assert (
+        "## Register" in page
+        and "## Reading" in page
+        and page.index("## Register") < page.index("## Reading")
+    )
+    r = relint(page, _skeleton(sub), sub)
+    assert r["text"].strip() == prose.strip() and r["passed"]
+    # a nesting called one set is still refused with the register present
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    g = dict(f)
+    key = f"{feat['profile']}/{feat['feature']}"
+    g["overlaps"] = [
+        {"a": key, "b": "p/wider_mark", "relation": "within", "n": feat["count"], "n_outside": 8}
+    ]
+    ident = (
+        prose
+        + f"The {feat['feature']} rooms and the wider_mark rooms are one set of rooms [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R13-inert" in {v.rule for v in lint(ident, g, register=True)}
+    # but the obligation to name the pair is the register's, not the prose's
+    assert "R9-overlap" not in {v.rule for v in lint(prose, g, register=True)}
+    assert "R9-overlap" in {v.rule for v in lint(prose, g)}

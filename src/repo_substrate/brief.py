@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.5.0"
+BRIEF_VERSION = "0.6.0"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -461,7 +461,7 @@ def _paragraphs(text: str) -> list[str]:
     return [p.strip() for p in re.split(r"\n\s*\n", body) if p.strip()]
 
 
-def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
+def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[Violation]:
     """The deterministic hostile reader. Returns the violations; empty means PASS."""
     out: list[Violation] = []
     by_feature = {f["feature"]: f for f in facts_doc["features"]}
@@ -788,12 +788,14 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
     # some sentence must name both features together (the sheet's `overlaps` says which)
     sentences_all = [snt for p in _paragraphs(text) for snt in SENTENCE.split(p)]
     for ov in facts_doc.get("overlaps") or []:
+        # D-039: with the register on the page the obligation to name the pair is met there; the
+        # refusals (an identity noun on a nesting, two profiles read as agreeing) still bind the prose
         fa, fb = ov["a"].split("/")[-1], ov["b"].split("/")[-1]
         together = any(
             re.search(rf"\b{re.escape(fa)}\b", snt) and re.search(rf"\b{re.escape(fb)}\b", snt)
             for snt in sentences_all
         )
-        if not together:
+        if not together and not register:
             out.append(
                 Violation(
                     "R9-overlap",
@@ -826,7 +828,9 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                 )
         if together and ov["relation"] == "identical" and ov.get("shared_predicate"):
             # D-038: the same predicate under two profiles is one measurement; the sentence says so
-            if not any(re.search(r"\bpredicate\b", snt.lower()) for snt in pair_sents):
+            if not register and not any(
+                re.search(r"\bpredicate\b", snt.lower()) for snt in pair_sents
+            ):
                 out.append(
                     Violation(
                         "R13-inert",
@@ -844,7 +848,7 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                 and all(re.search(rf"\b{re.escape(sig)}\b", snt) for sig in sigs)
                 for snt in sentences_all
             )
-            if not said:
+            if not said and not register:
                 out.append(
                     Violation(
                         "R13-inert",
@@ -858,7 +862,7 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
     # exemplars cannot be drawn away from the set's composition
     for f in facts_doc["features"]:
         dd = f.get("dominant_dir") or {}
-        if not f["diagnostic"] or not dd or f["count"] < 6 or dd["n"] * 3 < f["count"]:
+        if register or not f["diagnostic"] or not dd or f["count"] < 6 or dd["n"] * 3 < f["count"]:
             continue
         key, name = f"{f['profile']}/{f['feature']}", f["feature"]
         pop = dd.get("population")
@@ -879,7 +883,7 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
             )
     # R4b (D-038): the decorative disclosure says why — the ungrounded signal from decorative_reason
     for f in facts_doc["features"]:
-        if not f["decorative"]:
+        if register or not f["decorative"]:
             continue
         reason = f.get("decorative_reason") or ""
         sigs = [w for w in re.findall(r"[a-z_]+", reason) if w in _SIGNAL_LIKE]
@@ -919,7 +923,8 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                     f"'{feat}' is first used here without its position name ('{pos}') in the same paragraph (D-004 Q3)",
                 )
             )
-    # R7 decorative count must be stated when there are decorative features
+    # R7 decorative count must be stated when there are decorative features — met by the register
+    # when the page carries one (D-039)
     dec_count = facts_doc["decorative"]["count"]
     prose_only = BRACKET.sub("", text)
     in_prose = {int(d) for d in INTEGER.findall(prose_only)} | {
@@ -927,7 +932,7 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
     }
     stated = dec_count in in_prose
     diag = facts_doc["diagnostic_count"]
-    if diag not in in_prose:
+    if not register and diag not in in_prose:
         out.append(
             Violation(
                 "R7-counts",
@@ -936,7 +941,7 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                 f"the brief must state the diagnostic-mark count ({diag}, all profiles) beside the population",
             )
         )
-    if dec_count and not stated:
+    if not register and dec_count and not stated:
         out.append(
             Violation(
                 "R7-decorative-count",
@@ -950,13 +955,13 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
 
 # ---------------------------------------------------------------- 2. the generator
 
-SYSTEM = """You are a condemnation surveyor writing the architect's brief for a building that is a codebase. The building is drawn from a skeleton of named structural features; you have the facts sheet and nothing else. You describe what is; you do not sell, soften, or forecast.
+SYSTEM = """You are a condemnation surveyor writing the architect's brief for a building that is a codebase. The building is drawn from a skeleton of named structural features; you have the facts sheet and nothing else. You describe what is; you do not sell, soften, or forecast. The page you are writing for already carries a register: a table rendered from the facts sheet by code with one row per feature — position name, room count, counts per wing, dominant directory with its population, relations to other features (identical, within, with the rooms outside and the conjunct that did no work), and the reason a decorative feature is excluded. Do not restate the register. Write the reading: what shape the building has, where the marks sit relative to one another, what the overlaps mean for how many distinct sets of rooms there are, and what the decorative marks are excluded for. Every claim you make is still checked against the sheet.
 
 Register, binding (validation-spec §2.1.1, mapper §3):
 - Present tense only. Every feature rests on a signal that describes a present structural position. You may say where a room sits and what fires on it. You may not say what will happen, what breaks, what is at risk, what is fragile, what will ripple, what a change would cause. Those are predictions; none is licensed here. Avoid the words: break, will, would, risk, fragile, brittle, dangerous, ripple, cascade, fail, failure, likely, predict, expect, cause, collapse, vulnerable, exposed, threat, prone, future, soon, eventually, impact, consequence, propagate, bug, defect, safe, unsafe, critical.
 - Every paragraph cites its evidence in brackets, where the bracket opens with the feature's own name from the facts sheet: [hub: src/db/connection.ts] for one room, [hub: src/a.ts, src/b.ts] for several, [hub ×27] for a count (×27 must equal that feature's count in the facts sheet). Several counts share one bracket separated by semicolons: [foundation ×21; onboarding/foundation ×21]. To name example rooms under a count, put them in the same bracket in the same sentence: [foundation ×21: src/a.ts, src/b.ts] — a room named in a later sentence needs its own bracket there. Never write the word "feature" inside a bracket; write the feature's name (foundation, hub, dark_room, scaffolding, corridor, …). A paragraph with no citation is struck.
 - A room you name in a sentence must be covered by a feature you cite in that same sentence, and that feature must have fired on that room. Never name a room under a feature that did not fire on it.
-- State the population, the diagnostic-mark count (all profiles), and the co-located count together, early.
+- The register states the population, the mark counts and the co-located count; you may repeat a number when a sentence needs it, in the sentence that cites its feature, but do not open with an inventory.
 - Name rooms; do not say what they do. A path is not a function: "src/error/QueryFailedError.ts" is a room, not "the error classes". Describe position and marks, not purpose.
 - Do not set two features against each other ("against that", "offsets", "compensates"): the sets are independent measurements and the brief does not know their intersection unless the facts sheet states it.
 - Disclose a consequence-implying name's position name in the same paragraph where the name first appears; the disclosure clause covers only itself, not the rest of the sentence.
@@ -980,7 +985,7 @@ Register, binding (validation-spec §2.1.1, mapper §3):
 - The page header already states the calibration (in-repo, self-relative, one frame). Do not write a calibration or method paragraph.
 - Do not invent rooms, wings, or features. Do not describe code you have not been given; the facts sheet is the whole building.
 
-Form: 300–600 words of plain prose in short paragraphs; no headings, no bullet lists; the surveyor's voice — exact, unimpressed, specific. Begin with the building's shape (wings and rooms), then the features by where they sit, then the decorative disclosure, then the stance sentence given in the facts sheet, verbatim or near it."""
+Form: 200–400 words of plain prose in short paragraphs; no headings, no bullet lists, no table; the surveyor's voice — exact, unimpressed, specific. Begin with the building's shape (wings and where the marks fall), then what the relations between marks make of it (how many distinct sets of rooms the diagnosis actually names), then the decorative disclosure in one sentence, then the stance sentence given in the facts sheet, verbatim or near it. The register is on the page; write what a reader of the register would still need said."""
 
 
 def _user_message(facts_doc: dict[str, Any], violations: list[Violation] | None = None) -> str:
@@ -1036,6 +1041,79 @@ def anthropic_generator(
 # ---------------------------------------------------------------- the run
 
 
+NL = "\n"
+
+
+def render_register(facts_doc: dict[str, Any]) -> str:
+    """D-039: the register — one row per feature with fixed slots, rendered from the facts sheet
+    by code. It states what three hostile readings found the prose could only overclaim: the
+    unit, the wing counts, the dominant directory with its denominator, the relations between
+    features (identical / within, with the rooms outside and the inert conjunct), the reason a
+    decorative feature is excluded. The prose beneath it is the reading, not the inventory."""
+
+    def short(k: str) -> str:
+        return k.split("/")[-1]
+
+    def relations(key: str) -> str:
+        out = []
+        for ov in facts_doc.get("overlaps") or []:
+            if key not in (ov["a"], ov["b"]):
+                continue
+            other = ov["b"] if ov["a"] == key else ov["a"]
+            if ov["relation"] == "identical":
+                if ov.get("shared_predicate"):
+                    why = "same predicate, two profiles"
+                elif ov.get("inert_terms"):
+                    why = f"{', '.join(ov['inert_terms'])} excludes nothing"
+                else:
+                    why = ""
+                out.append(f"= {short(other)}" + (f" ({why})" if why else ""))
+            elif ov["a"] == key:
+                out.append(f"⊂ {short(other)} ({ov.get('n_outside')} of its rooms outside)")
+            else:
+                out.append(f"⊃ {short(other)} ({ov.get('n_outside')} outside it)")
+        return "; ".join(out) or "–"
+
+    rows = []
+    for f in facts_doc["features"]:
+        key = f"{f['profile']}/{f['feature']}"
+        bw = ", ".join(f"{k} {v}" for k, v in f.get("by_wing", {}).items())
+        dd = f.get("dominant_dir") or {}
+        dom = f"{dd.get('dir')} {dd.get('n')} / {dd.get('population')}" if dd else "–"
+        if f["decorative"]:
+            what = f"decorative — {f.get('decorative_reason') or ''}".strip()
+        else:
+            what = f"`{f['predicate']}`"
+        name = ("◌ " if f["decorative"] else "") + f["feature"]
+        pos = f.get("position_name") or "–"
+        rows.append(
+            f"| {name} | {f['profile']} | {pos} | {f['count']} | {bw} | {dom} | {relations(key)} | {what} |"
+        )
+    wings = " · ".join(f"{k} {v}" for k, v in facts_doc["wings"].items())
+    gate = facts_doc.get("gate") or {}
+    asserted = sum(1 for v in gate.values() if v == "asserted")
+    base = facts_doc.get("diagnostic_count_base", facts_doc["diagnostic_count"])
+    dec = ", ".join(facts_doc["decorative"]["features"]) or "none"
+    fp = (facts_doc.get("gate_fingerprint") or "?")[:12]
+    head = (
+        "## Register"
+        + NL
+        + NL
+        + f"*Rendered from the facts sheet by code (brief {facts_doc.get('brief_version', BRIEF_VERSION)}); every cell is a field, no cell is a sentence. "
+        + f"{facts_doc['population']} rooms in {facts_doc['wing_count']} wings ({wings}); {facts_doc['diagnostic_count']} diagnostic marks across all profiles "
+        + f"({base} in the base profile), one mark per feature per room; {facts_doc['decorative']['count']} decorative marks ({dec}); "
+        + f"{facts_doc['co_located_rooms']} rooms carry two or more diagnostic marks; gate `{fp}`, {asserted} of {len(gate)} signals asserted, none validated. "
+        + "◌ marks a decorative feature: excluded from the diagnosis.*"
+        + NL
+        + NL
+        + "| feature | profile | position | rooms | by wing | dominant directory n / its rooms | relation to | predicate or reason |"
+        + NL
+        + "|---|---|---|---|---|---|---|---|"
+        + NL
+    )
+    return head + NL.join(rows) + NL
+
+
 def render_brief(
     text: str, facts_doc: dict[str, Any], violations: list[Violation], provenance: dict[str, Any]
 ) -> str:
@@ -1048,7 +1126,8 @@ def render_brief(
         status += f" on attempt {provenance['attempt']}"
     head = (
         f"# {facts_doc['repo']['name']} — architect's brief\n\n"
-        f"*Register lint: **{status}**. What the lint checked: every paragraph cites a feature and a room it fired on, or a count the skeleton records; "
+        f"*The register below is rendered from the facts sheet by code and carries the inventory (D-039); the reading beneath it is model-written and linted. "
+        f"Register lint: **{status}**. What the lint checked: every paragraph cites a feature and a room it fired on, or a count the skeleton records; "
         f"a room named in a sentence is covered by a feature cited in that sentence; consequence and forecast vocabulary is refused outside a struck disclosure clause; "
         f"numbers come from the facts sheet and sit in the sentence that cites their feature; features with the same or nested rooms are named together; a directory named contains a cited room; no distributional adverb or ranking of marks; a number wears its unit; an identity between predicates names the conjunct that did no work; a feature's dominant directory is named with its population and cited; a nesting is not an identity and a shared predicate is one measurement; the decorative disclosure names its ungrounded signal; no 'validated' where no signal holds it; decorative features are cited by count only and never as diagnosis; a consequence-implying name carries its position name where first used; no whole-building label. "
         f"What it cannot check: a consequence voiced without a listed word, a computed number that happens to match, a room's function inferred from its name. Profile {facts_doc['profile']}"
@@ -1074,7 +1153,8 @@ def render_brief(
         )
     else:
         lint_md += "No violations. Rules: R1 consequence vocabulary and phrases (citations stripped, disclosure clause struck), R2 provenance of every citation, R3 numbers from the facts sheet only, R4 decorative features cited by count only and never as diagnosis, R5 position-name disclosure at first use, R6 no whole-building label, R7 diagnostic and decorative counts stated, R8 rooms named in a sentence covered by that sentence's citations, R9 features with the same or nested rooms named together, R10 a directory named contains a cited room, R11 no distributional adverb or ranking between marks, R12 a number wears its unit, R13 an identity between differing predicates names the inert conjunct, R14 no 'validated' where no signal holds it, R15 a feature's dominant directory named with its population and cited; nestings state the rooms outside; shared predicates are named; the decorative disclosure names its ungrounded signal (D-036, D-037, D-038).\n"
-    return head + text.strip() + "\n" + prov + lint_md
+    register = render_register(facts_doc)
+    return head + register + "\n## Reading\n\n" + text.strip() + "\n" + prov + lint_md
 
 
 def relint(
@@ -1084,7 +1164,13 @@ def relint(
     body = markdown.split("\n## Provenance", 1)[0]
     paras = [p for p in re.split(r"\n\s*\n", body) if p.strip()]
     prose = "\n\n".join(
-        p for p in paras if not p.startswith("#") and not p.startswith("*Register lint")
+        p
+        for p in paras
+        if not p.startswith("#")
+        and not p.startswith("*Register lint")
+        and not p.startswith("*The register below")
+        and not p.startswith("*Rendered from the facts sheet")
+        and not p.lstrip().startswith("|")
     )
     prov: dict[str, Any] = {}
     m = re.search(r"## Provenance\n(.*?)(?:\n## |\Z)", markdown, re.DOTALL)
@@ -1094,7 +1180,7 @@ def relint(
             if mm:
                 prov[mm.group(1)] = mm.group(2)
     f = facts(skeleton, substrate)
-    viols = lint(prose, f)
+    viols = lint(prose, f, register=True)
     prov = {**prov, "relinted": f"brief {BRIEF_VERSION}", "facts_hash": f["facts_hash"]}
     return {
         "facts": f,
@@ -1118,7 +1204,7 @@ def run_brief(
     f = facts(skeleton, substrate)
     if draft is not None:
         text, prov = draft, {"generator": "draft", "facts_hash": f["facts_hash"]}
-        viols = lint(text, f)
+        viols = lint(text, f, register=True)
     else:
         if generate is None:
             raise ValueError("no generator and no draft")
@@ -1127,7 +1213,7 @@ def run_brief(
         attempts_log: list[dict[str, Any]] = []
         for attempt in range(1, min(max_attempts, MAX_ATTEMPTS_CAP) + 1):
             text, prov = generate(SYSTEM, _user_message(f, viols if attempt > 1 else None))
-            viols = lint(text, f)
+            viols = lint(text, f, register=True)
             attempts_log.append({"attempt": attempt, "violations": [v.rule for v in viols]})
             prov = {
                 **prov,
