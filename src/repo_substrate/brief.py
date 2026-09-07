@@ -474,6 +474,8 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
     allowed_numbers.add(facts_doc["co_located_rooms"])
     allowed_numbers.update(facts_doc["wings"].values())
     allowed_numbers.add(facts_doc.get("wing_count", len(facts_doc["wings"])))
+    # D-039 addendum: "the same predicate under two profiles" — the profile count is a sheet fact
+    allowed_numbers.add(1 + len(facts_doc.get("overlays") or []))
     # D-036 (hostile reading, run 17): a feature's numbers are admitted in the sentence that
     # cites the feature, not anywhere in the paragraph — "two sit outside src" passed because
     # 2 was some other feature's count
