@@ -342,7 +342,7 @@ COMPARISON = re.compile(
 # D-037: a number followed by its unit noun ("160 of those marks", "70 rooms")
 UNIT_USE = re.compile(
     r"\b(\d{1,7}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+"
-    r"(?:of\s+(?:those|these|the|its|the\s+\w+)\s+)?(rooms?|marks?|findings?)\b",
+    r"(?:of\s+(?:those|these|the|its|the\s+\w+)\s+)?(rooms?|marks?|findings?|features?)\b",
     re.IGNORECASE,
 )
 # signal names a decorative_reason may cite (R4b)
@@ -614,6 +614,10 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
                         )
                     )
                     continue
+                if unit == "feature":
+                    continue  # a count of feature names; the names themselves are checked
+                if unit == "mark" and n <= 3 and n <= len(facts_doc["features"]):
+                    continue  # "two marks on one set": a count of features wearing the word (D-038 addendum)
                 if unit == "mark" and n in rooms_only and n not in marks_ok:
                     out.append(
                         Violation(
@@ -746,6 +750,13 @@ def lint(text: str, facts_doc: dict[str, Any]) -> list[Violation]:
             sent_allowed = set(allowed_numbers)
             for cname, _c, _r in _citations(sent):
                 sent_allowed |= feature_numbers.get(cname, set())
+            # D-038 addendum: the numbers of an overlap belong to the sentence that names its pair
+            for ov in facts_doc.get("overlaps") or []:
+                oa, ob = ov["a"].split("/")[-1], ov["b"].split("/")[-1]
+                if re.search(rf"\b{re.escape(oa)}\b", sent) and re.search(
+                    rf"\b{re.escape(ob)}\b", sent
+                ):
+                    sent_allowed |= {ov["n"], ov.get("n_outside", ov["n"])}
             for rid in room_ids:
                 if rid in room_metrics and _mentions(sent, rid):
                     sent_allowed.update(v for v in room_metrics[rid].values() if isinstance(v, int))
