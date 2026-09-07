@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.6.0"
+BRIEF_VERSION = "0.7.0"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -90,6 +90,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             d = r.rsplit("/", 1)[0] if "/" in r else "(root)"
             bd[d] = bd.get(d, 0) + 1
         top = max(bd.items(), key=lambda kv: (kv[1], kv[0])) if bd else ("(root)", 0)
+        tied = (
+            sum(1 for v in bd.values() if v == top[1]) > 1
+        )  # D-040: a silent tie-break is a claim
         # D-038: the directory's population is the denominator the share needs — on a monorepo
         # one directory can be two thirds of the building, and a share without it is the base rate
         pop = sum(
@@ -97,7 +100,15 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             for nid in skeleton["strata"]["by_node"]
             if (nid.rsplit("/", 1)[0] if "/" in nid else "(root)") == top[0]
         )
-        e["dominant_dir"] = {"dir": top[0], "n": top[1], "population": pop}
+        # D-040: `dir` is the room's immediate parent (non-recursive), `population` the rooms whose
+        # parent it is; `holds_third` is R15's bar — below it the register prints no directory
+        e["dominant_dir"] = {
+            "dir": top[0],
+            "n": top[1],
+            "population": pop,
+            "tied": tied,
+            "holds_third": bool(top[1] * 3 >= len(e["rooms"]) and len(e["rooms"]) >= 6),
+        }
     wings: dict[str, int] = {}
     for nid in skeleton["strata"]["by_node"]:
         w = wing_of(nid)
@@ -155,6 +166,12 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
                         "n_outside": len(ra - rb),
                     }
                 )
+    # D-040: how many distinct sets of rooms the diagnosis names — identical pairs are one set,
+    # nestings stay two; and how many of the all-profile marks fall on identical pairs twice
+    n_diag = sum(1 for e in feats.values() if e["diagnostic"] and e["rooms"])
+    identical = [o for o in overlaps if o["relation"] == "identical"]
+    distinct_room_sets = n_diag - len(identical)
+    marks_on_identical_pairs = sum(o["n"] for o in identical)
     gate_fp = skeleton.get("substrate_config_fingerprint")
     if not gate_fp:
         raise ValueError(
@@ -179,6 +196,8 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "features": sorted(s.get("decorative_features") or []),
         },
         "co_located_rooms": co_located_all,
+        "distinct_room_sets": distinct_room_sets,
+        "marks_on_identical_pairs": marks_on_identical_pairs,
         # D-037: every building-level number carries its unit; a count of rooms is not a count of marks
         "units": {
             "population": "rooms",
@@ -187,6 +206,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "diagnostic_count_base": "marks",
             "decorative.count": "marks",
             "co_located_rooms": "rooms carrying two or more diagnostic marks, across all profiles",
+            "distinct_room_sets": "sets of rooms the diagnostic features name, an identical pair counted once, a nesting twice",
+            "marks_on_identical_pairs": "marks that fall on the same rooms twice because two profiles carry one predicate",
+            "dominant_dir": "the immediate parent directory (non-recursive) holding the most of a feature's rooms; shown only when it holds a third or more",
             "feature.count": "rooms (one mark per room)",
         },
         "overlaps": overlaps,
@@ -476,6 +498,8 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
     allowed_numbers.add(facts_doc.get("wing_count", len(facts_doc["wings"])))
     # D-039 addendum: "the same predicate under two profiles" — the profile count is a sheet fact
     allowed_numbers.add(1 + len(facts_doc.get("overlays") or []))
+    allowed_numbers.add(facts_doc.get("distinct_room_sets", 0))
+    allowed_numbers.add(facts_doc.get("marks_on_identical_pairs", 0))
     # D-036 (hostile reading, run 17): a feature's numbers are admitted in the sentence that
     # cites the feature, not anywhere in the paragraph — "two sit outside src" passed because
     # 2 was some other feature's count
@@ -638,6 +662,18 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                             f"{n} counts marks on the facts sheet, not rooms",
                         )
                     )
+            # R12 (D-040): a ratio across units — "N rooms … out of M marks"
+            if re.search(
+                r"\b\d+\s+rooms?\b[^.;]{0,60}\bout of\s+\d+\s+(?:diagnostic\s+)?marks?\b", low_sent
+            ) or re.search(r"\b\d+\s+marks?\b[^.;]{0,60}\bout of\s+\d+\s+rooms?\b", low_sent):
+                out.append(
+                    Violation(
+                        "R12-unit",
+                        i,
+                        sent[:160],
+                        "a count of rooms is not a share of marks, nor marks of rooms",
+                    )
+                )
             # R14 (D-037): "validated" names a status no signal holds in this gate
             if not any_validated and re.search(r"\bvalidated\b", low_sent):
                 out.append(
@@ -752,6 +788,27 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
             sent_allowed = set(allowed_numbers)
             for cname, _c, _r in _citations(sent):
                 sent_allowed |= feature_numbers.get(cname, set())
+                if register:
+                    # R16 (D-040): the by-wing and directory numbers are the register's; a reading
+                    # that repeats them is the inventory moved, not shrunk
+                    cf = by_key.get(cname) or by_feature.get(cname)
+                    if cf:
+                        dd = cf.get("dominant_dir") or {}
+                        for v in set(cf.get("by_wing", {}).values()) | {
+                            dd.get("n"),
+                            dd.get("population"),
+                        }:
+                            if v is not None and v != cf["count"] and v not in allowed_numbers:
+                                sent_allowed.discard(v)
+                                if re.search(rf"\b{v}\b", BRACKET.sub("", sent)):
+                                    out.append(
+                                        Violation(
+                                            "R16-restatement",
+                                            i,
+                                            sent[:160],
+                                            f"{v} is a register cell ({cf['feature']}: by wing or directory); the reading does not restate the register",
+                                        )
+                                    )
             # D-038 addendum: the numbers of an overlap belong to the sentence that names its pair
             for ov in facts_doc.get("overlaps") or []:
                 oa, ob = ov["a"].split("/")[-1], ov["b"].split("/")[-1]
@@ -957,7 +1014,7 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
 
 # ---------------------------------------------------------------- 2. the generator
 
-SYSTEM = """You are a condemnation surveyor writing the architect's brief for a building that is a codebase. The building is drawn from a skeleton of named structural features; you have the facts sheet and nothing else. You describe what is; you do not sell, soften, or forecast. The page you are writing for already carries a register: a table rendered from the facts sheet by code with one row per feature — position name, room count, counts per wing, dominant directory with its population, relations to other features (identical, within, with the rooms outside and the conjunct that did no work), and the reason a decorative feature is excluded. Do not restate the register. Write the reading: what shape the building has, where the marks sit relative to one another, what the overlaps mean for how many distinct sets of rooms there are, and what the decorative marks are excluded for. Every claim you make is still checked against the sheet.
+SYSTEM = """You are a condemnation surveyor writing the architect's brief for a building that is a codebase. The building is drawn from a skeleton of named structural features; you have the facts sheet and nothing else. You describe what is; you do not sell, soften, or forecast. The page you are writing for already carries a register: a table rendered from the facts sheet by code with one row per feature — position name, room count, counts per wing, dominant directory with its population, relations to other features (identical, within, with the rooms outside and the conjunct that did no work), and the reason a decorative feature is excluded. Do not restate the register: its by-wing counts and directory cells are refused in your prose (R16), and the building's totals need no repeating. The sheet's `distinct_room_sets` is the number of distinct sets of rooms the diagnosis names — an identical pair is one set, a nesting is two — use that number rather than your own count. Write the reading: what shape the building has, where the marks sit relative to one another, what the overlaps mean for how many distinct sets of rooms there are, and what the decorative marks are excluded for. Every claim you make is still checked against the sheet.
 
 Register, binding (validation-spec §2.1.1, mapper §3):
 - Present tense only. Every feature rests on a signal that describes a present structural position. You may say where a room sits and what fires on it. You may not say what will happen, what breaks, what is at risk, what is fragile, what will ripple, what a change would cause. Those are predictions; none is licensed here. Avoid the words: break, will, would, risk, fragile, brittle, dangerous, ripple, cascade, fail, failure, likely, predict, expect, cause, collapse, vulnerable, exposed, threat, prone, future, soon, eventually, impact, consequence, propagate, bug, defect, safe, unsafe, critical.
@@ -1071,23 +1128,32 @@ def render_register(facts_doc: dict[str, Any]) -> str:
                     why = ""
                 out.append(f"= {short(other)}" + (f" ({why})" if why else ""))
             elif ov["a"] == key:
-                out.append(f"⊂ {short(other)} ({ov.get('n_outside')} of its rooms outside)")
+                # D-040: the remainder belongs to the superset — say whose rooms are outside
+                out.append(
+                    f"⊂ {short(other)} ({ov.get('n_outside')} {short(other)} rooms outside this set)"
+                )
             else:
-                out.append(f"⊃ {short(other)} ({ov.get('n_outside')} outside it)")
-        return "; ".join(out) or "–"
+                out.append(f"⊃ {short(other)} ({ov.get('n_outside')} of these rooms outside it)")
+        return "; ".join(out) or "none"
 
     rows = []
     for f in facts_doc["features"]:
         key = f"{f['profile']}/{f['feature']}"
         bw = ", ".join(f"{k} {v}" for k, v in f.get("by_wing", {}).items())
         dd = f.get("dominant_dir") or {}
-        dom = f"{dd.get('dir')} {dd.get('n')} / {dd.get('population')}" if dd else "–"
+        # D-040: no directory below R15's third, and a tie is said, not broken silently
+        if dd and dd.get("holds_third"):
+            dom = f"{dd['dir']} {dd['n']} / {dd['population']}" + (
+                " (tied)" if dd.get("tied") else ""
+            )
+        else:
+            dom = "none holds a third"
         if f["decorative"]:
             what = f"decorative — {f.get('decorative_reason') or ''}".strip()
         else:
             what = f"`{f['predicate']}`"
         name = ("◌ " if f["decorative"] else "") + f["feature"]
-        pos = f.get("position_name") or "–"
+        pos = f.get("position_name") or "no consequence in the name"
         rows.append(
             f"| {name} | {f['profile']} | {pos} | {f['count']} | {bw} | {dom} | {relations(key)} | {what} |"
         )
@@ -1103,12 +1169,14 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + NL
         + f"*Rendered from the facts sheet by code (brief {facts_doc.get('brief_version', BRIEF_VERSION)}); every cell is a field, no cell is a sentence. "
         + f"{facts_doc['population']} rooms in {facts_doc['wing_count']} wings ({wings}); {facts_doc['diagnostic_count']} diagnostic marks across all profiles "
-        + f"({base} in the base profile), one mark per feature per room; {facts_doc['decorative']['count']} decorative marks ({dec}); "
+        + f"({base} in the base profile), one mark per feature per room — {facts_doc.get('marks_on_identical_pairs', 0)} of them fall on the same rooms twice because two profiles carry one predicate; "
+        + f"the diagnostic features name {facts_doc.get('distinct_room_sets', '?')} distinct sets of rooms; {facts_doc['decorative']['count']} decorative marks ({dec}); "
         + f"{facts_doc['co_located_rooms']} rooms carry two or more diagnostic marks; gate `{fp}`, {asserted} of {len(gate)} signals asserted, none validated. "
-        + "◌ marks a decorative feature: excluded from the diagnosis.*"
+        + "◌ marks a decorative feature: excluded from the diagnosis. A position names where a room sits — in the import graph, on the clock, in the test graph — and is not a claim about its condition (D-004 Q3). "
+        + "The directory column is the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a third or more of them; 'none' is a cell's own answer, not a gap.*"
         + NL
         + NL
-        + "| feature | profile | position | rooms | by wing | dominant directory n / its rooms | relation to | predicate or reason |"
+        + "| feature | profile | position | rooms | by wing | largest parent directory n / rooms in it | relation to | predicate or reason |"
         + NL
         + "|---|---|---|---|---|---|---|---|"
         + NL
@@ -1154,7 +1222,7 @@ def render_brief(
             + "\n\n**This brief failed the register lint and is not a diagnosis until it passes.**\n"
         )
     else:
-        lint_md += "No violations. Rules: R1 consequence vocabulary and phrases (citations stripped, disclosure clause struck), R2 provenance of every citation, R3 numbers from the facts sheet only, R4 decorative features cited by count only and never as diagnosis, R5 position-name disclosure at first use, R6 no whole-building label, R7 diagnostic and decorative counts stated, R8 rooms named in a sentence covered by that sentence's citations, R9 features with the same or nested rooms named together, R10 a directory named contains a cited room, R11 no distributional adverb or ranking between marks, R12 a number wears its unit, R13 an identity between differing predicates names the inert conjunct, R14 no 'validated' where no signal holds it, R15 a feature's dominant directory named with its population and cited; nestings state the rooms outside; shared predicates are named; the decorative disclosure names its ungrounded signal (D-036, D-037, D-038).\n"
+        lint_md += "No violations. Rules: R1 consequence vocabulary and phrases (citations stripped, disclosure clause struck), R2 provenance of every citation, R3 numbers from the facts sheet only, R4 decorative features cited by count only and never as diagnosis, R5 position-name disclosure at first use, R6 no whole-building label, R7 diagnostic and decorative counts stated, R8 rooms named in a sentence covered by that sentence's citations, R9 features with the same or nested rooms named together, R10 a directory named contains a cited room, R11 no distributional adverb or ranking between marks, R12 a number wears its unit, R13 an identity between differing predicates names the inert conjunct, R14 no 'validated' where no signal holds it, R15 a feature's dominant directory named with its population and cited; nestings state the rooms outside; shared predicates are named; the decorative disclosure names its ungrounded signal (D-036, D-037, D-038); R16 the reading does not restate the register's by-wing and directory cells (D-040).\n"
     register = render_register(facts_doc)
     return head + register + "\n## Reading\n\n" + text.strip() + "\n" + prov + lint_md
 

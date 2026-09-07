@@ -510,7 +510,7 @@ def test_register_table_carries_the_inventory_and_the_prose_is_the_reading(sub):
     f = facts(_skeleton(sub), sub)
     table = render_register(f)
     for x in f["features"]:
-        assert x["feature"] in table and (x["position_name"] or "–") in table
+        assert x["feature"] in table and (x["position_name"] or "no consequence in the name") in table
         assert f"{x['count']} |" in table
     assert str(f["co_located_rooms"]) in table and "none validated" in table
     prose = _good_draft(f)
@@ -537,3 +537,61 @@ def test_register_table_carries_the_inventory_and_the_prose_is_the_reading(sub):
     # but the obligation to name the pair is the register's, not the prose's
     assert "R9-overlap" not in {v.rule for v in lint(prose, g, register=True)}
     assert "R9-overlap" in {v.rule for v in lint(prose, g)}
+
+
+def test_register_cells_are_linted_by_their_tests(sub):
+    """D-040: the register's derived cells are claims — the tests are its lint. The ⊂ cell says whose
+    rooms are outside; a directory below the third prints none; the building line says how many
+    marks fall on identical pairs twice and how many distinct room sets the diagnosis names; the
+    reading may not restate the register's by-wing numbers."""
+    from repo_substrate.brief import render_register
+
+    f = facts(_skeleton(sub), sub)
+    assert f["distinct_room_sets"] == sum(
+        1 for x in f["features"] if x["diagnostic"] and x["rooms"]
+    ) - sum(1 for o in f["overlaps"] if o["relation"] == "identical")
+    for x in f["features"]:
+        dd = x["dominant_dir"]
+        assert dd["holds_third"] == (dd["n"] * 3 >= x["count"] and x["count"] >= 6)
+    g = json.loads(json.dumps(f))
+    feat = next(x for x in g["features"] if x["diagnostic"])
+    key = f"{feat['profile']}/{feat['feature']}"
+    g["overlaps"] = [
+        {"a": key, "b": "p/wider", "relation": "within", "n": feat["count"], "n_outside": 8}
+    ]
+    g["features"].append({**feat, "feature": "wider", "profile": "p", "count": feat["count"] + 8})
+    table = render_register(g)
+    assert "⊂ wider (8 wider rooms outside this set)" in table
+    assert "8 of these rooms outside it" in table
+    assert "of its rooms outside" not in table
+    low = dict(feat)
+    low.update(
+        {
+            "feature": "thin_mark",
+            "count": 12,
+            "dominant_dir": {
+                "dir": "x/y",
+                "n": 2,
+                "population": 5,
+                "tied": True,
+                "holds_third": False,
+            },
+        }
+    )
+    g["features"].append(low)
+    assert "none holds a third" in render_register(g)
+    assert "distinct sets of rooms" in table and "fall on the same rooms twice" in table
+    base = _good_draft(f)
+    wing, n = next(iter(feat["by_wing"].items()))
+    if n != feat["count"] and n not in {f["population"], *f["wings"].values()}:
+        restated = (
+            base
+            + f"{feat['feature']} puts {n} of its rooms in {wing} [{feat['feature']} ×{feat['count']}].\n\n"
+        )
+        assert "R16-restatement" in {v.rule for v in lint(restated, f, register=True)}
+        assert "R16-restatement" not in {v.rule for v in lint(restated, f)}
+    ratio = (
+        base
+        + f"{f['co_located_rooms']} rooms carry two or more marks, out of {f['diagnostic_count']} diagnostic marks [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R12-unit" in {v.rule for v in lint(ratio, f, register=True)}
