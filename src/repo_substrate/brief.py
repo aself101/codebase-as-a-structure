@@ -26,14 +26,14 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.8.0"
+BRIEF_VERSION = "0.9.0"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
 STANCE = (
-    "The building is drawn as it is, warts and all. The diagnosis presupposes a norm of "
+    "The building is drawn as it is. The diagnosis presupposes a norm of "
     "health — load should be reinforced, old load-bearing code should be visited — and that "
     "norm is a maintenance stance the reader may reject, "
     "stated so it reads as an ought, not a fact (system spec, stance disclosure)."
@@ -178,6 +178,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
     identical = [o for o in overlaps if o["relation"] == "identical"]
     distinct_room_sets = n_diag - len(identical)
     marks_on_identical_pairs = sum(o["n"] for o in identical)
+    # D-042: a number with two causes is two numbers — a gloss that names one cause is false of the other
+    marks_on_shared_predicates = sum(o["n"] for o in identical if o.get("shared_predicate"))
+    marks_on_inert_conjuncts = sum(o["n"] for o in identical if not o.get("shared_predicate"))
     gate_fp = skeleton.get("substrate_config_fingerprint")
     if not gate_fp:
         raise ValueError(
@@ -204,6 +207,8 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         "co_located_rooms": co_located_all,
         "distinct_room_sets": distinct_room_sets,
         "marks_on_identical_pairs": marks_on_identical_pairs,
+        "marks_on_shared_predicates": marks_on_shared_predicates,
+        "marks_on_inert_conjuncts": marks_on_inert_conjuncts,
         # D-037: every building-level number carries its unit; a count of rooms is not a count of marks
         "units": {
             "population": "rooms",
@@ -213,7 +218,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "decorative.count": "marks",
             "co_located_rooms": "rooms carrying two or more diagnostic marks, across all profiles",
             "distinct_room_sets": "sets of rooms the diagnostic features name, an identical pair counted once, a nesting twice",
-            "marks_on_identical_pairs": "marks that fall on the same rooms twice because two profiles carry one predicate",
+            "marks_on_identical_pairs": "marks that fall on the same rooms twice: an identical pair of features counts each room twice",
+            "marks_on_shared_predicates": "of those, marks where two profiles carry one predicate",
+            "marks_on_inert_conjuncts": "of those, marks where two predicates draw one set because a conjunct excludes nothing",
             "dominant_dir": "the immediate parent directory (non-recursive) holding the most of a feature's rooms; shown only when it holds a third or more",
             "feature.count": "rooms (one mark per room)",
         },
@@ -360,7 +367,8 @@ NEGATED_DIAGNOSIS = re.compile(r"\b(?:not|no|nothing|never|neither|nor)\b[^.;]{0
 # D-036: distributional words the sheet cannot carry (it carries counts per wing instead)
 DISTRIBUTION = re.compile(
     r"\b(?:mostly|most of|largely|predominantly|mainly|chiefly|concentrated in|the bulk|"
-    r"spread across|scattered|throughout|every wing|all wings|all of the wings|reaches into every)\b"
+    r"spread across|scattered|throughout|every wing|all wings|all of the wings|reaches into every|"
+    r"accordingly|in proportion|proportionally|correspondingly|as one would expect)\b"
 )
 # D-037: comparatives and superlatives set one mark against another; the register forbids it
 # D-041: two rooms as the ends of a span the page does not order
@@ -513,6 +521,8 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
     allowed_numbers.add(facts_doc.get("distinct_room_sets", 0))
     allowed_numbers.add(len(facts_doc.get("overlaps") or []))  # "three relations" (D-040 addendum)
     allowed_numbers.add(facts_doc.get("marks_on_identical_pairs", 0))
+    allowed_numbers.add(facts_doc.get("marks_on_shared_predicates", 0))
+    allowed_numbers.add(facts_doc.get("marks_on_inert_conjuncts", 0))
     # D-036 (hostile reading, run 17): a feature's numbers are admitted in the sentence that
     # cites the feature, not anywhere in the paragraph — "two sit outside src" passed because
     # 2 was some other feature's count
@@ -528,6 +538,11 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
         feature_numbers[f["feature"]] = nums
         feature_numbers[f"{f['profile']}/{f['feature']}"] = nums
     wing_names = set(facts_doc["wings"])
+    largest_wing = (
+        max(facts_doc["wings"], key=lambda w: (facts_doc["wings"][w], w))
+        if facts_doc["wings"]
+        else None
+    )
     # D-037: unit classes for R12 — feature counts are both (one mark per room)
     rooms_only = {facts_doc["population"], facts_doc["co_located_rooms"]} | set(
         facts_doc["wings"].values()
@@ -851,7 +866,11 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                         continue
                     entitled.add(cf["count"])
                     for w, v in cf.get("by_wing", {}).items():
-                        if re.search(rf"(?<![\w/@.-]){re.escape(w)}(?![\w/])", bare):
+                        # D-042: naming the largest wing costs nothing on a one-wing building, so its
+                        # count stays the register's; a minority wing's count is the reading's to say
+                        if w != largest_wing and re.search(
+                            rf"(?<![\w/@.-]){re.escape(w)}(?![\w/])", bare
+                        ):
                             entitled.add(v)
                     dd = cf.get("dominant_dir") or {}
                     if dd and re.search(rf"(?<![\w/@.-]){re.escape(dd['dir'])}(?![\w])", bare):
@@ -1163,6 +1182,41 @@ def anthropic_generator(
 NL = "\n"
 
 
+# D-042: the rules as the reader is told them — the header's checklist and the lint section both
+# derive from this list, so the page cannot describe a rule the lint no longer applies
+RULES: list[tuple[str, str]] = [
+    ("R1", "consequence and forecast vocabulary refused outside a struck disclosure clause"),
+    (
+        "R2",
+        "every citation resolves to a feature that fired on the rooms it names, with the count the skeleton records",
+    ),
+    ("R3", "a number is on the facts sheet and sits in the sentence that cites its feature"),
+    (
+        "R4",
+        "decorative features cited by count only, never as diagnosis, with their ungrounded signal named",
+    ),
+    ("R5", "a consequence-implying name carries its position name where first used"),
+    ("R6", "no whole-building label"),
+    ("R7", "the diagnostic and decorative counts stated (met by the register)"),
+    ("R8", "a room named in a sentence is covered by a feature cited in that sentence"),
+    ("R9", "features with the same or nested rooms named together (met by the register)"),
+    ("R10", "a directory named in a sentence contains a room cited in it"),
+    ("R11", "no distributional adverb, ranking of marks, or span between rooms"),
+    ("R12", "a number wears its unit; no ratio across units"),
+    (
+        "R13",
+        "a nesting is not an identity; a shared predicate is one measurement, not two agreeing",
+    ),
+    ("R14", "no 'validated' where no signal holds it"),
+    ("R15", "a feature's largest directory named with its population (met by the register)"),
+    (
+        "R16",
+        "a feature's count in a minority wing or a directory is sayable only where that wing or directory is named; the largest wing's count is the register's",
+    ),
+    ("R17", "a claim that a feature stands apart is checked against the register's relations"),
+]
+
+
 def render_register(facts_doc: dict[str, Any]) -> str:
     """D-039: the register — one row per feature with fixed slots, rendered from the facts sheet
     by code. It states what three hostile readings found the prose could only overclaim: the
@@ -1246,7 +1300,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + NL
         + f"*Rendered from the facts sheet by code (brief {facts_doc.get('brief_version', BRIEF_VERSION)}); every cell is a field, no cell is a sentence. "
         + f"{facts_doc['population']} rooms in {facts_doc['wing_count']} wings ({wings}); {facts_doc['diagnostic_count']} diagnostic marks across all profiles "
-        + f"({base} in the base profile), one mark per feature per room — {facts_doc.get('marks_on_identical_pairs', 0)} of them fall on the same rooms twice because two profiles carry one predicate; "
+        + f"({base} in the base profile), one mark per feature per room — {facts_doc.get('marks_on_identical_pairs', 0)} of them fall on the same rooms twice (an identical pair counts each room twice): {facts_doc.get('marks_on_shared_predicates', 0)} where two profiles carry one predicate, {facts_doc.get('marks_on_inert_conjuncts', 0)} where two predicates draw one set because a conjunct excludes nothing; "
         + f"the diagnostic features name {facts_doc.get('distinct_room_sets', '?')} distinct sets of rooms; {facts_doc['decorative']['count']} decorative marks ({dec}); "
         + f"{facts_doc['co_located_rooms']} rooms carry two or more diagnostic marks; gate `{fp}`, {asserted} of {len(gate)} signals asserted, none validated. "
         + "◌ marks a decorative feature: excluded from the diagnosis. A position names where a room sits — in the import graph, on the clock, in the test graph — and is not a claim about its condition (D-004 Q3). "
@@ -1274,9 +1328,9 @@ def render_brief(
     head = (
         f"# {facts_doc['repo']['name']} — architect's brief\n\n"
         f"*The register below is rendered from the facts sheet by code and carries the inventory (D-039); the reading beneath it is model-written and linted. "
-        f"Register lint: **{status}**. What the lint checked: every paragraph cites a feature and a room it fired on, or a count the skeleton records; "
-        f"a room named in a sentence is covered by a feature cited in that sentence; consequence and forecast vocabulary is refused outside a struck disclosure clause; "
-        f"numbers come from the facts sheet and sit in the sentence that cites their feature; features with the same or nested rooms are named together; a directory named contains a cited room; no distributional adverb or ranking of marks; a number wears its unit; an identity between predicates names the conjunct that did no work; a feature's dominant directory is named with its population and cited; a nesting is not an identity and a shared predicate is one measurement; the decorative disclosure names its ungrounded signal; no 'validated' where no signal holds it; decorative features are cited by count only and never as diagnosis; a consequence-implying name carries its position name where first used; no whole-building label. "
+        f"Register lint: **{status}**. What the lint checked: "
+        + "; ".join(f"{rid} {desc}" for rid, desc in RULES)
+        + ". "
         f"What it cannot check: a consequence voiced without a listed word, a computed number that happens to match, a room's function inferred from its name. Profile {facts_doc['profile']}"
         + (f" + {', '.join(facts_doc['overlays'])}" if facts_doc["overlays"] else "")
         + f", geometry {facts_doc['geometry']}, skeleton `{facts_doc['skeleton_hash'][:12]}…`, facts `{facts_doc['facts_hash'][:12]}…`. "
@@ -1299,7 +1353,11 @@ def render_brief(
             + "\n\n**This brief failed the register lint and is not a diagnosis until it passes.**\n"
         )
     else:
-        lint_md += "No violations. Rules: R1 consequence vocabulary and phrases (citations stripped, disclosure clause struck), R2 provenance of every citation, R3 numbers from the facts sheet only, R4 decorative features cited by count only and never as diagnosis, R5 position-name disclosure at first use, R6 no whole-building label, R7 diagnostic and decorative counts stated, R8 rooms named in a sentence covered by that sentence's citations, R9 features with the same or nested rooms named together, R10 a directory named contains a cited room, R11 no distributional adverb or ranking between marks, R12 a number wears its unit, R13 an identity between differing predicates names the inert conjunct, R14 no 'validated' where no signal holds it, R15 a feature's dominant directory named with its population and cited; nestings state the rooms outside; shared predicates are named; the decorative disclosure names its ungrounded signal (D-036, D-037, D-038); R16 a feature's by-wing or directory number is sayable only where the wing or directory is named (D-040, D-041), R17 a claim of no relation is checked against the overlaps (D-041).\n"
+        lint_md += (
+            "No violations. Rules: "
+            + ", ".join(f"{rid} {desc}" for rid, desc in RULES)
+            + " (D-027 through D-042).\n"
+        )
     register = render_register(facts_doc)
     return head + register + "\n## Reading\n\n" + text.strip() + "\n" + prov + lint_md
 
