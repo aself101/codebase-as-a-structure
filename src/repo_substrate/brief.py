@@ -499,6 +499,7 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
     # D-039 addendum: "the same predicate under two profiles" — the profile count is a sheet fact
     allowed_numbers.add(1 + len(facts_doc.get("overlays") or []))
     allowed_numbers.add(facts_doc.get("distinct_room_sets", 0))
+    allowed_numbers.add(len(facts_doc.get("overlaps") or []))  # "three relations" (D-040 addendum)
     allowed_numbers.add(facts_doc.get("marks_on_identical_pairs", 0))
     # D-036 (hostile reading, run 17): a feature's numbers are admitted in the sentence that
     # cites the feature, not anywhere in the paragraph — "two sit outside src" passed because
@@ -788,34 +789,42 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
             sent_allowed = set(allowed_numbers)
             for cname, _c, _r in _citations(sent):
                 sent_allowed |= feature_numbers.get(cname, set())
-                if register:
-                    # R16 (D-040): the by-wing and directory numbers are the register's; a reading
-                    # that repeats them is the inventory moved, not shrunk
-                    cf = by_key.get(cname) or by_feature.get(cname)
-                    if cf:
-                        dd = cf.get("dominant_dir") or {}
-                        for v in set(cf.get("by_wing", {}).values()) | {
-                            dd.get("n"),
-                            dd.get("population"),
-                        }:
-                            if v is not None and v != cf["count"] and v not in allowed_numbers:
-                                sent_allowed.discard(v)
-                                if re.search(rf"\b{v}\b", BRACKET.sub("", sent)):
-                                    out.append(
-                                        Violation(
-                                            "R16-restatement",
-                                            i,
-                                            sent[:160],
-                                            f"{v} is a register cell ({cf['feature']}: by wing or directory); the reading does not restate the register",
-                                        )
-                                    )
             # D-038 addendum: the numbers of an overlap belong to the sentence that names its pair
+            pair_numbers: set[int] = set()
             for ov in facts_doc.get("overlaps") or []:
                 oa, ob = ov["a"].split("/")[-1], ov["b"].split("/")[-1]
                 if re.search(rf"\b{re.escape(oa)}\b", sent) and re.search(
                     rf"\b{re.escape(ob)}\b", sent
                 ):
-                    sent_allowed |= {ov["n"], ov.get("n_outside", ov["n"])}
+                    pair_numbers |= {ov["n"], ov.get("n_outside", ov["n"])}
+            sent_allowed |= pair_numbers
+            if register:
+                # R16 (D-040): the by-wing and directory numbers are the register's; a reading that
+                # repeats them is the inventory moved, not shrunk. A number the sentence is otherwise
+                # entitled to — a feature's count, a pair's remainder, a building total — is not refused.
+                entitled = set(allowed_numbers) | pair_numbers
+                cited = [by_key.get(c) or by_feature.get(c) for c, _n, _r in _citations(sent)]
+                entitled |= {cf["count"] for cf in cited if cf}
+                for cf in cited:
+                    if not cf:
+                        continue
+                    dd = cf.get("dominant_dir") or {}
+                    for v in set(cf.get("by_wing", {}).values()) | {
+                        dd.get("n"),
+                        dd.get("population"),
+                    }:
+                        if v is None or v in entitled:
+                            continue
+                        sent_allowed.discard(v)
+                        if re.search(rf"\b{v}\b", BRACKET.sub("", sent)):
+                            out.append(
+                                Violation(
+                                    "R16-restatement",
+                                    i,
+                                    sent[:160],
+                                    f"{v} is a register cell ({cf['feature']}: by wing or directory); the reading does not restate the register",
+                                )
+                            )
             for rid in room_ids:
                 if rid in room_metrics and _mentions(sent, rid):
                     sent_allowed.update(v for v in room_metrics[rid].values() if isinstance(v, int))
@@ -1025,14 +1034,14 @@ Register, binding (validation-spec §2.1.1, mapper §3):
 - Do not set two features against each other ("against that", "offsets", "compensates"): the sets are independent measurements and the brief does not know their intersection unless the facts sheet states it.
 - Disclose a consequence-implying name's position name in the same paragraph where the name first appears; the disclosure clause covers only itself, not the rest of the sentence.
 - If the facts sheet lists `overlaps`, say so in one sentence naming both features: "The 70 flooded_basement rooms are the same 70 rooms as dark_room" — two marks on one set of rooms are one finding, not two.
-- Never use "mostly", "concentrated", "the bulk", "spread across", "throughout", "every wing"; the sheet carries `by_wing` counts per feature — state those ("39 of the 70 sit in src, 31 in packages") in the sentence that cites the feature.
+- Never use "mostly", "concentrated", "the bulk", "spread across", "throughout", "every wing"; the register carries each feature's counts per wing — do not restate them (R16).
 - A directory you name must contain a room you cite in the same sentence. A count you state must be the count (or a by_wing count) of a feature you cite in the same sentence, or a building-level count.
 - Every number on the sheet has a unit (`units`): a count of rooms is never "N marks". `co_located_rooms` counts rooms carrying two or more marks.
 - When `overlaps` lists `inert_terms`, say that the extra conjunct excludes nothing here, naming its signal: "flooded_basement adds load_index >= 0.10 to dark_room and it excludes nothing on this repository: the 70 rooms are the same 70".
-- Each feature carries `dominant_dir`: when a third or more of its rooms sit in one directory, name that directory in the sentence that cites the feature, and cite a room from it — the sample must show the set's composition, not flatter it.
+- The register carries each feature's largest parent directory with its population; do not restate those numbers (R16). If you name a directory, cite a room in it in the same sentence (R10), and draw your example rooms from where the set's rooms are, not from where they flatter the mark.
 - Never rank marks against each other ("the widest set", "larger than"); a p90 set has its size by construction. Never write "validated": no signal in this gate holds that status; every feature rests on an asserted signal.
 - An overlap with `relation: within` is a nesting, not an identity: name both features, state the `n_outside` rooms the extra conjunct removed, and never call them one set or one finding. An identical overlap with `shared_predicate: true` is the same predicate under two profiles — say "the same predicate", never that two profiles agree.
-- When you name a feature's `dominant_dir`, state its `population` too ("98 of the 148 sit in lib/rules, which holds 305 of the building's 473 rooms") — a share without its denominator is a base rate.
+- A share without its denominator is a base rate; the register states both and you state neither.
 - The decorative disclosure names the ungrounded signal from `decorative_reason` ("crack and toothpick_wing rest on bug_pressure_index, which is unvalidated").
 - "findings" is not a unit; count rooms or marks.
 - Write every count as digits (267 rooms, not "two hundred sixty-seven"); every number must be a value on the facts sheet — never add, subtract, or count for yourself.
