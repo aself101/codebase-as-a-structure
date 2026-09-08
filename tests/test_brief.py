@@ -585,7 +585,11 @@ def test_register_cells_are_linted_by_their_tests(sub):
     )
     g["features"].append(low)
     assert "none holds a third" in render_register(g)
-    assert "distinct sets of rooms" in table and "fall on the same rooms twice" in table
+    assert (
+        "distinct sets of rooms" in table
+        and "fall on the same rooms twice" in table
+        and "where two profiles carry one predicate" in table
+    )
     base = _good_draft(f)
     wing, n = next(iter(feat["by_wing"].items()))
     if n != feat["count"] and n not in {f["population"], *f["wings"].values()}:
@@ -686,3 +690,33 @@ def test_register_fallbacks_say_the_reason_that_is_the_reason(sub):
             + f"{feat['feature']} holds {n} rooms there [{feat['feature']} ×{feat['count']}].\n\n"
         )
         assert "R16-restatement" in {v.rule for v in lint(bare, f, register=True)}
+
+
+def test_explanations_are_split_by_cause_and_the_rule_list_has_one_source(sub):
+    """D-042 (sixth seating, run 22): a number with two causes is two numbers; the header and the
+    lint section describe the same rules; the largest wing's count is the register's; the stance
+    carries no condition idiom; 'accordingly' is refused."""
+    from repo_substrate.brief import RULES, STANCE, render_brief
+
+    f = facts(_skeleton(sub), sub)
+    assert (
+        f["marks_on_identical_pairs"]
+        == f["marks_on_shared_predicates"] + f["marks_on_inert_conjuncts"]
+    )
+    assert "warts" not in STANCE
+    page = render_brief(_good_draft(f), f, [], {"generator": "draft"})
+    for rid, desc in RULES:
+        assert f"{rid} {desc}" in page
+    assert "dominant directory is named with its population and cited" not in page
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    base = _good_draft(f)
+    largest = max(f["wings"], key=lambda w: (f["wings"][w], w))
+    n = feat["by_wing"].get(largest)
+    if n is not None and n != feat["count"] and n not in {f["population"], *f["wings"].values()}:
+        big = (
+            base
+            + f"{n} of the {feat['feature']} rooms sit in {largest} [{feat['feature']} ×{feat['count']}].\n\n"
+        )
+        assert "R16-restatement" in {v.rule for v in lint(big, f, register=True)}
+    acc = base + f"The marks sit in {largest} accordingly [{feat['feature']} ×{feat['count']}].\n\n"
+    assert "R11-share" in {v.rule for v in lint(acc, f, register=True)}

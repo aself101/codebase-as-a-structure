@@ -82,9 +82,9 @@ class Feature:
     graph_dependent: bool = False
     name_implies_consequence: bool = False
     position_name: str | None = None  # the position-denoting alternative name (D-004 Q3)
-    caveat: str | None = (
-        None  # D-041: the ruleset's own warning about a predicate, surfaced on the sheet
-    )
+    # D-041/D-042: a limit on what the predicate can read — never a claim about a repository (the
+    # sixth seating found one false of the room it sat beside)
+    caveat: str | None = None
     note: str = ""
 
     @property
