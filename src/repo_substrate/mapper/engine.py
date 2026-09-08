@@ -196,6 +196,7 @@ def _apply(
                     "diagnostic": diagnostic,
                     "name_implies_consequence": f.name_implies_consequence,
                     "position_name": f.position_name,
+                    "caveat": f.caveat,
                 }
             )
             counts[f.name] = counts.get(f.name, 0) + 1

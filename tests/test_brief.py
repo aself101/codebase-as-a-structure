@@ -510,7 +510,10 @@ def test_register_table_carries_the_inventory_and_the_prose_is_the_reading(sub):
     f = facts(_skeleton(sub), sub)
     table = render_register(f)
     for x in f["features"]:
-        assert x["feature"] in table and (x["position_name"] or "no consequence in the name") in table
+        assert (
+            x["feature"] in table
+            and (x["position_name"] or "no consequence word in the name") in table
+        )
         assert f"{x['count']} |" in table
     assert str(f["co_located_rooms"]) in table and "none validated" in table
     prose = _good_draft(f)
@@ -552,7 +555,9 @@ def test_register_cells_are_linted_by_their_tests(sub):
     ) - sum(1 for o in f["overlaps"] if o["relation"] == "identical")
     for x in f["features"]:
         dd = x["dominant_dir"]
-        assert dd["holds_third"] == (dd["n"] * 3 >= x["count"] and x["count"] >= 6)
+        assert dd["holds_third"] == (dd["n"] * 3 >= x["count"]) and dd["placeable"] == (
+            x["count"] >= 6
+        )
     g = json.loads(json.dumps(f))
     feat = next(x for x in g["features"] if x["diagnostic"])
     key = f"{feat['profile']}/{feat['feature']}"
@@ -595,3 +600,89 @@ def test_register_cells_are_linted_by_their_tests(sub):
         + f"{f['co_located_rooms']} rooms carry two or more marks, out of {f['diagnostic_count']} diagnostic marks [{feat['feature']} ×{feat['count']}].\n\n"
     )
     assert "R12-unit" in {v.rule for v in lint(ratio, f, register=True)}
+
+
+def test_register_fallbacks_say_the_reason_that_is_the_reason(sub):
+    """D-041 (fifth seating, run 21): a cell's else-branch is where the next overclaim lived. Too few
+    rooms says so; a missing position name on a consequence-implying name is a defect, not a denial;
+    a parent that shares a wing's name is marked; a singular remainder is singular; a set under three
+    rooms draws no relation; a ruleset caveat reaches the register; R17 and the span refusal bind the prose."""
+    from repo_substrate.brief import render_register
+
+    f = facts(_skeleton(sub), sub)
+    for o in f["overlaps"]:
+        assert o["n"] >= 3
+    g = json.loads(json.dumps(f))
+    feat = next(x for x in g["features"] if x["diagnostic"])
+    key = f"{feat['profile']}/{feat['feature']}"
+    tiny = dict(feat)
+    tiny.update(
+        {
+            "feature": "tiny_mark",
+            "count": 1,
+            "rooms": [feat["rooms"][0]],
+            "by_wing": {"src": 1},
+            "dominant_dir": {
+                "dir": "src",
+                "n": 1,
+                "population": f["wings"].get("src", 1),
+                "tied": False,
+                "holds_third": True,
+                "placeable": False,
+            },
+            "position_name": None,
+            "name_implies_consequence": True,
+            "caveat": "a caveat from the ruleset",
+        }
+    )
+    g["features"].append(tiny)
+    g["overlaps"] = [
+        {"a": key, "b": "p/wider", "relation": "within", "n": feat["count"], "n_outside": 1}
+    ]
+    g["features"].append({**feat, "feature": "wider", "profile": "p", "count": feat["count"] + 1})
+    table = render_register(g)
+    assert "too few rooms to place (1)" in table
+    assert "POSITION NAME MISSING (ruleset defect)" in table
+    assert "caveat: a caveat from the ruleset" in table
+    assert "(1 wider room outside this set)" in table and "1 of these room outside it" in table
+    big = dict(feat)
+    big.update(
+        {
+            "feature": "wing_named",
+            "count": 9,
+            "dominant_dir": {
+                "dir": "src",
+                "n": 9,
+                "population": 9,
+                "tied": False,
+                "holds_third": True,
+                "placeable": True,
+            },
+        }
+    )
+    g["features"].append(big)
+    assert "src (as parent, not the wing) 9 / 9" in render_register(g)
+    base = _good_draft(f)
+    apart = (
+        base
+        + f"The {feat['feature']} rooms stand apart from every other mark [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R17-relation" in {v.rule for v in lint(apart, g, register=True)}
+    assert "R17-relation" not in {v.rule for v in lint(apart, f, register=True)} or any(
+        feat["feature"] in (o["a"] + o["b"]) for o in f["overlaps"]
+    )
+    r0, r1 = feat["rooms"][0], feat["rooms"][-1]
+    span = base + f"The set runs from {r0} to {r1} [{feat['feature']}: {r0}, {r1}].\n\n"
+    assert "R11-share" in {v.rule for v in lint(span, f, register=True)}
+    wing, n = next(iter(feat["by_wing"].items()))
+    if n != feat["count"] and n not in {f["population"], *f["wings"].values()}:
+        named = (
+            base
+            + f"{n} of the {feat['count']} {feat['feature']} rooms sit in {wing} [{feat['feature']} ×{feat['count']}].\n\n"
+        )
+        assert "R16-restatement" not in {v.rule for v in lint(named, f, register=True)}
+        bare = (
+            base
+            + f"{feat['feature']} holds {n} rooms there [{feat['feature']} ×{feat['count']}].\n\n"
+        )
+        assert "R16-restatement" in {v.rule for v in lint(bare, f, register=True)}

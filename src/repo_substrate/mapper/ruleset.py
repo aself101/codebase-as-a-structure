@@ -82,6 +82,9 @@ class Feature:
     graph_dependent: bool = False
     name_implies_consequence: bool = False
     position_name: str | None = None  # the position-denoting alternative name (D-004 Q3)
+    caveat: str | None = (
+        None  # D-041: the ruleset's own warning about a predicate, surfaced on the sheet
+    )
     note: str = ""
 
     @property
@@ -190,6 +193,7 @@ def load_ruleset(path: Path) -> Ruleset:
                 graph_dependent=bool(f.get("graph_dependent", False)),
                 name_implies_consequence=bool(f.get("name_implies_consequence", False)),
                 position_name=f.get("position_name"),
+                caveat=f.get("caveat"),
                 note=str(f.get("note", "")),
             )
         )
