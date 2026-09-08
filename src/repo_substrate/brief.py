@@ -843,16 +843,23 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                 # refusal, so the deflating number is always sayable and the bare restatement is not
                 cited = [by_key.get(c) or by_feature.get(c) for c, _n, _r in _citations(sent)]
                 bare = BRACKET.sub("", sent)
+                # the entitlement is the union over every cited feature — a number one cited
+                # feature owns is not refused because another cited feature also carries it
+                entitled = set(allowed_numbers) | pair_numbers
                 for cf in cited:
                     if not cf:
                         continue
-                    entitled = set(allowed_numbers) | pair_numbers | {cf["count"]}
+                    entitled.add(cf["count"])
                     for w, v in cf.get("by_wing", {}).items():
                         if re.search(rf"(?<![\w/@.-]){re.escape(w)}(?![\w/])", bare):
                             entitled.add(v)
                     dd = cf.get("dominant_dir") or {}
                     if dd and re.search(rf"(?<![\w/@.-]){re.escape(dd['dir'])}(?![\w])", bare):
                         entitled |= {dd.get("n"), dd.get("population")}
+                for cf in cited:
+                    if not cf:
+                        continue
+                    dd = cf.get("dominant_dir") or {}
                     for v in set(cf.get("by_wing", {}).values()) | {
                         dd.get("n"),
                         dd.get("population"),
