@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -63,7 +64,7 @@ def _good_draft(f):
     room = feat["rooms"][0]
     wing, n = next(iter(f["wings"].items()))
     text = (
-        f"The building has {f['population']} rooms and {f['diagnostic_count']} diagnostic marks; the wing {wing} holds {n} of them [{feat['feature']}: {room}].\n\n"
+        f"The building has {f['population']} rooms and {f['diagnostic_count']} diagnostic marks; the wing {wing} holds {n} of them, among them {feat['feature']}'s {room} [{feat['feature']}: {room}].\n\n"
         f"The room {room} sits where {feat['feature']} fires [{feat['feature']} ×{feat['count']}].\n\n"
     )
     if f["decorative"]["count"]:
@@ -72,7 +73,16 @@ def _good_draft(f):
             for x in f["features"]
             if x["decorative"]
         )
-        text += f"{f['decorative']['count']} decorative marks ({names}) render but are not a diagnosis [{feat['feature']} ×{feat['count']}].\n\n"
+        cites = "; ".join(f"{x['feature']} ×{x['count']}" for x in f["features"] if x["decorative"])
+        sigs = sorted(
+            {
+                s
+                for x in f["features"]
+                if x["decorative"]
+                for s in re.findall(r"[a-z_]+_index", x.get("decorative_reason") or "")
+            }
+        )
+        text += f"{f['decorative']['count']} decorative marks ({names}) render but are not a diagnosis; they rest on {', '.join(sigs) or 'nothing confirmed'}, which is unvalidated [{cites}].\n\n"
     return text
 
 
@@ -255,16 +265,18 @@ def test_lint_reads_chained_brackets_and_the_determiner_one(sub):
     room = feat["rooms"][0]
     base = _good_draft(f)
     chained = base + (
-        f"{disclose}two marks share one bracket [{feat['feature']} ×{feat['count']}; {other['feature']} ×{other['count']}].\n\n"
-        f"{disclose}one more in the comma form [{feat['feature']} ×{feat['count']}, {other['feature']} ×{other['count']}].\n\n"
+        f"{disclose}{feat['feature']} and {other['feature']} share one bracket [{feat['feature']} ×{feat['count']}; {other['feature']} ×{other['count']}].\n\n"
+        f"{disclose}{feat['feature']} and {other['feature']} once more in the comma form [{feat['feature']} ×{feat['count']}, {other['feature']} ×{other['count']}].\n\n"
     )
     assert lint(chained, f) == []
     wrong_count = (
         base
-        + f"{disclose}bad [{feat['feature']} ×{feat['count'] + 1}; {other['feature']} ×{other['count']}].\n\n"
+        + f"{disclose}{feat['feature']} and {other['feature']} bad [{feat['feature']} ×{feat['count'] + 1}; {other['feature']} ×{other['count']}].\n\n"
     )
     assert {v.rule for v in lint(wrong_count, f)} == {"R2-provenance"}
-    hybrid = base + f"Under a count [{feat['feature']} ×{feat['count']}: {room}].\n\n"
+    hybrid = (
+        base + f"{feat['feature']} under a count [{feat['feature']} ×{feat['count']}: {room}].\n\n"
+    )
     assert lint(hybrid, f) == []
     later = (
         base
@@ -720,3 +732,51 @@ def test_explanations_are_split_by_cause_and_the_rule_list_has_one_source(sub):
         assert "R16-restatement" in {v.rule for v in lint(big, f, register=True)}
     acc = base + f"The marks sit in {largest} accordingly [{feat['feature']} ×{feat['count']}].\n\n"
     assert "R11-share" in {v.rule for v in lint(acc, f, register=True)}
+
+
+def test_note_is_generated_from_the_constants_and_disclosures_cover_the_register(sub):
+    """D-043 (seventh seating, run 23): the under-covering disclosure. The note states the
+    relation predicate the column computes and the floor it uses; each position carries the
+    record its predicate reads; the relation fallback names the predicate; the stance asserts no
+    fidelity and no norm a decorative feature carries; a negated property another feature marks is
+    refused; a citation must warrant something in its sentence; proximity words are refused."""
+    from repo_substrate.brief import RELATION_MIN_ROOMS, STANCE, record_of, render_register
+
+    f = facts(_skeleton(sub), sub)
+    table = render_register(f)
+    assert (
+        f"between sets of {RELATION_MIN_ROOMS} or more rooms" in table
+        and "identity and containment, and only those" in table
+    )
+    assert "none |" not in table and (
+        "no identity or containment" in table or "⊂" in table or "=" in table
+    )
+    for x in f["features"]:
+        if x["position_name"]:
+            assert f"{x['position_name']} ({record_of(x['predicate'])})" in table
+    assert record_of("last_touched_days >= p90 and load_index >= 0.10") == "import graph and clock"
+    assert "drawn as it is" not in STANCE and "reinforced" not in STANCE
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    base = _good_draft(f)
+    room = feat["rooms"][0]
+    deco = base + f"Nothing more is said here [{feat['feature']} ×{feat['count']}].\n\n"
+    assert "R2-provenance" in {v.rule for v in lint(deco, f, register=True)}
+    near = base + f"The remaining marks sit near these [{feat['feature']}: {room}].\n\n"
+    assert "R11-share" in {v.rule for v in lint(near, f, register=True)}
+    g = json.loads(json.dumps(f))
+    g["features"].append(
+        {
+            **feat,
+            "feature": "package_entry",
+            "profile": "onboarding",
+            "rooms": [room],
+            "count": 1,
+            "by_wing": {},
+            "position_name": "declared entry",
+        }
+    )
+    neg = (
+        base
+        + f"{feat['feature']} rooms read no fan-in and so are not an entrance [{feat['feature']}: {room}].\n\n"
+    )
+    assert "R17-relation" in {v.rule for v in lint(neg, g, register=True)}
