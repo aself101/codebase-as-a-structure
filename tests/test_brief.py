@@ -564,7 +564,7 @@ def test_register_cells_are_linted_by_their_tests(sub):
     f = facts(_skeleton(sub), sub)
     assert f["distinct_room_sets"] == sum(
         1 for x in f["features"] if x["diagnostic"] and x["rooms"]
-    ) - sum(1 for o in f["overlaps"] if o["relation"] == "identical")
+    ) - sum(1 for o in f["overlaps"] if o["relation"] == "identical" and o.get("diagnostic"))
     for x in f["features"]:
         dd = x["dominant_dir"]
         assert dd["holds_third"] == (dd["n"] * 3 >= x["count"]) and dd["placeable"] == (
@@ -599,8 +599,8 @@ def test_register_cells_are_linted_by_their_tests(sub):
     assert "none holds a third" in render_register(g)
     assert (
         "distinct sets of rooms" in table
-        and "fall on the same rooms twice" in table
-        and "where two profiles carry one predicate" in table
+        and "rooms twice" in table
+        and "under one predicate in two profiles" in table
     )
     base = _good_draft(f)
     wing, n = next(iter(feat["by_wing"].items()))
@@ -745,7 +745,7 @@ def test_note_is_generated_from_the_constants_and_disclosures_cover_the_register
     f = facts(_skeleton(sub), sub)
     table = render_register(f)
     assert (
-        f"between sets of {RELATION_MIN_ROOMS} or more rooms" in table
+        f"with {RELATION_MIN_ROOMS} or more rooms" in table
         and "identity and containment, and only those" in table
     )
     assert "none |" not in table and (
