@@ -712,8 +712,8 @@ def test_explanations_are_split_by_cause_and_the_rule_list_has_one_source(sub):
 
     f = facts(_skeleton(sub), sub)
     assert (
-        f["marks_on_identical_pairs"]
-        == f["marks_on_shared_predicates"] + f["marks_on_inert_conjuncts"]
+        f["rooms_marked_twice"]
+        == f["rooms_marked_twice_shared_predicate"] + f["rooms_marked_twice_inert_conjunct"]
     )
     assert "warts" not in STANCE
     page = render_brief(_good_draft(f), f, [], {"generator": "draft"})
@@ -780,3 +780,53 @@ def test_note_is_generated_from_the_constants_and_disclosures_cover_the_register
         + f"{feat['feature']} rooms read no fan-in and so are not an entrance [{feat['feature']}: {room}].\n\n"
     )
     assert "R17-relation" in {v.rule for v in lint(neg, g, register=True)}
+
+
+def test_register_relations_cover_every_set_and_positions_always_name_a_record(sub):
+    """D-044 (eighth seating, run 24): a note generated from the constants but not the filter beside
+    them. Relations are drawn over every feature with enough rooms, decorative included, so a
+    fallback row has no superset among them; every position cell names a record; a count of
+    relations matches the register by kind; a wing holding all of a feature's rooms is its row."""
+    from repo_substrate.brief import RELATION_MIN_ROOMS, _RECORDS, render_register
+
+    f = facts(_skeleton(sub), sub)
+    sets = {
+        f"{x['profile']}/{x['feature']}": set(x["rooms"])
+        for x in f["features"]
+        if len(x["rooms"]) >= RELATION_MIN_ROOMS
+    }
+    related = {k for o in f["overlaps"] for k in (o["a"], o["b"])}
+    for k, rs in sets.items():
+        if k in related:
+            continue
+        for k2, rs2 in sets.items():
+            assert k2 == k or not (rs <= rs2 or rs2 <= rs), (k, k2)
+    assert f["relation_counts"]["total"] == len(f["overlaps"])
+    table = render_register(f)
+    records = [name for name, _ in _RECORDS] + ["an unlisted record"]
+    for line in table.splitlines():
+        if line.startswith("| ") and not line.startswith("| feature") and "|---" not in line:
+            pos = line.split("|")[3].strip()
+            assert any(r in pos for r in records), pos
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    base = _good_draft(f)
+    largest = max(f["wings"], key=lambda w: (f["wings"][w], w))
+    wing = next(
+        (w for w, v in feat["by_wing"].items() if v == feat["count"] and w != largest), None
+    )
+    if wing:
+        row = (
+            base
+            + f"All {feat['count']} {feat['feature']} rooms sit in {wing} [{feat['feature']} ×{feat['count']}].\n\n"
+        )
+        assert "R16-restatement" in {v.rule for v in lint(row, f, register=True)}
+    bad = (
+        base
+        + f"There are {f['relation_counts']['total'] + 1} relations here [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R12-unit" in {v.rule for v in lint(bad, f, register=True)}
+    others = (
+        base
+        + f"{feat['feature']} sits in {largest} and others under lib/x [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R11-share" in {v.rule for v in lint(others, f, register=True)}

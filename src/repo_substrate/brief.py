@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.10.0"
+BRIEF_VERSION = "0.11.0"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -129,7 +129,8 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
     diag = [
         (k, set(e["rooms"]))
         for k, e in sorted(feats.items())
-        if e["diagnostic"] and len(e["rooms"]) >= RELATION_MIN_ROOMS
+        if len(e["rooms"])
+        >= RELATION_MIN_ROOMS  # D-044: decorative features too — the note promised every set
     ]
     for i, (ka, ra) in enumerate(diag):
         for kb, rb in diag[i + 1 :]:
@@ -141,45 +142,67 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
                 sb = set(feats[kb]["predicate"].replace("∧", "and").split(" and "))
                 inert = sorted(t.strip() for t in (sa ^ sb))
                 overlaps.append(
-                    {
-                        "a": ka,
-                        "b": kb,
-                        "relation": "identical",
-                        "n": len(ra),
-                        "inert_terms": inert,
-                        # D-038: the same predicate under two profiles is one measurement, not two agreeing
-                        "shared_predicate": not inert,
-                    }
+                    _flag(
+                        feats,
+                        {
+                            "a": ka,
+                            "b": kb,
+                            "relation": "identical",
+                            "n": len(ra),
+                            "inert_terms": inert,
+                            # D-038: the same predicate under two profiles is one measurement, not two agreeing
+                            "shared_predicate": not inert,
+                        },
+                    )
                 )
             elif ra < rb:
                 overlaps.append(
-                    {
-                        "a": ka,
-                        "b": kb,
-                        "relation": "within",
-                        "n": len(ra),
-                        "n_outside": len(rb - ra),
-                    }
+                    _flag(
+                        feats,
+                        {
+                            "a": ka,
+                            "b": kb,
+                            "relation": "within",
+                            "n": len(ra),
+                            "n_outside": len(rb - ra),
+                        },
+                    )
                 )
             elif rb < ra:
                 overlaps.append(
-                    {
-                        "a": kb,
-                        "b": ka,
-                        "relation": "within",
-                        "n": len(rb),
-                        "n_outside": len(ra - rb),
-                    }
+                    _flag(
+                        feats,
+                        {
+                            "a": kb,
+                            "b": ka,
+                            "relation": "within",
+                            "n": len(rb),
+                            "n_outside": len(ra - rb),
+                        },
+                    )
                 )
+    # D-040/D-044: the diagnosis's counts come from diagnostic pairs only; a decorative pair is drawn
+    # in the register (the note promises every set of three or more rooms) and counted nowhere
+    diag_overlaps = [o for o in overlaps if o.get("diagnostic")]
     # D-040: how many distinct sets of rooms the diagnosis names — identical pairs are one set,
     # nestings stay two; and how many of the all-profile marks fall on identical pairs twice
     n_diag = sum(1 for e in feats.values() if e["diagnostic"] and e["rooms"])
-    identical = [o for o in overlaps if o["relation"] == "identical"]
+    identical = [o for o in diag_overlaps if o["relation"] == "identical"]
     distinct_room_sets = n_diag - len(identical)
-    marks_on_identical_pairs = sum(o["n"] for o in identical)
+    # D-044: this number counts rooms an identical pair marks twice, not marks — it was named as marks
+    rooms_marked_twice = sum(o["n"] for o in identical)
+    relation_counts = {
+        "identical": sum(1 for o in overlaps if o["relation"] == "identical"),
+        "within": sum(1 for o in overlaps if o["relation"] == "within"),
+        "total": len(overlaps),
+    }
     # D-042: a number with two causes is two numbers — a gloss that names one cause is false of the other
-    marks_on_shared_predicates = sum(o["n"] for o in identical if o.get("shared_predicate"))
-    marks_on_inert_conjuncts = sum(o["n"] for o in identical if not o.get("shared_predicate"))
+    rooms_marked_twice_shared_predicate = sum(
+        o["n"] for o in identical if o.get("shared_predicate")
+    )
+    rooms_marked_twice_inert_conjunct = sum(
+        o["n"] for o in identical if not o.get("shared_predicate")
+    )
     gate_fp = skeleton.get("substrate_config_fingerprint")
     if not gate_fp:
         raise ValueError(
@@ -205,9 +228,10 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         },
         "co_located_rooms": co_located_all,
         "distinct_room_sets": distinct_room_sets,
-        "marks_on_identical_pairs": marks_on_identical_pairs,
-        "marks_on_shared_predicates": marks_on_shared_predicates,
-        "marks_on_inert_conjuncts": marks_on_inert_conjuncts,
+        "rooms_marked_twice": rooms_marked_twice,
+        "rooms_marked_twice_shared_predicate": rooms_marked_twice_shared_predicate,
+        "rooms_marked_twice_inert_conjunct": rooms_marked_twice_inert_conjunct,
+        "relation_counts": relation_counts,
         # D-037: every building-level number carries its unit; a count of rooms is not a count of marks
         "units": {
             "population": "rooms",
@@ -217,9 +241,10 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "decorative.count": "marks",
             "co_located_rooms": "rooms carrying two or more diagnostic marks, across all profiles",
             "distinct_room_sets": "sets of rooms the diagnostic features name, an identical pair counted once, a nesting twice",
-            "marks_on_identical_pairs": "marks that fall on the same rooms twice: an identical pair of features counts each room twice",
-            "marks_on_shared_predicates": "of those, marks where two profiles carry one predicate",
-            "marks_on_inert_conjuncts": "of those, marks where two predicates draw one set because a conjunct excludes nothing",
+            "rooms_marked_twice": "rooms an identical pair of diagnostic features marks twice (each such room carries two marks)",
+            "rooms_marked_twice_shared_predicate": "of those, rooms where two profiles carry one predicate",
+            "rooms_marked_twice_inert_conjunct": "of those, rooms where two predicates draw one set because a conjunct excludes nothing",
+            "relation_counts": "relations the register draws, by kind, over every feature with enough rooms, decorative included",
             "dominant_dir": "the immediate parent directory (non-recursive) holding the most of a feature's rooms; shown only when it holds a third or more",
             "feature.count": "rooms (one mark per room)",
         },
@@ -368,7 +393,8 @@ DISTRIBUTION = re.compile(
     r"\b(?:mostly|most of|largely|predominantly|mainly|chiefly|concentrated in|the bulk|"
     r"spread across|scattered|throughout|every wing|all wings|all of the wings|reaches into every|"
     r"accordingly|in proportion|proportionally|correspondingly|as one would expect|"
-    r"near these|nearby|close to|adjacent|alike|likewise|similarly|in the same way)\b"
+    r"near these|nearby|close to|adjacent|alike|likewise|similarly|in the same way|"
+    r"and others|the others|the rest|the remainder|others under|others in)\b"
 )
 # D-037: comparatives and superlatives set one mark against another; the register forbids it
 # D-041: two rooms as the ends of a span the page does not order
@@ -380,7 +406,7 @@ COMPARISON = re.compile(
 # D-037: a number followed by its unit noun ("160 of those marks", "70 rooms")
 UNIT_USE = re.compile(
     r"\b(\d{1,7}|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+"
-    r"(?:of\s+(?:those|these|the|its|the\s+\w+)\s+)?(rooms?|marks?|findings?|features?)\b",
+    r"(?:of\s+(?:those|these|the|its|the\s+\w+)\s+)?(rooms?|marks?|findings?|features?|relations?|nestings?|identical pairs?)\b",
     re.IGNORECASE,
 )
 # signal names a decorative_reason may cite (R4b)
@@ -539,9 +565,10 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
     allowed_numbers.add(1 + len(facts_doc.get("overlays") or []))
     allowed_numbers.add(facts_doc.get("distinct_room_sets", 0))
     allowed_numbers.add(len(facts_doc.get("overlaps") or []))  # "three relations" (D-040 addendum)
-    allowed_numbers.add(facts_doc.get("marks_on_identical_pairs", 0))
-    allowed_numbers.add(facts_doc.get("marks_on_shared_predicates", 0))
-    allowed_numbers.add(facts_doc.get("marks_on_inert_conjuncts", 0))
+    allowed_numbers.add(facts_doc.get("rooms_marked_twice", 0))
+    allowed_numbers.add(facts_doc.get("rooms_marked_twice_shared_predicate", 0))
+    allowed_numbers.add(facts_doc.get("rooms_marked_twice_inert_conjunct", 0))
+    allowed_numbers.update((facts_doc.get("relation_counts") or {}).values())
     # D-036 (hostile reading, run 17): a feature's numbers are admitted in the sentence that
     # cites the feature, not anywhere in the paragraph — "two sit outside src" passed because
     # 2 was some other feature's count
@@ -718,6 +745,21 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                     continue
                 if unit == "feature":
                     continue  # a count of feature names; the names themselves are checked
+                if unit in ("relation", "nesting", "identical pair"):
+                    # D-044: a count of relations is a sheet number by kind, not a coincidence
+                    rc = facts_doc.get("relation_counts") or {}
+                    want = {
+                        "relation": rc.get("total"),
+                        "nesting": rc.get("within"),
+                        "identical pair": rc.get("identical"),
+                    }[unit]
+                    if want is not None and n != want:
+                        out.append(
+                            Violation(
+                                "R12-unit", i, sent[:160], f"{n} {unit}s: the register draws {want}"
+                            )
+                        )
+                    continue
                 if unit == "mark" and n <= 3 and n <= len(facts_doc["features"]):
                     continue  # "two marks on one set": a count of features wearing the word (D-038 addendum)
                 if unit == "mark" and n in rooms_only and n not in marks_ok:
@@ -930,6 +972,16 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                             rf"(?<![\w/@.-]){re.escape(w)}(?![\w/])", bare
                         ):
                             entitled.add(v)
+                            if v == cf["count"] and re.search(rf"\b{v}\b", bare):
+                                # D-044: "all 21 lit_room rooms sit in src" is the row read aloud
+                                out.append(
+                                    Violation(
+                                        "R16-restatement",
+                                        i,
+                                        sent[:160],
+                                        f"{cf['feature']}'s {v} rooms all sit in {w}: that is its register row, not a reading",
+                                    )
+                                )
                     dd = cf.get("dominant_dir") or {}
                     if dd and re.search(rf"(?<![\w/@.-]){re.escape(dd['dir'])}(?![\w])", bare):
                         entitled |= {dd.get("n"), dd.get("population")}
@@ -988,6 +1040,8 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
     # some sentence must name both features together (the sheet's `overlaps` says which)
     sentences_all = [snt for p in _paragraphs(text) for snt in SENTENCE.split(p)]
     for ov in facts_doc.get("overlaps") or []:
+        if not ov.get("diagnostic", True):
+            continue  # D-044: a decorative pair is the register's; prose never diagnoses it (R4)
         # D-039: with the register on the page the obligation to name the pair is met there; the
         # refusals (an identity noun on a nesting, two profiles read as agreeing) still bind the prose
         fa, fb = ov["a"].split("/")[-1], ov["b"].split("/")[-1]
@@ -1155,7 +1209,7 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
 
 # ---------------------------------------------------------------- 2. the generator
 
-SYSTEM = """You are a condemnation surveyor writing the architect's brief for a building that is a codebase. The building is drawn from a skeleton of named structural features; you have the facts sheet and nothing else. You describe what is; you do not sell, soften, or forecast. The page you are writing for already carries a register: a table rendered from the facts sheet by code with one row per feature — position name, room count, counts per wing, dominant directory with its population, relations to other features (identical, within, with the rooms outside and the conjunct that did no work), and the reason a decorative feature is excluded. Do not restate the register: a feature's count in a wing or directory is sayable only in a sentence that names that wing or directory (R16) — say "8 of the 11 import_root rooms sit in scripts", never a bare "11" for a wing that holds 8. The building's largest wing is the exception: its count for any feature is the register's and is never sayable in the reading ("147 of the 164 sit in src" is refused when src is the largest wing) — say the minority wings' counts or say nothing. Never say a feature stands apart or shares no rooms unless the register's relation cell for it is "none" (R17). Never write "from room A to room B", "near", "alike", "similarly": rooms are not ordered and the page carries no distance. A caveat is a limit on what a predicate reads; never restate it as a property of rooms ("not an entrance"). Every bracket you write must warrant something in its own sentence — the feature's name, one of its rooms, or its count. Do not restate the register otherwise: and the building's totals need no repeating. The sheet's `distinct_room_sets` is the number of distinct sets of rooms the diagnosis names — an identical pair is one set, a nesting is two — use that number rather than your own count. Write the reading: what shape the building has, where the marks sit relative to one another, what the overlaps mean for how many distinct sets of rooms there are, and what the decorative marks are excluded for. Every claim you make is still checked against the sheet.
+SYSTEM = """You are a condemnation surveyor writing the architect's brief for a building that is a codebase. The building is drawn from a skeleton of named structural features; you have the facts sheet and nothing else. You describe what is; you do not sell, soften, or forecast. The page you are writing for already carries a register: a table rendered from the facts sheet by code with one row per feature — position name, room count, counts per wing, dominant directory with its population, relations to other features (identical, within, with the rooms outside and the conjunct that did no work), and the reason a decorative feature is excluded. Do not restate the register: a feature's count in a wing or directory is sayable only in a sentence that names that wing or directory (R16) — say "8 of the 11 import_root rooms sit in scripts", never a bare "11" for a wing that holds 8. The building's largest wing is the exception: its count for any feature is the register's and is never sayable in the reading ("147 of the 164 sit in src" is refused when src is the largest wing) — say the minority wings' counts or say nothing. Never say a feature stands apart or shares no rooms unless the register's relation cell for it is "none" (R17). Never write "from room A to room B", "near", "alike", "similarly": rooms are not ordered and the page carries no distance. A caveat is a limit on what a predicate reads; never restate it as a property of rooms ("not an entrance"). Every bracket you write must warrant something in its own sentence — the feature's name, one of its rooms, or its count. Never say a wing holds "all" of a feature's rooms — that is its register row. The sheet's `relation_counts` gives how many relations the register draws by kind; use those numbers or none. Do not restate the register otherwise: and the building's totals need no repeating. The sheet's `distinct_room_sets` is the number of distinct sets of rooms the diagnosis names — an identical pair is one set, a nesting is two — use that number rather than your own count. Write the reading: what shape the building has, where the marks sit relative to one another, what the overlaps mean for how many distinct sets of rooms there are, and what the decorative marks are excluded for. Every claim you make is still checked against the sheet.
 
 Register, binding (validation-spec §2.1.1, mapper §3):
 - Present tense only. Every feature rests on a signal that describes a present structural position. You may say where a room sits and what fires on it. You may not say what will happen, what breaks, what is at risk, what is fragile, what will ripple, what a change would cause. Those are predictions; none is licensed here. Avoid the words: break, will, would, risk, fragile, brittle, dangerous, ripple, cascade, fail, failure, likely, predict, expect, cause, collapse, vulnerable, exposed, threat, prone, future, soon, eventually, impact, consequence, propagate, bug, defect, safe, unsafe, critical.
@@ -1281,6 +1335,12 @@ _RECORDS: list[tuple[str, tuple[str, ...]]] = [
 ]
 
 
+def _flag(feats: dict[str, dict[str, Any]], ov: dict[str, Any]) -> dict[str, Any]:
+    """D-044: an overlap says whether both its features are diagnostic; only those count."""
+    ov["diagnostic"] = bool(feats[ov["a"]]["diagnostic"] and feats[ov["b"]]["diagnostic"])
+    return ov
+
+
 def record_of(predicate: str) -> str:
     """The records a predicate reads, in a fixed order — 'import graph and clock' for
     flooded_basement. A position is a place in these records and nothing else."""
@@ -1310,7 +1370,10 @@ RULES: list[tuple[str, str]] = [
     ("R9", "features with the same or nested rooms named together (met by the register)"),
     ("R10", "a directory named in a sentence contains a room cited in it"),
     ("R11", "no distributional adverb, ranking of marks, span or proximity between rooms"),
-    ("R12", "a number wears its unit; no ratio across units"),
+    (
+        "R12",
+        "a number wears its unit, a count of relations matches the register by kind; no ratio across units",
+    ),
     (
         "R13",
         "a nesting is not an identity; a shared predicate is one measurement, not two agreeing",
@@ -1393,9 +1456,11 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         if f.get("position_name"):
             pos = f"{f['position_name']} ({record_of(f['predicate'])})"
         elif f.get("name_implies_consequence"):
-            pos = "POSITION NAME MISSING (ruleset defect)"
+            pos = f"POSITION NAME MISSING (ruleset defect); a position in the {record_of(f['predicate'])}"
         else:
-            pos = "no consequence word in the name (lexicon)"
+            # D-044: the note promises the record beside every position; the lexicon is why there is
+            # no position name, the record is what the predicate reads — both are said
+            pos = f"no consequence word in the name (lexicon); a position in the {record_of(f['predicate'])}"
         rows.append(
             f"| {name} | {f['profile']} | {pos} | {f['count']} | {bw} | {dom} | {relations(key)} | {what} |"
         )
@@ -1411,12 +1476,12 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + NL
         + f"*Rendered from the facts sheet by code (brief {facts_doc.get('brief_version', BRIEF_VERSION)}); every cell is a field, no cell is a sentence. "
         + f"{facts_doc['population']} rooms in {facts_doc['wing_count']} wings ({wings}); {facts_doc['diagnostic_count']} diagnostic marks across all profiles "
-        + f"({base} in the base profile), one mark per feature per room — {facts_doc.get('marks_on_identical_pairs', 0)} of them fall on the same rooms twice (an identical pair counts each room twice): {facts_doc.get('marks_on_shared_predicates', 0)} where two profiles carry one predicate, {facts_doc.get('marks_on_inert_conjuncts', 0)} where two predicates draw one set because a conjunct excludes nothing; "
+        + f"({base} in the base profile), one mark per feature per room; identical pairs of diagnostic features mark {facts_doc.get('rooms_marked_twice', 0)} rooms twice ({facts_doc.get('rooms_marked_twice_shared_predicate', 0)} under one predicate in two profiles, {facts_doc.get('rooms_marked_twice_inert_conjunct', 0)} where two predicates draw one set because a conjunct excludes nothing); "
         + f"the diagnostic features name {facts_doc.get('distinct_room_sets', '?')} distinct sets of rooms; {facts_doc['decorative']['count']} decorative marks ({dec}); "
         + f"{facts_doc['co_located_rooms']} rooms carry two or more diagnostic marks; gate `{fp}`, {asserted} of {len(gate)} signals asserted, none validated. "
         + "◌ marks a decorative feature: excluded from the diagnosis. A position names where a room sits in the record its predicate reads — the record is named beside each position — and is not a claim about its condition (D-004 Q3). "
         + f"The directory column is the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent. "
-        + f"The relation column draws identity and containment, and only those, between sets of {RELATION_MIN_ROOMS} or more rooms; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap.*"
+        + f"The relation column draws identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap.*"
         + NL
         + NL
         + "| feature | profile | position | rooms | by wing | largest parent directory n / rooms in it | relation to | predicate or reason |"
