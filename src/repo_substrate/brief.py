@@ -972,7 +972,12 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                             rf"(?<![\w/@.-]){re.escape(w)}(?![\w/])", bare
                         ):
                             entitled.add(v)
-                            if v == cf["count"] and re.search(rf"\b{v}\b", bare):
+                            if (
+                                v == cf["count"]
+                                and cf["count"] >= RELATION_MIN_ROOMS
+                                and re.search(rf"\b{v}\b", bare)
+                            ):
+                                # (a feature of one or two rooms has no share to restate; its place is its room's name)
                                 # D-044: "all 21 lit_room rooms sit in src" is the row read aloud
                                 out.append(
                                     Violation(
