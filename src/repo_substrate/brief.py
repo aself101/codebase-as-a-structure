@@ -473,7 +473,10 @@ def _spelled_numbers(text: str):
         yield span, total + cur
 
 
-SENTENCE = re.compile(r"(?<=[.!?])\s+(?=[A-Z\[])")
+# a sentence may begin with a lowercase feature name ("flooded_basement sits inside …"): the split
+# accepts any letter, or a bracket or backtick, after the terminal (D-042 addendum — one merged
+# "sentence" let an identity noun for one pair fire R13 on the nestings beside it)
+SENTENCE = re.compile(r"(?<=[.!?])\s+(?=[A-Za-z_\[`])")
 
 
 @dataclass
