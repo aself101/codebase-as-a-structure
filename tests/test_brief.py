@@ -830,3 +830,58 @@ def test_register_relations_cover_every_set_and_positions_always_name_a_record(s
         + f"{feat['feature']} sits in {largest} and others under lib/x [{feat['feature']} ×{feat['count']}].\n\n"
     )
     assert "R11-share" in {v.rule for v in lint(others, f, register=True)}
+
+
+def test_fixes_are_as_wide_as_the_shape_they_close(sub):
+    """D-045 (paired reading, run 25): a wing holding all of a feature's rooms is refused whether or
+    not the number is in the prose; a located subset carries its total; a named directory carries
+    its share and its rooms; a family of marks the sheet does not define is refused."""
+    f = facts(_skeleton(sub), sub)
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    base = _good_draft(f)
+    room = feat["rooms"][0]
+    whole = next(
+        (w for w, v in feat["by_wing"].items() if v == feat["count"] and feat["count"] >= 3), None
+    )
+    if whole:
+        bare = (
+            base
+            + f"{feat['feature']} fires in {whole} [{feat['feature']} ×{feat['count']}: {room}].\n\n"
+        )
+        assert "R16-restatement" in {v.rule for v in lint(bare, f, register=True)}
+    g = json.loads(json.dumps(f))
+    tf = dict(feat)
+    tf.update(
+        {
+            "feature": "split_mark",
+            "count": 9,
+            "rooms": feat["rooms"][:1] + ["lib/a/1.js", "lib/a/2.js", "lib/b/3.js"],
+            "by_wing": {"src": 1, "lib": 8},
+            "dominant_dir": {
+                "dir": "lib/a",
+                "n": 2,
+                "population": 4,
+                "tied": False,
+                "holds_third": False,
+                "placeable": True,
+            },
+        }
+    )
+    g["features"].append(tf)
+    g["wings"] = {**g["wings"], "lib": 8}
+    partial = base + f"split_mark places 1 of its rooms in src [split_mark: {room}].\n\n"
+    assert "R16-restatement" in {v.rule for v in lint(partial, g, register=True)}
+    whole_sent = base + f"split_mark places 1 of its 9 rooms in src [split_mark: {room}].\n\n"
+    assert "R16-restatement" not in {v.rule for v in lint(whole_sent, g, register=True)}
+    half = base + f"2 of the 9 split_mark rooms sit in lib/a [split_mark: lib/a/1.js].\n\n"
+    assert "R15-composition" in {v.rule for v in lint(half, g, register=True)}
+    full = (
+        base
+        + f"2 of the 9 split_mark rooms sit in lib/a, which holds 4 rooms [split_mark: lib/a/1.js].\n\n"
+    )
+    assert "R15-composition" not in {v.rule for v in lint(full, g, register=True)}
+    fam = (
+        base
+        + f"The graph marks sit on the same two wings [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R18-family" in {v.rule for v in lint(fam, f, register=True)}

@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.11.0"
+BRIEF_VERSION = "0.12.0"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -584,6 +584,22 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
         feature_numbers[f["feature"]] = nums
         feature_numbers[f"{f['profile']}/{f['feature']}"] = nums
     wing_names = set(facts_doc["wings"])
+    # R18 (D-045): families of marks the sheet does not define, built from its own profile and record names
+    _families = [
+        facts_doc["profile"],
+        *(facts_doc.get("overlays") or []),
+        *[n for n, _ in _RECORDS],
+        "graph",
+        "age",
+        "import-graph",
+        "load",
+        "recency",
+    ]
+    family_words = re.compile(
+        r"\b(?:the\s+)?(?:"
+        + "|".join(re.escape(x) for x in _families)
+        + r")\s+(?:marks|features|positions|set|sets)\b"
+    )
     largest_wing = (
         max(facts_doc["wings"], key=lambda w: (facts_doc["wings"][w], w))
         if facts_doc["wings"]
@@ -829,6 +845,18 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                             )
                         )
                         break
+            # R18 (D-045): a family of marks no field defines — "the graph marks", "the onboarding
+            # marks", "the age marks" — is refused; the reading names features, the register names
+            # profiles and records. Built from the sheet's profile names and the record names.
+            for m in family_words.finditer(low_sent):
+                out.append(
+                    Violation(
+                        "R18-family",
+                        i,
+                        sent[:160],
+                        f"'{m.group(0)}' groups features into a family the sheet does not define; name the features",
+                    )
+                )
             # R14 (D-037): "validated" names a status no signal holds in this gate
             if not any_validated and re.search(r"\bvalidated\b", low_sent):
                 out.append(
@@ -966,30 +994,67 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                         continue
                     entitled.add(cf["count"])
                     for w, v in cf.get("by_wing", {}).items():
+                        wing_named = (
+                            re.search(rf"(?<![\w/@.-]){re.escape(w)}(?![\w/])", bare) is not None
+                        )
+                        if not wing_named:
+                            continue
+                        # D-045: a wing that holds all of a feature's rooms is that feature's register
+                        # row, whether or not the number is in the prose — the citation carries it
+                        # (S2: "import_root fires in the cookbook servers [×17]"); a feature of one or
+                        # two rooms has no share to restate, its place is its room's name
+                        if v == cf["count"] and cf["count"] >= RELATION_MIN_ROOMS:
+                            out.append(
+                                Violation(
+                                    "R16-restatement",
+                                    i,
+                                    sent[:160],
+                                    f"{cf['feature']}'s rooms all sit in {w}: that is its register row, not a reading — name its rooms or say nothing of the wing",
+                                )
+                            )
+                            continue
                         # D-042: naming the largest wing costs nothing on a one-wing building, so its
                         # count stays the register's; a minority wing's count is the reading's to say
-                        if w != largest_wing and re.search(
-                            rf"(?<![\w/@.-]){re.escape(w)}(?![\w/])", bare
-                        ):
+                        if w != largest_wing:
                             entitled.add(v)
+                            # D-045: a located subset carries its total — "7 of the 42", never "7 in src"
                             if (
-                                v == cf["count"]
-                                and cf["count"] >= RELATION_MIN_ROOMS
+                                v < cf["count"]
                                 and re.search(rf"\b{v}\b", bare)
+                                and not re.search(rf"\b{cf['count']}\b", bare)
                             ):
-                                # (a feature of one or two rooms has no share to restate; its place is its room's name)
-                                # D-044: "all 21 lit_room rooms sit in src" is the row read aloud
                                 out.append(
                                     Violation(
                                         "R16-restatement",
                                         i,
                                         sent[:160],
-                                        f"{cf['feature']}'s {v} rooms all sit in {w}: that is its register row, not a reading",
+                                        f"{v} of {cf['feature']}'s rooms are placed in {w} without the {cf['count']} they are part of; say the total in the sentence",
                                     )
                                 )
                     dd = cf.get("dominant_dir") or {}
-                    if dd and re.search(rf"(?<![\w/@.-]){re.escape(dd['dir'])}(?![\w])", bare):
+                    # a parent that is also a wing is the by-wing branch's business, not a directory
+                    if (
+                        dd
+                        and dd.get("dir") not in wing_names
+                        and re.search(rf"(?<![\w/@.-]){re.escape(dd['dir'])}(?![\w])", bare)
+                    ):
                         entitled |= {dd.get("n"), dd.get("population")}
+                        # D-045: a directory share carries its denominator in the same sentence (S1) —
+                        # and a directory the register suppressed (under a third) is named with both
+                        # numbers or not at all
+                        has_n = re.search(rf"\b{dd.get('n')}\b", bare) is not None
+                        has_pop = re.search(rf"\b{dd.get('population')}\b", bare) is not None
+                        if has_n != has_pop or (
+                            not dd.get("holds_third") and not (has_n and has_pop)
+                        ):
+                            out.append(
+                                Violation(
+                                    "R15-composition",
+                                    i,
+                                    sent[:160],
+                                    f"{dd['dir']} is named for {cf['feature']} without both its share ({dd.get('n')}) and its rooms ({dd.get('population')}) in the sentence; a share carries its denominator",
+                                )
+                            )
                 for cf in cited:
                     if not cf:
                         continue
@@ -1214,7 +1279,7 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
 
 # ---------------------------------------------------------------- 2. the generator
 
-SYSTEM = """You are a condemnation surveyor writing the architect's brief for a building that is a codebase. The building is drawn from a skeleton of named structural features; you have the facts sheet and nothing else. You describe what is; you do not sell, soften, or forecast. The page you are writing for already carries a register: a table rendered from the facts sheet by code with one row per feature — position name, room count, counts per wing, dominant directory with its population, relations to other features (identical, within, with the rooms outside and the conjunct that did no work), and the reason a decorative feature is excluded. Do not restate the register: a feature's count in a wing or directory is sayable only in a sentence that names that wing or directory (R16) — say "8 of the 11 import_root rooms sit in scripts", never a bare "11" for a wing that holds 8. The building's largest wing is the exception: its count for any feature is the register's and is never sayable in the reading ("147 of the 164 sit in src" is refused when src is the largest wing) — say the minority wings' counts or say nothing. Never say a feature stands apart or shares no rooms unless the register's relation cell for it is "none" (R17). Never write "from room A to room B", "near", "alike", "similarly": rooms are not ordered and the page carries no distance. A caveat is a limit on what a predicate reads; never restate it as a property of rooms ("not an entrance"). Every bracket you write must warrant something in its own sentence — the feature's name, one of its rooms, or its count. Never say a wing holds "all" of a feature's rooms — that is its register row. The sheet's `relation_counts` gives how many relations the register draws by kind; use those numbers or none. Do not restate the register otherwise: and the building's totals need no repeating. The sheet's `distinct_room_sets` is the number of distinct sets of rooms the diagnosis names — an identical pair is one set, a nesting is two — use that number rather than your own count. Write the reading: what shape the building has, where the marks sit relative to one another, what the overlaps mean for how many distinct sets of rooms there are, and what the decorative marks are excluded for. Every claim you make is still checked against the sheet.
+SYSTEM = """You are a condemnation surveyor writing the architect's brief for a building that is a codebase. The building is drawn from a skeleton of named structural features; you have the facts sheet and nothing else. You describe what is; you do not sell, soften, or forecast. The page you are writing for already carries a register: a table rendered from the facts sheet by code with one row per feature — position name, room count, counts per wing, dominant directory with its population, relations to other features (identical, within, with the rooms outside and the conjunct that did no work), and the reason a decorative feature is excluded. Do not restate the register: a feature's count in a wing or directory is sayable only in a sentence that names that wing or directory (R16) — say "8 of the 11 import_root rooms sit in scripts", never a bare "11" for a wing that holds 8. The building's largest wing is the exception: its count for any feature is the register's and is never sayable in the reading ("147 of the 164 sit in src" is refused when src is the largest wing) — say the minority wings' counts or say nothing. Never say a feature stands apart or shares no rooms unless the register's relation cell for it is "none" (R17). Never write "from room A to room B", "near", "alike", "similarly": rooms are not ordered and the page carries no distance. A caveat is a limit on what a predicate reads; never restate it as a property of rooms ("not an entrance"). Every bracket you write must warrant something in its own sentence — the feature's name, one of its rooms, or its count. Never say a wing holds "all" of a feature's rooms — that is its register row. Never name a wing that holds all of a feature's rooms beside that feature at all. When you place some of a feature's rooms ("7 of the 42 sit in src"), the total goes in the same sentence. When you name a directory for a feature, give its share and the directory's rooms together ("6 of the 22 hub rooms sit in cookbook/x/providers, which holds 6 rooms"). Never write "the graph marks", "the onboarding marks", "the age marks" — name the features. The sheet's `relation_counts` gives how many relations the register draws by kind; use those numbers or none. Do not restate the register otherwise: and the building's totals need no repeating. The sheet's `distinct_room_sets` is the number of distinct sets of rooms the diagnosis names — an identical pair is one set, a nesting is two — use that number rather than your own count. Write the reading: what shape the building has, where the marks sit relative to one another, what the overlaps mean for how many distinct sets of rooms there are, and what the decorative marks are excluded for. Every claim you make is still checked against the sheet.
 
 Register, binding (validation-spec §2.1.1, mapper §3):
 - Present tense only. Every feature rests on a signal that describes a present structural position. You may say where a room sits and what fires on it. You may not say what will happen, what breaks, what is at risk, what is fragile, what will ripple, what a change would cause. Those are predictions; none is licensed here. Avoid the words: break, will, would, risk, fragile, brittle, dangerous, ripple, cascade, fail, failure, likely, predict, expect, cause, collapse, vulnerable, exposed, threat, prone, future, soon, eventually, impact, consequence, propagate, bug, defect, safe, unsafe, critical.
