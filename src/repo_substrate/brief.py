@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.13.0"
+BRIEF_VERSION = "0.13.1"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -656,6 +656,7 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
         # R1 consequence vocabulary, per sentence. Bracket interiors are names, not claims,
         # and are stripped first; the disclosure clause is struck, not used as an amnesty.
         for sent in SENTENCE.split(para):
+            bare_sent = BRACKET.sub("", sent)
             scan = BRACKET.sub("", sent).lower()
             for clause in DISCLOSURE_CLAUSES:
                 scan = re.sub(clause, " ", scan)
@@ -681,18 +682,40 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                         f"whole-building label: {', '.join(labels)} (D-019)",
                     )
                 )
-            # R2b (D-043): a citation warrants something in its sentence — the feature named in prose,
-            # one of its rooms, or one of its numbers — or it is decoration
+            # R2b (D-043, narrowed D-046): a citation warrants something in its sentence — the
+            # feature named in prose, one of its rooms, or one of its numbers — or it is decoration.
+            # Two forms warrant it otherwise: the decorative disclosure, whose whole discipline is to
+            # cite by count and name no room (R4/R7), and a sentence continuing about a feature the
+            # sentence before it named, where the subject is a pronoun.
+            prev_sent = (
+                SENTENCE.split(para)[max(0, SENTENCE.split(para).index(sent) - 1)]
+                if sent in SENTENCE.split(para)
+                else ""
+            )
+            dec_disclosure = bool(
+                re.search(rf"\b{facts_doc['decorative']['count']}\b", bare_sent)
+                and NEGATED_DIAGNOSIS.search(bare_sent.lower())
+            )
             for cname, ccount, crooms in _citations(sent):
                 cf = by_key.get(cname) or by_feature.get(cname)
                 if not cf:
                     continue
-                bare_s = BRACKET.sub("", sent)
-                named_in_prose = re.search(rf"\b{re.escape(cf['feature'])}\b", bare_s) is not None
-                room_named = any(_mentions(bare_s, r) for r in cf["rooms"])
+                if dec_disclosure and cf["decorative"]:
+                    continue
+                named_in_prose = (
+                    re.search(rf"\b{re.escape(cf['feature'])}\b", bare_sent) is not None
+                )
+                room_named = any(_mentions(bare_sent, r) for r in cf["rooms"])
                 nums = {cf["count"], *cf.get("by_wing", {}).values()}
-                number_used = any(re.search(rf"\b{n}\b", bare_s) for n in nums)
-                if not (named_in_prose or room_named or number_used):
+                number_used = any(re.search(rf"\b{n}\b", bare_sent) for n in nums)
+                anaphora = bool(
+                    prev_sent
+                    and re.search(rf"\b{re.escape(cf['feature'])}\b", BRACKET.sub("", prev_sent))
+                    and re.match(
+                        r"\s*(?:it|its|it's|they|their|this|that|these|those)\b", bare_sent.lower()
+                    )
+                )
+                if not (named_in_prose or room_named or number_used or anaphora):
                     out.append(
                         Violation(
                             "R2-provenance",
@@ -725,7 +748,6 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                         )
                     )
             # R11 (D-036): a share is a number on the sheet (by_wing), not an adverb
-            bare_sent = BRACKET.sub("", sent)
             low_sent = bare_sent.lower().replace("across all profiles", "")
             for m in DISTRIBUTION.finditer(low_sent):
                 out.append(

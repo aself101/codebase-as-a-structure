@@ -931,3 +931,21 @@ def test_every_refusal_admits_the_sentence_it_must_admit(sub):
             + f"{names} rest on {', '.join(sigs)}, which is unvalidated, and their {f['decorative']['count']} marks render without entering the diagnosis [{cites}].\n\n"
         )
         assert "R4-decorative" not in {v.rule for v in lint(without, f, register=True)}
+        # the prompt's own canonical decorative sentence: cited by count, no feature named in prose
+        canonical = (
+            base
+            + f"{f['decorative']['count']} decorative marks render but are not a diagnosis [{cites}].\n\n"
+        )
+        assert not {v.rule for v in lint(canonical, f, register=True)} & {
+            "R2-provenance",
+            "R4-decorative",
+        }
+    # a sentence continuing about the feature the sentence before it named
+    room = feat["rooms"][0]
+    pair = base + (
+        f"{feat['feature']} covers {feat['count']} rooms [{feat['feature']}: {room}]. "
+        f"Its predicate reads what the register prints [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R2-provenance" not in {v.rule for v in lint(pair, f, register=True)}
+    orphan = base + f"Nothing is said of it here [{feat['feature']} ×{feat['count']}].\n\n"
+    assert "R2-provenance" in {v.rule for v in lint(orphan, f, register=True)}
