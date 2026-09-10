@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.13.3"
+BRIEF_VERSION = "0.13.4"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -396,7 +396,7 @@ DISTRIBUTION = re.compile(
     r"\b(?:mostly|most of|largely|predominantly|mainly|chiefly|concentrated in|the bulk|"
     r"spread across|scattered|throughout|every wing|all wings|all of the wings|reaches into every|"
     r"accordingly|in proportion|proportionally|correspondingly|as one would expect|"
-    r"near these|nearby|close to|adjacent|alike|likewise|similarly|in the same way|"
+    r"near these|nearby|close to|adjacent|"
     r"and others|the others|the rest|the remainder|others under|others in)\b"
 )
 # D-037: comparatives and superlatives set one mark against another; the register forbids it
@@ -445,6 +445,10 @@ PROPERTY_ALIASES = {
     "leaves": "leaf_utility",
     "reinforced": "scaffolding",
 }
+# D-046 addendum: likeness words claim a shared distribution only where a place is named —
+# "marks sit there and in the smaller wings alike" is a claim, "corridor is likewise nested
+# inside hub" is a connective between two relation statements
+LIKENESS = re.compile(r"\b(?:alike|likewise|similarly|in the same way)\b")
 # D-041: constructions that deny a relation
 NO_RELATION = re.compile(
     r"\b(?:unshared|stands? apart|stand alone|no overlap|shares? no rooms|independent of|unrelated|overlaps? nothing)\b"
@@ -772,6 +776,25 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                 re.search(rf"\b{re.escape(x['feature'])}\b", bare_sent)
                 for x in facts_doc["features"]
             ) or any((by_key.get(c) or by_feature.get(c)) for c, _n, _r in _citations(sent))
+            place_named = any(
+                re.search(rf"(?<![\w/@.-]){re.escape(w)}(?![\w/])", bare_sent) for w in wing_names
+            ) or any(
+                (x.get("dominant_dir") or {}).get("dir")
+                and re.search(
+                    rf"(?<![\w/@.-]){re.escape(x['dominant_dir']['dir'])}(?![\w])", bare_sent
+                )
+                for x in facts_doc["features"]
+            )
+            if place_named:
+                for m in LIKENESS.finditer(low_sent):
+                    out.append(
+                        Violation(
+                            "R11-share",
+                            i,
+                            sent[:160],
+                            f"'{m.group(0)}' claims a shared distribution the sheet does not carry; state the counts per wing",
+                        )
+                    )
             for m in COMPARISON.finditer(low_sent if names_a_feature else ""):
                 out.append(
                     Violation(
