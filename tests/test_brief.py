@@ -974,6 +974,12 @@ def test_every_refusal_admits_the_sentence_it_must_admit(sub):
         base + f"5 of the 19 amb_mark rooms sit in {wing} [amb_mark ×19: {feat['rooms'][0]}].\n\n"
     )
     assert "R16-restatement" in {v.rule for v in lint(bare_dir, g, register=True)}
+    # the directory checks read the sentence they are checking, not the paragraph's last sentence
+    two = base + (
+        f"amb_mark places 5 of its 19 rooms in the {wing} directory, which holds 13 rooms "
+        f"[amb_mark ×19: {feat['rooms'][0]}]. The register carries the rest.\n\n"
+    )
+    assert "R16-restatement" not in {v.rule for v in lint(two, g, register=True)}
     marked_dir = (
         base
         + f"5 of the 19 amb_mark rooms sit in the {wing} directory, which holds 13 rooms [amb_mark ×19: {feat['rooms'][0]}].\n\n"
