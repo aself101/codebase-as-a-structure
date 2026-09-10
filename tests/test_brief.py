@@ -815,6 +815,10 @@ def test_register_relations_cover_every_set_and_positions_always_name_a_record(s
         for k2, rs2 in sets.items():
             assert k2 == k or not (rs <= rs2 or rs2 <= rs), (k, k2)
     assert f["relation_counts"]["total"] == len(f["overlaps"])
+    assert f["diagnostic_features"] == sum(
+        1 for x in f["features"] if x["diagnostic"] and x["rooms"]
+    )
+    assert "features, not marks or rooms" in f["units"]["diagnostic_features"]
     table = render_register(f)
     records = [name for name, _ in _RECORDS] + ["an unlisted record"]
     for line in table.splitlines():
