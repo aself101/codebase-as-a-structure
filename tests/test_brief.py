@@ -913,6 +913,17 @@ def test_every_refusal_admits_the_sentence_it_must_admit(sub):
         + f"The building holds {f['population']} rooms in {f['wing_count']} wings, {largest} being the largest of them.\n\n"
     )
     assert "R11-share" not in {v.rule for v in lint(wings_only, f, register=True)}
+    # likeness is a connective between relation statements unless a place is named
+    conn = (
+        base
+        + f"{feat['feature']} is likewise nested inside another set [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R11-share" not in {v.rule for v in lint(conn, f, register=True)}
+    shared = (
+        base
+        + f"{feat['feature']} marks sit in {largest} and the smaller wings alike [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R11-share" in {v.rule for v in lint(shared, f, register=True)}
     ranked = (
         base + f"The largest set is {feat['feature']} [{feat['feature']} ×{feat['count']}].\n\n"
     )
