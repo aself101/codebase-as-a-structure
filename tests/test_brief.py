@@ -949,3 +949,34 @@ def test_every_refusal_admits_the_sentence_it_must_admit(sub):
     assert "R2-provenance" not in {v.rule for v in lint(pair, f, register=True)}
     orphan = base + f"Nothing is said of it here [{feat['feature']} ×{feat['count']}].\n\n"
     assert "R2-provenance" in {v.rule for v in lint(orphan, f, register=True)}
+    # a parent directory sharing a wing's name: sayable as the directory, refused bare
+    g = json.loads(json.dumps(f))
+    wing = max(g["wings"], key=lambda w: (g["wings"][w], w))
+    tf = dict(feat)
+    tf.update(
+        {
+            "feature": "amb_mark",
+            "count": 19,
+            "by_wing": {wing: 7},
+            "rooms": feat["rooms"],
+            "dominant_dir": {
+                "dir": wing,
+                "n": 5,
+                "population": 13,
+                "tied": False,
+                "holds_third": False,
+                "placeable": True,
+            },
+        }
+    )
+    g["features"].append(tf)
+    bare_dir = (
+        base + f"5 of the 19 amb_mark rooms sit in {wing} [amb_mark ×19: {feat['rooms'][0]}].\n\n"
+    )
+    assert "R16-restatement" in {v.rule for v in lint(bare_dir, g, register=True)}
+    marked_dir = (
+        base
+        + f"5 of the 19 amb_mark rooms sit in the {wing} directory, which holds 13 rooms [amb_mark ×19: {feat['rooms'][0]}].\n\n"
+    )
+    rules = {v.rule for v in lint(marked_dir, g, register=True)}
+    assert "R16-restatement" not in rules and "R15-composition" not in rules

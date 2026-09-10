@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.13.1"
+BRIEF_VERSION = "0.13.2"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -1083,29 +1083,46 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                                     )
                                 )
                     dd = cf.get("dominant_dir") or {}
-                    # a parent that is also a wing is the by-wing branch's business, not a directory
-                    if (
-                        dd
-                        and dd.get("dir") not in wing_names
-                        and re.search(rf"(?<![\w/@.-]){re.escape(dd['dir'])}(?![\w])", bare)
-                    ):
-                        entitled |= {dd.get("n"), dd.get("population")}
-                        # D-045: a directory share carries its denominator in the same sentence (S1) —
-                        # and a directory the register suppressed (under a third) is named with both
-                        # numbers or not at all
-                        has_n = re.search(rf"\b{dd.get('n')}\b", bare) is not None
-                        has_pop = re.search(rf"\b{dd.get('population')}\b", bare) is not None
-                        if has_n != has_pop or (
-                            not dd.get("holds_third") and not (has_n and has_pop)
-                        ):
-                            out.append(
-                                Violation(
-                                    "R15-composition",
-                                    i,
-                                    sent[:160],
-                                    f"{dd['dir']} is named for {cf['feature']} without both its share ({dd.get('n')}) and its rooms ({dd.get('population')}) in the sentence; a share carries its denominator",
+                    if dd and re.search(rf"(?<![\w/@.-]){re.escape(dd['dir'])}(?![\w])", bare_sent):
+                        # D-046 addendum: a parent directory that shares a wing's name is sayable, but
+                        # only as the parent — "the tools directory", "as parent", "not the wing" — since
+                        # the wing and the directory hold different numbers of the feature's rooms
+                        ambiguous = dd["dir"] in wing_names
+                        marked = (
+                            re.search(r"\bdirector(?:y|ies)\b|as parent|not the wing", bare_sent)
+                            is not None
+                        )
+                        if ambiguous and not marked:
+                            if re.search(rf"\b{dd.get('n')}\b", bare_sent) and dd.get(
+                                "n"
+                            ) != cf.get("by_wing", {}).get(dd["dir"]):
+                                out.append(
+                                    Violation(
+                                        "R16-restatement",
+                                        i,
+                                        sent[:160],
+                                        f"{dd['dir']} names both a wing ({cf.get('by_wing', {}).get(dd['dir'])} of {cf['feature']}'s rooms) and their parent directory ({dd.get('n')}); say 'the {dd['dir']} directory' or name the wing's count",
+                                    )
                                 )
+                        else:
+                            entitled |= {dd.get("n"), dd.get("population")}
+                            # D-045: a directory share carries its denominator in the same sentence, and
+                            # a directory the register suppressed is named with both numbers or not at all
+                            has_n = re.search(rf"\b{dd.get('n')}\b", bare_sent) is not None
+                            has_pop = (
+                                re.search(rf"\b{dd.get('population')}\b", bare_sent) is not None
                             )
+                            if has_n != has_pop or (
+                                not dd.get("holds_third") and not (has_n and has_pop)
+                            ):
+                                out.append(
+                                    Violation(
+                                        "R15-composition",
+                                        i,
+                                        sent[:160],
+                                        f"{dd['dir']} is named for {cf['feature']} without both its share ({dd.get('n')}) and its rooms ({dd.get('population')}) in the sentence; a share carries its denominator",
+                                    )
+                                )
                 for cf in cited:
                     if not cf:
                         continue
@@ -1334,7 +1351,7 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
 
 # ---------------------------------------------------------------- 2. the generator
 
-SYSTEM = """You are a condemnation surveyor writing the architect's brief for a building that is a codebase. The building is drawn from a skeleton of named structural features; you have the facts sheet and nothing else. You describe what is; you do not sell, soften, or forecast. The page you are writing for already carries a register: a table rendered from the facts sheet by code with one row per feature — position name, room count, counts per wing, dominant directory with its population, relations to other features (identical, within, with the rooms outside and the conjunct that did no work), and the reason a decorative feature is excluded. Do not restate the register: a feature's count in a wing or directory is sayable only in a sentence that names that wing or directory (R16) — say "8 of the 11 import_root rooms sit in scripts", never a bare "11" for a wing that holds 8. The building's largest wing is the exception: its count for any feature is the register's and is never sayable in the reading ("147 of the 164 sit in src" is refused when src is the largest wing) — say the minority wings' counts or say nothing. Never say a feature stands apart or shares no rooms unless the register's relation cell for it is "none" (R17). Never write "from room A to room B", "near", "alike", "similarly": rooms are not ordered and the page carries no distance. A caveat is a limit on what a predicate reads; never restate it as a property of rooms ("not an entrance"). Every bracket you write must warrant something in its own sentence — the feature's name, one of its rooms, or its count. Never say a wing holds "all" of a feature's rooms — that is its register row. Never name a wing that holds all of a feature's rooms beside that feature at all. When you place some of a feature's rooms ("7 of the 42 sit in src"), the total goes in the same sentence. When you name a directory for a feature, give its share and the directory's rooms together ("6 of the 22 hub rooms sit in cookbook/x/providers, which holds 6 rooms"). Never write "the graph marks", "the onboarding marks", "the age marks" — name the features. The sheet's `relation_counts` gives how many relations the register draws by kind; use those numbers or none. Do not restate the register otherwise: and the building's totals need no repeating. The sheet's `distinct_room_sets` is the number of distinct sets of rooms the diagnosis names — an identical pair is one set, a nesting is two — use that number rather than your own count. Write the reading: what shape the building has, where the marks sit relative to one another, what the overlaps mean for how many distinct sets of rooms there are, and what the decorative marks are excluded for. Every claim you make is still checked against the sheet.
+SYSTEM = """You are a condemnation surveyor writing the architect's brief for a building that is a codebase. The building is drawn from a skeleton of named structural features; you have the facts sheet and nothing else. You describe what is; you do not sell, soften, or forecast. The page you are writing for already carries a register: a table rendered from the facts sheet by code with one row per feature — position name, room count, counts per wing, dominant directory with its population, relations to other features (identical, within, with the rooms outside and the conjunct that did no work), and the reason a decorative feature is excluded. Do not restate the register: a feature's count in a wing or directory is sayable only in a sentence that names that wing or directory (R16) — say "8 of the 11 import_root rooms sit in scripts", never a bare "11" for a wing that holds 8. The building's largest wing is the exception: its count for any feature is the register's and is never sayable in the reading ("147 of the 164 sit in src" is refused when src is the largest wing) — say the minority wings' counts or say nothing. Never say a feature stands apart or shares no rooms unless the register's relation cell for it is "none" (R17). Never write "from room A to room B", "near", "alike", "similarly": rooms are not ordered and the page carries no distance. A caveat is a limit on what a predicate reads; never restate it as a property of rooms ("not an entrance"). Every bracket you write must warrant something in its own sentence — the feature's name, one of its rooms, or its count. Never say a wing holds "all" of a feature's rooms — that is its register row. Never name a wing that holds all of a feature's rooms beside that feature at all. When you place some of a feature's rooms ("7 of the 42 sit in src"), the total goes in the same sentence. When you name a directory for a feature, give its share and the directory's rooms together ("6 of the 22 hub rooms sit in cookbook/x/providers, which holds 6 rooms"). When a directory shares a wing's name, say "the tools directory" — the wing and the directory hold different numbers of a feature's rooms. Never write "the graph marks", "the onboarding marks", "the age marks" — name the features. The sheet's `relation_counts` gives how many relations the register draws by kind; use those numbers or none. Do not restate the register otherwise: and the building's totals need no repeating. The sheet's `distinct_room_sets` is the number of distinct sets of rooms the diagnosis names — an identical pair is one set, a nesting is two — use that number rather than your own count. Write the reading: what shape the building has, where the marks sit relative to one another, what the overlaps mean for how many distinct sets of rooms there are, and what the decorative marks are excluded for. Every claim you make is still checked against the sheet.
 
 Register, binding (validation-spec §2.1.1, mapper §3):
 - Present tense only. Every feature rests on a signal that describes a present structural position. You may say where a room sits and what fires on it. You may not say what will happen, what breaks, what is at risk, what is fragile, what will ripple, what a change would cause. Those are predictions; none is licensed here. Avoid the words: break, will, would, risk, fragile, brittle, dangerous, ripple, cascade, fail, failure, likely, predict, expect, cause, collapse, vulnerable, exposed, threat, prone, future, soon, eventually, impact, consequence, propagate, bug, defect, safe, unsafe, critical.
