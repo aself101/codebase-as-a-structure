@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.14.0"
+BRIEF_VERSION = "0.15.0"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -927,6 +927,29 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
             # marks", "the age marks" — is refused; the reading names features, the register names
             # profiles and records. Built from the sheet's profile names and the record names.
             for m in family_words.finditer(low_sent):
+                word = m.group(0).lower().replace("the ", "").split()[0]
+                record = {
+                    "graph": "import graph",
+                    "import-graph": "import graph",
+                    "age": "clock",
+                    "recency": "clock",
+                    "load": "import graph",
+                    "test": "test graph",
+                    "edit": "edit record",
+                    "size": "size",
+                }.get(word)
+                cited_here = [
+                    c
+                    for c in (by_key.get(x) or by_feature.get(x) for x, _n, _r in _citations(sent))
+                    if c
+                ]
+                # D-046 addendum: the family is defined when every feature the sentence cites reads
+                # that record (record_of) or carries that profile — the sheet defines it after all
+                if cited_here and all(
+                    (record and record in record_of(c["predicate"])) or c["profile"] == word
+                    for c in cited_here
+                ):
+                    continue
                 out.append(
                     Violation(
                         "R18-family",
@@ -1235,7 +1258,17 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
         if together and ov["relation"] == "within":
             # D-038: a nesting is not an identity — the sentence names the rooms outside and no identity noun
             n_out = ov.get("n_outside")
-            if any(IDENTITY_NOUN.search(snt.lower()) for snt in pair_sents) or not any(
+            asserts_identity = any(
+                m
+                for snt in pair_sents
+                for m in IDENTITY_NOUN.finditer(snt.lower())
+                # D-046 addendum: "two sets of rooms, not one finding" denies the identity
+                if not re.search(
+                    r"\b(?:not|never|rather than|instead of)\b[^.;]{0,20}$",
+                    snt.lower()[: m.start()],
+                )
+            )
+            if asserts_identity or not any(
                 n_out is not None and re.search(rf"\b{n_out}\b", BRACKET.sub("", snt))
                 for snt in pair_sents
             ):
