@@ -902,6 +902,16 @@ def test_fixes_are_as_wide_as_the_shape_they_close(sub):
         + f"The graph marks sit on the same two wings [{feat['feature']} ×{feat['count']}].\n\n"
     )
     assert "R18-family" in {v.rule for v in lint(fam, f, register=True)}
+    # a family every cited feature's record defines is admitted; a bare one is not
+    from repo_substrate.brief import record_of
+
+    clockish = [
+        x for x in f["features"] if x["diagnostic"] and "clock" in record_of(x["predicate"])
+    ]
+    if clockish:
+        c0 = clockish[0]
+        ok_fam = base + f"The age positions split [{c0['feature']} ×{c0['count']}].\n\n"
+        assert "R18-family" not in {v.rule for v in lint(ok_fam, f, register=True)}
 
 
 def test_every_refusal_admits_the_sentence_it_must_admit(sub):
