@@ -898,3 +898,36 @@ def test_fixes_are_as_wide_as_the_shape_they_close(sub):
         + f"The graph marks sit on the same two wings [{feat['feature']} ×{feat['count']}].\n\n"
     )
     assert "R18-family" in {v.rule for v in lint(fam, f, register=True)}
+
+
+def test_every_refusal_admits_the_sentence_it_must_admit(sub):
+    """D-046: the converse of D-045 — a refusal is no wider than its shape. Each case is a sentence
+    the lint must ADMIT beside the one it must refuse. Three were found in one day by the pipeline
+    refusing correct prose."""
+    f = facts(_skeleton(sub), sub)
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    base = _good_draft(f)
+    largest = max(f["wings"], key=lambda w: (f["wings"][w], w))
+    wings_only = (
+        base
+        + f"The building holds {f['population']} rooms in {f['wing_count']} wings, {largest} being the largest of them.\n\n"
+    )
+    assert "R11-share" not in {v.rule for v in lint(wings_only, f, register=True)}
+    ranked = (
+        base + f"The largest set is {feat['feature']} [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R11-share" in {v.rule for v in lint(ranked, f, register=True)}
+    dec = [x for x in f["features"] if x["decorative"]]
+    if dec:
+        cites = "; ".join(f"{x['feature']} ×{x['count']}" for x in dec)
+        names = ", ".join(
+            f"{x['feature']} — {x['position_name']}" for x in dec if x.get("position_name")
+        )
+        sigs = sorted(
+            {w for x in dec for w in re.findall(r"[a-z_]+_index", x.get("decorative_reason") or "")}
+        )
+        without = (
+            base
+            + f"{names} rest on {', '.join(sigs)}, which is unvalidated, and their {f['decorative']['count']} marks render without entering the diagnosis [{cites}].\n\n"
+        )
+        assert "R4-decorative" not in {v.rule for v in lint(without, f, register=True)}

@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.12.1"
+BRIEF_VERSION = "0.13.0"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -387,7 +387,10 @@ BUILDING_LABELS = {
 # may chain several clauses; the count and the rooms of each are checked (D-032 addendum)
 # "are not a diagnosis", "enter no part of this diagnosis", "nothing confirmed … diagnosis":
 # the disclosure sentence negates diagnosis in its own words (R4).
-NEGATED_DIAGNOSIS = re.compile(r"\b(?:not|no|nothing|never|neither|nor)\b[^.;]{0,60}\bdiagnos")
+NEGATED_DIAGNOSIS = re.compile(
+    r"\b(?:not|no|nothing|never|neither|nor|without|outside|apart from|excluded from|excluding)\b"
+    r"[^.;]{0,60}\bdiagnos"
+)
 # D-036: distributional words the sheet cannot carry (it carries counts per wing instead)
 DISTRIBUTION = re.compile(
     r"\b(?:mostly|most of|largely|predominantly|mainly|chiefly|concentrated in|the bulk|"
@@ -722,7 +725,8 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                         )
                     )
             # R11 (D-036): a share is a number on the sheet (by_wing), not an adverb
-            low_sent = BRACKET.sub("", sent).lower().replace("across all profiles", "")
+            bare_sent = BRACKET.sub("", sent)
+            low_sent = bare_sent.lower().replace("across all profiles", "")
             for m in DISTRIBUTION.finditer(low_sent):
                 out.append(
                     Violation(
@@ -741,7 +745,12 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                         f"'{m.group(0)[:60]}' presents two rooms as the ends of a span the page does not order (D-041)",
                     )
                 )
-            for m in COMPARISON.finditer(low_sent):
+            # D-046: R11 compares marks; a sentence that names no feature is comparing wings
+            names_a_feature = any(
+                re.search(rf"\b{re.escape(x['feature'])}\b", bare_sent)
+                for x in facts_doc["features"]
+            ) or any((by_key.get(c) or by_feature.get(c)) for c, _n, _r in _citations(sent))
+            for m in COMPARISON.finditer(low_sent if names_a_feature else ""):
                 out.append(
                     Violation(
                         "R11-share",
@@ -1095,7 +1104,11 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                                     (
                                         f"{v} is {cf['feature']}'s count in the largest wing ({largest_wing}), which is the register's; say a minority wing's count or leave it"
                                         if v == cf.get("by_wing", {}).get(largest_wing)
-                                        else f"{v} is {cf['feature']}'s count in a wing or directory the sentence does not name; say the place or leave the number to the register"
+                                        else (
+                                            f"{v} is {cf['feature']}'s count in a wing or directory this "
+                                            f"sentence does not name (its wing counts are {cf.get('by_wing')}); "
+                                            "name the place that holds it or leave the number to the register"
+                                        )
                                     ),
                                 )
                             )
