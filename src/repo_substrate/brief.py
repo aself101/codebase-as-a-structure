@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.13.2"
+BRIEF_VERSION = "0.13.3"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -1083,19 +1083,19 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                                     )
                                 )
                     dd = cf.get("dominant_dir") or {}
-                    if dd and re.search(rf"(?<![\w/@.-]){re.escape(dd['dir'])}(?![\w])", bare_sent):
+                    if dd and re.search(rf"(?<![\w/@.-]){re.escape(dd['dir'])}(?![\w])", bare):
                         # D-046 addendum: a parent directory that shares a wing's name is sayable, but
                         # only as the parent — "the tools directory", "as parent", "not the wing" — since
                         # the wing and the directory hold different numbers of the feature's rooms
                         ambiguous = dd["dir"] in wing_names
                         marked = (
-                            re.search(r"\bdirector(?:y|ies)\b|as parent|not the wing", bare_sent)
+                            re.search(r"\bdirector(?:y|ies)\b|as parent|not the wing", bare)
                             is not None
                         )
                         if ambiguous and not marked:
-                            if re.search(rf"\b{dd.get('n')}\b", bare_sent) and dd.get(
-                                "n"
-                            ) != cf.get("by_wing", {}).get(dd["dir"]):
+                            if re.search(rf"\b{dd.get('n')}\b", bare) and dd.get("n") != cf.get(
+                                "by_wing", {}
+                            ).get(dd["dir"]):
                                 out.append(
                                     Violation(
                                         "R16-restatement",
@@ -1108,10 +1108,8 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                             entitled |= {dd.get("n"), dd.get("population")}
                             # D-045: a directory share carries its denominator in the same sentence, and
                             # a directory the register suppressed is named with both numbers or not at all
-                            has_n = re.search(rf"\b{dd.get('n')}\b", bare_sent) is not None
-                            has_pop = (
-                                re.search(rf"\b{dd.get('population')}\b", bare_sent) is not None
-                            )
+                            has_n = re.search(rf"\b{dd.get('n')}\b", bare) is not None
+                            has_pop = re.search(rf"\b{dd.get('population')}\b", bare) is not None
                             if has_n != has_pop or (
                                 not dd.get("holds_third") and not (has_n and has_pop)
                             ):
