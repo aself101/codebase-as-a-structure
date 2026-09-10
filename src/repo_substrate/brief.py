@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.12.0"
+BRIEF_VERSION = "0.12.1"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -422,6 +422,10 @@ _SIGNAL_LIKE = {
     "centrality",
     "fan_in",
 }
+# D-045 addendum: an inference from what a predicate reads to what its rooms are
+INFERENCE = re.compile(
+    r"\b(?:and so|so not|therefore|thus|hence|which makes|making them|so they are)\b"
+)
 # D-043: a negated property whose noun is another feature's position
 NEGATED_PROPERTY = re.compile(
     r"\b(?:not|never|no)\s+(?:an?\s+|the\s+)?(entrance|entry|entries|hub|hubs|root|roots|leaf|leaves|reinforced)\b"
@@ -832,6 +836,22 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                 target = PROPERTY_ALIASES.get(m.group(1))
                 tf = by_feature.get(target) if target else None
                 if not tf:
+                    continue
+                # D-045 addendum: a caveat is a limit on the predicate (D-042) and the page prints it,
+                # so a sentence that quotes it and draws no inference to the rooms is the caveat
+                # speaking, not a claim about rooms. The seventh seating's sentence inferred ("reading
+                # no fan-in and so not an entrance"); these do not.
+                quoted = any(
+                    (cf or {}).get("caveat")
+                    and sum(
+                        1
+                        for w in {t for t in re.findall(r"[a-z_]{4,}", cf["caveat"].lower())}
+                        if re.search(rf"\b{re.escape(w)}\b", low_sent)
+                    )
+                    >= 3
+                    for cf in (by_key.get(c) or by_feature.get(c) for c, _n, _r in _citations(sent))
+                )
+                if quoted and not INFERENCE.search(low_sent):
                     continue
                 for cname, _c, _r in _citations(sent):
                     cf = by_key.get(cname) or by_feature.get(cname)
