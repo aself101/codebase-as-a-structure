@@ -780,6 +780,19 @@ def test_note_is_generated_from_the_constants_and_disclosures_cover_the_register
         + f"{feat['feature']} rooms read no fan-in and so are not an entrance [{feat['feature']}: {room}].\n\n"
     )
     assert "R17-relation" in {v.rule for v in lint(neg, g, register=True)}
+    # D-045 addendum: the same words quoted as the predicate's limit, drawing no inference to the
+    # rooms, are the caveat speaking — R17b was wider than the shape it closed
+    h = json.loads(json.dumps(g))
+    for x in h["features"]:
+        if x["feature"] == feat["feature"]:
+            x["caveat"] = (
+                "reads no fan-in, not entrance: a package entry that other rooms import cannot qualify"
+            )
+    limit = (
+        base
+        + f"{feat['feature']} reads no fan-in, not an entrance — a limit on the predicate, which cannot qualify a package entry that other rooms import [{feat['feature']}: {room}].\n\n"
+    )
+    assert "R17-relation" not in {v.rule for v in lint(limit, h, register=True)}
 
 
 def test_register_relations_cover_every_set_and_positions_always_name_a_record(sub):
