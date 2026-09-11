@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.19.0"  # D-050: the most-marked table counts distinct sets and says how many rooms carry each count
+BRIEF_VERSION = "0.20.0"  # D-052: sets is one computation; co-location is counted in sets; a row says how many of its tier are listed
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -118,7 +118,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         if e["diagnostic"]:
             for r in e["rooms"]:
                 marks[r] = marks.get(r, 0) + 1
-    co_located_all = sum(1 for v in marks.values() if v >= 2)
+    # D-052: co-location is counted in distinct sets, the unit the most-marked table uses — a room
+    # under one predicate in two profiles carries two marks and is not co-located with anything
+    co_located_all = co_located(feats.values())
     # D-048: the rooms carrying the most diagnostic marks, each with every diagnostic feature that
     # marks it — the one thing the register does not print and the reading is bound to say (R19)
     most_marked_rooms = most_marked(feats.values())
@@ -200,9 +202,12 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
     diag_overlaps = [o for o in overlaps if o.get("diagnostic")]
     # D-040: how many distinct sets of rooms the diagnosis names — identical pairs are one set,
     # nestings stay two; and how many of the all-profile marks fall on identical pairs twice
+    # D-052: one computation — the sets themselves, the same identity the most-marked table
+    # counts per room; n_diag minus the identical overlaps was floored at three rooms and would
+    # have disagreed with the table on a triple or an under-floor twin
     n_diag = sum(1 for e in feats.values() if e["diagnostic"] and e["rooms"])
     identical = [o for o in diag_overlaps if o["relation"] == "identical"]
-    distinct_room_sets = n_diag - len(identical)
+    distinct_room_sets = distinct_sets(feats.values())
     # D-044: this number counts rooms an identical pair marks twice, not marks — it was named as marks
     # D-047: distinct rooms — a room in two identical pairs is one room marked twice twice over,
     # not two rooms (typeorm: six rooms sit in both pairs; 129 summed, 123 distinct)
@@ -263,12 +268,12 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "diagnostic_count": "marks",
             "diagnostic_count_base": "marks",
             "decorative.count": "marks",
-            "co_located_rooms": "rooms carrying two or more diagnostic marks, across all profiles",
-            "most_marked_rooms": "the rooms carrying the most distinct diagnostic sets (at most 5; ordered by sets, then marks, then path), each with every diagnostic feature that marks it, profile-qualified where a feature is under two profiles; sets counts distinct room sets (a feature under two profiles, or two features drawing one set, is one); marks counts one per feature per profile; rooms_at_this_count is the rooms under two or more marks carrying the row's sets count",
+            "co_located_rooms": "rooms carrying two or more distinct diagnostic sets, across all profiles (a predicate under two profiles is one set)",
+            "most_marked_rooms": "the rooms carrying the most distinct diagnostic sets (at most 5; ordered by sets, then marks, then path), each with every diagnostic feature that marks it, profile-qualified where a feature is under two profiles; sets counts distinct room sets (a feature under two profiles, or two features drawing one set, is one); marks counts one per feature per profile; rooms_at_this_count is the rooms under two or more sets carrying the row's sets count, and listed_at_this_count how many of them the list carries, the first by path",
             "rooms_at_most_sets": "rooms carrying that most; when it exceeds the rooms listed at it, the list is the first of them by path",
             "shared_rooms": "rooms both features of a pair mark, for every pair of diagnostic features; identity and containment are the relation column's",
             "diagnostic_features": "diagnostic features that fired (features, not marks or rooms)",
-            "distinct_room_sets": "sets of rooms the diagnostic features name, an identical pair counted once, a nesting twice",
+            "distinct_room_sets": "sets of rooms the diagnostic features name — the room sets themselves, so identical sets are one whatever their size; a nesting is two",
             "rooms_marked_twice": "rooms an identical pair of diagnostic features marks twice (each such room carries two marks)",
             "rooms_marked_twice_shared_predicate": "of those, rooms where two profiles carry one predicate",
             "rooms_marked_twice_inert_conjunct": "of those, rooms where two predicates draw one set because a conjunct excludes nothing",
@@ -1545,8 +1550,11 @@ DIRECTORY_SHARE = 3  # a directory is shown when it holds a third or more (R15)
 _RECORDS: list[tuple[str, tuple[str, ...]]] = [
     (
         "import graph",
-        ("fan_in", "fan_out", "centrality", "load_index", "fan_in_nonzero", "is_package_entry"),
+        ("fan_in", "fan_out", "centrality", "load_index", "fan_in_nonzero"),
     ),
+    # D-052: the declared entry is read from package.json (D-029), not from the import graph —
+    # the thirteenth seating found "declared package entry (import graph)" on the register
+    ("package manifest", ("is_package_entry",)),
     (
         "clock",
         (
@@ -1576,36 +1584,60 @@ _RECORDS: list[tuple[str, tuple[str, ...]]] = [
 ]
 
 
+def sets_per_room(features) -> dict[str, int]:
+    """D-052: for every marked room, the number of distinct diagnostic room sets that contain it —
+    one computation for the header's building count, the co-location count and the most-marked
+    table, so no two cells can count sets two ways."""
+    feats = [e for e in features if e["diagnostic"]]
+    ids = {id(e): frozenset(e["rooms"]) for e in feats}
+    rooms = {r for e in feats for r in e["rooms"]}
+    return {r: len({ids[id(e)] for e in feats if r in ids[id(e)]}) for r in rooms}
+
+
+def distinct_sets(features) -> int:
+    """D-052: the number of distinct room sets the diagnostic features draw (an empty set is none)."""
+    return len({frozenset(e["rooms"]) for e in features if e["diagnostic"] and e["rooms"]})
+
+
+def co_located(features) -> int:
+    """D-052: rooms under two or more distinct diagnostic sets."""
+    return sum(1 for v in sets_per_room(features).values() if v >= 2)
+
+
 def most_marked(features) -> list[dict[str, Any]]:
     """D-048: the rooms carrying the most diagnostic marks, each with every diagnostic feature that
     marks it. D-050: ordered by distinct sets (two features drawing one set of rooms, or one
-    predicate under two profiles, mark a room once in this count — the unit the header already
-    uses for the building), then by marks, then by path; at most MOST_MARKED_ROOMS; each row
-    carries the rooms at its own sets count so a row below the top tier says it is one of many.
-    A feature under two profiles is named with its profile so names count marks. A room under
-    one mark is not listed."""
+    predicate under two profiles, mark a room once in this count — the unit the header uses for
+    the building), then by marks, then by path; at most MOST_MARKED_ROOMS; each row carries the
+    rooms at its own sets count. D-052: a room under one set is not listed (the floor is sets, as
+    the co-location count is), and each row says how many rooms of its tier the list carries — the
+    thirteenth seating found a tier of four listed as three under a lead that said "first by path"
+    of every row. A feature under two profiles is named with its profile so names count marks."""
     feats = [e for e in features if e["diagnostic"]]
     twice = {e["feature"] for e in feats if sum(1 for x in feats if x["feature"] == e["feature"]) > 1}
     marks: dict[str, int] = {}
     for e in feats:
         for r in e["rooms"]:
             marks[r] = marks.get(r, 0) + 1
-    # distinct sets: identify each feature's room set; a room's sets are the distinct ones among them
     set_ids = {id(e): frozenset(e["rooms"]) for e in feats}
-    sets: dict[str, int] = {}
-    for r in marks:
-        sets[r] = len({set_ids[id(e)] for e in feats if r in set_ids[id(e)]})
+    sets = sets_per_room(feats)
     at_count: dict[int, int] = {}
     for r, n in sets.items():
-        if marks[r] >= 2:
+        if n >= 2:
             at_count[n] = at_count.get(n, 0) + 1
-    top = sorted(marks.items(), key=lambda kv: (-sets[kv[0]], -kv[1], kv[0]))[:MOST_MARKED_ROOMS]
+    top = [
+        (r, n) for r, n in sorted(marks.items(), key=lambda kv: (-sets[kv[0]], -kv[1], kv[0])) if sets[r] >= 2
+    ][:MOST_MARKED_ROOMS]
+    listed: dict[int, int] = {}
+    for r, _ in top:
+        listed[sets[r]] = listed.get(sets[r], 0) + 1
     return [
         {
             "room": r,
             "sets": sets[r],
             "marks": n,
             "rooms_at_this_count": at_count[sets[r]],
+            "listed_at_this_count": listed[sets[r]],
             "features": sorted(
                 (f"{e['profile']}/{e['feature']}" if e["feature"] in twice else e["feature"])
                 for e in feats
@@ -1613,7 +1645,6 @@ def most_marked(features) -> list[dict[str, Any]]:
             ),
         }
         for r, n in top
-        if n >= 2
     ]
 
 
@@ -1777,7 +1808,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + f"{facts_doc['population']} rooms in {facts_doc['wing_count']} wings ({wings}); {facts_doc['diagnostic_count']} diagnostic marks across all profiles "
         + f"({base} in the base profile), one mark per feature per room; identical pairs of diagnostic features mark {facts_doc.get('rooms_marked_twice', 0)} rooms twice ({facts_doc.get('rooms_marked_twice_shared_predicate', 0)} under one predicate in two profiles, {facts_doc.get('rooms_marked_twice_inert_conjunct', 0)} where two predicates draw one set because a conjunct excludes nothing, {facts_doc.get('rooms_in_both_kinds', 0)} under both); "
         + f"the diagnostic features name {facts_doc.get('distinct_room_sets', '?')} distinct sets of rooms; {facts_doc['decorative']['count']} decorative marks ({dec}); "
-        + f"{facts_doc['co_located_rooms']} rooms carry two or more diagnostic marks; gate `{fp}`, {asserted} of {len(gate)} signals asserted, {validated_text}. "
+        + f"{facts_doc['co_located_rooms']} rooms carry two or more distinct diagnostic sets; gate `{fp}`, {asserted} of {len(gate)} signals asserted, {validated_text}. "
         + "◌ marks a decorative feature: excluded from the diagnosis. A position names where a room sits in the record its predicate reads — the record is named beside each position — and is not a claim about its condition (D-004 Q3). "
         + f"The directory column is the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent. "
         + f"The relation column draws identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap. The most-marked rooms and the rooms each pair of diagnostic features shares follow the table.*"
@@ -1800,29 +1831,27 @@ def qualified_labels(keys: list[str]) -> dict[str, str]:
 
 def render_most_marked(facts_doc: dict[str, Any]) -> str:
     """D-049: the rooms carrying the most, with the count of rooms at that most so a capped list is
-    not a claim of completeness. D-050: the count is distinct sets, and every row says how many
-    rooms carry its count — a row below the top tier is one of them by path, and says so."""
+    not a claim of completeness. D-050: the count is distinct sets. D-052: what the lead said of
+    "a row below that count" was true of the list and false as a label on the second row of a
+    tier; the cell now says it — "3 of 4" is three rows listed of four rooms at this count, the
+    first by path — and the lead says only the ordering and the cap."""
     top = facts_doc.get("most_marked_rooms") or []
     if not top:
-        return NL + "### Most-marked rooms" + NL + NL + "*No room carries two diagnostic marks.*" + NL
+        return NL + "### Most-marked rooms" + NL + NL + "*No room carries two distinct diagnostic sets.*" + NL
     most = top[0].get("sets", top[0]["marks"])
     at = facts_doc.get("rooms_at_most_sets", top[0].get("rooms_at_this_count", len(top)))
-    listed_at = sum(1 for m in top if m.get("sets", m["marks"]) == most)
     lead = (
-        f"*Rooms ordered by the distinct diagnostic sets marking them (a feature under two profiles, or two features drawing one set, is one set), then by marks (one per feature per profile), then by path; the first {len(top)} are listed. "
-        f"{at} room{'s' if at != 1 else ''} carr{'y' if at != 1 else 'ies'} the most ({most})"
+        f"*Rooms under two or more distinct diagnostic sets, ordered by sets (a feature under two profiles, or two features drawing one set, is one set), then by marks (one per feature per profile), then by path; at most {MOST_MARKED_ROOMS} are listed. "
+        f"{at} room{'s' if at != 1 else ''} carr{'y' if at != 1 else 'ies'} the most ({most}). "
+        "The listed column is rows listed of rooms at the row's sets count; where fewer are listed than carry the count, the listed are the first by path.*"
     )
-    lead += (
-        f"; the first {listed_at} of them by path are listed" if at > listed_at else "; all are listed"
-    )
-    lead += "; a row below that count is one of the rooms at its count, first by path, and its row says how many there are (rooms under two or more marks).*"
     body = NL.join(
-        f"| {m['room']} | {m.get('sets', m['marks'])} | {m['marks']} | {m.get('rooms_at_this_count', '')} | {', '.join(m['features'])} |"
+        f"| {m['room']} | {m.get('sets', m['marks'])} | {m['marks']} | {m.get('listed_at_this_count', '')} of {m.get('rooms_at_this_count', '')} | {', '.join(m['features'])} |"
         for m in top
     )
     return (
         NL + "### Most-marked rooms" + NL + NL + lead + NL + NL
-        + "| room | distinct sets | marks | rooms at this count | diagnostic features that mark it |" + NL + "|---|---|---|---|---|" + NL + body + NL
+        + "| room | distinct sets | marks | listed of rooms at this count | diagnostic features that mark it |" + NL + "|---|---|---|---|---|" + NL + body + NL
     )
 
 

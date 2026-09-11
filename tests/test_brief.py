@@ -1137,8 +1137,10 @@ def test_the_reading_is_bound_to_what_the_register_does_not_print(sub, tmp_path)
     # fixture has no room under two marks, so a second feature is made diagnostic on a copy
     assert f["most_marked_rooms"] == [] and "most_marked_rooms" in f["units"]
     f = json.loads(json.dumps(f))
+    # D-052: the second feature must draw a different set — an identical set is one set, not two
     second = next(
-        x for x in f["features"] if not x["diagnostic"] and feat["rooms"][0] in x["rooms"]
+        x for x in f["features"]
+        if not x["diagnostic"] and feat["rooms"][0] in x["rooms"] and set(x["rooms"]) != set(feat["rooms"])
     )
     second["diagnostic"], second["decorative"] = True, False
     f["most_marked_rooms"] = _b.most_marked(f["features"])
@@ -1153,8 +1155,8 @@ def test_the_reading_is_bound_to_what_the_register_does_not_print(sub, tmp_path)
         }
         # sets counts distinct room sets among the features that mark the room
         assert m["sets"] == len({frozenset(x["rooms"]) for x in diag_f if m["room"] in x["rooms"]})
-        assert 1 <= m["sets"] <= m["marks"]
-        assert m["rooms_at_this_count"] >= 1
+        assert 2 <= m["sets"] <= m["marks"]  # D-052: the floor is sets
+        assert 1 <= m["listed_at_this_count"] <= m["rooms_at_this_count"]
     assert [(m["sets"], m["marks"]) for m in top] == sorted(((m["sets"], m["marks"]) for m in top), reverse=True)
     # 3. (R19, the obligation to name one of them, lived from D-048 to D-049; the register prints them now)
     ex = top[0]
@@ -1281,7 +1283,7 @@ def test_a_position_wears_no_feature_name_and_the_most_marked_list_says_when_it_
     assert f["rooms_at_most_sets"] == 0 and "rooms_at_most_sets" in f["units"]
     g = json.loads(json.dumps(f))
     feat = next(x for x in g["features"] if x["diagnostic"])
-    second = next(x for x in g["features"] if not x["diagnostic"] and feat["rooms"][0] in x["rooms"])
+    second = next(x for x in g["features"] if not x["diagnostic"] and feat["rooms"][0] in x["rooms"] and set(x["rooms"]) != set(feat["rooms"]))  # D-052: a different set
     second["diagnostic"], second["decorative"] = True, False
     g["most_marked_rooms"] = _b.most_marked(g["features"])
     g["rooms_at_most_sets"] = 7
@@ -1331,29 +1333,26 @@ def test_the_page_is_rendered_by_code_and_its_fixed_texts_match_their_fields(sub
     # the most-marked lead says whether the list is cut, against rooms_at_most_marks
     g = json.loads(json.dumps(f))
     feat = next(x for x in g["features"] if x["diagnostic"])
-    second = next(x for x in g["features"] if not x["diagnostic"] and feat["rooms"][0] in x["rooms"])
+    second = next(x for x in g["features"] if not x["diagnostic"] and feat["rooms"][0] in x["rooms"] and set(x["rooms"]) != set(feat["rooms"]))  # D-052: a different set
     second["diagnostic"], second["decorative"] = True, False
     g["most_marked_rooms"] = _b.most_marked(g["features"])
     g["rooms_at_most_sets"] = len(g["most_marked_rooms"])
-    assert "all are listed" in render_most_marked(g)
-    g["rooms_at_most_sets"] = len(g["most_marked_rooms"]) + 7
-    assert f"the first {len(g['most_marked_rooms'])} of them by path are listed" in render_most_marked(g)
-    assert "No room carries two diagnostic marks" in render_most_marked(f)  # the fixture has none
+    assert f"{len(g['most_marked_rooms'])} room" in render_most_marked(g) and "carr" in render_most_marked(g)
+    assert "No room carries two distinct diagnostic sets" in render_most_marked(f)  # the fixture has none
     # D-050: the third case — fewer rooms at the most than the cap, the list filled from the next
     # count (typeorm: four at seven, then one of eight at six, first by path, under "all are listed")
     h = json.loads(json.dumps(g))
     h["most_marked_rooms"] = [
-        {"room": "a.ts", "sets": 5, "marks": 7, "rooms_at_this_count": 1, "features": ["x", "y"]},
-        {"room": "b.ts", "sets": 4, "marks": 6, "rooms_at_this_count": 8, "features": ["x", "y"]},
+        {"room": "a.ts", "sets": 5, "marks": 7, "rooms_at_this_count": 1, "listed_at_this_count": 1, "features": ["x", "y"]},
+        {"room": "b.ts", "sets": 4, "marks": 6, "rooms_at_this_count": 8, "listed_at_this_count": 1, "features": ["x", "y"]},
     ]
     h["rooms_at_most_sets"] = 1
     mm = render_most_marked(h)
-    assert "1 room carries the most (5); all are listed; a row below that count is one of the rooms at its count, first by path, and its row says how many there are (rooms under two or more marks)" in mm
-    assert "| b.ts | 4 | 6 | 8 |" in mm and "| a.ts | 5 | 7 | 1 |" in mm
-    assert "| room | distinct sets | marks | rooms at this count |" in mm
-    # the lead's "all" is about the top count only when it says so: every row carries its own count
-    for m in h["most_marked_rooms"]:
-        assert f"| {m['room']} | {m['sets']} | {m['marks']} | {m['rooms_at_this_count']} |" in mm
+    # D-052: the lead says the ordering, the cap and the most; what a row is, its cell says
+    assert "1 room carries the most (5). The listed column is rows listed of rooms at the row's sets count; where fewer are listed than carry the count, the listed are the first by path." in mm
+    assert "| b.ts | 4 | 6 | 1 of 8 |" in mm and "| a.ts | 5 | 7 | 1 of 1 |" in mm
+    assert "| room | distinct sets | marks | listed of rooms at this count |" in mm
+    assert "first by path, and its row says" not in mm  # the clause that was false as a per-row label (D-052)
     # a feature under two profiles is profile-qualified wherever it is named: the relation cell
     # and the most-marked features column use the matrix's labels
     labels = _b.qualified_labels(["p/foundation", "q/foundation", "p/hub"])
@@ -1422,3 +1421,79 @@ def test_a_citation_in_a_ruleset_text_that_reaches_the_page_cites_a_section_that
     # the shape the seating found: §5.5 resolves and speaks of no signal import_root reads
     body = section(specs, r"^#+\s*5\.5\b")
     assert body is not None and not re.search(r"\bfan_in\b|\bimport_root\b", body)
+
+
+def test_sets_are_one_computation_co_location_is_in_sets_and_the_entry_record_is_the_manifest(sub):
+    """D-052 (thirteenth seating). (1) The header's distinct-set count subtracted identical
+    overlaps, which are floored at three rooms; the table counted set identity with no floor —
+    two identical features under the floor, or three identical features, made them disagree under
+    one name. One computation now. (2) A room under one predicate in two profiles carries two
+    marks and is co-located with nothing: co-location is counted in sets. (3) is_package_entry is
+    read from package.json (D-029), not the import graph; its record says so."""
+    import repo_substrate.brief as _b
+
+    def feat(name, rooms, profile="p", diagnostic=True):
+        return {"feature": name, "profile": profile, "diagnostic": diagnostic, "decorative": not diagnostic, "rooms": rooms}
+
+    # three identical features under the floor, and one that differs on a room
+    fs = [feat("a", ["r1", "r2"]), feat("b", ["r1", "r2"]), feat("c", ["r1", "r2"]), feat("d", ["r1", "r3"])]
+    assert _b.distinct_sets(fs) == 2  # n_diag - identical pairs would say 4 - 0 (floored) or 4 - 3
+    assert _b.sets_per_room(fs) == {"r1": 2, "r2": 1, "r3": 1}
+    assert _b.co_located(fs) == 1  # r2 carries three marks and one set
+    top = _b.most_marked(fs)
+    assert [m["room"] for m in top] == ["r1"] and top[0]["sets"] == 2 and top[0]["marks"] == 4
+    assert top[0]["rooms_at_this_count"] == 1 and top[0]["listed_at_this_count"] == 1
+    # one predicate under two profiles: two marks, one set, not co-located
+    gs = [feat("foundation", ["r1"], "p"), feat("foundation", ["r1"], "q"), feat("hub", ["r2"])]
+    assert _b.co_located(gs) == 0 and _b.most_marked(gs) == [] and _b.distinct_sets(gs) == 2
+    # a tier listed in part: six rooms at two sets, cap five, each row says "5 of 6"
+    hs = [feat("x", [f"r{i}" for i in range(6)]), feat("y", [f"r{i}" for i in range(6)] + ["z"])]
+    top = _b.most_marked(hs)
+    assert len(top) == _b.MOST_MARKED_ROOMS and all(m["listed_at_this_count"] == 5 and m["rooms_at_this_count"] == 6 for m in top)
+    assert "| r0 | 2 | 2 | 5 of 6 |" in _b.render_most_marked({"most_marked_rooms": top, "rooms_at_most_sets": 6})
+    # the sheet agrees with the helpers on the fixture
+    f = facts(_skeleton(sub), sub)
+    assert f["distinct_room_sets"] == _b.distinct_sets(f["features"])
+    assert f["co_located_rooms"] == _b.co_located(f["features"]) and f["units"]["co_located_rooms"].startswith("rooms carrying two or more distinct")
+    assert "distinct diagnostic sets; gate" in _b.render_register(f)
+    # the record beside a position is the record the predicate reads
+    assert _b.record_of("is_package_entry == 1") == "package manifest"
+    assert _b.record_of("fan_in == 0 and fan_out >= p75") == "import graph"
+    for x in f["features"]:
+        if x["feature"] == "package_entry":
+            assert "(package manifest)" in _b.render_register(f)
+
+
+def test_a_citation_on_the_rendered_page_names_a_section_that_speaks_of_its_sentence(sub):
+    """D-052: D-050's citation check read ruleset fields only; the page's own fixed texts cite
+    D-004 Q3, D-049 and system spec §5.3 from renderer literals. Every §n.n and D-nnn on the
+    rendered page resolves, and its target shares a content word with the sentence that cites it."""
+    root = Path(__file__).resolve().parents[1]
+    specs = "\n".join(
+        (root / n).read_text(encoding="utf-8")
+        for n in ("codebase-as-structure-system-spec.md", "structural-mapper-spec.md", "architect-brief-spec.md")
+    )
+    log = (root / "DECISIONS.md").read_text(encoding="utf-8")
+
+    def section(text: str, pattern: str) -> str | None:
+        m = re.search(pattern, text, re.M)
+        if not m:
+            return None
+        rest = text[m.end():]
+        nxt = re.search(r"^#{1,3}\s", rest, re.M)
+        return rest[: nxt.start()] if nxt else rest
+
+    page = run_brief(_skeleton(sub), sub)["markdown"]
+    seen = 0
+    for sent in re.split(r"(?<=[.;])\s+", page):
+        cites = [("§", x) for x in re.findall(r"§\s*(\d+\.\d+)", sent)] + [("D", x) for x in re.findall(r"\b(D-\d{3})\b", sent)]
+        if not cites:
+            continue
+        words = {w.lower() for w in re.findall(r"[A-Za-z][a-z]{5,}", sent)}
+        for kind, ref in cites:
+            seen += 1
+            body = section(specs, rf"^#+\s*{re.escape(ref)}\b") if kind == "§" else section(log, rf"^## {ref}\b")
+            assert body is not None, (kind, ref, sent[:120])
+            low = body.lower()
+            assert any(re.search(rf"\b{w}", low) for w in words), (kind, ref, sorted(words), sent[:120])
+    assert seen >= 3  # D-004 Q3, D-049, §5.3 at least
