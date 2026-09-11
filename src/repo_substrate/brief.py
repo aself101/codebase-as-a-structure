@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.16.0"
+BRIEF_VERSION = "0.17.0"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -122,6 +122,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             for r in e["rooms"]:
                 marks[r] = marks.get(r, 0) + 1
     co_located_all = sum(1 for v in marks.values() if v >= 2)
+    # D-048: the rooms carrying the most diagnostic marks, each with every diagnostic feature that
+    # marks it — the one thing the register does not print and the reading is bound to say (R19)
+    most_marked_rooms = most_marked(feats.values())
     # D-036: two diagnostic features whose room sets coincide, or nest, are one set of rooms;
     # the sheet says so and R9 makes the prose say so
     overlaps: list[dict[str, Any]] = []
@@ -231,6 +234,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "features": sorted(s.get("decorative_features") or []),
         },
         "co_located_rooms": co_located_all,
+        "most_marked_rooms": most_marked_rooms,
         # D-046 addendum: the prose kept computing this to say "the N features name M sets"
         "diagnostic_features": n_diag,
         "distinct_room_sets": distinct_room_sets,
@@ -247,6 +251,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "diagnostic_count_base": "marks",
             "decorative.count": "marks",
             "co_located_rooms": "rooms carrying two or more diagnostic marks, across all profiles",
+            "most_marked_rooms": "the rooms carrying the most diagnostic marks (at most 5, ties by path), each with every diagnostic feature that marks it; marks counts marks, one per feature per profile, so a feature under two profiles is two marks and one name",
             "diagnostic_features": "diagnostic features that fired (features, not marks or rooms)",
             "distinct_room_sets": "sets of rooms the diagnostic features name, an identical pair counted once, a nesting twice",
             "rooms_marked_twice": "rooms an identical pair of diagnostic features marks twice (each such room carries two marks)",
@@ -538,7 +543,10 @@ def _spelled_numbers(text: str):
 # a sentence may begin with a lowercase feature name ("flooded_basement sits inside …"): the split
 # accepts any letter, or a bracket or backtick, after the terminal (D-042 addendum — one merged
 # "sentence" let an identity noun for one pair fire R13 on the nestings beside it)
-SENTENCE = re.compile(r"(?<=[.!?])\s+(?=[A-Za-z_\[`])")
+# D-048: a sentence may open with a digit — the prompt requires digits — and the lookahead
+# admitted only letters, so "… 2 within. 254 rooms …" was one sentence to every per-sentence
+# rule and a bracket warranting nothing passed R2b on the merged span
+SENTENCE = re.compile(r"(?<=[.!?])\s+(?=[A-Za-z0-9_\[`])")
 
 
 @dataclass
@@ -579,6 +587,7 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
     allowed_numbers.add(facts_doc.get("diagnostic_count_base", facts_doc["diagnostic_count"]))
     allowed_numbers.add(facts_doc["decorative"]["count"])
     allowed_numbers.add(facts_doc["co_located_rooms"])
+    allowed_numbers.update(m["marks"] for m in facts_doc.get("most_marked_rooms") or [])
     allowed_numbers.update(facts_doc["wings"].values())
     allowed_numbers.add(facts_doc.get("wing_count", len(facts_doc["wings"])))
     # D-039 addendum: "the same predicate under two profiles" — the profile count is a sheet fact
@@ -628,10 +637,20 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
         else None
     )
     # D-037: unit classes for R12 — feature counts are both (one mark per room)
-    rooms_only = {facts_doc["population"], facts_doc["co_located_rooms"]} | set(
-        facts_doc["wings"].values()
+    rooms_only = (
+        {facts_doc["population"], facts_doc["co_located_rooms"]}
+        | set(facts_doc["wings"].values())
+        # D-048: a directory's share and population are rooms — "which holds 61 rooms" was refused
+        # as marks on typeorm because 61 was also a mark total
+        | {
+            v
+            for f in facts_doc["features"]
+            for v in ((f.get("dominant_dir") or {}).get("n"), (f.get("dominant_dir") or {}).get("population"))
+            if v is not None
+        }
     )
     marks_only = {
+        *(m["marks"] for m in facts_doc.get("most_marked_rooms") or []),
         facts_doc["diagnostic_count"],
         facts_doc.get("diagnostic_count_base", 0),
         facts_doc["decorative"]["count"],
@@ -1116,6 +1135,9 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
         # in a paragraph that names the room (D-030: otherwise any small integer passes)
         for sent in SENTENCE.split(para):
             stripped = BRACKET.sub("", sent)
+            # D-048: the sentence before this one, in this loop (the first loop's prev_sent is stale here)
+            _sents = SENTENCE.split(para)
+            prev_sent = _sents[_sents.index(sent) - 1] if sent in _sents and _sents.index(sent) else ""
             sent_allowed = set(allowed_numbers)
             for cname, _c, _r in _citations(sent):
                 sent_allowed |= feature_numbers.get(cname, set())
@@ -1186,7 +1208,10 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                                     )
                                 )
                     dd = cf.get("dominant_dir") or {}
-                    if dd and re.search(rf"(?<![\w/@.-]){re.escape(dd['dir'])}(?![\w])", bare):
+                    # D-048: a directory is named, not a room inside it — "lib/config/default-config.js"
+                    # does not name lib/config (the R19 sentence was refused for corridor's unplaced
+                    # directory on eslint)
+                    if dd and re.search(rf"(?<![\w/@.-]){re.escape(dd['dir'])}(?![\w/])", bare):
                         # D-046 addendum: a parent directory that shares a wing's name is sayable, but
                         # only as the parent — "the tools directory", "as parent", "not the wing" — since
                         # the wing and the directory hold different numbers of the feature's rooms
@@ -1212,7 +1237,22 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                             # D-045: a directory share carries its denominator in the same sentence, and
                             # a directory the register suppressed is named with both numbers or not at all
                             has_n = re.search(rf"\b{dd.get('n')}\b", bare) is not None
-                            has_pop = re.search(rf"\b{dd.get('population')}\b", bare) is not None
+                            has_pop = re.search(rf"\b{dd.get('population')}\b", bare) is not None or (
+                                # D-048: the population one sentence back, anchored on the directory's
+                                # name — the split before a digit turned "which holds 22 rooms. 8 of
+                                # the 27 … sit there" into two sentences, and a denominator a name
+                                # anchors one sentence earlier is not a base rate
+                                bool(prev_sent)
+                                and re.search(
+                                    rf"(?<![\w/@.-]){re.escape(dd['dir'])}(?![\w/])",
+                                    BRACKET.sub("", prev_sent),
+                                )
+                                is not None
+                                and re.search(
+                                    rf"\b{dd.get('population')}\b", BRACKET.sub("", prev_sent)
+                                )
+                                is not None
+                            )
                             if has_n != has_pop or (
                                 not dd.get("holds_third") and not (has_n and has_pop)
                             ):
@@ -1375,7 +1415,7 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
         pop = dd.get("population")
         named_dir = any(
             any(c in (key, name) for c, _n, _r in _citations(snt))
-            and re.search(rf"(?<![\w/@.-]){re.escape(dd['dir'])}(?![\w])", snt)
+            and re.search(rf"(?<![\w/@.-]){re.escape(dd['dir'])}(?![\w/])", snt)
             and (pop is None or re.search(rf"\b{pop}\b", BRACKET.sub("", snt)))
             for snt in sentences_all
         )
@@ -1457,6 +1497,34 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                 f"the brief must state the decorative count ({facts_doc['decorative']['count']}) where a reader sees it (mapper §3)",
             )
         )
+    # R19 (D-048): the reading names one of the most-marked rooms under every diagnostic feature
+    # that marks it, citing each with that room — the register cannot name a room under its
+    # several marks, and ten readings never did; an obligation, met by a sentence whose every
+    # element R2 and R8 already check, not a refusal
+    top = facts_doc.get("most_marked_rooms") or []
+    if register and top:
+        met = False
+        for snt in sentences_all:
+            for m in top:
+                if not _mentions(BRACKET.sub("", snt), m["room"]):
+                    continue
+                cited_with_room = {
+                    (by_key.get(c) or by_feature.get(c) or {}).get("feature")
+                    for c, _n, r in _citations(snt)
+                    if r and _mentions(r, m["room"])
+                }
+                if set(m["features"]) <= cited_with_room:
+                    met = True
+        if not met:
+            ex = top[0]
+            out.append(
+                Violation(
+                    "R19-colocation",
+                    0,
+                    "",
+                    f"no sentence names one of the most-marked rooms under every diagnostic feature that marks it, e.g. {ex['room']} under {', '.join(ex['features'])} (most_marked_rooms; D-048)",
+                )
+            )
     return out
 
 
@@ -1466,13 +1534,13 @@ SYSTEM = """You are a condemnation surveyor writing the architect's brief for a 
 
 Register, binding (validation-spec §2.1.1, mapper §3):
 - Present tense only. Every feature rests on a signal that describes a present structural position. You may say where a room sits and what fires on it. You may not say what will happen, what breaks, what is at risk, what is fragile, what will ripple, what a change would cause. Those are predictions; none is licensed here. Avoid the words: break, will, would, risk, fragile, brittle, dangerous, ripple, cascade, fail, failure, likely, predict, expect, cause, collapse, vulnerable, exposed, threat, prone, future, soon, eventually, impact, consequence, propagate, bug, defect, safe, unsafe, critical.
-- Every paragraph cites its evidence in brackets, where the bracket opens with the feature's own name from the facts sheet: [hub: src/db/connection.ts] for one room, [hub: src/a.ts, src/b.ts] for several, [hub ×27] for a count (×27 must equal that feature's count in the facts sheet). Several counts share one bracket separated by semicolons: [foundation ×21; onboarding/foundation ×21]. To name example rooms under a count, put them in the same bracket in the same sentence: [foundation ×21: src/a.ts, src/b.ts] — a room named in a later sentence needs its own bracket there. Never write the word "feature" inside a bracket; write the feature's name (foundation, hub, dark_room, scaffolding, corridor, …). A paragraph with no citation is struck.
+- Every paragraph cites its evidence in brackets, where the bracket opens with the feature's own name from the facts sheet: [hub: src/db/connection.ts] for one room, [hub: src/a.ts, src/b.ts] for several, [hub ×27] for a count (×27 must equal that feature's count in the facts sheet). Several counts share one bracket separated by semicolons: [foundation ×21; onboarding/foundation ×21]. To name example rooms under a count, put them in the same bracket in the same sentence: [foundation ×21: src/a.ts, src/b.ts] — a room named in a later sentence needs its own bracket there. Never write the word "feature" inside a bracket; write the feature's name (foundation, hub, dark_room, scaffolding, corridor, …). A paragraph with no citation is struck, except one that names no feature and no room and states only the building's shape (wings and population): that is the register's and cites nothing.
 - A room you name in a sentence must be covered by a feature you cite in that same sentence, and that feature must have fired on that room. Never name a room under a feature that did not fire on it.
 - The register states the population, the mark counts and the co-located count; you may repeat a number when a sentence needs it, in the sentence that cites its feature, but do not open with an inventory.
 - Name rooms; do not say what they do. A path is not a function: "src/error/QueryFailedError.ts" is a room, not "the error classes". Describe position and marks, not purpose.
 - Do not set two features against each other ("against that", "offsets", "compensates"): the sets are independent measurements and the brief does not know their intersection unless the facts sheet states it.
 - Disclose a consequence-implying name's position name in the same paragraph where the name first appears; the disclosure clause covers only itself, not the rest of the sentence.
-- If the facts sheet lists `overlaps`, say so in one sentence naming both features: "The 70 flooded_basement rooms are the same 70 rooms as dark_room" — two marks on one set of rooms are one finding, not two.
+- If the facts sheet lists `overlaps`, say so in one sentence naming both features: "The 70 flooded_basement rooms are the same 70 rooms as dark_room" — an identical pair is one set of rooms carrying two marks.
 - Never use "mostly", "concentrated", "the bulk", "spread across", "throughout", "every wing"; the register carries each feature's counts per wing — do not restate them (R16).
 - A directory you name must contain a room you cite in the same sentence. A count you state must be the count (or a by_wing count) of a feature you cite in the same sentence, or a building-level count.
 - Every number on the sheet has a unit (`units`): a count of rooms is never "N marks". `co_located_rooms` counts rooms carrying two or more marks.
@@ -1485,14 +1553,15 @@ Register, binding (validation-spec §2.1.1, mapper §3):
 - "findings" is not a unit; count rooms or marks.
 - Write every count as digits (267 rooms, not "two hundred sixty-seven"); every number must be a value on the facts sheet — never add, subtract, or count for yourself.
 - The stance paragraph carries no citation.
-- Use only numbers that appear in the facts sheet (counts, lines, fan-in, fan-out). No estimates, no percentages, no counts you computed yourself ("sixteen of the seventeen").
+- The sheet's `most_marked_rooms` lists the rooms carrying the most diagnostic marks, each with every diagnostic feature that marks it. Name at least one of them under every feature that marks it, citing each feature with that room in one bracket: "lib/x.js carries foundation, hub and corridor [foundation: lib/x.js; hub: lib/x.js; corridor: lib/x.js]" (R19). The register does not print this; the reading is the only place it is said.
+- Use only numbers that appear in the facts sheet (the counts on it; you are not given the rooms' lines, fan-in or fan-out, so never state one). No estimates, no percentages, no counts you computed yourself ("sixteen of the seventeen").
 - Decorative features rest on nothing confirmed. Do not use them in any diagnosis and do not name the rooms they fired on. State the decorative count once, plainly, citing by count only, e.g. "27 decorative marks render but are not a diagnosis [crack ×27]."
 - A feature whose name implies a consequence (foundation, toothpick_wing, crack) must be disclosed with its position name from the facts sheet, e.g. "foundation — a high-load hub, a position in the import graph, not a claim about what breaks".
 - Do not give the building a one-word label (cathedral, shantytown, bunker, ruin). No archetype exists.
 - The page header already states the calibration (in-repo, self-relative, one frame). Do not write a calibration or method paragraph.
 - Do not invent rooms, wings, or features. Do not describe code you have not been given; the facts sheet is the whole building.
 
-Form: 200–400 words of plain prose in short paragraphs; no headings, no bullet lists, no table; the surveyor's voice — exact, unimpressed, specific. Begin with the building's shape (wings and where the marks fall), then what the relations between marks make of it (how many distinct sets of rooms the diagnosis actually names), then the decorative disclosure in one sentence, then the stance sentence given in the facts sheet, verbatim or near it. The register is on the page; write what a reader of the register would still need said."""
+Form: 200–400 words of plain prose in short paragraphs; no headings, no bullet lists, no table; the surveyor's voice — exact, unimpressed, specific. Begin with the building's shape (wings and where the marks fall), then what the relations between marks make of it (how many distinct sets of rooms the diagnosis actually names), then a most-marked room under every feature that marks it, then the decorative disclosure in one sentence, then the stance sentence given in the facts sheet, verbatim or near it. The register is on the page; write what a reader of the register would still need said."""
 
 
 def _user_message(facts_doc: dict[str, Any], violations: list[Violation] | None = None) -> str:
@@ -1553,6 +1622,7 @@ NL = "\n"
 
 # D-043: the note is generated from the same constants the renderer computes with
 RELATION_MIN_ROOMS = 3  # a set of fewer rooms is inside anything that contains it (D-041)
+MOST_MARKED_ROOMS = 5  # the sheet lists this many of the rooms carrying the most marks (D-048)
 DIRECTORY_MIN_ROOMS = 6  # below this no directory is placed (D-040)
 DIRECTORY_SHARE = 3  # a directory is shown when it holds a third or more (R15)
 # D-043: the record a predicate reads, named beside each position so the gloss covers every row
@@ -1584,8 +1654,26 @@ _RECORDS: list[tuple[str, tuple[str, ...]]] = [
             "change_pressure_index",
         ),
     ),
-    ("size", ("size_loc", "nesting_proxy", "complexity_proxy_index")),
+    # D-048: load_index is a blend whose fourth input is size_loc (tuned.toml); its record list said
+    # "import graph" alone on four rows
+    ("size", ("size_loc", "nesting_proxy", "complexity_proxy_index", "load_index")),
 ]
+
+
+def most_marked(features) -> list[dict[str, Any]]:
+    """D-048: the rooms carrying the most diagnostic marks (at most MOST_MARKED_ROOMS, ties by
+    path), each with every diagnostic feature that marks it. A room under one mark is not listed."""
+    feats = [e for e in features if e["diagnostic"]]
+    marks: dict[str, int] = {}
+    for e in feats:
+        for r in e["rooms"]:
+            marks[r] = marks.get(r, 0) + 1
+    top = sorted(marks.items(), key=lambda kv: (-kv[1], kv[0]))[:MOST_MARKED_ROOMS]
+    return [
+        {"room": r, "marks": n, "features": sorted({e["feature"] for e in feats if r in e["rooms"]})}
+        for r, n in top
+        if n >= 2
+    ]
 
 
 def _flag(feats: dict[str, dict[str, Any]], ov: dict[str, Any]) -> dict[str, Any]:
@@ -1644,6 +1732,10 @@ RULES: list[tuple[str, str]] = [
     (
         "R18",
         "no family of marks the sheet does not define (the graph marks, the onboarding marks); a family every cited feature's record reads is admitted",
+    ),
+    (
+        "R19",
+        "one of the most-marked rooms is named under every diagnostic feature that marks it, each cited with that room",
     ),
 ]
 
@@ -1744,7 +1836,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + f"{facts_doc['co_located_rooms']} rooms carry two or more diagnostic marks; gate `{fp}`, {asserted} of {len(gate)} signals asserted, none validated. "
         + "◌ marks a decorative feature: excluded from the diagnosis. A position names where a room sits in the record its predicate reads — the record is named beside each position — and is not a claim about its condition (D-004 Q3). "
         + f"The directory column is the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent. "
-        + f"The relation column draws identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap.*"
+        + f"The relation column draws identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap. The rooms carrying the most diagnostic marks are not a row here; the reading names one under every feature that marks it (R19).*"
         + NL
         + NL
         + "| feature | profile | position | rooms | by wing | largest parent directory n / rooms in it | relation to | predicate or reason |"

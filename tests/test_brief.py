@@ -765,7 +765,7 @@ def test_note_is_generated_from_the_constants_and_disclosures_cover_the_register
     for x in f["features"]:
         if x["position_name"]:
             assert f"{x['position_name']} ({record_of(x['predicate'])})" in table
-    assert record_of("last_touched_days >= p90 and load_index >= 0.10") == "import graph and clock"
+    assert record_of("last_touched_days >= p90 and load_index >= 0.10") == "import graph and clock and size"  # D-048: the load blend reads size
     assert "drawn as it is" not in STANCE and "reinforced" not in STANCE
     feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
     base = _good_draft(f)
@@ -1110,3 +1110,122 @@ def test_fixed_texts_are_tested_against_their_computation(sub):
             + base
         )
         assert "R16-restatement" in {v.rule for v in _lint(partial, f, register=True)}
+
+
+def test_the_reading_is_bound_to_what_the_register_does_not_print(sub, tmp_path):
+    """D-048 (tenth seating): the tokenizer splits before a digit, so every per-sentence rule binds
+    over one sentence; the sheet lists the most-marked rooms and R19 binds the reading to name one
+    under every feature that marks it; a position name's record word names a record the predicate
+    reads; the prompt says what the lint does and what the model is given; a directory's numbers
+    are rooms."""
+    import inspect
+
+    import repo_substrate.brief as _b
+    from repo_substrate.brief import RULES, SENTENCE, SYSTEM, record_of
+    from repo_substrate.mapper.ruleset import RulesetError
+
+    f = facts(_skeleton(sub), sub)
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    base = _good_draft(f)
+    # 1. a sentence opening with a digit is a sentence: the page's own pair, which R2b read as one
+    pair = "The register draws 3 relations: 1 identical and 2 within. 254 rooms carry two or more diagnostic marks [hub ×50]."
+    assert len(SENTENCE.split(pair)) == 2
+    orphan = base + (
+        f"The building has {f['population']} rooms. "
+        f"{f['co_located_rooms']} rooms carry two or more diagnostic marks [{feat['feature']} ×{feat['count']}].\n\n"
+    )
+    assert "R2-provenance" in {v.rule for v in lint(orphan, f, register=True)}
+    # 2. the sheet lists the most-marked rooms with every diagnostic feature that marks each; the
+    # fixture has no room under two marks, so a second feature is made diagnostic on a copy
+    assert f["most_marked_rooms"] == [] and "most_marked_rooms" in f["units"]
+    f = json.loads(json.dumps(f))
+    second = next(
+        x for x in f["features"] if not x["diagnostic"] and feat["rooms"][0] in x["rooms"]
+    )
+    second["diagnostic"], second["decorative"] = True, False
+    f["most_marked_rooms"] = _b.most_marked(f["features"])
+    top = f["most_marked_rooms"]
+    assert top and len(top) <= _b.MOST_MARKED_ROOMS
+    for m in top:
+        assert m["features"] == sorted(
+            x["feature"] for x in f["features"] if x["diagnostic"] and m["room"] in x["rooms"]
+        )
+        assert m["marks"] >= len(m["features"]) >= 1 and m["marks"] >= 2  # foundation under two profiles: two marks, one name
+    assert [m["marks"] for m in top] == sorted((m["marks"] for m in top), reverse=True)
+    # 3. R19: the obligation fires on a reading that names none of them, in register mode only
+    assert "R19-colocation" in {v.rule for v in lint(base, f, register=True)}
+    assert "R19-colocation" not in {v.rule for v in lint(base, f)}
+    ex = top[0]
+    cites = "; ".join(f"{k}: {ex['room']}" for k in ex["features"])
+    canonical = base + f"{ex['room']} carries {', '.join(ex['features'])} [{cites}].\n\n"
+    rules = {v.rule for v in lint(canonical, f, register=True)}
+    # 4. the admit-case: the sentence R19 asks for is refused by nothing (D-046)
+    assert not rules & {"R19-colocation", "R2-provenance", "R8-attribution", "R11-share", "R13-identity", "R17-apart"}, rules
+    # naming the room does not name its directory: the R19 sentence is admitted when the room sits
+    # in a feature's unplaced dominant directory (eslint's lib/config, 4 of 5, refused it under R15)
+    h = json.loads(json.dumps(f))
+    parent = ex["room"].rsplit("/", 1)[0]
+    for x in h["features"]:
+        if x["feature"] == ex["features"][0]:
+            x["dominant_dir"] = {"dir": parent, "n": 1, "population": 3, "tied": False, "holds_third": False, "placeable": True}
+    assert "R15-composition" not in {v.rule for v in lint(canonical, h, register=True)}
+    # a partial listing is true and does not meet the obligation
+    partial = base + f"{ex['room']} carries {ex['features'][0]} [{ex['features'][0]}: {ex['room']}].\n\n"
+    assert "R19-colocation" in {v.rule for v in lint(partial, f, register=True)}
+    # the marks count is a sheet number wearing the unit marks
+    counted = base + (
+        f"{ex['room']} carries {ex['marks']} diagnostic marks: {', '.join(ex['features'])} [{cites}].\n\n"
+    )
+    assert "R12-unit" not in {v.rule for v in lint(counted, f, register=True)}
+    assert "R19" in {rid for rid, _ in RULES}
+    # 5. the prompt says what the lint does and what the model is given
+    assert "most_marked_rooms" in SYSTEM and "one finding, not two" not in SYSTEM
+    assert "(counts, lines, fan-in, fan-out)" not in SYSTEM
+    assert "rooms" not in json.loads(_b._user_message(f).split("FACTS SHEET (JSON):\n", 1)[1].split("\n\n", 1)[0])
+    # 6. the record list names the blend's inputs
+    assert record_of("load_index >= p90") == "import graph and size"
+    # 7. a directory's share and population are rooms
+    dd = next((x for x in f["features"] if (x.get("dominant_dir") or {}).get("placeable")), None)
+    if dd:
+        g = json.loads(json.dumps(f))
+        g["decorative"]["count"] = dd["dominant_dir"]["population"]  # the coincidence typeorm had
+        d = dd["dominant_dir"]
+        dsent = base + (
+            f"{d['n']} of the {dd['count']} {dd['feature']} rooms sit in the {d['dir']} directory, which holds {d['population']} rooms "
+            f"[{dd['feature']} ×{dd['count']}: {next(r for r in dd['rooms'] if r.startswith(d['dir'] + '/'))}].\n\n"
+        )
+        assert "R12-unit" not in {v.rule for v in lint(dsent, g, register=True)}
+        # the denominator one sentence back, anchored on the directory's name, is admitted (D-046);
+        # a bare share with no such sentence before it is not
+        two = base + (
+            f"{dd['feature']} places {d['n']} of its {dd['count']} rooms in the {d['dir']} directory, which holds {d['population']} rooms "
+            f"[{dd['feature']} ×{dd['count']}: {next(r for r in dd['rooms'] if r.startswith(d['dir'] + '/'))}]. "
+            f"{d['n']} of the {dd['count']} {dd['feature']} rooms sit there as well [{dd['feature']} ×{dd['count']}].\n\n"
+        )
+        assert "R15-composition" not in {v.rule for v in lint(two, g, register=True)}
+        bare_share = base + (
+            f"{d['n']} of the {dd['count']} {dd['feature']} rooms sit in the {d['dir']} directory [{dd['feature']} ×{dd['count']}].\n\n"
+        )
+        # (on the fixture the directory shares the wing's name, so the refusal may be R16's)
+        assert {v.rule for v in lint(bare_share, g, register=True)} & {"R15-composition", "R16-restatement"}
+    # 8. the loader: a record word names a record the predicate reads; 'high' is worn per upper pNN
+    def _rs(pos, pred):
+        p = tmp_path / "rs.toml"
+        p.write_text(
+            '[ruleset]\nname = "t"\nversion = "0.0.1"\nprofile = "t"\ndescription = "t"\nwing_depth = 1\n\n[[feature]]\nname = "x"\n'
+            f'predicate = "{pred}"\nposition_name = "{pos}"\n',
+            encoding="utf-8",
+        )
+        return load_ruleset(p)
+
+    with pytest.raises(RulesetError, match="imported"):
+        _rs("long-untouched, still-imported room", "last_touched_days >= p90 and load_index >= 0.10")
+    _rs("long-untouched room above the load floor", "last_touched_days >= p90 and load_index >= 0.10")
+    with pytest.raises(RulesetError, match="'high'"):
+        _rs("high-centrality, high-fan-out junction", "centrality >= p90 and fan_out >= p50")
+    _rs("high-centrality junction with fan-out at or above the median", "centrality >= p90 and fan_out >= p50")
+    _rs("unreinforced high-load node with high edit pressure", "load_index >= p90 and bug_pressure_index >= p90 and reinforcement_index <= 0.0")
+    # the shipped rulesets pass the loader (the fixtures load them) and every emitted id is on the page
+    ids = {rid for rid, _ in RULES}
+    emitted = set(re.findall(r'"(R\d+)-[a-z]+"', inspect.getsource(_b)))
+    assert emitted <= ids

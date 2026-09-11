@@ -35,6 +35,25 @@ _SPLIT = re.compile(r"\s+(?:and|∧)\s+")
 # Words in a FEATURE NAME that carry a consequence or damage (D-004 Q3, D-028, D-030): a name
 # containing one must be declared name_implies_consequence and carry a position_name. The
 # list is the audit surface; a new metaphor that implies damage is added here.
+# D-048: a word in a position name that names a record, and the signals that read that record;
+# a blend (load_index) is not an import — its floor is cleared by a leaf nothing imports
+POSITION_RECORD_WORDS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("imported", ("fan_in", "fan_in_nonzero", "is_package_entry", "test_fan_in", "reinforcement_index")),
+    ("importing", ("fan_out",)),
+    ("import-graph", ("fan_in", "fan_out", "centrality")),
+    ("root", ("fan_in",)),
+    ("leaf", ("fan_out",)),
+    ("reinforced", ("reinforcement_index", "test_fan_in")),
+    ("unreinforced", ("reinforcement_index", "test_fan_in")),
+    ("untouched", ("last_touched_days", "age_days", "blame_age_median")),
+    ("touched", ("last_touched_days", "age_days", "blame_age_median")),
+    ("edit", ("commit_count", "churn_lines", "fix_count", "bug_pressure_index", "change_pressure_index")),
+    ("load", ("load_index",)),
+    ("centrality", ("centrality",)),
+    ("fan-out", ("fan_out",)),
+    ("fan-in", ("fan_in", "fan_in_nonzero")),
+    ("package entry", ("is_package_entry",)),
+)
 NAME_CONSEQUENCE_WORDS = (
     "scaffold",  # temporary structure erected to be removed (D-035; written D-038)
     "crack",
@@ -174,6 +193,24 @@ def load_ruleset(path: Path) -> Ruleset:
         ):
             raise RulesetError(
                 f"feature {name}: position_name {f.get('position_name')!r} claims a quantile the predicate {f.get('predicate')!r} does not read (D-047)"
+            )
+        # D-048: a record word in a position name names a record the predicate reads —
+        # flooded_basement's "still-imported" labelled a load blend a leaf clears with no importer,
+        # 27 of its 75 rooms on eslint; and "high" is worn once per top-quartile-or-above pNN
+        # (corridor's "high-fan-out" labelled p50 beside "high-centrality" at p90)
+        pred_s = str(f.get("predicate", ""))
+        for word, sigs in POSITION_RECORD_WORDS:
+            if re.search(rf"\b{word}\b", pos) and not any(
+                re.search(rf"\b{s}\b", pred_s) for s in sigs
+            ):
+                raise RulesetError(
+                    f"feature {name}: position_name {f.get('position_name')!r} says {word!r} but the predicate {pred_s!r} reads none of {', '.join(sigs)} (D-048)"
+                )
+        highs = len(re.findall(r"\bhigh\b", pos))
+        upper = sum(1 for q in re.findall(r"\bp(\d{1,2})\b", pred_s) if int(q) >= 75)
+        if highs > upper:
+            raise RulesetError(
+                f"feature {name}: position_name {f.get('position_name')!r} says 'high' {highs} time(s) but the predicate {pred_s!r} carries {upper} pNN at or above p75 (D-048)"
             )
         if not decorative and reason:
             raise RulesetError(f"feature {name}: decorative_reason given but decorative = false")
