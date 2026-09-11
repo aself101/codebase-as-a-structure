@@ -59,6 +59,15 @@ def test_facts_sheet_is_the_closed_set(sub):
     assert facts(sk, sub)["facts_hash"] == f["facts_hash"]  # deterministic
 
 
+def _at_floor(g, name):
+    """A copy of the sheet where feature `name` has enough rooms for the relation cell (D-047)."""
+    h = json.loads(json.dumps(g))
+    for x in h["features"]:
+        if x["feature"] == name:
+            x["count"] = max(x["count"], 3)
+    return h
+
+
 def _good_draft(f):
     feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
     room = feat["rooms"][0]
@@ -577,7 +586,7 @@ def test_register_cells_are_linted_by_their_tests(sub):
         {"a": key, "b": "p/wider", "relation": "within", "n": feat["count"], "n_outside": 8}
     ]
     g["features"].append({**feat, "feature": "wider", "profile": "p", "count": feat["count"] + 8})
-    table = render_register(g)
+    table = render_register(_at_floor(g, feat["feature"]))
     assert "⊂ wider (8 wider rooms outside this set)" in table
     assert "8 of these rooms outside it" in table
     assert "of its rooms outside" not in table
@@ -596,7 +605,7 @@ def test_register_cells_are_linted_by_their_tests(sub):
         }
     )
     g["features"].append(low)
-    assert "none holds a third" in render_register(g)
+    assert "none holds a third" in render_register(_at_floor(g, feat["feature"]))
     assert (
         "distinct sets of rooms" in table
         and "rooms twice" in table
@@ -604,7 +613,7 @@ def test_register_cells_are_linted_by_their_tests(sub):
     )
     base = _good_draft(f)
     wing, n = next(iter(feat["by_wing"].items()))
-    if n != feat["count"] and n not in {f["population"], *f["wings"].values()}:
+    if n != feat["count"] and n > 3 and n not in {f["population"], *f["wings"].values()}:
         restated = (
             base
             + f"{feat['feature']} puts {n} of its rooms in {wing} [{feat['feature']} ×{feat['count']}].\n\n"
@@ -655,8 +664,10 @@ def test_register_fallbacks_say_the_reason_that_is_the_reason(sub):
     g["overlaps"] = [
         {"a": key, "b": "p/wider", "relation": "within", "n": feat["count"], "n_outside": 1}
     ]
-    g["features"].append({**feat, "feature": "wider", "profile": "p", "count": feat["count"] + 1})
-    table = render_register(g)
+    g["features"].append(
+        {**feat, "feature": "wider", "profile": "p", "count": max(feat["count"] + 1, 3)}
+    )
+    table = render_register(_at_floor(g, feat["feature"]))
     assert "too few rooms to place (1)" in table
     assert "POSITION NAME MISSING (ruleset defect)" in table
     assert "caveat: a caveat from the ruleset" in table
@@ -677,7 +688,7 @@ def test_register_fallbacks_say_the_reason_that_is_the_reason(sub):
         }
     )
     g["features"].append(big)
-    assert "src (as parent, not the wing) 9 / 9" in render_register(g)
+    assert "src (as parent, not the wing) 9 / 9" in render_register(_at_floor(g, feat["feature"]))
     base = _good_draft(f)
     apart = (
         base
@@ -691,7 +702,7 @@ def test_register_fallbacks_say_the_reason_that_is_the_reason(sub):
     span = base + f"The set runs from {r0} to {r1} [{feat['feature']}: {r0}, {r1}].\n\n"
     assert "R11-share" in {v.rule for v in lint(span, f, register=True)}
     wing, n = next(iter(feat["by_wing"].items()))
-    if n != feat["count"] and n not in {f["population"], *f["wings"].values()}:
+    if n != feat["count"] and n > 3 and n not in {f["population"], *f["wings"].values()}:
         named = (
             base
             + f"{n} of the {feat['count']} {feat['feature']} rooms sit in {wing} [{feat['feature']} ×{feat['count']}].\n\n"
@@ -1019,3 +1030,83 @@ def test_every_refusal_admits_the_sentence_it_must_admit(sub):
     )
     rules = {v.rule for v in lint(marked_dir, g, register=True)}
     assert "R16-restatement" not in rules and "R15-composition" not in rules
+
+
+def test_fixed_texts_are_tested_against_their_computation(sub):
+    """D-047 (ninth seating, run 26): a fixed text on the page is tested against the computation it
+    labels. rooms_marked_twice counts distinct rooms; the relation cell under the floor says so;
+    every emitted rule id is described on the page; the root wing is nameable; a partial wing
+    enumeration is refused."""
+    from repo_substrate.brief import RULES, lint as _lint, render_register
+
+    f = facts(_skeleton(sub), sub)
+    g = json.loads(json.dumps(f))
+    feat = next(x for x in g["features"] if x["diagnostic"])
+    key = f"{feat['profile']}/{feat['feature']}"
+    rooms = feat["rooms"]
+    # two identical pairs sharing every room count the rooms once
+    g["features"].append({**feat, "feature": "twin_a", "profile": "p", "count": len(rooms)})
+    g["features"].append({**feat, "feature": "twin_b", "profile": "q", "count": len(rooms)})
+    g["overlaps"] = [
+        {
+            "a": key,
+            "b": "p/twin_a",
+            "relation": "identical",
+            "n": len(rooms),
+            "inert_terms": [],
+            "shared_predicate": True,
+            "diagnostic": True,
+        },
+        {
+            "a": key,
+            "b": "q/twin_b",
+            "relation": "identical",
+            "n": len(rooms),
+            "inert_terms": ["load_index >= 0.10"],
+            "shared_predicate": False,
+            "diagnostic": True,
+        },
+    ]
+    from repo_substrate.brief import (
+        facts as _facts,
+    )  # the sheet computes it; the copy above only carries it
+
+    assert f["rooms_marked_twice"] <= sum(x["count"] for x in f["features"] if x["diagnostic"])
+    assert f["rooms_marked_twice"] == len(
+        {
+            r
+            for o in f["overlaps"]
+            if o["relation"] == "identical" and o.get("diagnostic")
+            for x in f["features"]
+            if f"{x['profile']}/{x['feature']}" == o["a"]
+            for r in x["rooms"]
+        }
+    )
+    # the relation cell under the floor
+    tiny = next(x for x in f["features"] if x["count"] < 3)
+    table = render_register(f)
+    assert f"too few rooms to relate ({tiny['count']})" in table
+    # every rule id the lint can emit is on the page
+    ids = {rid for rid, _ in RULES}
+    import inspect, re as _re
+    from repo_substrate import brief as _b
+
+    emitted = set(_re.findall(r'"(R\d+)-[a-z]+"', inspect.getsource(_b)))
+    assert emitted <= ids, emitted - ids
+    # the root wing is nameable; a partial enumeration is refused
+    base = _good_draft(f)
+    if "(root)" in f["wings"]:
+        rf = next((x for x in f["features"] if x["diagnostic"] and "(root)" in x["by_wing"]), None)
+        if rf and rf["by_wing"]["(root)"] < rf["count"]:
+            sent = (
+                base
+                + f"{rf['by_wing']['(root)']} of the {rf['count']} {rf['feature']} rooms sit in the root wing [{rf['feature']} ×{rf['count']}].\n\n"
+            )
+            assert "R16-restatement" not in {v.rule for v in _lint(sent, f, register=True)}
+    if f["wing_count"] >= 2:
+        one = next(iter(f["wings"]))
+        partial = (
+            f"The building has {f['population']} rooms in {f['wing_count']} wings: {one} at {f['wings'][one]}.\n\n"
+            + base
+        )
+        assert "R16-restatement" in {v.rule for v in _lint(partial, f, register=True)}

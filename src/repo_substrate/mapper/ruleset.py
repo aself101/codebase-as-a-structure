@@ -163,6 +163,18 @@ def load_ruleset(path: Path) -> Ruleset:
             raise RulesetError(
                 f"feature {name}: the name carries a consequence word ({', '.join(w for w in NAME_CONSEQUENCE_WORDS if w in str(name).lower())}); declare name_implies_consequence = true with a position_name (D-030)"
             )
+        # D-047: a position name describes what the predicate reads; a quantile word in it (median,
+        # top, most, decile, percentile) needs a pNN in the predicate — scaffolding's claimed a median
+        # no predicate computed, for eight ruleset versions
+        pos = str(f.get("position_name") or "").lower()
+        if (
+            pos
+            and re.search(r"\b(?:median|top|most|decile|quartile|percentile|upper|lower)\b", pos)
+            and not re.search(r"\bp\d{1,2}\b", str(f.get("predicate", "")))
+        ):
+            raise RulesetError(
+                f"feature {name}: position_name {f.get('position_name')!r} claims a quantile the predicate {f.get('predicate')!r} does not read (D-047)"
+            )
         if not decorative and reason:
             raise RulesetError(f"feature {name}: decorative_reason given but decorative = false")
         # D-004 Q3 / D-024: the register hook has a grammar. A name that implies a consequence
