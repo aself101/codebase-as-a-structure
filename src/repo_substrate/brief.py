@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.15.0"
+BRIEF_VERSION = "0.15.1"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -800,6 +800,10 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                         )
                     )
             for m in COMPARISON.finditer(low_sent if names_a_feature else ""):
+                # D-046 addendum: "the largest wing" compares wings, whatever else the sentence cites
+                window = low_sent[max(0, m.start() - 30) : m.end() + 30]
+                if re.search(r"\bwings?\b|\bdirector(?:y|ies)\b", window):
+                    continue
                 out.append(
                     Violation(
                         "R11-share",
@@ -985,7 +989,22 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
             (by_key.get(n) or by_feature.get(n) or {}).get("decorative") and c and not r
             for n, c, r in cites
         )
-        if not cites and not is_stance and not (is_disclosure and decorative_only):
+        # D-046 addendum: a paragraph that names no feature and no room and states only building-level
+        # numbers is the building's shape (wings, population) — the register's, with nothing to cite
+        building_only = (
+            not any(
+                re.search(rf"\b{re.escape(x['feature'])}\b", para) for x in facts_doc["features"]
+            )
+            and not any(_mentions(para, rid) for rid in room_ids)
+            and INTEGER.findall(BRACKET.sub("", para))
+            and all(int(n) in allowed_numbers for n in INTEGER.findall(BRACKET.sub("", para)))
+        )
+        if (
+            not cites
+            and not is_stance
+            and not building_only
+            and not (is_disclosure and decorative_only)
+        ):
             out.append(
                 Violation(
                     "R2-provenance",
