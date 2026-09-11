@@ -1229,3 +1229,51 @@ def test_the_reading_is_bound_to_what_the_register_does_not_print(sub, tmp_path)
     ids = {rid for rid, _ in RULES}
     emitted = set(re.findall(r'"(R\d+)-[a-z]+"', inspect.getsource(_b)))
     assert emitted <= ids
+
+
+def test_a_position_wears_no_feature_name_and_the_most_marked_list_says_when_it_is_cut(sub, tmp_path):
+    """D-049 (eleventh seating): a position name names no other feature (foundation's 'high-load hub'
+    called every foundation room a hub while 12 of 48 were not); the sheet says how many rooms carry
+    the most marks so a capped list is not a silent claim of completeness; the lint list carries no
+    stale attribution literal."""
+    import repo_substrate.brief as _b
+    from repo_substrate.brief import render_brief
+    from repo_substrate.mapper.ruleset import RulesetError
+
+    # across both shipped rulesets, no position name carries any feature's name
+    base, ov = load_ruleset(RULESET), load_ruleset(ONBOARDING)
+    names = {f.name for rs in (base, ov) for f in rs.features}
+    for rs in (base, ov):
+        for f in rs.features:
+            pos = (f.position_name or "").lower()
+            for other in names - {f.name}:
+                assert not re.search(rf"\b{re.escape(other)}\b", pos), (f.name, pos, other)
+    p = tmp_path / "rs.toml"
+    p.write_text(
+        '[ruleset]\nname = "t"\nversion = "0.0.1"\nprofile = "t"\ndescription = "t"\nwing_depth = 1\n\n'
+        '[[feature]]\nname = "hub"\npredicate = "centrality >= p90"\n\n'
+        '[[feature]]\nname = "foundation"\npredicate = "load_index >= p90"\nname_implies_consequence = true\nposition_name = "high-load hub"\n',
+        encoding="utf-8",
+    )
+    with pytest.raises(RulesetError, match="names the feature 'hub'"):
+        load_ruleset(p)
+    # the count of rooms at the most marks is on the sheet and is a rooms number
+    f = facts(_skeleton(sub), sub)
+    assert f["rooms_at_most_marks"] == 0 and "rooms_at_most_marks" in f["units"]
+    g = json.loads(json.dumps(f))
+    feat = next(x for x in g["features"] if x["diagnostic"])
+    second = next(x for x in g["features"] if not x["diagnostic"] and feat["rooms"][0] in x["rooms"])
+    second["diagnostic"], second["decorative"] = True, False
+    g["most_marked_rooms"] = _b.most_marked(g["features"])
+    g["rooms_at_most_marks"] = 7
+    ex = g["most_marked_rooms"][0]
+    cites = "; ".join(f"{k}: {ex['room']}" for k in ex["features"])
+    text = _good_draft(g) + (
+        f"7 rooms carry the most diagnostic marks, {ex['marks']} each; {ex['room']} is one, under "
+        f"{', '.join(ex['features'])} [{cites}].\n\n"
+    )
+    rules = {v.rule for v in lint(text, g, register=True)}
+    assert not rules & {"R3-number", "R12-unit", "R19-colocation"}, rules
+    # the lint list on the page names no decision range
+    page = render_brief(text, g, provenance={"attempt": 1}, violations=[])
+    assert "through D-0" not in page and "each rule is dated" in page

@@ -14,7 +14,7 @@
 
 [ruleset]
 name = "maintainability"
-version = "0.2.3"
+version = "0.2.4"
 profile = "maintainability"
 description = "v0 maintainability lens: load, neglect, reinforcement, activity — over asserted signals only; the two pressure indices are unvalidated (D-015) and appear only as decorative features."
 wing_depth = 1
@@ -24,8 +24,8 @@ name = "foundation"
 predicate = "load_index >= p90"
 graph_dependent = true
 name_implies_consequence = true
-position_name = "high-load hub"
-note = "Top decile of the load blend (fan_in_nonzero, centrality, inverse fan_out, size). A description of import-graph position; not a claim about what breaks if it changes."
+position_name = "high-load node"
+note = "Top decile of the load blend (fan_in_nonzero, centrality, inverse fan_out, size). A description of import-graph position; not a claim about what breaks if it changes. It was 'high-load hub' until D-049: hub is a sibling feature (centrality >= p90) and 12 of 48 foundation rooms on eslint are not hub rooms — a position name wears no other feature's name."
 
 [[feature]]
 name = "hub"

@@ -26,7 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.17.0"
+BRIEF_VERSION = "0.17.1"
 MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
 DEFAULT_MODEL = "claude-opus-5"
 
@@ -125,6 +125,11 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
     # D-048: the rooms carrying the most diagnostic marks, each with every diagnostic feature that
     # marks it — the one thing the register does not print and the reading is bound to say (R19)
     most_marked_rooms = most_marked(feats.values())
+    # D-049: the list is capped; the sheet says how many rooms carry the most marks so a page can
+    # say whether the cap bit (twelve rooms tied at seven on eslint; five were listed)
+    rooms_at_most_marks = (
+        sum(1 for v in marks.values() if v == max(marks.values())) if co_located_all else 0
+    )
     # D-036: two diagnostic features whose room sets coincide, or nest, are one set of rooms;
     # the sheet says so and R9 makes the prose say so
     overlaps: list[dict[str, Any]] = []
@@ -235,6 +240,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         },
         "co_located_rooms": co_located_all,
         "most_marked_rooms": most_marked_rooms,
+        "rooms_at_most_marks": rooms_at_most_marks,
         # D-046 addendum: the prose kept computing this to say "the N features name M sets"
         "diagnostic_features": n_diag,
         "distinct_room_sets": distinct_room_sets,
@@ -252,6 +258,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "decorative.count": "marks",
             "co_located_rooms": "rooms carrying two or more diagnostic marks, across all profiles",
             "most_marked_rooms": "the rooms carrying the most diagnostic marks (at most 5, ties by path), each with every diagnostic feature that marks it; marks counts marks, one per feature per profile, so a feature under two profiles is two marks and one name",
+            "rooms_at_most_marks": "rooms carrying that most; when it exceeds the rooms listed, the list is the first of them by path",
             "diagnostic_features": "diagnostic features that fired (features, not marks or rooms)",
             "distinct_room_sets": "sets of rooms the diagnostic features name, an identical pair counted once, a nesting twice",
             "rooms_marked_twice": "rooms an identical pair of diagnostic features marks twice (each such room carries two marks)",
@@ -588,6 +595,7 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
     allowed_numbers.add(facts_doc["decorative"]["count"])
     allowed_numbers.add(facts_doc["co_located_rooms"])
     allowed_numbers.update(m["marks"] for m in facts_doc.get("most_marked_rooms") or [])
+    allowed_numbers.add(facts_doc.get("rooms_at_most_marks", 0))
     allowed_numbers.update(facts_doc["wings"].values())
     allowed_numbers.add(facts_doc.get("wing_count", len(facts_doc["wings"])))
     # D-039 addendum: "the same predicate under two profiles" — the profile count is a sheet fact
@@ -638,7 +646,7 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
     )
     # D-037: unit classes for R12 — feature counts are both (one mark per room)
     rooms_only = (
-        {facts_doc["population"], facts_doc["co_located_rooms"]}
+        {facts_doc["population"], facts_doc["co_located_rooms"], facts_doc.get("rooms_at_most_marks", 0)}
         | set(facts_doc["wings"].values())
         # D-048: a directory's share and population are rooms — "which holds 61 rooms" was refused
         # as marks on typeorm because 61 was also a mark total
@@ -1556,7 +1564,7 @@ Register, binding (validation-spec §2.1.1, mapper §3):
 - The sheet's `most_marked_rooms` lists the rooms carrying the most diagnostic marks, each with every diagnostic feature that marks it. Name at least one of them under every feature that marks it, citing each feature with that room in one bracket: "lib/x.js carries foundation, hub and corridor [foundation: lib/x.js; hub: lib/x.js; corridor: lib/x.js]" (R19). The register does not print this; the reading is the only place it is said.
 - Use only numbers that appear in the facts sheet (the counts on it; you are not given the rooms' lines, fan-in or fan-out, so never state one). No estimates, no percentages, no counts you computed yourself ("sixteen of the seventeen").
 - Decorative features rest on nothing confirmed. Do not use them in any diagnosis and do not name the rooms they fired on. State the decorative count once, plainly, citing by count only, e.g. "27 decorative marks render but are not a diagnosis [crack ×27]."
-- A feature whose name implies a consequence (foundation, toothpick_wing, crack) must be disclosed with its position name from the facts sheet, e.g. "foundation — a high-load hub, a position in the import graph, not a claim about what breaks".
+- A feature whose name implies a consequence (foundation, toothpick_wing, crack) must be disclosed with its position name from the facts sheet, e.g. "foundation — a high-load node, a position in the import graph, not a claim about what breaks".
 - Do not give the building a one-word label (cathedral, shantytown, bunker, ruin). No archetype exists.
 - The page header already states the calibration (in-repo, self-relative, one frame). Do not write a calibration or method paragraph.
 - Do not invent rooms, wings, or features. Do not describe code you have not been given; the facts sheet is the whole building.
@@ -1888,7 +1896,7 @@ def render_brief(
         lint_md += (
             "No violations. Rules: "
             + ", ".join(f"{rid} {desc}" for rid, desc in RULES)
-            + " (D-027 through D-042).\n"
+            + " (each rule is dated in DECISIONS.md).\n"
         )
     register = render_register(facts_doc)
     return head + register + "\n## Reading\n\n" + text.strip() + "\n" + prov + lint_md

@@ -10,7 +10,7 @@
 
 [ruleset]
 name = "onboarding"
-version = "0.2.2"
+version = "0.2.3"
 profile = "onboarding"
 description = "Where to start reading: package entries (declared in package.json), import-graph roots (import much, imported by nothing), corridors (high centrality and high fan-out — everything routes through), foundations. Position names throughout."
 
@@ -40,7 +40,7 @@ name = "foundation"
 predicate = "load_index >= p90"
 graph_dependent = true
 name_implies_consequence = true
-position_name = "high-load hub"
+position_name = "high-load node"
 note = "Shared with the maintainability profile so a co-located finding is visible: the same room marked by two lenses is shown twice, never averaged."
 
 [[feature]]

@@ -158,6 +158,7 @@ def load_ruleset(path: Path) -> Ruleset:
             raise RulesetError(f"[ruleset] missing {key}")
     feats: list[Feature] = []
     seen: set[str] = set()
+    raw_names = [str(x.get("name")) for x in raw.get("feature") or [] if x.get("name")]
     for f in raw.get("feature") or []:
         name = f.get("name")
         if not name or name in seen:
@@ -212,6 +213,13 @@ def load_ruleset(path: Path) -> Ruleset:
             raise RulesetError(
                 f"feature {name}: position_name {f.get('position_name')!r} says 'high' {highs} time(s) but the predicate {pred_s!r} carries {upper} pNN at or above p75 (D-048)"
             )
+        # D-049: a position name wears no other feature's name — foundation's 'high-load hub' called
+        # every foundation room a hub while its own relation cell recorded no containment with hub
+        for other in raw_names:
+            if other != name and re.search(rf"\b{re.escape(str(other))}\b", pos):
+                raise RulesetError(
+                    f"feature {name}: position_name {f.get('position_name')!r} names the feature {other!r}; a position is a place in a record, not another feature's set (D-049)"
+                )
         if not decorative and reason:
             raise RulesetError(f"feature {name}: decorative_reason given but decorative = false")
         # D-004 Q3 / D-024: the register hook has a grammar. A name that implies a consequence
