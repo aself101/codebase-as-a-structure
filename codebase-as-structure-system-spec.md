@@ -24,7 +24,7 @@ Six components, each consuming the prior one's versioned artifact. Determinism c
 | C2 | Narrative Reader | Seeded / constrained (LLM, cached) | substrate + repo prose → `signal.json` | → own spec |
 | C3 | Structural Mapper | Deterministic (given ruleset) | substrate (+signal) + profile → `skeleton.json` | `structural-mapper-spec.md` (DRAFT skeleton) |
 | C4 | Form Grammar | Seeded-stochastic | skeleton + seed → `massing.json` | → own spec |
-| C5 | Architect | Free interpretation (LLM, grounded) | skeleton (+massing) → `brief.md` + `style.json` | → own spec |
+| C5 | Architect → **brief** | Deterministic (code-rendered register; the LLM half was tried as M3 and removed, D-049/D-051) | skeleton → `brief.md` + `facts.json` | `architect-brief-spec.md` |
 | C6 | Renderer | Deterministic (procedural) / free (diffusion) | massing + style → render | → own spec |
 | — | **Validation** | Deterministic | substrate (truncated) → `validation.json` + holdout report | `validation-spec.md` |
 
@@ -34,7 +34,7 @@ Validation is not a pipeline stage — it is an offline gate that runs the subst
 
 ## 3. Process, artifacts, and cross-cutting contracts
 
-**Data flow.** A linear pipeline C1 → C3 → C4 → C5 → C6, with C2 as a side-input to C3. Each stage reads the prior artifact and emits its own; nothing reaches back upstream.
+**Data flow.** A linear pipeline C1 → C3 → C4 → C5 → C6, with C2 as a side-input to C3. Each stage reads the prior artifact and emits its own; nothing reaches back upstream. From D-049 every stage in the v0 path is deterministic: C5 renders the skeleton's facts sheet by code, and the only model the pipeline ever carried — the brief's reading — was removed (D-051 records what M3 became).
 
 **Determinism contract (system-level).** The seed originates as C1's content hash of the resolved tree and flows into every stochastic stage. A full pipeline run on the same SHA, with the same component versions and the same mapping profile, reproduces the same render — modulo deliberate seed or profile changes. This is what makes renders across two commits a *meaningful diff* rather than noise.
 
@@ -54,7 +54,7 @@ Validation is not a pipeline stage — it is an offline gate that runs the subst
 
 **C4 — Form Grammar.** Turns the skeleton's facts into concrete geometry — many valid buildings satisfy one skeleton; the seed picks one. For the v0 cutaway this is light (vertical strata + feature placement); full 3D massing is later.
 
-**C5 — Architect.** Generates the narrative brief and style/material/mood directives, grounded in the skeleton and run through an adversarially-framed Generator lens (a condemnation surveyor, not a realtor) so the model honors ugly facts instead of smoothing them. Cached/seeded for consistency.
+**C5 — Architect → brief.** Renders the skeleton as a readable page — the register (a feature table with position, count, wings, dominant directory, relations and predicate per feature; the most-marked rooms; a shared-rooms matrix), the decorative disclosure, the stance and the provenance — by code, from a facts sheet the mapper's skeleton yields. *As designed (June draft, D-003):* a model would write a narrative brief and style/material/mood directives, run through an adversarially-framed Generator lens (a condemnation surveyor, not a realtor) so it honored ugly facts, and held by a deterministic register lint. *As built and tried (M3, D-027 → D-049):* the narrative half ran for eleven hostile seatings and was removed when everything it could say that the lint admitted turned out to be a field of the register; the lint stays as the contract on a hand-written draft. The style directives were never built (the cutaway takes material from age). See D-051.
 
 **C6 — Renderer.** v0: a 2D cutaway elevation (chosen because a cutaway *exposes the diagnosis by construction* — the waterline, the toothpicks, the era-strata are all visible). Later: 3D procedural, then optionally diffusion for painterly stills.
 
@@ -115,9 +115,13 @@ A profile is a versioned artifact. Running several profiles over one repo produc
 
 The full `(feature → predicate)` set is authored as a versioned definition (YAML), diffable and auditable. Because C3 is deterministic given its ruleset, changing the ruleset changes the skeleton predictably, and every resulting feature carries the predicate and values that produced it. The ruleset is the thing you tune in the validation loop, and it is the reason the diagnosis stays regressable.
 
-## 6. Narrative and style (C5)
+## 6. The brief (C5) — and the narrative that was tried
 
-The architect reads the grounded skeleton and emits a brief plus style directives. Creative freedom is real but floats above fixed facts: form variation (seeded), material and era, the visual metaphor for a signal (decay as water, ice, sand, or rot), and the narrative genre (a surveyor's condemnation notice, an estate listing, an archaeologist's field notes). The adversarial lens framing is what prevents aspirational drift; the provenance requirement (every claim cites a feature) is what keeps it from becoming a horoscope.
+*Rewritten 2026-09-11 (D-051). The June draft's paragraph is kept below, marked, because the strata are the record.*
+
+The brief is the skeleton made readable without a picture: a register rendered by code from the facts sheet (`architect-brief-spec.md`). Every cell is a field, a count, or a fixed text over them, and every fixed text is tested against the computation it labels (D-047); a position names where a room sits in the record its predicate reads and never its condition (D-004 Q3); a caveat is the ruleset's limit on a predicate, never a claim about the repository (D-042); the stance is disclosed on the page as an ought. The page carries the provenance chain of §3 one link further than the cutaway does: feature → predicate → signal → validation status, in a row a reader can check against the sheet. The register is where D-013 rule 5's hostile reader is seated on every version bump; twelve seatings (tracker runs 17–29) are the evidence for what the page may say.
+
+*The narrative half, as designed and as it ended.* The June draft read: "The architect reads the grounded skeleton and emits a brief plus style directives. Creative freedom is real but floats above fixed facts: form variation (seeded), material and era, the visual metaphor for a signal (decay as water, ice, sand, or rot), and the narrative genre (a surveyor's condemnation notice, an estate listing, an archaeologist's field notes). The adversarial lens framing is what prevents aspirational drift; the provenance requirement (every claim cites a feature) is what keeps it from becoming a horoscope." The narrative genre was built as M3 (D-027): a model wrote a 200–400-word reading in the descriptive register over the facts sheet, and a lint of eighteen rules refused what it might not say. The provenance requirement held — no seating ever breached the citation layer. What the seatings found instead (D-036 → D-049) is that every sentence the lint admitted was a cell read aloud, and every attempt to bind the prose to say something the register did not print produced a new column. The reading was cut at D-049; D-051 records the milestone as answered: a grounded narrative over a grounded skeleton adds nothing a table cannot carry, on this evidence. The style directives (material, era, the visual metaphor for a signal) were never built and remain a direction candidate — a user-selectable rendering skin (handoff, 2026-09-08) — with the constraint that a skin changes how a feature looks and nothing about which rooms it marks.
 
 ## 7. Render (C6)
 
@@ -133,7 +137,7 @@ If a spec or design doc exists, C2 extracts the *intended* structure and C3 rend
 
 ## 10. Phasing
 
-- **Phase 0 (v0).** Split into milestones by D-003. **M1:** C1 + the validation gate run on the reference set — the substrate as standalone product. **M2:** a minimal C3 (in-repo percentile + a few topological predicates + the load/stress indices, gate enforced) + C6 static cutaway with C4 folded in; no LLM in the path. **M3 (optional):** C5 brief via adversarial lens with the register lint. C2 removed.
+- **Phase 0 (v0).** Split into milestones by D-003. **M1:** C1 + the validation gate run on the reference set — the substrate as standalone product. **M2:** a minimal C3 (in-repo percentile + a few topological predicates + the load/stress indices, gate enforced) + C6 static cutaway with C4 folded in; no LLM in the path. **M3 (optional):** C5 brief via adversarial lens with the register lint — *tried 2026-09-06 (D-027) and answered rather than delivered (D-051): the model-written reading was removed at D-049 after eleven hostile seatings; the brief stays in the pipeline as the code-rendered register page, and the lint as the contract on a hand-written draft.* C2 removed.
 - **Phase 1.** Evolution time-lapse (§8).
 - **Phase 2.** Blueprint vs. as-built overlay (§9), which pulls C2 onto the critical path.
 - **Phase 3.** Corpus calibration (§5.3) and richer render (3D / diffusion).
