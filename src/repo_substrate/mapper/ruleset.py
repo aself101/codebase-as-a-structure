@@ -37,6 +37,11 @@ _SPLIT = re.compile(r"\s+(?:and|∧)\s+")
 # list is the audit surface; a new metaphor that implies damage is added here.
 # D-048: a word in a position name that names a record, and the signals that read that record;
 # a blend (load_index) is not an import — its floor is cleared by a leaf nothing imports
+# D-050: the phrases a position name wears for a pNN in its predicate — one phrase per quantile
+# term; "long-untouched" wears last_touched_days >= p90, "at or above the median" wears p50,
+# "at or above the upper quartile" wears p75, "high" wears p75 or above (D-048)
+QUANTILE_PHRASES = r"\b(?:upper quartile|lower quartile|upper decile|lower decile|high|long|median|top|most|percentile)\b"
+
 POSITION_RECORD_WORDS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("imported", ("fan_in", "fan_in_nonzero", "is_package_entry", "test_fan_in", "reinforcement_index")),
     ("importing", ("fan_out",)),
@@ -234,6 +239,19 @@ def load_ruleset(path: Path) -> Ruleset:
             raise RulesetError(
                 f"feature {name}: position_name repeats the feature name and discloses nothing"
             )
+        # D-050: the converse — every quantile the predicate reads is worn by the name. D-047 and
+        # D-048 refused a quantile word the predicate did not carry; nothing refused a pNN the name
+        # left out, and "import-graph root" (fan_in == 0 and fan_out >= p75) and "imported leaf"
+        # (fan_out == 0 and fan_in >= p75) each named one conjunct of two beside a count column
+        # (the twelfth seating: 1 printed against 23 rooms with no fan-in; 33 against 110 leaves)
+        pos_l = str(pos or "").lower()
+        if pos_l:
+            worn = len(re.findall(QUANTILE_PHRASES, pos_l))
+            read = len(re.findall(r"\bp\d{1,2}\b", pred_s))
+            if worn < read:
+                raise RulesetError(
+                    f"feature {name}: position_name {f.get('position_name')!r} wears {worn} quantile phrase(s) but the predicate {pred_s!r} reads {read} pNN — a conjunct at a quantile is unnamed (D-050)"
+                )
         try:
             wing_depth_ok = int(hdr.get("wing_depth", 1)) >= 1
         except (TypeError, ValueError):

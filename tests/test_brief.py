@@ -527,6 +527,14 @@ def test_register_table_carries_the_inventory_and_the_prose_is_the_reading(sub):
         )
         assert f"{x['count']} |" in table
     assert str(f["co_located_rooms"]) in table and "none validated" in table
+    # D-050: "none validated" is read from the gate, not a literal — validate one signal and the
+    # register counts it in the clause that counts the asserted ones
+    g = json.loads(json.dumps(f))
+    sig = next(k for k, v in g["gate"].items() if v == "asserted")
+    g["gate"][sig] = "validated"
+    t2 = render_register(g)
+    assert "1 validated" in t2 and "none validated" not in t2
+    assert f"{sum(1 for v in g['gate'].values() if v == 'asserted')} of {len(g['gate'])} signals asserted" in t2
     prose = _good_draft(f)
     page = render_brief(prose, f, [], {"generator": "draft"})
     assert (
@@ -1136,12 +1144,18 @@ def test_the_reading_is_bound_to_what_the_register_does_not_print(sub, tmp_path)
     f["most_marked_rooms"] = _b.most_marked(f["features"])
     top = f["most_marked_rooms"]
     assert top and len(top) <= _b.MOST_MARKED_ROOMS
+    diag_f = [x for x in f["features"] if x["diagnostic"]]
     for m in top:
-        assert m["features"] == sorted(
-            x["feature"] for x in f["features"] if x["diagnostic"] and m["room"] in x["rooms"]
-        )
-        assert m["marks"] >= len(m["features"]) >= 1 and m["marks"] >= 2  # foundation under two profiles: two marks, one name
-    assert [m["marks"] for m in top] == sorted((m["marks"] for m in top), reverse=True)
+        # D-050: a feature under two profiles is named with its profile, so names count marks
+        assert len(m["features"]) == m["marks"] >= 2
+        assert {n.split("/")[-1] for n in m["features"]} == {
+            x["feature"] for x in diag_f if m["room"] in x["rooms"]
+        }
+        # sets counts distinct room sets among the features that mark the room
+        assert m["sets"] == len({frozenset(x["rooms"]) for x in diag_f if m["room"] in x["rooms"]})
+        assert 1 <= m["sets"] <= m["marks"]
+        assert m["rooms_at_this_count"] >= 1
+    assert [(m["sets"], m["marks"]) for m in top] == sorted(((m["sets"], m["marks"]) for m in top), reverse=True)
     # 3. (R19, the obligation to name one of them, lived from D-048 to D-049; the register prints them now)
     ex = top[0]
     cites = "; ".join(f"{k}: {ex['room']}" for k in ex["features"])
@@ -1239,20 +1253,43 @@ def test_a_position_wears_no_feature_name_and_the_most_marked_list_says_when_it_
     )
     with pytest.raises(RulesetError, match="names the feature 'hub'"):
         load_ruleset(p)
-    # the count of rooms at the most marks is on the sheet and is a rooms number
+    # D-050: the converse of D-048 — a pNN the predicate reads is worn by the name. "import-graph
+    # root" named fan_in == 0 and not fan_out >= p75 beside a count of 1 (23 rooms have no fan-in)
+    from repo_substrate.mapper.ruleset import QUANTILE_PHRASES
+    p.write_text(
+        '[ruleset]\nname = "t"\nversion = "0.0.1"\nprofile = "t"\ndescription = "t"\nwing_depth = 1\n\n'
+        '[[feature]]\nname = "import_root"\npredicate = "fan_in == 0 and fan_out >= p75"\nposition_name = "import-graph root"\n',
+        encoding="utf-8",
+    )
+    with pytest.raises(RulesetError, match="a conjunct at a quantile is unnamed"):
+        load_ruleset(p)
+    p.write_text(
+        p.read_text(encoding="utf-8").replace(
+            '"import-graph root"', '"import-graph root with fan-out at or above the upper quartile"'
+        ),
+        encoding="utf-8",
+    )
+    assert load_ruleset(p).features[0].position_name.endswith("upper quartile")
+    for rs in (base, ov):
+        for f in rs.features:
+            if f.position_name:
+                assert len(re.findall(QUANTILE_PHRASES, f.position_name.lower())) >= len(
+                    re.findall(r"\bp\d{1,2}\b", f.predicate)
+                ), (f.name, f.position_name, f.predicate)
+    # the count of rooms at the most is on the sheet and is a rooms number (D-050: the most is sets)
     f = facts(_skeleton(sub), sub)
-    assert f["rooms_at_most_marks"] == 0 and "rooms_at_most_marks" in f["units"]
+    assert f["rooms_at_most_sets"] == 0 and "rooms_at_most_sets" in f["units"]
     g = json.loads(json.dumps(f))
     feat = next(x for x in g["features"] if x["diagnostic"])
     second = next(x for x in g["features"] if not x["diagnostic"] and feat["rooms"][0] in x["rooms"])
     second["diagnostic"], second["decorative"] = True, False
     g["most_marked_rooms"] = _b.most_marked(g["features"])
-    g["rooms_at_most_marks"] = 7
+    g["rooms_at_most_sets"] = 7
     ex = g["most_marked_rooms"][0]
-    cites = "; ".join(f"{k}: {ex['room']}" for k in ex["features"])
+    cites = "; ".join(f"{k.split('/')[-1]}: {ex['room']}" for k in ex["features"])
     text = _good_draft(g) + (
-        f"7 rooms carry the most diagnostic marks, {ex['marks']} each; {ex['room']} is one, under "
-        f"{', '.join(ex['features'])} [{cites}].\n\n"
+        f"7 rooms carry the most distinct diagnostic sets, {ex['sets']} each; {ex['room']} is one, under "
+        f"{', '.join(k.split('/')[-1] for k in ex['features'])} [{cites}].\n\n"
     )
     rules = {v.rule for v in lint(text, g, register=True)}
     assert not rules & {"R3-number", "R12-unit"}, rules
@@ -1297,11 +1334,32 @@ def test_the_page_is_rendered_by_code_and_its_fixed_texts_match_their_fields(sub
     second = next(x for x in g["features"] if not x["diagnostic"] and feat["rooms"][0] in x["rooms"])
     second["diagnostic"], second["decorative"] = True, False
     g["most_marked_rooms"] = _b.most_marked(g["features"])
-    g["rooms_at_most_marks"] = len(g["most_marked_rooms"])
+    g["rooms_at_most_sets"] = len(g["most_marked_rooms"])
     assert "all are listed" in render_most_marked(g)
-    g["rooms_at_most_marks"] = len(g["most_marked_rooms"]) + 7
-    assert f"the first {len(g['most_marked_rooms'])} by path are listed" in render_most_marked(g)
+    g["rooms_at_most_sets"] = len(g["most_marked_rooms"]) + 7
+    assert f"the first {len(g['most_marked_rooms'])} of them by path are listed" in render_most_marked(g)
     assert "No room carries two diagnostic marks" in render_most_marked(f)  # the fixture has none
+    # D-050: the third case — fewer rooms at the most than the cap, the list filled from the next
+    # count (typeorm: four at seven, then one of eight at six, first by path, under "all are listed")
+    h = json.loads(json.dumps(g))
+    h["most_marked_rooms"] = [
+        {"room": "a.ts", "sets": 5, "marks": 7, "rooms_at_this_count": 1, "features": ["x", "y"]},
+        {"room": "b.ts", "sets": 4, "marks": 6, "rooms_at_this_count": 8, "features": ["x", "y"]},
+    ]
+    h["rooms_at_most_sets"] = 1
+    mm = render_most_marked(h)
+    assert "1 room carries the most (5); all are listed; a row below that count is one of the rooms at its count, first by path, and its row says how many there are (rooms under two or more marks)" in mm
+    assert "| b.ts | 4 | 6 | 8 |" in mm and "| a.ts | 5 | 7 | 1 |" in mm
+    assert "| room | distinct sets | marks | rooms at this count |" in mm
+    # the lead's "all" is about the top count only when it says so: every row carries its own count
+    for m in h["most_marked_rooms"]:
+        assert f"| {m['room']} | {m['sets']} | {m['marks']} | {m['rooms_at_this_count']} |" in mm
+    # a feature under two profiles is profile-qualified wherever it is named: the relation cell
+    # and the most-marked features column use the matrix's labels
+    labels = _b.qualified_labels(["p/foundation", "q/foundation", "p/hub"])
+    assert labels == {"p/foundation": "p/foundation", "q/foundation": "q/foundation", "p/hub": "hub"}
+    # the matrix note says what a shared count equal to a diagonal is, and names the floor
+    assert f"between features with {_b.RELATION_MIN_ROOMS} or more rooms" in render_shared(f) or not f["shared_rooms"]
     # the disclosure names every decorative feature, its position name and its ungrounded signal
     dis = render_disclosure(f)
     dec = [x for x in f["features"] if x["decorative"]]
@@ -1317,3 +1375,50 @@ def test_the_page_is_rendered_by_code_and_its_fixed_texts_match_their_fields(sub
     r = run_brief(_skeleton(sub), sub, draft=_good_draft(f))
     assert r["passed"] and "## Reading (draft)" in r["markdown"] and "## Register lint" in r["markdown"]
     assert render_brief(None, f, [], {}).count("## ") == render_brief("", f, [], {}).count("## ")
+
+
+def test_a_citation_in_a_ruleset_text_that_reaches_the_page_cites_a_section_that_speaks_of_the_feature():
+    """D-050: the twelfth seating found the import_root caveat citing "§5.5" — the system spec's
+    section on the ruleset as a versioned artifact, which resolves but carries no fan-in/entrance
+    limit; the limit is D-028/D-029. R2 checks bracket citations in prose; nothing checked a section
+    or decision reference inside a cell. Resolution is not enough (§5.5 resolved): every "§n.n" in
+    a position name, caveat or decorative reason names a spec section whose body speaks of the
+    feature or a signal its predicate reads, and every "D-nnn" a log entry that does."""
+    import tomllib
+
+    root = Path(__file__).resolve().parents[1]
+    specs = "\n".join(
+        (root / n).read_text(encoding="utf-8")
+        for n in ("codebase-as-structure-system-spec.md", "structural-mapper-spec.md", "architect-brief-spec.md")
+    )
+    log = (root / "DECISIONS.md").read_text(encoding="utf-8")
+
+    def section(text: str, pattern: str) -> str | None:
+        m = re.search(pattern, text, re.M)
+        if not m:
+            return None
+        rest = text[m.end():]
+        nxt = re.search(r"^#{1,3}\s", rest, re.M)
+        return rest[: nxt.start()] if nxt else rest
+
+    seen = 0
+    for rs in ("maintainability.toml", "onboarding.toml"):
+        doc = tomllib.loads((root / "rulesets" / rs).read_text(encoding="utf-8"))
+        for f in doc["feature"]:
+            words = {f["name"], *re.findall(r"[a-z_]+", str(f.get("predicate", "")))} - {"and", "or", "p"}
+            for field in ("position_name", "caveat", "decorative_reason"):
+                text = str(f.get(field) or "")
+                for sec in re.findall(r"§\s*(\d+\.\d+)", text):
+                    seen += 1
+                    body = section(specs, rf"^#+\s*{re.escape(sec)}\b")
+                    assert body is not None, (rs, f["name"], field, f"§{sec} resolves to no heading")
+                    assert any(re.search(rf"\b{re.escape(w)}\b", body) for w in words), (rs, f["name"], field, f"§{sec} speaks of none of {sorted(words)}")
+                for d in re.findall(r"\bD-\d{3}\b", text):
+                    seen += 1
+                    body = section(log, rf"^## {d}\b")
+                    assert body is not None, (rs, f["name"], field, f"{d} resolves to no entry")
+                    assert any(re.search(rf"\b{re.escape(w)}\b", body) for w in words), (rs, f["name"], field, f"{d} speaks of none of {sorted(words)}")
+    assert seen >= 1  # the import_root caveat cites D-029
+    # the shape the seating found: §5.5 resolves and speaks of no signal import_root reads
+    body = section(specs, r"^#+\s*5\.5\b")
+    assert body is not None and not re.search(r"\bfan_in\b|\bimport_root\b", body)
