@@ -2,6 +2,8 @@
 
 *Component 5 of codebase-as-structure, built 2026-09-06 as M3 (D-003, D-025, D-027). The brief is prose over `skeleton.json`: the building described by a condemnation surveyor, warts and all, in the **descriptive register only**. It is the one stage with a model in the path, and it is held to the anti-horoscope contract by a deterministic lint that runs after the model and refuses what the model may not say. Implemented in `src/repo_substrate/brief.py` as `substrate brief`.*
 
+> **Revision, 2026-09-10 (D-049 and its addendum; brief 0.18.0).** The model-written reading described below was cut after eleven hostile seatings (tracker runs 17–28) found it reciting the register, and everything it could add turned out to be a field. The page is now rendered by code in full: the register (feature table, most-marked rooms, shared-rooms matrix), the decorative disclosure, the stance, the provenance. §1's contract and §2's lint still govern a hand-written draft (`--draft`, appended as *Reading (draft)*); §2's generation step, §3's model half, §4.2 and §4.5, and §5.1 describe a stage that no longer exists and are kept here as the record of what was tried. The sentence "the one stage with a model in the path" is false from 0.18.0. The log (D-039 → D-049) is the authority where this page and it differ.
+
 ## 1. Contract
 
 The brief may say what the skeleton says and nothing else. Concretely:

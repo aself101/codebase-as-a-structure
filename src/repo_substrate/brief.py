@@ -22,13 +22,10 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.17.1"
-MAX_ATTEMPTS_CAP = 3  # D-030: regeneration is bounded and every attempt's refusals are on the page
-DEFAULT_MODEL = "claude-opus-5"
+BRIEF_VERSION = "0.18.0"  # D-049: the page is rendered by code; no model writes any of it
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -125,6 +122,15 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
     # D-048: the rooms carrying the most diagnostic marks, each with every diagnostic feature that
     # marks it — the one thing the register does not print and the reading is bound to say (R19)
     most_marked_rooms = most_marked(feats.values())
+    # D-049: the rooms two diagnostic features share, for every pair — the register draws identity
+    # and containment in the relation column; the matrix says how the other sets sit against
+    # each other (four rooms are both import_root and package_entry on eslint: the caveat's live case)
+    _dkeys = sorted(k for k, e in feats.items() if e["diagnostic"])
+    shared_rooms = [
+        {"a": a, "b": b, "shared": len(set(feats[a]["rooms"]) & set(feats[b]["rooms"]))}
+        for i, a in enumerate(_dkeys)
+        for b in _dkeys[i + 1 :]
+    ]
     # D-049: the list is capped; the sheet says how many rooms carry the most marks so a page can
     # say whether the cap bit (twelve rooms tied at seven on eslint; five were listed)
     rooms_at_most_marks = (
@@ -241,6 +247,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         "co_located_rooms": co_located_all,
         "most_marked_rooms": most_marked_rooms,
         "rooms_at_most_marks": rooms_at_most_marks,
+        "shared_rooms": shared_rooms,
         # D-046 addendum: the prose kept computing this to say "the N features name M sets"
         "diagnostic_features": n_diag,
         "distinct_room_sets": distinct_room_sets,
@@ -259,6 +266,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "co_located_rooms": "rooms carrying two or more diagnostic marks, across all profiles",
             "most_marked_rooms": "the rooms carrying the most diagnostic marks (at most 5, ties by path), each with every diagnostic feature that marks it; marks counts marks, one per feature per profile, so a feature under two profiles is two marks and one name",
             "rooms_at_most_marks": "rooms carrying that most; when it exceeds the rooms listed, the list is the first of them by path",
+            "shared_rooms": "rooms both features of a pair mark, for every pair of diagnostic features; identity and containment are the relation column's",
             "diagnostic_features": "diagnostic features that fired (features, not marks or rooms)",
             "distinct_room_sets": "sets of rooms the diagnostic features name, an identical pair counted once, a nesting twice",
             "rooms_marked_twice": "rooms an identical pair of diagnostic features marks twice (each such room carries two marks)",
@@ -622,6 +630,9 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
         }
         feature_numbers[f["feature"]] = nums
         feature_numbers[f"{f['profile']}/{f['feature']}"] = nums
+    for sr in facts_doc.get("shared_rooms") or []:
+        for k in (sr["a"], sr["b"], sr["a"].split("/")[-1], sr["b"].split("/")[-1]):
+            feature_numbers.setdefault(k, set()).add(sr["shared"])
     wing_names = set(facts_doc["wings"])
     # R18 (D-045): families of marks the sheet does not define, built from its own profile and record names
     _families = [
@@ -1505,121 +1516,16 @@ def lint(text: str, facts_doc: dict[str, Any], register: bool = False) -> list[V
                 f"the brief must state the decorative count ({facts_doc['decorative']['count']}) where a reader sees it (mapper §3)",
             )
         )
-    # R19 (D-048): the reading names one of the most-marked rooms under every diagnostic feature
-    # that marks it, citing each with that room — the register cannot name a room under its
-    # several marks, and ten readings never did; an obligation, met by a sentence whose every
-    # element R2 and R8 already check, not a refusal
-    top = facts_doc.get("most_marked_rooms") or []
-    if register and top:
-        met = False
-        for snt in sentences_all:
-            for m in top:
-                if not _mentions(BRACKET.sub("", snt), m["room"]):
-                    continue
-                cited_with_room = {
-                    (by_key.get(c) or by_feature.get(c) or {}).get("feature")
-                    for c, _n, r in _citations(snt)
-                    if r and _mentions(r, m["room"])
-                }
-                if set(m["features"]) <= cited_with_room:
-                    met = True
-        if not met:
-            ex = top[0]
-            out.append(
-                Violation(
-                    "R19-colocation",
-                    0,
-                    "",
-                    f"no sentence names one of the most-marked rooms under every diagnostic feature that marks it, e.g. {ex['room']} under {', '.join(ex['features'])} (most_marked_rooms; D-048)",
-                )
-            )
     return out
 
 
 # ---------------------------------------------------------------- 2. the generator
 
-SYSTEM = """You are a condemnation surveyor writing the architect's brief for a building that is a codebase. The building is drawn from a skeleton of named structural features; you have the facts sheet and nothing else. You describe what is; you do not sell, soften, or forecast. The page you are writing for already carries a register: a table rendered from the facts sheet by code with one row per feature — position name, room count, counts per wing, dominant directory with its population, relations to other features (identical, within, with the rooms outside and the conjunct that did no work), and the reason a decorative feature is excluded. Do not restate the register: a feature's count in a wing or directory is sayable only in a sentence that names that wing or directory (R16) — say "8 of the 11 import_root rooms sit in scripts", never a bare "11" for a wing that holds 8. The building's largest wing is the exception: its count for any feature is the register's and is never sayable in the reading ("147 of the 164 sit in src" is refused when src is the largest wing) — say the minority wings' counts or say nothing. Never say a feature stands apart or shares no rooms unless the register's relation cell for it is "none" (R17). Never write "from room A to room B", "near", "alike", "similarly": rooms are not ordered and the page carries no distance. A caveat is a limit on what a predicate reads; never restate it as a property of rooms ("not an entrance"). Every bracket you write must warrant something in its own sentence — the feature's name, one of its rooms, or its count. Never say a wing holds "all" of a feature's rooms — that is its register row. The building's own wing counts are different: they are all sayable, and if you enumerate the wings you name every one with its rooms, the largest included. Never name a wing that holds all of a feature's rooms beside that feature at all. When you place some of a feature's rooms ("7 of the 42 sit in src"), the total goes in the same sentence. When you name a directory for a feature, give its share and the directory's rooms together ("6 of the 22 hub rooms sit in cookbook/x/providers, which holds 6 rooms"). When a directory shares a wing's name, say "the tools directory" — the wing and the directory hold different numbers of a feature's rooms. Never write "the graph marks", "the onboarding marks", "the age marks" — name the features. The sheet's `relation_counts` gives how many relations the register draws by kind, and `diagnostic_features` how many features fired — "the 11 diagnostic features name 10 distinct sets of rooms", never "11 marks"; use those numbers or none. Do not restate the register otherwise: and the building's totals need no repeating. The sheet's `distinct_room_sets` is the number of distinct sets of rooms the diagnosis names — an identical pair is one set, a nesting is two — use that number rather than your own count. Write the reading: what shape the building has, where the marks sit relative to one another, what the overlaps mean for how many distinct sets of rooms there are, and what the decorative marks are excluded for. Every claim you make is still checked against the sheet.
-
-Register, binding (validation-spec §2.1.1, mapper §3):
-- Present tense only. Every feature rests on a signal that describes a present structural position. You may say where a room sits and what fires on it. You may not say what will happen, what breaks, what is at risk, what is fragile, what will ripple, what a change would cause. Those are predictions; none is licensed here. Avoid the words: break, will, would, risk, fragile, brittle, dangerous, ripple, cascade, fail, failure, likely, predict, expect, cause, collapse, vulnerable, exposed, threat, prone, future, soon, eventually, impact, consequence, propagate, bug, defect, safe, unsafe, critical.
-- Every paragraph cites its evidence in brackets, where the bracket opens with the feature's own name from the facts sheet: [hub: src/db/connection.ts] for one room, [hub: src/a.ts, src/b.ts] for several, [hub ×27] for a count (×27 must equal that feature's count in the facts sheet). Several counts share one bracket separated by semicolons: [foundation ×21; onboarding/foundation ×21]. To name example rooms under a count, put them in the same bracket in the same sentence: [foundation ×21: src/a.ts, src/b.ts] — a room named in a later sentence needs its own bracket there. Never write the word "feature" inside a bracket; write the feature's name (foundation, hub, dark_room, scaffolding, corridor, …). A paragraph with no citation is struck, except one that names no feature and no room and states only the building's shape (wings and population): that is the register's and cites nothing.
-- A room you name in a sentence must be covered by a feature you cite in that same sentence, and that feature must have fired on that room. Never name a room under a feature that did not fire on it.
-- The register states the population, the mark counts and the co-located count; you may repeat a number when a sentence needs it, in the sentence that cites its feature, but do not open with an inventory.
-- Name rooms; do not say what they do. A path is not a function: "src/error/QueryFailedError.ts" is a room, not "the error classes". Describe position and marks, not purpose.
-- Do not set two features against each other ("against that", "offsets", "compensates"): the sets are independent measurements and the brief does not know their intersection unless the facts sheet states it.
-- Disclose a consequence-implying name's position name in the same paragraph where the name first appears; the disclosure clause covers only itself, not the rest of the sentence.
-- If the facts sheet lists `overlaps`, say so in one sentence naming both features: "The 70 flooded_basement rooms are the same 70 rooms as dark_room" — an identical pair is one set of rooms carrying two marks.
-- Never use "mostly", "concentrated", "the bulk", "spread across", "throughout", "every wing"; the register carries each feature's counts per wing — do not restate them (R16).
-- A directory you name must contain a room you cite in the same sentence. A count you state must be the count (or a by_wing count) of a feature you cite in the same sentence, or a building-level count.
-- Every number on the sheet has a unit (`units`): a count of rooms is never "N marks". `co_located_rooms` counts rooms carrying two or more marks.
-- When `overlaps` lists `inert_terms`, say that the extra conjunct excludes nothing here, naming its signal: "flooded_basement adds load_index >= 0.10 to dark_room and it excludes nothing on this repository: the 70 rooms are the same 70".
-- The register carries each feature's largest parent directory with its population; do not restate those numbers (R16). If you name a directory, cite a room in it in the same sentence (R10), and draw your example rooms from where the set's rooms are, not from where they flatter the mark.
-- Never rank marks against each other ("the widest set", "larger than"); a p90 set has its size by construction. Never write "validated": no signal in this gate holds that status; every feature rests on an asserted signal.
-- An overlap with `relation: within` is a nesting, not an identity: name both features, state the `n_outside` rooms the extra conjunct removed, and never call them one set or one finding. An identical overlap with `shared_predicate: true` is the same predicate under two profiles — say "the same predicate", never that two profiles agree.
-- A share without its denominator is a base rate; the register states both and you state neither.
-- The decorative disclosure names the ungrounded signal from `decorative_reason` ("crack and toothpick_wing rest on bug_pressure_index, which is unvalidated").
-- "findings" is not a unit; count rooms or marks.
-- Write every count as digits (267 rooms, not "two hundred sixty-seven"); every number must be a value on the facts sheet — never add, subtract, or count for yourself.
-- The stance paragraph carries no citation.
-- The sheet's `most_marked_rooms` lists the rooms carrying the most diagnostic marks, each with every diagnostic feature that marks it. Name at least one of them under every feature that marks it, citing each feature with that room in one bracket: "lib/x.js carries foundation, hub and corridor [foundation: lib/x.js; hub: lib/x.js; corridor: lib/x.js]" (R19). The register does not print this; the reading is the only place it is said.
-- Use only numbers that appear in the facts sheet (the counts on it; you are not given the rooms' lines, fan-in or fan-out, so never state one). No estimates, no percentages, no counts you computed yourself ("sixteen of the seventeen").
-- Decorative features rest on nothing confirmed. Do not use them in any diagnosis and do not name the rooms they fired on. State the decorative count once, plainly, citing by count only, e.g. "27 decorative marks render but are not a diagnosis [crack ×27]."
-- A feature whose name implies a consequence (foundation, toothpick_wing, crack) must be disclosed with its position name from the facts sheet, e.g. "foundation — a high-load node, a position in the import graph, not a claim about what breaks".
-- Do not give the building a one-word label (cathedral, shantytown, bunker, ruin). No archetype exists.
-- The page header already states the calibration (in-repo, self-relative, one frame). Do not write a calibration or method paragraph.
-- Do not invent rooms, wings, or features. Do not describe code you have not been given; the facts sheet is the whole building.
-
-Form: 200–400 words of plain prose in short paragraphs; no headings, no bullet lists, no table; the surveyor's voice — exact, unimpressed, specific. Begin with the building's shape (wings and where the marks fall), then what the relations between marks make of it (how many distinct sets of rooms the diagnosis actually names), then a most-marked room under every feature that marks it, then the decorative disclosure in one sentence, then the stance sentence given in the facts sheet, verbatim or near it. The register is on the page; write what a reader of the register would still need said."""
-
-
-def _user_message(facts_doc: dict[str, Any], violations: list[Violation] | None = None) -> str:
-    slim = {k: v for k, v in facts_doc.items() if k not in ("rooms", "calibration")}
-    msg = "FACTS SHEET (JSON):\n" + json.dumps(slim, indent=1, sort_keys=True, ensure_ascii=False)
-    if violations:
-        msg += (
-            "\n\nYOUR PREVIOUS DRAFT FAILED THE REGISTER LINT. Fix every violation and rewrite the whole brief:\n"
-            + "\n".join(
-                f"- {v.rule} (paragraph {v.paragraph}): {v.detail} — «{v.text}»" for v in violations
-            )
-        )
-    return msg
-
-
-def anthropic_generator(
-    model: str = DEFAULT_MODEL, effort: str = "high"
-) -> Callable[[str, str], tuple[str, dict[str, Any]]]:
-    """A generator over the Anthropic Messages API. Returns (text, provenance)."""
-    import anthropic
-
-    client = anthropic.Anthropic()
-
-    def _gen(system: str, user: str) -> tuple[str, dict[str, Any]]:
-        with client.beta.messages.stream(
-            model=model,
-            max_tokens=16000,
-            system=system,
-            messages=[{"role": "user", "content": user}],
-            thinking={"type": "adaptive"},
-            output_config={"effort": effort},
-            betas=["server-side-fallback-2026-07-01"],
-            fallbacks="default",
-        ) as stream:
-            resp = stream.get_final_message()
-        if resp.stop_reason == "refusal":
-            cat = getattr(getattr(resp, "stop_details", None), "category", None)
-            raise RuntimeError(f"the model declined the request (refusal, category {cat!r})")
-        text = "".join(b.text for b in resp.content if b.type == "text").strip()
-        return text, {
-            "model_requested": model,
-            "model_served": resp.model,
-            "request_id": getattr(resp, "_request_id", None),
-            "stop_reason": resp.stop_reason,
-            "effort": effort,
-            "input_tokens": resp.usage.input_tokens,
-            "output_tokens": resp.usage.output_tokens,
-        }
-
-    return _gen
+# The model-written reading, its prompt (SYSTEM), its input message and the Anthropic generator
+# lived here from D-027 to D-049. Eleven hostile seatings (tracker runs 17-28) found the reading
+# reciting the register; everything it could add was a field. The page is rendered by code; the
+# lint below stays for a hand-written draft (--draft). The prompt and generator are in the history
+# at 0d8f5c0.
 
 
 # ---------------------------------------------------------------- the run
@@ -1741,10 +1647,6 @@ RULES: list[tuple[str, str]] = [
         "R18",
         "no family of marks the sheet does not define (the graph marks, the onboarding marks); a family every cited feature's record reads is admitted",
     ),
-    (
-        "R19",
-        "one of the most-marked rooms is named under every diagnostic feature that marks it, each cited with that room",
-    ),
 ]
 
 
@@ -1844,7 +1746,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + f"{facts_doc['co_located_rooms']} rooms carry two or more diagnostic marks; gate `{fp}`, {asserted} of {len(gate)} signals asserted, none validated. "
         + "◌ marks a decorative feature: excluded from the diagnosis. A position names where a room sits in the record its predicate reads — the record is named beside each position — and is not a claim about its condition (D-004 Q3). "
         + f"The directory column is the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent. "
-        + f"The relation column draws identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap. The rooms carrying the most diagnostic marks are not a row here; the reading names one under every feature that marks it (R19).*"
+        + f"The relation column draws identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap. The most-marked rooms and the rooms each pair of diagnostic features shares follow the table.*"
         + NL
         + NL
         + "| feature | profile | position | rooms | by wing | largest parent directory n / rooms in it | relation to | predicate or reason |"
@@ -1852,80 +1754,173 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + "|---|---|---|---|---|---|---|---|"
         + NL
     )
-    return head + NL.join(rows) + NL
+    return head + NL.join(rows) + NL + render_most_marked(facts_doc) + render_shared(facts_doc)
+
+
+def render_most_marked(facts_doc: dict[str, Any]) -> str:
+    """D-049: the rooms carrying the most diagnostic marks, each under every feature that marks it,
+    with the count of rooms at that most so a capped list is not a claim of completeness."""
+    top = facts_doc.get("most_marked_rooms") or []
+    if not top:
+        return NL + "### Most-marked rooms" + NL + NL + "*No room carries two diagnostic marks.*" + NL
+    at = facts_doc.get("rooms_at_most_marks", len(top))
+    most = top[0]["marks"]
+    lead = f"*{at} room{'s' if at != 1 else ''} carr{'y' if at != 1 else 'ies'} the most diagnostic marks ({most}, one per feature per profile)"
+    lead += (
+        f"; the first {len(top)} by path are listed.*" if at > len(top) else "; all are listed.*"
+    )
+    body = NL.join(
+        f"| {m['room']} | {m['marks']} | {', '.join(m['features'])} |" for m in top
+    )
+    return (
+        NL + "### Most-marked rooms" + NL + NL + lead + NL + NL
+        + "| room | marks | diagnostic features that mark it |" + NL + "|---|---|---|" + NL + body + NL
+    )
+
+
+def render_shared(facts_doc: dict[str, Any]) -> str:
+    """D-049: rooms each pair of diagnostic features shares, as a matrix; the diagonal is the
+    feature's own count. Identity and containment are the relation column's; this is the rest."""
+    pairs = facts_doc.get("shared_rooms") or []
+    keys = sorted({k for sr in pairs for k in (sr["a"], sr["b"])})
+    if not keys:
+        return ""
+    counts = {f"{f['profile']}/{f['feature']}": f["count"] for f in facts_doc["features"]}
+    cell = {(sr["a"], sr["b"]): sr["shared"] for sr in pairs}
+    cell.update({(b, a): n for (a, b), n in list(cell.items())})
+    labels = [
+        k.split("/")[-1] if sum(1 for x in keys if x.split("/")[-1] == k.split("/")[-1]) == 1 else k
+        for k in keys
+    ]
+    head = "| shared rooms | " + " | ".join(labels) + " |" + NL + "|---|" + "---|" * len(keys) + NL
+    rows = NL.join(
+        f"| {labels[i]} | "
+        + " | ".join(
+            f"**{counts.get(a, 0)}**" if a == b else str(cell.get((a, b), 0)) for b in keys
+        )
+        + " |"
+        for i, a in enumerate(keys)
+    )
+    return (
+        NL + "### Shared rooms" + NL + NL
+        + "*Rooms both features mark, for every pair of diagnostic features (a feature under two profiles is two rows); the diagonal is the feature's own count. A shared count is not a relation: identity and containment are drawn in the relation column above, and only those.*"
+        + NL + NL + head + rows + NL
+    )
+
+
+def render_disclosure(facts_doc: dict[str, Any]) -> str:
+    """D-049: the decorative disclosure, rendered from decorative_reason — the prompt's canonical
+    sentence, now a fixed text tested against the fields it reads."""
+    dec = [f for f in facts_doc["features"] if f["decorative"]]
+    n = facts_doc["decorative"]["count"]
+    if not dec:
+        return "No decorative marks: every feature that fired rests on an asserted signal."
+    sigs = sorted({w for f in dec for w in re.findall(r"[a-z_]+_index", f.get("decorative_reason") or "")})
+    names = " and ".join(
+        f"{f['feature']}" + (f" — {f['position_name']} —" if f.get("position_name") else "") for f in dec
+    )
+    return (
+        f"{n} decorative mark{'s' if n != 1 else ''} render but are not a diagnosis: {names} rest on "
+        f"{', '.join(sigs) or 'nothing confirmed'}, which is unvalidated."
+    )
 
 
 def render_brief(
-    text: str, facts_doc: dict[str, Any], violations: list[Violation], provenance: dict[str, Any]
+    text: str | None,
+    facts_doc: dict[str, Any],
+    violations: list[Violation],
+    provenance: dict[str, Any],
 ) -> str:
-    status = (
-        "PASS"
-        if not violations
-        else f"FAILED ({len(violations)} violation{'s' if len(violations) != 1 else ''})"
-    )
-    if provenance.get("attempt"):
-        status += f" on attempt {provenance['attempt']}"
-    head = (
-        f"# {facts_doc['repo']['name']} — architect's brief\n\n"
-        f"*The register below is rendered from the facts sheet by code and carries the inventory (D-039); the reading beneath it is model-written and linted. "
-        f"Register lint: **{status}**. What the lint checked: "
-        + "; ".join(f"{rid} {desc}" for rid, desc in RULES)
-        + ". "
-        f"What it cannot check: a consequence voiced without a listed word, a computed number that happens to match, a room's function inferred from its name. Profile {facts_doc['profile']}"
+    """D-049: header → register (with the most-marked rooms and the shared-rooms matrix) →
+    decorative disclosure → stance → provenance, all rendered by code. A hand-written draft, if
+    given, is appended as the reading with its lint section; nothing else on the page is prose."""
+    draft = text is not None and text.strip() != ""
+    fp = (facts_doc.get("gate_fingerprint") or "?")[:12]
+    where = (
+        f"Profile {facts_doc['profile']}"
         + (f" + {', '.join(facts_doc['overlays'])}" if facts_doc["overlays"] else "")
         + f", geometry {facts_doc['geometry']}, skeleton `{facts_doc['skeleton_hash'][:12]}…`, facts `{facts_doc['facts_hash'][:12]}…`. "
-        f"Calibration: {facts_doc.get('calibration', 'in-repo, self-relative')} — the time-lapse for this skeleton is the one under gate "
-        f"`{(facts_doc.get('gate_fingerprint') or '?')[:12]}`. Brief {facts_doc.get('brief_version', BRIEF_VERSION)}; a PASS is a pass under that grammar (D-035).*\n\n"
+        f"Calibration: {facts_doc.get('calibration', 'in-repo, self-relative')} — the time-lapse for this skeleton is the one under gate `{fp}`. "
+        f"Brief {facts_doc.get('brief_version', BRIEF_VERSION)}."
     )
+    if draft:
+        status = (
+            "PASS"
+            if not violations
+            else f"FAILED ({len(violations)} violation{'s' if len(violations) != 1 else ''})"
+        )
+        head = (
+            f"# {facts_doc['repo']['name']} — architect's brief\n\n"
+            f"*The register below is rendered from the facts sheet by code; the reading beneath it is a hand-written draft, linted. "
+            f"Register lint: **{status}**. What the lint checked: "
+            + "; ".join(f"{rid} {desc}" for rid, desc in RULES)
+            + ". What it cannot check: a consequence voiced without a listed word, a computed number that happens to match, a room's function inferred from its name. "
+            + where
+            + " A PASS is a pass under that grammar (D-035).*\n\n"
+        )
+    else:
+        head = (
+            f"# {facts_doc['repo']['name']} — architect's brief\n\n"
+            f"*Rendered from the facts sheet by code; no model wrote any of it. The model-written reading was cut at D-049 after eleven hostile seatings found it reciting the register and everything it could add was a field. "
+            f"Every cell is a field, and every fixed text on the page is tested against the computation it labels (`tests/test_brief.py`). "
+            + where
+            + "*\n\n"
+        )
     prov = (
         "\n## Provenance\n\n"
         + "\n".join(f"- {k}: `{v}`" for k, v in sorted(provenance.items()) if v is not None)
         + "\n"
     )
-    lint_md = "\n## Register lint\n\n"
-    if violations:
-        lint_md += (
-            "| rule | paragraph | detail | text |\n|---|---|---|---|\n"
-            + "\n".join(
-                f"| {v.rule} | {v.paragraph} | {v.detail.replace('|', '/')} | {v.text.replace('|', '/')} |"
-                for v in violations
+    page = (
+        head
+        + render_register(facts_doc)
+        + "\n## Decorative marks\n\n"
+        + render_disclosure(facts_doc)
+        + "\n\n## Stance\n\n"
+        + facts_doc.get("stance", STANCE)
+        + "\n"
+    )
+    if draft:
+        page += "\n## Reading (draft)\n\n" + (text or "").strip() + "\n"
+    page += prov
+    if draft:
+        lint_md = "\n## Register lint\n\n"
+        if violations:
+            lint_md += (
+                "| rule | paragraph | detail | text |\n|---|---|---|---|\n"
+                + "\n".join(
+                    f"| {v.rule} | {v.paragraph} | {v.detail.replace('|', '/')} | {v.text.replace('|', '/')} |"
+                    for v in violations
+                )
+                + "\n\n**This draft failed the register lint and is not a diagnosis until it passes.**\n"
             )
-            + "\n\n**This brief failed the register lint and is not a diagnosis until it passes.**\n"
-        )
-    else:
-        lint_md += (
-            "No violations. Rules: "
-            + ", ".join(f"{rid} {desc}" for rid, desc in RULES)
-            + " (each rule is dated in DECISIONS.md).\n"
-        )
-    register = render_register(facts_doc)
-    return head + register + "\n## Reading\n\n" + text.strip() + "\n" + prov + lint_md
+        else:
+            lint_md += (
+                "No violations. Rules: "
+                + ", ".join(f"{rid} {desc}" for rid, desc in RULES)
+                + " (each rule is dated in DECISIONS.md).\n"
+            )
+        page += lint_md
+    return page
 
 
 def relint(
     markdown: str, skeleton: dict[str, Any], substrate: dict[str, Any] | None
 ) -> dict[str, Any]:
-    """Re-judge an existing brief.md under the current lint, keeping its prose and provenance."""
-    body = markdown.split("\n## Provenance", 1)[0]
-    paras = [p for p in re.split(r"\n\s*\n", body) if p.strip()]
-    prose = "\n\n".join(
-        p
-        for p in paras
-        if not p.startswith("#")
-        and not p.startswith("*Register lint")
-        and not p.startswith("*The register below")
-        and not p.startswith("*Rendered from the facts sheet")
-        and not p.lstrip().startswith("|")
-    )
+    """Re-judge the reading of an existing brief.md under the current lint, keeping its provenance.
+    A page from before D-049 carries its reading under "## Reading"; a page since carries a draft
+    under "## Reading (draft)" or no reading at all."""
+    m = re.search(r"\n## Reading(?: \(draft\))?\n(.*?)(?=\n## |\Z)", markdown, re.DOTALL)
+    prose = m.group(1).strip() if m else ""
     prov: dict[str, Any] = {}
-    m = re.search(r"## Provenance\n(.*?)(?:\n## |\Z)", markdown, re.DOTALL)
-    if m:
-        for line in m.group(1).splitlines():
+    pm = re.search(r"## Provenance\n(.*?)(?:\n## |\Z)", markdown, re.DOTALL)
+    if pm:
+        for line in pm.group(1).splitlines():
             mm = re.match(r"- ([^:]+): `(.*)`", line.strip())
             if mm:
                 prov[mm.group(1)] = mm.group(2)
     f = facts(skeleton, substrate)
-    viols = lint(prose, f, register=True)
+    viols = lint(prose, f, register=True) if prose else []
     prov = {**prov, "relinted": f"brief {BRIEF_VERSION}", "facts_hash": f["facts_hash"]}
     return {
         "facts": f,
@@ -1940,40 +1935,20 @@ def relint(
 def run_brief(
     skeleton: dict[str, Any],
     substrate: dict[str, Any] | None,
-    generate: Callable[[str, str], tuple[str, dict[str, Any]]] | None = None,
     draft: str | None = None,
-    max_attempts: int = 2,
 ) -> dict[str, Any]:
-    """Facts → (draft | generate) → lint → rendered brief. Returns a dict with
-    `facts`, `text`, `violations`, `provenance`, `markdown`, `passed`."""
+    """Facts → rendered brief (D-049: by code, no model). A hand-written draft, if given, is
+    linted and appended as the reading. Returns a dict with `facts`, `text`, `violations`,
+    `provenance`, `markdown`, `passed`."""
     f = facts(skeleton, substrate)
     if draft is not None:
-        text, prov = draft, {"generator": "draft", "facts_hash": f["facts_hash"]}
+        text, prov = draft, {"generator": "draft", "facts_hash": f["facts_hash"], "brief_version": BRIEF_VERSION}
         viols = lint(text, f, register=True)
     else:
-        if generate is None:
-            raise ValueError("no generator and no draft")
-        viols: list[Violation] = []
-        text, prov = "", {}
-        attempts_log: list[dict[str, Any]] = []
-        for attempt in range(1, min(max_attempts, MAX_ATTEMPTS_CAP) + 1):
-            text, prov = generate(SYSTEM, _user_message(f, viols if attempt > 1 else None))
-            viols = lint(text, f, register=True)
-            attempts_log.append({"attempt": attempt, "violations": [v.rule for v in viols]})
-            prov = {
-                **prov,
-                "attempt": attempt,
-                "attempts_log": "; ".join(
-                    f"{a['attempt']}: {', '.join(a['violations']) or 'pass'}" for a in attempts_log
-                ),
-                "facts_hash": f["facts_hash"],
-                "brief_version": BRIEF_VERSION,
-            }
-            if not viols:
-                break
+        text, prov, viols = None, {"generator": "code", "facts_hash": f["facts_hash"], "brief_version": BRIEF_VERSION}, []
     return {
         "facts": f,
-        "text": text,
+        "text": text or "",
         "violations": [v.as_dict() for v in viols],
         "provenance": prov,
         "markdown": render_brief(text, f, viols, prov),

@@ -166,25 +166,21 @@ def test_lint_catches_each_register_breach(sub):
         assert "R5-disclosure" not in rules(disclosed) and "R1-consequence" not in rules(disclosed)
 
 
-def test_run_brief_regenerates_once_and_marks_failure(sub):
+def test_run_brief_renders_by_code_and_lints_a_draft(sub):
+    """D-049: without a draft the page is rendered by code and carries no reading; a draft is
+    linted and appended, and a failing draft marks the page."""
     sk = _skeleton(sub)
     f = facts(sk, sub)
     good = _good_draft(f)
-    calls = []
-
-    def fake(system, user):
-        calls.append(user)
-        return (good + "This will break." if len(calls) == 1 else good), {"model_served": "fake"}
-
-    r = run_brief(sk, sub, fake)
-    assert r["passed"] and r["provenance"]["attempt"] == 2 and "FAILED" in calls[1]
-    assert (
-        "Register lint: **PASS on attempt 2**" in r["markdown"] and "## Provenance" in r["markdown"]
-    )
-    r2 = run_brief(sk, sub, lambda s, u: (good + "It will fail.", {}), max_attempts=1)
+    r = run_brief(sk, sub)
+    assert r["passed"] and r["text"] == "" and r["provenance"]["generator"] == "code"
+    assert "## Reading" not in r["markdown"] and "## Register lint" not in r["markdown"]
+    assert "no model wrote any of it" in r["markdown"] and "## Provenance" in r["markdown"]
+    r2 = run_brief(sk, sub, draft=good + "It will fail.")
     assert not r2["passed"] and "FAILED (" in r2["markdown"] and len(r2["violations"]) >= 1
     r3 = run_brief(sk, sub, draft=good)
     assert r3["passed"] and r3["provenance"]["generator"] == "draft"
+    assert "## Reading (draft)" in r3["markdown"] and "Register lint: **PASS**" in r3["markdown"]
     json.dumps(r3["facts"])  # serializable
 
 
@@ -194,23 +190,26 @@ def test_relint_keeps_prose_and_provenance(sub):
     sk = _skeleton(sub)
     f = facts(sk, sub)
     good = _good_draft(f)
-    r = run_brief(sk, sub, lambda s, u: (good, {"model_served": "fake", "request_id": "req_1"}))
+    r = run_brief(sk, sub, draft=good)
     r2 = relint(r["markdown"], sk, sub)
     assert r2["passed"] and r2["text"].strip() == good.strip()
-    assert r2["provenance"]["model_served"] == "fake" and r2["provenance"]["request_id"] == "req_1"
-    assert "relinted" in r2["provenance"]
-    # generation-time lint and relint must agree on the same prose
+    assert r2["provenance"]["generator"] == "draft" and "relinted" in r2["provenance"]
+    # draft-time lint and relint must agree on the same prose
     bad = good + "Changing it will break much.\n\n"
-    r3 = run_brief(sk, sub, lambda s, u: (bad, {}), max_attempts=1)
+    r3 = run_brief(sk, sub, draft=bad)
     r4 = relint(r3["markdown"], sk, sub)
     assert [v["rule"] for v in r3["violations"]] == [v["rule"] for v in r4["violations"]]
+    # a page from before D-049 carries its reading under "## Reading"; relint recovers it
+    old_page = r["markdown"].replace("## Reading (draft)", "## Reading")
+    assert relint(old_page, sk, sub)["text"].strip() == good.strip()
+    # a page with no reading relints to a pass with no prose
+    r5 = relint(run_brief(sk, sub)["markdown"], sk, sub)
+    assert r5["passed"] and r5["text"] == ""
 
 
 def test_d030_lint_closes_the_perverse_routes(sub):
     """D-030: exemptions are narrow, numbers are paragraph-scoped, counts sit outside
     citations, attempts are bounded and logged."""
-    from repo_substrate.brief import MAX_ATTEMPTS_CAP
-
     sk = _skeleton(sub)
     f = facts(sk, sub)
     good = _good_draft(f)
@@ -247,16 +246,7 @@ def test_d030_lint_closes_the_perverse_routes(sub):
         "R7-counts" in rules(only_cited + f"[{feat['feature']} ×{f['diagnostic_count']}]\n\n")
         or str(f["diagnostic_count"]) in only_cited
     )
-    # attempts are capped and logged
-    calls = []
-
-    def always_bad(system, user):
-        calls.append(1)
-        return good + "It will break.\n\n", {}
-
-    r = run_brief(sk, sub, always_bad, max_attempts=10)
-    assert len(calls) == MAX_ATTEMPTS_CAP and not r["passed"]
-    assert r["provenance"]["attempts_log"].count("R1-consequence") == MAX_ATTEMPTS_CAP
+    # (attempts were capped and logged from D-030 to D-049; there is no generator to cap now)
 
 
 def test_lint_reads_chained_brackets_and_the_determiner_one(sub):
@@ -541,8 +531,8 @@ def test_register_table_carries_the_inventory_and_the_prose_is_the_reading(sub):
     page = render_brief(prose, f, [], {"generator": "draft"})
     assert (
         "## Register" in page
-        and "## Reading" in page
-        and page.index("## Register") < page.index("## Reading")
+        and "## Reading (draft)" in page
+        and page.index("## Register") < page.index("## Reading (draft)")
     )
     r = relint(page, _skeleton(sub), sub)
     assert r["text"].strip() == prose.strip() and r["passed"]
@@ -830,7 +820,7 @@ def test_register_relations_cover_every_set_and_positions_always_name_a_record(s
         1 for x in f["features"] if x["diagnostic"] and x["rooms"]
     )
     assert "features, not marks or rooms" in f["units"]["diagnostic_features"]
-    table = render_register(f)
+    table = render_register(f).split("### Most-marked rooms", 1)[0]  # the feature table (D-049)
     records = [name for name, _ in _RECORDS] + ["an unlisted record"]
     for line in table.splitlines():
         if line.startswith("| ") and not line.startswith("| feature") and "|---" not in line:
@@ -1121,7 +1111,7 @@ def test_the_reading_is_bound_to_what_the_register_does_not_print(sub, tmp_path)
     import inspect
 
     import repo_substrate.brief as _b
-    from repo_substrate.brief import RULES, SENTENCE, SYSTEM, record_of
+    from repo_substrate.brief import RULES, SENTENCE, record_of
     from repo_substrate.mapper.ruleset import RulesetError
 
     f = facts(_skeleton(sub), sub)
@@ -1152,15 +1142,13 @@ def test_the_reading_is_bound_to_what_the_register_does_not_print(sub, tmp_path)
         )
         assert m["marks"] >= len(m["features"]) >= 1 and m["marks"] >= 2  # foundation under two profiles: two marks, one name
     assert [m["marks"] for m in top] == sorted((m["marks"] for m in top), reverse=True)
-    # 3. R19: the obligation fires on a reading that names none of them, in register mode only
-    assert "R19-colocation" in {v.rule for v in lint(base, f, register=True)}
-    assert "R19-colocation" not in {v.rule for v in lint(base, f)}
+    # 3. (R19, the obligation to name one of them, lived from D-048 to D-049; the register prints them now)
     ex = top[0]
     cites = "; ".join(f"{k}: {ex['room']}" for k in ex["features"])
     canonical = base + f"{ex['room']} carries {', '.join(ex['features'])} [{cites}].\n\n"
     rules = {v.rule for v in lint(canonical, f, register=True)}
-    # 4. the admit-case: the sentence R19 asks for is refused by nothing (D-046)
-    assert not rules & {"R19-colocation", "R2-provenance", "R8-attribution", "R11-share", "R13-identity", "R17-apart"}, rules
+    # 4. the admit-case: a room named under every feature that marks it is refused by nothing (D-046)
+    assert not rules & {"R2-provenance", "R8-attribution", "R11-share", "R13-identity", "R17-apart"}, rules
     # naming the room does not name its directory: the R19 sentence is admitted when the room sits
     # in a feature's unplaced dominant directory (eslint's lib/config, 4 of 5, refused it under R15)
     h = json.loads(json.dumps(f))
@@ -1169,19 +1157,13 @@ def test_the_reading_is_bound_to_what_the_register_does_not_print(sub, tmp_path)
         if x["feature"] == ex["features"][0]:
             x["dominant_dir"] = {"dir": parent, "n": 1, "population": 3, "tied": False, "holds_third": False, "placeable": True}
     assert "R15-composition" not in {v.rule for v in lint(canonical, h, register=True)}
-    # a partial listing is true and does not meet the obligation
-    partial = base + f"{ex['room']} carries {ex['features'][0]} [{ex['features'][0]}: {ex['room']}].\n\n"
-    assert "R19-colocation" in {v.rule for v in lint(partial, f, register=True)}
     # the marks count is a sheet number wearing the unit marks
     counted = base + (
         f"{ex['room']} carries {ex['marks']} diagnostic marks: {', '.join(ex['features'])} [{cites}].\n\n"
     )
     assert "R12-unit" not in {v.rule for v in lint(counted, f, register=True)}
-    assert "R19" in {rid for rid, _ in RULES}
-    # 5. the prompt says what the lint does and what the model is given
-    assert "most_marked_rooms" in SYSTEM and "one finding, not two" not in SYSTEM
-    assert "(counts, lines, fan-in, fan-out)" not in SYSTEM
-    assert "rooms" not in json.loads(_b._user_message(f).split("FACTS SHEET (JSON):\n", 1)[1].split("\n\n", 1)[0])
+    assert "R19" not in {rid for rid, _ in RULES}
+    # 5. (the prompt and the input message went with the generator at D-049)
     # 6. the record list names the blend's inputs
     assert record_of("load_index >= p90") == "import graph and size"
     # 7. a directory's share and population are rooms
@@ -1273,7 +1255,65 @@ def test_a_position_wears_no_feature_name_and_the_most_marked_list_says_when_it_
         f"{', '.join(ex['features'])} [{cites}].\n\n"
     )
     rules = {v.rule for v in lint(text, g, register=True)}
-    assert not rules & {"R3-number", "R12-unit", "R19-colocation"}, rules
+    assert not rules & {"R3-number", "R12-unit"}, rules
     # the lint list on the page names no decision range
     page = render_brief(text, g, provenance={"attempt": 1}, violations=[])
     assert "through D-0" not in page and "each rule is dated" in page
+
+
+def test_the_page_is_rendered_by_code_and_its_fixed_texts_match_their_fields(sub):
+    """D-049 addendum (brief 0.18.0): the reading is cut. The page is header → register (feature
+    table, most-marked rooms, shared-rooms matrix) → decorative disclosure → stance → provenance,
+    all from the sheet; the shared counts recompute from the room lists; the most-marked lead says
+    whether the list is cut; the disclosure names every ungrounded signal and position name."""
+    import repo_substrate.brief as _b
+    from repo_substrate.brief import render_brief, render_disclosure, render_most_marked, render_shared
+
+    f = facts(_skeleton(sub), sub)
+    page = run_brief(_skeleton(sub), sub)["markdown"]
+    order = ["## Register", "### Most-marked rooms", "### Shared rooms", "## Decorative marks", "## Stance", "## Provenance"]
+    idx = [page.index(h) for h in order]
+    assert idx == sorted(idx) and "## Reading" not in page and "## Register lint" not in page
+    assert f["stance"] in page and "R19" not in page
+    # the shared-rooms matrix: every pair of diagnostic features, counts from the room lists
+    diag = {f"{x['profile']}/{x['feature']}": set(x["rooms"]) for x in f["features"] if x["diagnostic"]}
+    keys = sorted(diag)
+    assert len(f["shared_rooms"]) == len(keys) * (len(keys) - 1) // 2 and "shared_rooms" in f["units"]
+    for sr in f["shared_rooms"]:
+        assert sr["shared"] == len(diag[sr["a"]] & diag[sr["b"]])
+    shared = render_shared(f)
+    for x in f["features"]:
+        if x["diagnostic"]:
+            assert f"**{x['count']}**" in shared  # the diagonal is the feature's own count
+    # a shared count is a sheet number in a draft sentence citing either feature
+    a, b = keys[0], keys[-1]
+    n = next(sr["shared"] for sr in f["shared_rooms"] if sr["a"] == a and sr["b"] == b)
+    fa = next(x for x in f["features"] if f"{x['profile']}/{x['feature']}" == a)
+    sent = _good_draft(f) + f"{n} rooms carry both {fa['feature']} and {b.split('/')[-1]} [{fa['feature']} ×{fa['count']}].\n\n"
+    assert "R3-number" not in {v.rule for v in lint(sent, f, register=True)}
+    # the most-marked lead says whether the list is cut, against rooms_at_most_marks
+    g = json.loads(json.dumps(f))
+    feat = next(x for x in g["features"] if x["diagnostic"])
+    second = next(x for x in g["features"] if not x["diagnostic"] and feat["rooms"][0] in x["rooms"])
+    second["diagnostic"], second["decorative"] = True, False
+    g["most_marked_rooms"] = _b.most_marked(g["features"])
+    g["rooms_at_most_marks"] = len(g["most_marked_rooms"])
+    assert "all are listed" in render_most_marked(g)
+    g["rooms_at_most_marks"] = len(g["most_marked_rooms"]) + 7
+    assert f"the first {len(g['most_marked_rooms'])} by path are listed" in render_most_marked(g)
+    assert "No room carries two diagnostic marks" in render_most_marked(f)  # the fixture has none
+    # the disclosure names every decorative feature, its position name and its ungrounded signal
+    dis = render_disclosure(f)
+    dec = [x for x in f["features"] if x["decorative"]]
+    if dec:
+        assert str(f["decorative"]["count"]) in dis and "not a diagnosis" in dis
+        for x in dec:
+            assert x["feature"] in dis and (not x.get("position_name") or x["position_name"] in dis)
+            for sig in re.findall(r"[a-z_]+_index", x.get("decorative_reason") or ""):
+                assert sig in dis
+    else:
+        assert "No decorative marks" in dis
+    # a draft is the only prose and carries the lint section; nothing else on the page is linted
+    r = run_brief(_skeleton(sub), sub, draft=_good_draft(f))
+    assert r["passed"] and "## Reading (draft)" in r["markdown"] and "## Register lint" in r["markdown"]
+    assert render_brief(None, f, [], {}).count("## ") == render_brief("", f, [], {}).count("## ")

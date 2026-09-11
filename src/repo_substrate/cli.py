@@ -12,7 +12,6 @@ import sys
 from pathlib import Path
 
 from .assemble import ExtractOptions, extract
-from .brief import DEFAULT_MODEL
 from .config import SubstrateConfig
 from .deps import DependencyCruiserExtractor
 from .gitutil import GitError
@@ -116,7 +115,7 @@ def main(argv: list[str] | None = None) -> int:
     tl.add_argument("-o", "--output", type=Path, required=True, help="output directory")
     br = sub.add_parser(
         "brief",
-        help="M3: the architect's brief over a skeleton, generated under the surveyor stance and checked by the register lint",
+        help="M3: the architect's brief over a skeleton — the register, the most-marked rooms, the shared-rooms matrix, the disclosure and the stance, rendered by code (D-049); a hand-written draft is linted and appended",
     )
     br.add_argument("skeleton", type=Path)
     br.add_argument("substrate", type=Path, nargs="?", default=None)
@@ -126,18 +125,13 @@ def main(argv: list[str] | None = None) -> int:
         "--draft",
         type=Path,
         default=None,
-        help="lint this hand-written brief instead of generating",
+        help="lint this hand-written reading and append it to the page",
     )
     br.add_argument(
         "--relint",
         type=Path,
         default=None,
         help="re-judge an existing brief.md under the current lint, keeping its provenance",
-    )
-    br.add_argument("--model", default=None, help=f"generator model (default {DEFAULT_MODEL})")
-    br.add_argument("--effort", default="high", choices=["low", "medium", "high", "xhigh", "max"])
-    br.add_argument(
-        "--max-attempts", type=int, default=2, help="regenerate once with the violations fed back"
     )
     args = ap.parse_args(argv)
     try:
@@ -162,7 +156,7 @@ def _load_json(path: Path, what: str) -> dict:
 
 def _dispatch(args: argparse.Namespace) -> int:
     if args.cmd == "brief":
-        from .brief import anthropic_generator, relint, run_brief
+        from .brief import relint, run_brief
 
         skel = _load_json(args.skeleton, "skeleton")
         sub_doc = _load_json(args.substrate, "substrate") if args.substrate else None
@@ -170,12 +164,7 @@ def _dispatch(args: argparse.Namespace) -> int:
             r = relint(args.relint.read_text(encoding="utf-8"), skel, sub_doc)
         else:
             draft = args.draft.read_text(encoding="utf-8") if args.draft else None
-            gen = (
-                None
-                if draft is not None
-                else anthropic_generator(args.model or DEFAULT_MODEL, args.effort)
-            )
-            r = run_brief(skel, sub_doc, gen, draft, args.max_attempts)
+            r = run_brief(skel, sub_doc, draft)
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(r["markdown"], encoding="utf-8")
         if args.facts:
@@ -183,8 +172,8 @@ def _dispatch(args: argparse.Namespace) -> int:
                 json.dumps(r["facts"], indent=1, sort_keys=True, ensure_ascii=False) + "\n",
                 encoding="utf-8",
             )
-        status = "PASS" if r["passed"] else f"FAILED ({len(r['violations'])})"
-        print(f"{skel['repo']['name']}: register lint {status} → {args.output}", file=sys.stderr)
+        status = ("PASS" if r["passed"] else f"FAILED ({len(r['violations'])})") if r["text"] else "rendered"
+        print(f"{skel['repo']['name']}: brief {status} → {args.output}", file=sys.stderr)
         for v in r["violations"][:12]:
             print(f"  {v['rule']} ¶{v['paragraph']}: {v['detail']}", file=sys.stderr)
         return 0 if r["passed"] else 1

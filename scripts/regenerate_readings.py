@@ -199,8 +199,6 @@ def main() -> int:
                     str(m3 / f"{short}.brief.md"),
                     "--facts",
                     str(m3 / f"{short}.facts.json"),
-                    "--max-attempts",
-                    "3",
                     *(
                         ["--relint", str(args.relint_from / f"{short}.brief.md")]
                         if args.relint_from
