@@ -11,6 +11,8 @@
 > **Revision, 2026-09-11 (D-053; brief 0.21.0).** The fourteenth seating fired D-052's first clause: a blend's records are now derived from `config.ALLOWED_INPUTS` (`crack` reads "clock and edit record"); a partly listed tier is "the first by marks, then by path"; a containment the predicates guarantee says "by its predicate"; the page defines a wing and says how many `package.json` scopes its one population pools (§5 Q5 is still open — the pooling is now stated, not resolved); maintainability 0.2.5 gives `flooded_basement` its caveat.
 >
 > **Revision, 2026-09-12 (D-054; brief 0.22.0).** The fifteenth seating: the scope count D-053 put on the page was over every substrate node, not the population (eslint: 21 stated, 6 true); the count is now the rooms' and the rooms per scope are listed beside it (§5 Q5 remains open, now with its sizes — mapper §7 Q7 records it); a tie in the directory column names its partner with its numbers; the most-marked tier orders by sets then path, marks shown and ordering nothing; a reason about a signal lives in the ruleset's `[signal_reason]` table and reaches every row that reads the signal; the citation tests share one grammar.
+>
+> **Revision, 2026-09-12 (D-055; brief 0.23.0).** The sixteenth seating: a containment the predicates guarantee is drawn at any count (the three-room floor is for containment by accident); a decorative row prints its predicate before its reason; the root package scope is "(root manifest)", distinct from the "(root)" wing; the most-marked ordering is one text on the lead and the sheet; every `§` on the page names its spec, by test.
 
 ## 1. Contract
 

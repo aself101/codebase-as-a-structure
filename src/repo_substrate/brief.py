@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.22.0"  # D-054: packages counted over the population with rooms per scope; a tie names its partner; a tier orders by path; a signal's reason on every row that reads it
+BRIEF_VERSION = "0.23.0"  # D-055: the root scope is "(root manifest)"; a containment the predicates guarantee is drawn under the floor; a decorative row prints its predicate; one ordering text for the lead and the sheet
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -156,14 +156,23 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
     # the sheet says so and R9 makes the prose say so
     overlaps: list[dict[str, Any]] = []
     # D-041: a set of fewer than three rooms is inside anything that contains it; no relation is drawn
+    # D-055 (sixteenth seating): unless the predicates guarantee it — toothpick_wing's two rooms on
+    # typeorm were inside foundation and crack by conjunction and the cell said "too few rooms".
+    # The floor exists for containment by accident; a containment by predicate is not one.
     diag = [
         (k, set(e["rooms"]))
         for k, e in sorted(feats.items())
-        if len(e["rooms"])
-        >= RELATION_MIN_ROOMS  # D-044: decorative features too — the note promised every set
+        if len(e["rooms"]) >= 1  # D-044: decorative features too — the note promised every set
     ]
     for i, (ka, ra) in enumerate(diag):
         for kb, rb in diag[i + 1 :]:
+            under = len(ra) < RELATION_MIN_ROOMS or len(rb) < RELATION_MIN_ROOMS
+            if under:
+                if ra < rb and _conjoins(feats[ka], feats[kb]):
+                    overlaps.append(_flag(feats, {"a": ka, "b": kb, "relation": "within", "n": len(ra), "n_outside": len(rb - ra), "by_predicate": True}))
+                elif rb < ra and _conjoins(feats[kb], feats[ka]):
+                    overlaps.append(_flag(feats, {"a": kb, "b": ka, "relation": "within", "n": len(rb), "n_outside": len(ra - rb), "by_predicate": True}))
+                continue
             if ra == rb:
                 # D-037: when two predicates draw one set, the conjuncts one has and the other
                 # lacks did no work on this repository; the sheet names them so the prose cannot
@@ -254,7 +263,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
     # rooms per scope travel with it so the pooling the calibration sentence discloses has a size.
     by_package: dict[str, int] = {}
     for nid in skeleton["strata"]["by_node"]:
-        scope = ((nodes.get(nid) or {}).get("metrics") or {}).get("package", "") or "(root)"
+        # D-055 (sixteenth seating): "(root)" was the wing (3 rooms on typeorm) and the scope (502)
+        # in one note; the scope's root is the repository's own manifest and is named as such
+        scope = ((nodes.get(nid) or {}).get("metrics") or {}).get("package", "") or ROOT_SCOPE
         by_package[scope] = by_package.get(scope, 0) + 1
     n_packages = len(by_package)
     population = s["population"]
@@ -299,7 +310,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "diagnostic_count_base": "marks",
             "decorative.count": "marks",
             "co_located_rooms": "rooms carrying two or more distinct diagnostic sets, across all profiles (a predicate under two profiles is one set)",
-            "most_marked_rooms": "the rooms carrying the most distinct diagnostic sets (at most 5; ordered by sets, then marks, then path), each with every diagnostic feature that marks it, profile-qualified where a feature is under two profiles; sets counts distinct room sets (a feature under two profiles, or two features drawing one set, is one); marks counts one per feature per profile; rooms_at_this_count is the rooms under two or more sets carrying the row's sets count, and listed_at_this_count how many of them the list carries, the first by marks then by path",
+            "most_marked_rooms": f"the rooms carrying the most distinct diagnostic sets (at most {MOST_MARKED_ROOMS}; {MOST_MARKED_ORDER}), each with every diagnostic feature that marks it, profile-qualified where a feature is under two profiles; sets counts distinct room sets; marks counts one per feature per profile; rooms_at_this_count is the rooms under two or more sets carrying the row's sets count, and listed_at_this_count how many of them the list carries, the first by path",
             "rooms_at_most_sets": "rooms carrying that most; when it exceeds the rooms listed at it, the list is the first of them by path",
             "shared_rooms": "rooms both features of a pair mark, for every pair of diagnostic features; identity and containment are the relation column's",
             "diagnostic_features": "diagnostic features that fired (features, not marks or rooms)",
@@ -308,9 +319,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "rooms_marked_twice_shared_predicate": "of those, rooms where two profiles carry one predicate",
             "rooms_marked_twice_inert_conjunct": "of those, rooms where two predicates draw one set because a conjunct excludes nothing",
             "rooms_in_both_kinds": "rooms counted under both causes (the two counts overlap by this many)",
-            "relation_counts": "relations the register draws, by kind, over every feature with enough rooms, decorative included",
+            "relation_counts": "relations the register draws, by kind, over every feature with enough rooms, decorative included, and containments the predicates guarantee at any count",
             "dominant_dir": "the immediate parent directory (non-recursive) holding the most of a feature's rooms; shown only when it holds a third or more; tied_with names every other directory holding as many",
-            "by_package": "rooms of the population per package.json scope (the nearest manifest above the room; (root) is the repository's own), largest first",
+            "by_package": f"rooms of the population per package.json scope (the nearest manifest above the room; {ROOT_SCOPE} is the repository's own package.json), largest first",
             "feature.count": "rooms (one mark per room)",
         },
         "overlaps": overlaps,
@@ -1579,6 +1590,10 @@ NL = "\n"
 # D-043: the note is generated from the same constants the renderer computes with
 RELATION_MIN_ROOMS = 3  # a set of fewer rooms is inside anything that contains it (D-041)
 MOST_MARKED_ROOMS = 5  # the sheet lists this many of the rooms carrying the most marks (D-048)
+ROOT_SCOPE = "(root manifest)"  # D-055: the package scope of the repository's own package.json; "(root)" is the wing
+# D-055: the ordering the most-marked table uses, said once — the sheet's unit gloss kept "then marks"
+# after D-054 dropped it from the key, and the lead said the opposite on the same page
+MOST_MARKED_ORDER = "ordered by sets (a feature under two profiles, or two features drawing one set, is one set), then by path — marks (one per feature per profile) are shown and order nothing, since within a tier they differ only by the double count the register discounts"
 DIRECTORY_MIN_ROOMS = 6  # below this no directory is placed (D-040)
 DIRECTORY_SHARE = 3  # a directory is shown when it holds a third or more (R15)
 # D-043: the record a predicate reads, named beside each position so the gloss covers every row.
@@ -1802,9 +1817,12 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         return "; ".join(out) or "no identity or containment"
 
     def relation_cell(f: dict[str, Any], key: str) -> str:
-        # D-047: a set under the floor was not related to anything; the cell says that, not "none"
+        # D-047: a set under the floor was not related to anything; the cell says that, not "none".
+        # D-055: except where the predicates guarantee a containment — drawn at any count
         if f["count"] < RELATION_MIN_ROOMS:
-            return f"too few rooms to relate ({f['count']})"
+            drawn = relations(key)
+            drawn = "" if drawn == "no identity or containment" else drawn + "; "
+            return f"{drawn}too few rooms for any other relation ({f['count']})"
         return relations(key)
 
     rows = []
@@ -1830,7 +1848,9 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         else:
             dom = "none holds a third"
         if f["decorative"]:
-            what = f"decorative — {f.get('decorative_reason') or ''}".strip()
+            # D-055: the predicate is on the row — "the fragility half" of a reason was unresolvable
+            # from a row that printed the reason and not the conjunction it is half of
+            what = f"`{f['predicate']}` — decorative: {f.get('decorative_reason') or ''}".strip()
         else:
             what = f"`{f['predicate']}`"
         if f.get("caveat"):
@@ -1869,14 +1889,14 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + f"the diagnostic features name {facts_doc.get('distinct_room_sets', '?')} distinct sets of rooms; {facts_doc['decorative']['count']} decorative marks ({dec}); "
         + f"{facts_doc['co_located_rooms']} rooms carry two or more distinct diagnostic sets; gate `{fp}`, {asserted} of {len(gate)} signals asserted, {validated_text}. "
         + f"A wing is a directory at depth {facts_doc.get('wing_depth', 1)} of the tree (the ruleset's wing_depth), not a package; the population spans {facts_doc.get('packages', 1)} package scope{'s' if facts_doc.get('packages', 1) != 1 else ''}"
-        + (f" (rooms per scope, largest first: {scopes})" if facts_doc.get("by_package") else "")
+        + (f" (rooms per scope, largest first: {scopes}; {ROOT_SCOPE} is the repository's own package.json, not the (root) wing)" if facts_doc.get("by_package") else "")
         + ". "
         + "◌ marks a decorative feature: excluded from the diagnosis. A position names where a room sits in the record its predicate reads — the record is named beside each position — and is not a claim about its condition (D-004 Q3). "
         + f"The directory column is the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent. "
-        + f"The relation column draws identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap. The most-marked rooms and the rooms each pair of diagnostic features shares follow the table.*"
+        + f"The relation column draws identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms — and a containment the predicates guarantee at any count; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap. The most-marked rooms and the rooms each pair of diagnostic features shares follow the table.*"
         + NL
         + NL
-        + "| feature | profile | position | rooms | by wing | largest parent directory n / rooms in it | relation to | predicate or reason |"
+        + "| feature | profile | position | rooms | by wing | largest parent directory n / rooms in it | relation to | predicate; caveat or reason |"
         + NL
         + "|---|---|---|---|---|---|---|---|"
         + NL
@@ -1903,7 +1923,7 @@ def render_most_marked(facts_doc: dict[str, Any]) -> str:
     most = top[0].get("sets", top[0]["marks"])
     at = facts_doc.get("rooms_at_most_sets", top[0].get("rooms_at_this_count", len(top)))
     lead = (
-        f"*Rooms under two or more distinct diagnostic sets, ordered by sets (a feature under two profiles, or two features drawing one set, is one set), then by path — marks (one per feature per profile) are shown and order nothing, since within a tier they differ only by the double count the register discounts; at most {MOST_MARKED_ROOMS} are listed. "
+        f"*Rooms under two or more distinct diagnostic sets, {MOST_MARKED_ORDER}; at most {MOST_MARKED_ROOMS} are listed. "
         f"{at} room{'s' if at != 1 else ''} carr{'y' if at != 1 else 'ies'} the most ({most}). "
         "The listed column is rows listed of rooms at the row's sets count; where fewer are listed than carry the count, the listed are the first by path.*"
     )
@@ -1940,7 +1960,7 @@ def render_shared(facts_doc: dict[str, Any]) -> str:
     )
     return (
         NL + "### Shared rooms" + NL + NL
-        + "*Rooms both features mark, for every pair of diagnostic features (a feature under two profiles is two rows); the diagonal is the feature's own count. A shared count equal to the smaller of the two features' own counts is containment, and equal to both is identity; the relation column above draws those, and only between features with " + str(RELATION_MIN_ROOMS) + " or more rooms — a pair under that floor is read here and not there.*"
+        + "*Rooms both features mark, for every pair of diagnostic features (a feature under two profiles is two rows); the diagonal is the feature's own count. A shared count equal to the smaller of the two features' own counts is containment, and equal to both is identity; the relation column above draws those, and only between features with " + str(RELATION_MIN_ROOMS) + " or more rooms or where the predicates guarantee the containment — any other pair under that floor is read here and not there.*"
         + NL + NL + head + rows + NL
     )
 

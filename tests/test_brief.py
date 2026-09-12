@@ -1083,7 +1083,7 @@ def test_fixed_texts_are_tested_against_their_computation(sub):
     # the relation cell under the floor
     tiny = next(x for x in f["features"] if x["count"] < 3)
     table = render_register(f)
-    assert f"too few rooms to relate ({tiny['count']})" in table
+    assert f"too few rooms for any other relation ({tiny['count']})" in table  # D-055: the wording
     # every rule id the lint can emit is on the page
     ids = {rid for rid, _ in RULES}
     import inspect, re as _re
@@ -1592,7 +1592,7 @@ def test_a_partly_listed_tier_is_the_first_by_marks_then_path_and_a_blend_names_
         if ov["relation"] == "within":
             assert "by_predicate" in ov
             cell = "by its predicate; " if ov["by_predicate"] else ""
-            assert f"({cell}{ov['n_outside']} " in reg or "too few rooms" in reg
+            assert f"({cell}{ov['n_outside']} " in reg  # D-055: no fallback admitted (the sixteenth seating quoted the `or`)
     # the flooded_basement caveat reaches the page
     for x in f["features"]:
         if x["feature"] == "flooded_basement":
@@ -1627,13 +1627,13 @@ def test_a_tier_orders_by_path_and_the_scope_count_is_over_the_population(sub, t
     sub2["nodes"].append({"id": "tests/x.test.ts", "kind": "file", "lang": "ts", "metrics": {"package": "tests/only"}, "derived": {}})
     sub2["nodes"].append({"id": "tests/y.test.ts", "kind": "file", "lang": "ts", "metrics": {"package": "tests/other"}, "derived": {}})
     f = facts(sk, sub2)
-    over_rooms = {(next(n for n in sub2["nodes"] if n["id"] == r)["metrics"].get("package") or "(root)") for r in rooms}
+    over_rooms = {(next(n for n in sub2["nodes"] if n["id"] == r)["metrics"].get("package") or _b.ROOT_SCOPE) for r in rooms}
     assert f["packages"] == len(over_rooms) and set(f["by_package"]) == over_rooms
     assert sum(f["by_package"].values()) == f["population"]
     assert list(f["by_package"].values()) == sorted(f["by_package"].values(), reverse=True)
     reg = _b.render_register(f)
     scopes = " · ".join(f"{k} {v}" for k, v in f["by_package"].items())
-    assert f"spans {f['packages']} package scopes (rooms per scope, largest first: {scopes})." in reg
+    assert f"spans {f['packages']} package scopes (rooms per scope, largest first: {scopes}; (root manifest) is the repository's own package.json, not the (root) wing)." in reg
     assert "tests/only" not in reg and f"across {f['packages']} package scopes" in f["calibration"]
     # (2) a tie names every partner with its numbers; the wing-named partner is marked as the parent
     sk2 = json.loads(json.dumps(sk))
@@ -1689,3 +1689,58 @@ def test_a_tier_orders_by_path_and_the_scope_count_is_over_the_population(sub, t
         _rs('[signal_reason]\nneglect_index = "unvalidated"\n\n[[feature]]\nname = "x"\npredicate = "fan_in >= p90"\n')
     ok = _rs('[signal_reason]\nbug_pressure_index = "unvalidated (D-015)"\n\n[[feature]]\nname = "x"\npredicate = "bug_pressure_index >= p90"\ndecorative = true\n')
     assert ok.features[0].decorative_reason == "bug_pressure_index is unvalidated (D-015)."
+
+
+def test_a_guaranteed_containment_is_drawn_under_the_floor_and_the_ordering_text_is_one(sub):
+    """D-055 (sixteenth seating, typeorm 0.22.0). (1) toothpick_wing's two rooms were inside
+    foundation and crack by conjunction and the cell said "too few rooms to relate (2)" — D-041's
+    floor is for containment by accident; a containment the predicates guarantee is drawn at any
+    count. (2) A decorative row prints its predicate ("the fragility half" of a reason was
+    unresolvable from a row that showed the reason and not the conjunction). (3) The sheet's unit
+    gloss for most_marked_rooms kept "then marks" after D-054 dropped it from the key; the lead and
+    the gloss now share one text. (4) "(root)" was the wing and the scope in one note; the scope is
+    "(root manifest)". (5) Every § on the page names its spec (D-054's third clause, made a rule)."""
+    import repo_substrate.brief as _b
+
+    root = Path(__file__).resolve().parents[1]
+    sk = _skeleton(sub)
+    # (1) a two-room feature whose predicate conjoins a larger feature's, and one whose does not
+    sk2 = json.loads(json.dumps(sk))
+    tmpl = next(x for x in sk2["features"] if x["diagnostic"] and not x["decorative"])
+    big_rooms = sorted(sk2["strata"]["by_node"])[:4]  # the fixture's features carry one room each; build one with four
+    big = dict(tmpl, feature="bigf", predicate="fan_in >= p90", decorative=False, decorative_reason=None)
+    inner = dict(big, feature="tiny_in", predicate="fan_in >= p90 and lines >= p50", decorative=True, decorative_reason="tiny_in is decorative on purpose (lines)", diagnostic=False)
+    loose = dict(big, feature="tiny_off", predicate="fan_in >= p95")
+    sk2["features"] = [dict(big, node=r) for r in big_rooms] + [dict(inner, node=r) for r in big_rooms[:2]] + [dict(loose, node=r) for r in big_rooms[:2]]
+    sk2["overlays"] = []
+    g = facts(sk2, sub)
+    key = lambda n: f"{sk2['profile']['name']}/{n}"  # noqa: E731
+    drawn = [o for o in g["overlaps"] if o["a"] == key("tiny_in")]
+    assert drawn and all(o["relation"] == "within" and o["by_predicate"] for o in drawn)
+    assert any(o["b"] == key(big["feature"]) and o["n_outside"] == len(big_rooms) - 2 for o in drawn)
+    assert not [o for o in g["overlaps"] if key("tiny_off") in (o["a"], o["b"])]
+    reg = _b.render_register(g)
+    row_in = next(line for line in reg.splitlines() if line.startswith("| ◌ tiny_in |"))
+    row_off = next(line for line in reg.splitlines() if line.startswith("| tiny_off |"))
+    assert f"⊂ {big['feature']} (by its predicate; {len(big_rooms) - 2} {big['feature']} room" in row_in and row_in.count("too few rooms for any other relation (2)") == 1
+    assert "| too few rooms for any other relation (2) |" in row_off and "⊂" not in row_off
+    # the other side draws it too, and the counts count it
+    row_big = next(line for line in reg.splitlines() if line.startswith(f"| {big['feature']} |"))
+    assert "⊃ tiny_in (by its predicate;" in row_big
+    assert g["relation_counts"]["within"] >= len(drawn)
+    # (2) the decorative row prints its predicate before its reason
+    assert f"| `{inner['predicate']}` — decorative: tiny_in is decorative on purpose (lines) |" in row_in
+    assert "and a containment the predicates guarantee at any count" in reg and "predicate; caveat or reason |" in reg
+    # (3) one ordering text
+    f = facts(sk, sub)
+    lead = _b.render_most_marked(g)  # bigf and tiny_off share two rooms: a tier exists on the synthetic sheet
+    assert g["most_marked_rooms"] and _b.MOST_MARKED_ORDER in g["units"]["most_marked_rooms"] and _b.MOST_MARKED_ORDER in lead
+    assert "then marks" not in f["units"]["most_marked_rooms"] and "by marks" not in f["units"]["most_marked_rooms"]
+    # (4) the scope's root is not the wing's
+    assert _b.ROOT_SCOPE != "(root)" and _b.ROOT_SCOPE in f["units"]["by_package"]
+    # (5) every § on the page names its spec
+    page = run_brief(sk, sub)["markdown"]
+    for m in re.finditer(r"§", page):
+        before = page[max(0, m.start() - 24) : m.start()]
+        assert re.search(r"(system spec|mapper|architect-brief spec)\s*$", before), page[max(0, m.start() - 60) : m.start() + 10]
+    assert page.count("§") >= 1  # system spec §5.3 at least; the pooled sentence needs two scopes
