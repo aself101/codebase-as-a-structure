@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.23.0"  # D-055: the root scope is "(root manifest)"; a containment the predicates guarantee is drawn under the floor; a decorative row prints its predicate; one ordering text for the lead and the sheet
+BRIEF_VERSION = "0.24.0"  # D-056: a scope is named by its manifest path; by_package is an ordered list; a containment not by predicate says what signal the two read in common; ◌ travels with the name; containers that are one set are one entry
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -169,9 +169,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             under = len(ra) < RELATION_MIN_ROOMS or len(rb) < RELATION_MIN_ROOMS
             if under:
                 if ra < rb and _conjoins(feats[ka], feats[kb]):
-                    overlaps.append(_flag(feats, {"a": ka, "b": kb, "relation": "within", "n": len(ra), "n_outside": len(rb - ra), "by_predicate": True}))
+                    overlaps.append(_flag(feats, _within(feats, ka, kb, ra, rb)))
                 elif rb < ra and _conjoins(feats[kb], feats[ka]):
-                    overlaps.append(_flag(feats, {"a": kb, "b": ka, "relation": "within", "n": len(rb), "n_outside": len(ra - rb), "by_predicate": True}))
+                    overlaps.append(_flag(feats, _within(feats, kb, ka, rb, ra)))
                 continue
             if ra == rb:
                 # D-037: when two predicates draw one set, the conjuncts one has and the other
@@ -195,33 +195,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
                     )
                 )
             elif ra < rb:
-                overlaps.append(
-                    _flag(
-                        feats,
-                        {
-                            "a": ka,
-                            "b": kb,
-                            "relation": "within",
-                            "n": len(ra),
-                            "n_outside": len(rb - ra),
-                            "by_predicate": _conjoins(feats[ka], feats[kb]),
-                        },
-                    )
-                )
+                overlaps.append(_flag(feats, _within(feats, ka, kb, ra, rb)))
             elif rb < ra:
-                overlaps.append(
-                    _flag(
-                        feats,
-                        {
-                            "a": kb,
-                            "b": ka,
-                            "relation": "within",
-                            "n": len(rb),
-                            "n_outside": len(ra - rb),
-                            "by_predicate": _conjoins(feats[kb], feats[ka]),
-                        },
-                    )
-                )
+                overlaps.append(_flag(feats, _within(feats, kb, ka, rb, ra)))
     # D-040/D-044: the diagnosis's counts come from diagnostic pairs only; a decorative pair is drawn
     # in the register (the note promises every set of three or more rooms) and counted nowhere
     diag_overlaps = [o for o in overlaps if o.get("diagnostic")]
@@ -265,7 +241,11 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
     for nid in skeleton["strata"]["by_node"]:
         # D-055 (sixteenth seating): "(root)" was the wing (3 rooms on typeorm) and the scope (502)
         # in one note; the scope's root is the repository's own manifest and is named as such
-        scope = ((nodes.get(nid) or {}).get("metrics") or {}).get("package", "") or ROOT_SCOPE
+        pkg = ((nodes.get(nid) or {}).get("metrics") or {}).get("package", "")
+        # D-056 (seventeenth seating): "cookbook 136" (the wing) and "cookbook 1" (the scope of
+        # cookbook/package.json) sat in one paragraph; D-055 had renamed the root scope only. A
+        # scope is named by its manifest path, which no wing name can equal.
+        scope = f"{pkg}/{ROOT_SCOPE}" if pkg else ROOT_SCOPE
         by_package[scope] = by_package.get(scope, 0) + 1
     n_packages = len(by_package)
     population = s["population"]
@@ -279,7 +259,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         # D-053: what a wing is, and how many package scopes the one population spans
         "wing_depth": int(skeleton["geometry"].get("wing_depth", 1)),
         "packages": n_packages,
-        "by_package": dict(sorted(by_package.items(), key=lambda kv: (-kv[1], kv[0]))),
+        # D-056: an ordered list — the sheet is written with sorted keys, and a dict's "largest
+        # first" was true of the render and false of the file the viewer would read
+        "by_package": [{"scope": k, "rooms": v} for k, v in sorted(by_package.items(), key=lambda kv: (-kv[1], kv[0]))],
         "population": s["population"],
         "wings": dict(sorted(wings.items())),
         "wing_count": len(wings),
@@ -321,7 +303,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "rooms_in_both_kinds": "rooms counted under both causes (the two counts overlap by this many)",
             "relation_counts": "relations the register draws, by kind, over every feature with enough rooms, decorative included, and containments the predicates guarantee at any count",
             "dominant_dir": "the immediate parent directory (non-recursive) holding the most of a feature's rooms; shown only when it holds a third or more; tied_with names every other directory holding as many",
-            "by_package": f"rooms of the population per package.json scope (the nearest manifest above the room; {ROOT_SCOPE} is the repository's own package.json), largest first",
+            "by_package": f"rooms of the population per package scope, each named by its manifest path (the nearest package.json above the room; {ROOT_SCOPE} is the repository's own), an ordered list, largest first",
             "feature.count": "rooms (one mark per room)",
         },
         "overlaps": overlaps,
@@ -1590,7 +1572,7 @@ NL = "\n"
 # D-043: the note is generated from the same constants the renderer computes with
 RELATION_MIN_ROOMS = 3  # a set of fewer rooms is inside anything that contains it (D-041)
 MOST_MARKED_ROOMS = 5  # the sheet lists this many of the rooms carrying the most marks (D-048)
-ROOT_SCOPE = "(root manifest)"  # D-055: the package scope of the repository's own package.json; "(root)" is the wing
+ROOT_SCOPE = "package.json"  # D-056: a scope is named by its manifest path — the root's is the bare file; "(root)" is the wing and no scope can share a wing's name
 # D-055: the ordering the most-marked table uses, said once — the sheet's unit gloss kept "then marks"
 # after D-054 dropped it from the key, and the lead said the opposite on the same page
 MOST_MARKED_ORDER = "ordered by sets (a feature under two profiles, or two features drawing one set, is one set), then by path — marks (one per feature per profile) are shown and order nothing, since within a tier they differ only by the double count the register discounts"
@@ -1704,12 +1686,40 @@ def most_marked(features) -> list[dict[str, Any]]:
     ]
 
 
+def _signals_read(predicate: str) -> set[str]:
+    """D-056: the raw signals a predicate reads, a blend expanded through its declared inputs
+    (config.ALLOWED_INPUTS, _INPUT_SIGNAL) — the same walk records_of_signal makes for the record column."""
+    from .config import ALLOWED_INPUTS
+
+    out: set[str] = set()
+    for term in str(predicate or "").split(" and "):
+        sig = term.strip().split(" ")[0]
+        if not sig:
+            continue
+        if sig in ALLOWED_INPUTS:
+            out |= {_INPUT_SIGNAL.get(i, i) for i in ALLOWED_INPUTS[sig]}
+        else:
+            out.add(sig)
+    return out
+
+
 def _conjoins(inner: dict[str, Any], outer: dict[str, Any]) -> bool:
     """D-053: a containment holds by predicate when the inner feature's predicate conjoins every
     term of the outer's — corridor ⊂ hub on every repository; toothpick_wing ⊂ lit_room on one.
     The fourteenth seating found five of six containments drawn like the one the repository decided."""
     terms = lambda p: {t.strip() for t in str(p or "").split(" and ")}  # noqa: E731
     return bool(terms(outer["predicate"])) and terms(outer["predicate"]) <= terms(inner["predicate"])
+
+
+def _within(feats: dict[str, dict[str, Any]], inner: str, outer: str, ri: set[str], ro: set[str]) -> dict[str, Any]:
+    """A containment overlap. D-053: by_predicate when the inner conjoins the outer's terms.
+    D-056 (seventeenth seating): the silence of the marker had acquired a meaning — "independent"
+    — the page never assigned; toothpick_wing ⊂ lit_room on mcp-secure-server is unmarked while
+    bug_pressure_index reads recency, the clock lit_room reads. A containment not by predicate
+    says which raw signals the two predicates read in common, or that there are none."""
+    byp = _conjoins(feats[inner], feats[outer])
+    shared = sorted(_signals_read(feats[inner]["predicate"]) & _signals_read(feats[outer]["predicate"])) if not byp else []
+    return {"a": inner, "b": outer, "relation": "within", "n": len(ri), "n_outside": len(ro - ri), "by_predicate": byp, "shared_signals": shared}
 
 
 def _flag(feats: dict[str, dict[str, Any]], ov: dict[str, Any]) -> dict[str, Any]:
@@ -1785,8 +1795,23 @@ def render_register(facts_doc: dict[str, Any]) -> str:
     # matrix already did; the relation cell read "= foundation" on the foundation row
     _label = qualified_labels([f"{x['profile']}/{x['feature']}" for x in facts_doc["features"]])
 
-    def short(k: str) -> str:
+    _dec = {f"{x['profile']}/{x['feature']}" for x in facts_doc["features"] if x["decorative"]}
+    _rooms = {f"{x['profile']}/{x['feature']}": frozenset(x["rooms"]) for x in facts_doc["features"]}
+
+    def plain(k: str) -> str:
         return _label.get(k, k.split("/")[-1])
+
+    def short(k: str) -> str:
+        # D-056: ◌ travels with the name — four relation cells named toothpick_wing without it
+        return ("◌ " if k in _dec else "") + plain(k)
+
+    def why_within(ov: dict[str, Any]) -> str:
+        if ov.get("by_predicate"):
+            return "by its predicate; "
+        if "shared_signals" not in ov:
+            return ""
+        sh = ov["shared_signals"]
+        return (f"reads {', '.join(sh)} with it; " if sh else "no signal in common; ")
 
     def relations(key: str) -> str:
         out = []
@@ -1804,15 +1829,18 @@ def render_register(facts_doc: dict[str, Any]) -> str:
                 out.append(f"= {short(other)}" + (f" ({why})" if why else ""))
             elif ov["a"] == key:
                 # D-040: the remainder belongs to the superset — say whose rooms are outside;
-                # D-053: a containment the predicates guarantee says so
-                byp = "by its predicate; " if ov.get("by_predicate") else ""
+                # D-053: a containment the predicates guarantee says so; D-056: containers that
+                # are one set of rooms are one entry, named with every name that draws the set
+                same = [o for o in facts_doc.get("overlaps") or [] if o["a"] == key and o["relation"] == "within" and _rooms.get(o["b"]) == _rooms.get(other)]
+                if same and same[0] is not ov:
+                    continue
+                names = " = ".join(short(o["b"]) for o in (same or [ov]))
                 out.append(
-                    f"⊂ {short(other)} ({byp}{ov.get('n_outside')} {short(other)} room{'s' if ov.get('n_outside') != 1 else ''} outside this set)"
+                    f"⊂ {names} ({why_within(ov)}{ov.get('n_outside')} {plain(other)} room{'s' if ov.get('n_outside') != 1 else ''} outside this set)"
                 )
             else:
-                byp = "by its predicate; " if ov.get("by_predicate") else ""
                 out.append(
-                    f"⊃ {short(other)} ({byp}{ov.get('n_outside')} of these room{'s' if ov.get('n_outside') != 1 else ''} outside it)"
+                    f"⊃ {short(other)} ({why_within(ov)}{ov.get('n_outside')} of these room{'s' if ov.get('n_outside') != 1 else ''} outside it)"
                 )
         return "; ".join(out) or "no identity or containment"
 
@@ -1870,7 +1898,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
             f"| {name} | {f['profile']} | {pos} | {f['count']} | {bw} | {dom} | {relation_cell(f, key)} | {what} |"
         )
     wings = " · ".join(f"{k} {v}" for k, v in facts_doc["wings"].items())
-    scopes = " · ".join(f"{k} {v}" for k, v in (facts_doc.get("by_package") or {}).items())  # D-054
+    scopes = " · ".join(f"{e['scope']} {e['rooms']}" for e in (facts_doc.get("by_package") or []))  # D-054; D-056: a list
     gate = facts_doc.get("gate") or {}
     asserted = sum(1 for v in gate.values() if v == "asserted")
     # D-050: "none validated" was a literal beside a counted "asserted"; both are read from the gate
@@ -1889,7 +1917,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + f"the diagnostic features name {facts_doc.get('distinct_room_sets', '?')} distinct sets of rooms; {facts_doc['decorative']['count']} decorative marks ({dec}); "
         + f"{facts_doc['co_located_rooms']} rooms carry two or more distinct diagnostic sets; gate `{fp}`, {asserted} of {len(gate)} signals asserted, {validated_text}. "
         + f"A wing is a directory at depth {facts_doc.get('wing_depth', 1)} of the tree (the ruleset's wing_depth), not a package; the population spans {facts_doc.get('packages', 1)} package scope{'s' if facts_doc.get('packages', 1) != 1 else ''}"
-        + (f" (rooms per scope, largest first: {scopes}; {ROOT_SCOPE} is the repository's own package.json, not the (root) wing)" if facts_doc.get("by_package") else "")
+        + (f" (rooms per scope, largest first, each scope named by the manifest that holds it: {scopes})" if facts_doc.get("by_package") else "")
         + ". "
         + "◌ marks a decorative feature: excluded from the diagnosis. A position names where a room sits in the record its predicate reads — the record is named beside each position — and is not a claim about its condition (D-004 Q3). "
         + f"The directory column is the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent. "

@@ -13,6 +13,8 @@
 > **Revision, 2026-09-12 (D-054; brief 0.22.0).** The fifteenth seating: the scope count D-053 put on the page was over every substrate node, not the population (eslint: 21 stated, 6 true); the count is now the rooms' and the rooms per scope are listed beside it (§5 Q5 remains open, now with its sizes — mapper §7 Q7 records it); a tie in the directory column names its partner with its numbers; the most-marked tier orders by sets then path, marks shown and ordering nothing; a reason about a signal lives in the ruleset's `[signal_reason]` table and reaches every row that reads the signal; the citation tests share one grammar.
 >
 > **Revision, 2026-09-12 (D-055; brief 0.23.0).** The sixteenth seating: a containment the predicates guarantee is drawn at any count (the three-room floor is for containment by accident); a decorative row prints its predicate before its reason; the root package scope is "(root manifest)", distinct from the "(root)" wing; the most-marked ordering is one text on the lead and the sheet; every `§` on the page names its spec, by test.
+>
+> **Revision, 2026-09-12 (D-056; brief 0.24.0).** The seventeenth seating: a containment not guaranteed by the predicates says which raw signals the two read in common (blends expanded through their declared inputs) or that there are none; a package scope is named by its manifest path (`cookbook/package.json`), so no scope shares a wing's name; `by_package` is an ordered list; ◌ travels with a decorative name into relation cells; containers that draw one set are one entry.
 
 ## 1. Contract
 
