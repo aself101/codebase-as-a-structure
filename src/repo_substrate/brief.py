@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.25.0"  # D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
+BRIEF_VERSION = "0.25.1"  # D-058: the header no longer says the page is tested — its texts have tests on a fixture. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -2094,7 +2094,7 @@ def render_brief(
         head = (
             f"# {facts_doc['repo']['name']} — architect's brief\n\n"
             f"*Rendered from the facts sheet by code; no model wrote any of it. The model-written reading was cut at D-049 after eleven hostile seatings found it reciting the register and everything it could add was a field. "
-            f"Every cell is a field, and every fixed text on the page is tested against the computation it labels (`tests/test_brief.py`). "
+            f"Every cell is a field, and every fixed text on the page has a test that asserts it against the sheet it is rendered from (`tests/test_brief.py`); the tests run on a fixture, not on this page. "
             + where
             + "*\n\n"
         )

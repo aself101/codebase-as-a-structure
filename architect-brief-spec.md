@@ -17,6 +17,8 @@
 > **Revision, 2026-09-12 (D-056; brief 0.24.0).** The seventeenth seating: a containment not guaranteed by the predicates says which raw signals the two read in common (blends expanded through their declared inputs) or that there are none; a package scope is named by its manifest path (`cookbook/package.json`), so no scope shares a wing's name; `by_package` is an ordered list; ◌ travels with a decorative name into relation cells; containers that draw one set are one entry.
 >
 > **Revision, 2026-09-12 (D-057; brief 0.25.0).** The eighteenth seating: rows come from the ruleset's roster, so a feature that fired on no room keeps its row at 0 ("no wing (0) | no rooms | no rooms to relate (0)"); the note defines the containment marker's three values and states that the import graph and the test graph are one edge set read twice (a fixed text held to the substrate); `scaffolding` carries a caveat (0.5 is the index's floor; a helper under the test paths is a test importer); the header names each profile's ruleset version.
+>
+> **Revision, 2026-09-12 (D-058; brief 0.25.1).** Forecast cycle 3: the header's "every fixed text on the page is tested against the computation it labels" said more than the tests do (they run on a fixture and never read a page; a definition has no computation, only presence); it now says its texts have tests on a fixture. The seating the bump owes under D-013 rule 5 is held pending Alex's decision on the stop rule (D-058).
 
 ## 1. Contract
 
