@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.20.0"  # D-052: sets is one computation; co-location is counted in sets; a row says how many of its tier are listed
+BRIEF_VERSION = "0.21.0"  # D-053: a blend's records come from its declared inputs; wings and packages are defined on the page
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -181,6 +181,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
                             "relation": "within",
                             "n": len(ra),
                             "n_outside": len(rb - ra),
+                            "by_predicate": _conjoins(feats[ka], feats[kb]),
                         },
                     )
                 )
@@ -194,6 +195,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
                             "relation": "within",
                             "n": len(rb),
                             "n_outside": len(ra - rb),
+                            "by_predicate": _conjoins(feats[kb], feats[ka]),
                         },
                     )
                 )
@@ -232,6 +234,8 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "skeleton carries no substrate_config_fingerprint; the brief cannot name its gate (D-036)"
         )
     s = skeleton["summary"]
+    n_packages = len({(n.get("metrics") or {}).get("package", "") for n in nodes.values()})
+    population = s["population"]
     doc = {
         "brief_version": BRIEF_VERSION,
         "repo": {"name": skeleton["repo"]["name"], "head_sha": skeleton["repo"]["head_sha"]},
@@ -239,6 +243,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         "profile": skeleton["profile"]["name"],
         "overlays": list(s.get("overlay_profiles") or []),
         "geometry": skeleton["geometry"]["name"],
+        # D-053: what a wing is, and how many package scopes the one population spans
+        "wing_depth": int(skeleton["geometry"].get("wing_depth", 1)),
+        "packages": len({(n.get("metrics") or {}).get("package", "") for n in nodes.values()}),
         "population": s["population"],
         "wings": dict(sorted(wings.items())),
         "wing_count": len(wings),
@@ -269,7 +276,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "diagnostic_count_base": "marks",
             "decorative.count": "marks",
             "co_located_rooms": "rooms carrying two or more distinct diagnostic sets, across all profiles (a predicate under two profiles is one set)",
-            "most_marked_rooms": "the rooms carrying the most distinct diagnostic sets (at most 5; ordered by sets, then marks, then path), each with every diagnostic feature that marks it, profile-qualified where a feature is under two profiles; sets counts distinct room sets (a feature under two profiles, or two features drawing one set, is one); marks counts one per feature per profile; rooms_at_this_count is the rooms under two or more sets carrying the row's sets count, and listed_at_this_count how many of them the list carries, the first by path",
+            "most_marked_rooms": "the rooms carrying the most distinct diagnostic sets (at most 5; ordered by sets, then marks, then path), each with every diagnostic feature that marks it, profile-qualified where a feature is under two profiles; sets counts distinct room sets (a feature under two profiles, or two features drawing one set, is one); marks counts one per feature per profile; rooms_at_this_count is the rooms under two or more sets carrying the row's sets count, and listed_at_this_count how many of them the list carries, the first by marks then by path",
             "rooms_at_most_sets": "rooms carrying that most; when it exceeds the rooms listed at it, the list is the first of them by path",
             "shared_rooms": "rooms both features of a pair mark, for every pair of diagnostic features; identity and containment are the relation column's",
             "diagnostic_features": "diagnostic features that fired (features, not marks or rooms)",
@@ -283,7 +290,11 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "feature.count": "rooms (one mark per room)",
         },
         "overlaps": overlaps,
-        "calibration": "in-repo, self-relative (system spec §5.3); one frame — stability is read from a time-lapse, not from this page",
+        "calibration": (
+            f"in-repo, self-relative (system spec §5.3): every pNN ranks the {population} rooms as one population"
+            + (f", across {n_packages} package scopes (package.json) pooled — per-package calibration is an open question of the mapper (architect-brief spec §5, mapper §7)" if n_packages > 1 else "")
+            + "; one frame — stability is read from a time-lapse, not from this page"
+        ),
         "gate_fingerprint": gate_fp,
         "features": [feats[k] for k in sorted(feats)],
         "rooms": {
@@ -1546,42 +1557,45 @@ RELATION_MIN_ROOMS = 3  # a set of fewer rooms is inside anything that contains 
 MOST_MARKED_ROOMS = 5  # the sheet lists this many of the rooms carrying the most marks (D-048)
 DIRECTORY_MIN_ROOMS = 6  # below this no directory is placed (D-040)
 DIRECTORY_SHARE = 3  # a directory is shown when it holds a third or more (R15)
-# D-043: the record a predicate reads, named beside each position so the gloss covers every row
+# D-043: the record a predicate reads, named beside each position so the gloss covers every row.
+# D-053: raw signals only — a blend's records are derived from the inputs config.ALLOWED_INPUTS
+# declares for it (the fourteenth seating found bug_pressure_index filed under "edit record" while
+# it reads recency, the clock, at 0.2; D-048 had fixed load_index alone, by hand)
 _RECORDS: list[tuple[str, tuple[str, ...]]] = [
-    (
-        "import graph",
-        ("fan_in", "fan_out", "centrality", "load_index", "fan_in_nonzero"),
-    ),
+    ("import graph", ("fan_in", "fan_out", "centrality", "fan_in_nonzero")),
     # D-052: the declared entry is read from package.json (D-029), not from the import graph —
     # the thirteenth seating found "declared package entry (import graph)" on the register
     ("package manifest", ("is_package_entry",)),
-    (
-        "clock",
-        (
-            "age_days",
-            "last_touched_days",
-            "blame_age_median",
-            "recent_commit_share",
-            "neglect_index",
-        ),
-    ),
+    ("clock", ("age_days", "last_touched_days", "blame_age_median", "recent_commit_share")),
     ("test graph", ("test_fan_in", "reinforcement_index", "has_sibling_test")),
-    (
-        "edit record",
-        (
-            "commit_count",
-            "churn_lines",
-            "fix_count",
-            "revert_count",
-            "author_count",
-            "bug_pressure_index",
-            "change_pressure_index",
-        ),
-    ),
-    # D-048: load_index is a blend whose fourth input is size_loc (tuned.toml); its record list said
-    # "import graph" alone on four rows
-    ("size", ("size_loc", "nesting_proxy", "complexity_proxy_index", "load_index")),
+    ("edit record", ("commit_count", "churn_lines", "fix_count", "revert_count", "author_count")),
+    ("size", ("size_loc", "nesting_proxy")),
 ]
+# D-053: the raw signal each declared blend input is read from (derived.compute_indices)
+_INPUT_SIGNAL: dict[str, str] = {
+    "fan_in_nonzero": "fan_in",
+    "inv_fan_out": "fan_out",
+    "size_loc": "size_loc",
+    "recency": "last_touched_days",
+    "inv_recent_commit_share": "recent_commit_share",
+    "fix_count_nonzero": "fix_count",
+    "fix_ratio": "fix_count",
+}
+
+
+def records_of_signal(sig: str) -> list[str]:
+    """D-053: the records a signal is read from — a raw signal's record, or every record of a
+    blend's declared inputs (config.ALLOWED_INPUTS), so the lexicon cannot omit an input by hand."""
+    from .config import ALLOWED_INPUTS
+
+    if sig in ALLOWED_INPUTS:
+        out: list[str] = []
+        for inp in ALLOWED_INPUTS[sig]:
+            for r in records_of_signal(_INPUT_SIGNAL.get(inp, inp)):
+                if r not in out:
+                    out.append(r)
+        return [name for name, _ in _RECORDS if name in out]
+    return [name for name, sigs in _RECORDS if sig in sigs]
 
 
 def sets_per_room(features) -> dict[str, int]:
@@ -1648,6 +1662,14 @@ def most_marked(features) -> list[dict[str, Any]]:
     ]
 
 
+def _conjoins(inner: dict[str, Any], outer: dict[str, Any]) -> bool:
+    """D-053: a containment holds by predicate when the inner feature's predicate conjoins every
+    term of the outer's — corridor ⊂ hub on every repository; toothpick_wing ⊂ lit_room on one.
+    The fourteenth seating found five of six containments drawn like the one the repository decided."""
+    terms = lambda p: {t.strip() for t in str(p or "").split(" and ")}  # noqa: E731
+    return bool(terms(outer["predicate"])) and terms(outer["predicate"]) <= terms(inner["predicate"])
+
+
 def _flag(feats: dict[str, dict[str, Any]], ov: dict[str, Any]) -> dict[str, Any]:
     """D-044: an overlap says whether both its features are diagnostic; only those count."""
     ov["diagnostic"] = bool(feats[ov["a"]]["diagnostic"] and feats[ov["b"]]["diagnostic"])
@@ -1657,9 +1679,11 @@ def _flag(feats: dict[str, dict[str, Any]], ov: dict[str, Any]) -> dict[str, Any
 def record_of(predicate: str) -> str:
     """The records a predicate reads, in a fixed order — 'import graph and clock' for
     flooded_basement. A position is a place in these records and nothing else."""
-    found = [
-        name for name, sigs in _RECORDS if any(re.search(rf"\b{sig}\b", predicate) for sig in sigs)
-    ]
+    from .config import ALLOWED_INPUTS
+
+    sigs = {sig for _, ss in _RECORDS for sig in ss} | set(ALLOWED_INPUTS)
+    read = {r for sig in sigs if re.search(rf"\b{sig}\b", predicate) for r in records_of_signal(sig)}
+    found = [name for name, _ in _RECORDS if name in read]
     return " and ".join(found) if found else "an unlisted record"
 
 
@@ -1737,13 +1761,16 @@ def render_register(facts_doc: dict[str, Any]) -> str:
                     why = ""
                 out.append(f"= {short(other)}" + (f" ({why})" if why else ""))
             elif ov["a"] == key:
-                # D-040: the remainder belongs to the superset — say whose rooms are outside
+                # D-040: the remainder belongs to the superset — say whose rooms are outside;
+                # D-053: a containment the predicates guarantee says so
+                byp = "by its predicate; " if ov.get("by_predicate") else ""
                 out.append(
-                    f"⊂ {short(other)} ({ov.get('n_outside')} {short(other)} room{'s' if ov.get('n_outside') != 1 else ''} outside this set)"
+                    f"⊂ {short(other)} ({byp}{ov.get('n_outside')} {short(other)} room{'s' if ov.get('n_outside') != 1 else ''} outside this set)"
                 )
             else:
+                byp = "by its predicate; " if ov.get("by_predicate") else ""
                 out.append(
-                    f"⊃ {short(other)} ({ov.get('n_outside')} of these room{'s' if ov.get('n_outside') != 1 else ''} outside it)"
+                    f"⊃ {short(other)} ({byp}{ov.get('n_outside')} of these room{'s' if ov.get('n_outside') != 1 else ''} outside it)"
                 )
         return "; ".join(out) or "no identity or containment"
 
@@ -1809,6 +1836,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + f"({base} in the base profile), one mark per feature per room; identical pairs of diagnostic features mark {facts_doc.get('rooms_marked_twice', 0)} rooms twice ({facts_doc.get('rooms_marked_twice_shared_predicate', 0)} under one predicate in two profiles, {facts_doc.get('rooms_marked_twice_inert_conjunct', 0)} where two predicates draw one set because a conjunct excludes nothing, {facts_doc.get('rooms_in_both_kinds', 0)} under both); "
         + f"the diagnostic features name {facts_doc.get('distinct_room_sets', '?')} distinct sets of rooms; {facts_doc['decorative']['count']} decorative marks ({dec}); "
         + f"{facts_doc['co_located_rooms']} rooms carry two or more distinct diagnostic sets; gate `{fp}`, {asserted} of {len(gate)} signals asserted, {validated_text}. "
+        + f"A wing is a directory at depth {facts_doc.get('wing_depth', 1)} of the tree (the ruleset's wing_depth), not a package; the population spans {facts_doc.get('packages', 1)} package scope{'s' if facts_doc.get('packages', 1) != 1 else ''}. "
         + "◌ marks a decorative feature: excluded from the diagnosis. A position names where a room sits in the record its predicate reads — the record is named beside each position — and is not a claim about its condition (D-004 Q3). "
         + f"The directory column is the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent. "
         + f"The relation column draws identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap. The most-marked rooms and the rooms each pair of diagnostic features shares follow the table.*"
@@ -1843,7 +1871,7 @@ def render_most_marked(facts_doc: dict[str, Any]) -> str:
     lead = (
         f"*Rooms under two or more distinct diagnostic sets, ordered by sets (a feature under two profiles, or two features drawing one set, is one set), then by marks (one per feature per profile), then by path; at most {MOST_MARKED_ROOMS} are listed. "
         f"{at} room{'s' if at != 1 else ''} carr{'y' if at != 1 else 'ies'} the most ({most}). "
-        "The listed column is rows listed of rooms at the row's sets count; where fewer are listed than carry the count, the listed are the first by path.*"
+        "The listed column is rows listed of rooms at the row's sets count; where fewer are listed than carry the count, the listed are the first by marks, then by path.*"
     )
     body = NL.join(
         f"| {m['room']} | {m.get('sets', m['marks'])} | {m['marks']} | {m.get('listed_at_this_count', '')} of {m.get('rooms_at_this_count', '')} | {', '.join(m['features'])} |"

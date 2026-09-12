@@ -1349,7 +1349,7 @@ def test_the_page_is_rendered_by_code_and_its_fixed_texts_match_their_fields(sub
     h["rooms_at_most_sets"] = 1
     mm = render_most_marked(h)
     # D-052: the lead says the ordering, the cap and the most; what a row is, its cell says
-    assert "1 room carries the most (5). The listed column is rows listed of rooms at the row's sets count; where fewer are listed than carry the count, the listed are the first by path." in mm
+    assert "1 room carries the most (5). The listed column is rows listed of rooms at the row's sets count; where fewer are listed than carry the count, the listed are the first by marks, then by path." in mm
     assert "| b.ts | 4 | 6 | 1 of 8 |" in mm and "| a.ts | 5 | 7 | 1 of 1 |" in mm
     assert "| room | distinct sets | marks | listed of rooms at this count |" in mm
     assert "first by path, and its row says" not in mm  # the clause that was false as a per-row label (D-052)
@@ -1497,3 +1497,62 @@ def test_a_citation_on_the_rendered_page_names_a_section_that_speaks_of_its_sent
             low = body.lower()
             assert any(re.search(rf"\b{w}", low) for w in words), (kind, ref, sorted(words), sent[:120])
     assert seen >= 3  # D-004 Q3, D-049, §5.3 at least
+
+
+def test_a_partly_listed_tier_is_the_first_by_marks_then_path_and_a_blend_names_every_record_it_reads(sub):
+    """D-053 (fourteenth seating). (1) The lead said a partly listed tier shows "the first by path";
+    most_marked orders a tier by marks then path, and on mcp-secure-server the first by path at four
+    sets (google.ts, 4 marks) was not the listed room (5 marks). The fixture that tested the lead
+    had uniform marks. (2) bug_pressure_index reads recency — the clock — and its record said
+    "edit record"; a blend's records now come from config.ALLOWED_INPUTS. (3) A containment the
+    predicates guarantee says so. (4) A wing and the package count are defined on the page."""
+    import repo_substrate.brief as _b
+    from repo_substrate.config import ALLOWED_INPUTS
+
+    def feat(name, rooms, profile="p", predicate="x >= p90"):
+        return {"feature": name, "profile": profile, "diagnostic": True, "decorative": False, "rooms": rooms, "predicate": predicate}
+
+    # a tier of seven at two sets where one room carries a third mark: it leads the tier
+    rooms = [f"r{i}" for i in range(7)]
+    fs = [feat("x", rooms), feat("y", rooms + ["z"]), feat("w", ["r6", "q"])]
+    top = _b.most_marked(fs)
+    assert top[0]["room"] == "r6" and top[0]["sets"] == 3  # three sets: alone at the top
+    tier = [m for m in top if m["sets"] == 2]
+    assert [m["room"] for m in tier] == ["r0", "r1", "r2", "r3"] and all(m["listed_at_this_count"] == 4 and m["rooms_at_this_count"] == 6 for m in tier)
+    gs = [feat("x", rooms), feat("y", rooms + ["z"]), feat("v", ["r5", "r6", "q1", "q2", "q3"], predicate="y >= p90"), feat("u", ["r5", "r6", "q1", "q2", "q3"], profile="o", predicate="y >= p90")]
+    # r5 and r6: three sets (x, y, v=u); the rest of the tier two — within a tier marks order first
+    top = _b.most_marked(gs)
+    three = [m for m in top if m["sets"] == 3]
+    assert [m["room"] for m in three] == ["r5", "r6"] and three[0]["marks"] == 4
+    assert "first by marks, then by path" in _b.render_most_marked({"most_marked_rooms": top, "rooms_at_most_sets": 2})
+    # every blend names the records of its declared inputs; every input maps to a raw signal
+    for index, inputs in ALLOWED_INPUTS.items():
+        for inp in inputs:
+            assert _b.records_of_signal(_b._INPUT_SIGNAL.get(inp, inp)), (index, inp)
+    assert _b.record_of("bug_pressure_index >= p90") == "clock and edit record"
+    assert _b.record_of("load_index >= p90") == "import graph and size"
+    assert _b.record_of("neglect_index >= p90") == "clock"
+    assert _b.record_of("complexity_proxy_index >= p90") == "import graph and size"
+    assert _b.record_of("change_pressure_index >= p90") == "clock and edit record"
+    assert _b.record_of("last_touched_days >= p90 and load_index >= 0.10") == "import graph and clock and size"
+    # a containment by predicate
+    hub = feat("hub", ["a", "b", "c", "d"], predicate="centrality >= p90")
+    cor = feat("corridor", ["a", "b", "c"], profile="o", predicate="centrality >= p90 and fan_out >= p50")
+    emp = feat("lit", ["a", "b", "c"], predicate="last_touched_days <= p10")
+    assert _b._conjoins(cor, hub) and not _b._conjoins(emp, hub) and not _b._conjoins(hub, cor)
+    # on the fixture: the sheet carries wing_depth and packages, and the note and calibration say them
+    f = facts(_skeleton(sub), sub)
+    assert f["wing_depth"] >= 1 and f["packages"] >= 1
+    reg = _b.render_register(f)
+    assert f"A wing is a directory at depth {f['wing_depth']} of the tree" in reg
+    assert f"spans {f['packages']} package scope" in reg
+    assert f"ranks the {f['population']} rooms as one population" in f["calibration"]
+    for ov in f["overlaps"]:
+        if ov["relation"] == "within":
+            assert "by_predicate" in ov
+            cell = "by its predicate; " if ov["by_predicate"] else ""
+            assert f"({cell}{ov['n_outside']} " in reg or "too few rooms" in reg
+    # the flooded_basement caveat reaches the page
+    for x in f["features"]:
+        if x["feature"] == "flooded_basement":
+            assert x.get("caveat") and "not an importer" in reg
