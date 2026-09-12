@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.24.0"  # D-056: a scope is named by its manifest path; by_package is an ordered list; a containment not by predicate says what signal the two read in common; ◌ travels with the name; containers that are one set are one entry
+BRIEF_VERSION = "0.25.0"  # D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -45,7 +45,14 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
     for od in skeleton.get("overlays") or []:
         groups.append((od["profile"], od["features"]))
     feats: dict[str, dict[str, Any]] = {}
-    for profile, flist in groups:
+    # D-057 (eighteenth seating): rows come from the ruleset's roster, so a feature that fired on
+    # no room has a row with 0 — toothpick_wing vanished from registry's page, and the ruleset's
+    # own note says it is kept on the page so its absence is visible. Older skeletons carry no
+    # roster; their rows are the fired set, as before.
+    rosters: list[tuple[str, list[dict[str, Any]]]] = [(skeleton["profile"]["name"], list(skeleton["profile"].get("roster") or []))]
+    for od in skeleton.get("overlays") or []:
+        rosters.append((od["profile"], list(od.get("roster") or [])))
+    for profile, flist in groups + rosters:
         for f in flist:
             key = f"{profile}/{f['feature']}"
             entry = feats.setdefault(
@@ -54,7 +61,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
                     "profile": profile,
                     "feature": f["feature"],
                     "predicate": f["predicate"],
-                    "diagnostic": bool(f["diagnostic"] and not f["decorative"]),
+                    "diagnostic": bool(f.get("diagnostic", not f["decorative"]) and not f["decorative"]),
                     "decorative": bool(f["decorative"]),
                     "decorative_reason": f.get("decorative_reason"),
                     "decorative_signal_reasons": dict(f.get("decorative_signal_reasons") or {}),  # D-054
@@ -65,7 +72,8 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
                     "rooms": [],
                 },
             )
-            entry["rooms"].append(f["node"])
+            if f.get("node") is not None:
+                entry["rooms"].append(f["node"])
     depth = int((skeleton.get("geometry") or {}).get("wing_depth", 1))
 
     def wing_of(nid: str) -> str:
@@ -255,6 +263,8 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         "skeleton_hash": skeleton["skeleton_hash"],
         "profile": skeleton["profile"]["name"],
         "overlays": list(s.get("overlay_profiles") or []),
+        # D-057: the ruleset versions the page's texts come from (the skeleton carried them; the sheet dropped them)
+        "profile_versions": {skeleton["profile"]["name"]: skeleton["profile"].get("version"), **{od["profile"]: (od.get("ruleset") or {}).get("version") for od in skeleton.get("overlays") or []}},
         "geometry": skeleton["geometry"]["name"],
         # D-053: what a wing is, and how many package scopes the one population spans
         "wing_depth": int(skeleton["geometry"].get("wing_depth", 1)),
@@ -270,7 +280,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         "diagnostic_count_base": s["diagnostic_count"],
         "decorative": {
             "count": s["decorative_count"],
-            "features": sorted(s.get("decorative_features") or []),
+            # D-057: every decorative feature on the roster, fired or not, with its count
+            "features": sorted({e["feature"] for e in feats.values() if e["decorative"]}),
+            "counts": {e["feature"]: e["count"] for e in sorted(feats.values(), key=lambda e: e["feature"]) if e["decorative"]},
         },
         "co_located_rooms": co_located_all,
         "most_marked_rooms": most_marked_rooms,
@@ -1690,6 +1702,7 @@ def _signals_read(predicate: str) -> set[str]:
     """D-056: the raw signals a predicate reads, a blend expanded through its declared inputs
     (config.ALLOWED_INPUTS, _INPUT_SIGNAL) — the same walk records_of_signal makes for the record column."""
     from .config import ALLOWED_INPUTS
+    from .validation.config import GROUNDING
 
     out: set[str] = set()
     for term in str(predicate or "").split(" and "):
@@ -1698,6 +1711,10 @@ def _signals_read(predicate: str) -> set[str]:
             continue
         if sig in ALLOWED_INPUTS:
             out |= {_INPUT_SIGNAL.get(i, i) for i in ALLOWED_INPUTS[sig]}
+        elif (GROUNDING.get(sig) or {}).get("inputs"):
+            # D-057: a derived index outside the tuned blends (reinforcement_index → test_fan_in)
+            # expands through the grounding table, not by hand
+            out |= {_INPUT_SIGNAL.get(i, i) for i in GROUNDING[sig]["inputs"]}
         else:
             out.add(sig)
     return out
@@ -1840,27 +1857,31 @@ def render_register(facts_doc: dict[str, Any]) -> str:
                 )
             else:
                 out.append(
-                    f"⊃ {short(other)} ({why_within(ov)}{ov.get('n_outside')} of these room{'s' if ov.get('n_outside') != 1 else ''} outside it)"
+                    f"⊃ {short(other)} ({why_within(ov)}{ov.get('n_outside')} of these rooms outside it)"
                 )
         return "; ".join(out) or "no identity or containment"
 
     def relation_cell(f: dict[str, Any], key: str) -> str:
         # D-047: a set under the floor was not related to anything; the cell says that, not "none".
-        # D-055: except where the predicates guarantee a containment — drawn at any count
+        # D-055: except where the predicates guarantee a containment — drawn at any count.
+        # D-057: a feature that fired on nothing relates to nothing ("other" needs an antecedent)
+        if f["count"] == 0:
+            return "no rooms to relate (0)"
         if f["count"] < RELATION_MIN_ROOMS:
             drawn = relations(key)
-            drawn = "" if drawn == "no identity or containment" else drawn + "; "
-            return f"{drawn}too few rooms for any other relation ({f['count']})"
+            if drawn == "no identity or containment":
+                return f"too few rooms to relate ({f['count']})"
+            return f"{drawn}; too few rooms for any other relation ({f['count']})"
         return relations(key)
 
     rows = []
     for f in facts_doc["features"]:
         key = f"{f['profile']}/{f['feature']}"
-        bw = ", ".join(f"{k} {v}" for k, v in f.get("by_wing", {}).items())
+        bw = ", ".join(f"{k} {v}" for k, v in f.get("by_wing", {}).items()) or "no wing (0)"  # D-057: a zero row says so
         dd = f.get("dominant_dir") or {}
         # D-041: every fallback says the reason that is the reason, and a directory that is also a
         # wing name is marked as the parent, not the wing
-        if not dd:
+        if not dd or f["count"] == 0:
             dom = "no rooms"
         elif not dd.get("placeable", True):
             dom = f"too few rooms to place ({f['count']})"
@@ -1905,7 +1926,8 @@ def render_register(facts_doc: dict[str, Any]) -> str:
     validated = sum(1 for v in gate.values() if v == "validated")
     validated_text = "none validated" if validated == 0 else f"{validated} validated"
     base = facts_doc.get("diagnostic_count_base", facts_doc["diagnostic_count"])
-    dec = ", ".join(facts_doc["decorative"]["features"]) or "none"
+    _dc = facts_doc["decorative"].get("counts") or {}
+    dec = ", ".join(f"{n} {_dc[n]}" if n in _dc else n for n in facts_doc["decorative"]["features"]) or "none"
     fp = (facts_doc.get("gate_fingerprint") or "?")[:12]
     head = (
         "## Register"
@@ -1921,7 +1943,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + ". "
         + "◌ marks a decorative feature: excluded from the diagnosis. A position names where a room sits in the record its predicate reads — the record is named beside each position — and is not a claim about its condition (D-004 Q3). "
         + f"The directory column is the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent. "
-        + f"The relation column draws identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms — and a containment the predicates guarantee at any count; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap. The most-marked rooms and the rooms each pair of diagnostic features shares follow the table.*"
+        + f"The relation column draws identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms — and a containment the predicates guarantee at any count; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A containment says 'by its predicate' when the inner predicate conjoins every term of the outer; otherwise it says which raw signals the two predicates read in common, a blend or index expanded through its declared inputs, or 'no signal in common' — a signal, not an instrument: the import graph and the test graph are one edge set read twice, a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone. A feature that fired on no room keeps its row at 0. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap. The most-marked rooms and the rooms each pair of diagnostic features shares follow the table.*"
         + NL
         + NL
         + "| feature | profile | position | rooms | by wing | largest parent directory n / rooms in it | relation to | predicate; caveat or reason |"
@@ -2015,10 +2037,24 @@ def render_disclosure(facts_doc: dict[str, Any]) -> str:
         which = "which are unvalidated: " + "; ".join(f"{sg} is {reasons[sg].rstrip('.')}" for sg in sigs if sg in reasons) + "."
     else:
         which = "which is unvalidated."
-    return (
-        f"{n} decorative mark{'s' if n != 1 else ''} render but are not a diagnosis: {names} rest on "
-        f"{', '.join(sigs) or 'nothing confirmed'}, {which}"
+    fired = [f for f in dec if f["count"] > 0]
+    unfired = [f for f in dec if f["count"] == 0]
+    names = " and ".join(
+        f"{f['feature']}" + (f" — {f['position_name']} —" if f.get("position_name") else "") for f in fired
+    ) or "no feature"
+    tail = (
+        f" {' and '.join(f['feature'] for f in unfired)} fired on no room." if unfired else ""
     )
+    return (
+        f"{n} decorative mark{'s' if n != 1 else ''} render but are not a diagnosis: {names} rest{'s' if len(fired) == 1 else ''} on "
+        f"{', '.join(sigs) or 'nothing confirmed'}, {which}{tail}"
+    )
+
+
+def _ver(facts_doc: dict[str, Any], profile: str) -> str:
+    """D-057: the ruleset version beside the profile name — every caveat, position and reason on the page is a versioned text."""
+    v = (facts_doc.get("profile_versions") or {}).get(profile)
+    return f" {v}" if v else ""
 
 
 def render_brief(
@@ -2033,8 +2069,8 @@ def render_brief(
     draft = text is not None and text.strip() != ""
     fp = (facts_doc.get("gate_fingerprint") or "?")[:12]
     where = (
-        f"Profile {facts_doc['profile']}"
-        + (f" + {', '.join(facts_doc['overlays'])}" if facts_doc["overlays"] else "")
+        f"Profile {facts_doc['profile']}{_ver(facts_doc, facts_doc['profile'])}"
+        + (f" + {', '.join(o + _ver(facts_doc, o) for o in facts_doc['overlays'])}" if facts_doc["overlays"] else "")
         + f", geometry {facts_doc['geometry']}, skeleton `{facts_doc['skeleton_hash'][:12]}…`, facts `{facts_doc['facts_hash'][:12]}…`. "
         f"Calibration: {facts_doc.get('calibration', 'in-repo, self-relative')} — the time-lapse for this skeleton is the one under gate `{fp}`. "
         f"Brief {facts_doc.get('brief_version', BRIEF_VERSION)}."

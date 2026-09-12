@@ -14,7 +14,7 @@
 
 [ruleset]
 name = "maintainability"
-version = "0.2.6"
+version = "0.2.7"
 profile = "maintainability"
 description = "v0 maintainability lens: load, neglect, reinforcement, activity — over asserted signals only; the two pressure indices are unvalidated (D-015) and appear only as decorative features."
 wing_depth = 1
@@ -55,6 +55,10 @@ predicate = "reinforcement_index >= 0.5"
 name_implies_consequence = true  # D-035 (enacted D-038): scaffolding is a temporary structure; the name carries its position
 position_name = "test-imported room"  # D-047: reinforcement_index >= 0.5 is test_fan_in > 0; the earlier name claimed a median nothing computed
 graph_dependent = true
+# D-057 (eighteenth seating): the third floor-on-an-index predicate gets the caveat its siblings got one
+# seating at a time (flooded_basement D-053, import_root D-050) — 0.5 read as a midpoint, and "test" read
+# as a test case where it is a path convention.
+caveat = "reads whether any file under the test convention imports the room (test_fan_in > 0, D-011): the index is 0 with no test importer and 0.5 or more with one, so 0.5 is its floor, not a midpoint; a helper or fixture under the test paths counts as a test importer, and one import suffices"
 note = "At least one test file imports the node (import-graph reading of reinforcement, D-011)."
 
 [[feature]]

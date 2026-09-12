@@ -15,6 +15,8 @@
 > **Revision, 2026-09-12 (D-055; brief 0.23.0).** The sixteenth seating: a containment the predicates guarantee is drawn at any count (the three-room floor is for containment by accident); a decorative row prints its predicate before its reason; the root package scope is "(root manifest)", distinct from the "(root)" wing; the most-marked ordering is one text on the lead and the sheet; every `§` on the page names its spec, by test.
 >
 > **Revision, 2026-09-12 (D-056; brief 0.24.0).** The seventeenth seating: a containment not guaranteed by the predicates says which raw signals the two read in common (blends expanded through their declared inputs) or that there are none; a package scope is named by its manifest path (`cookbook/package.json`), so no scope shares a wing's name; `by_package` is an ordered list; ◌ travels with a decorative name into relation cells; containers that draw one set are one entry.
+>
+> **Revision, 2026-09-12 (D-057; brief 0.25.0).** The eighteenth seating: rows come from the ruleset's roster, so a feature that fired on no room keeps its row at 0 ("no wing (0) | no rooms | no rooms to relate (0)"); the note defines the containment marker's three values and states that the import graph and the test graph are one edge set read twice (a fixed text held to the substrate); `scaffolding` carries a caveat (0.5 is the index's floor; a helper under the test paths is a test importer); the header names each profile's ruleset version.
 
 ## 1. Contract
 

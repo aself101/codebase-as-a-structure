@@ -69,7 +69,7 @@ def _at_floor(g, name):
 
 
 def _good_draft(f):
-    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"] and x["rooms"])  # D-057: a roster row may be at 0
     room = feat["rooms"][0]
     wing, n = next(iter(f["wings"].items()))
     text = (
@@ -80,9 +80,9 @@ def _good_draft(f):
         names = ", ".join(
             x["feature"] + (f" — {x['position_name']}" if x.get("position_name") else "")
             for x in f["features"]
-            if x["decorative"]
+            if x["decorative"] and x["count"]
         )
-        cites = "; ".join(f"{x['feature']} ×{x['count']}" for x in f["features"] if x["decorative"])
+        cites = "; ".join(f"{x['feature']} ×{x['count']}" for x in f["features"] if x["decorative"] and x["count"])
         sigs = sorted(
             {
                 s
@@ -102,7 +102,7 @@ def test_lint_passes_a_disciplined_draft(sub):
 
 def test_lint_catches_each_register_breach(sub):
     f = facts(_skeleton(sub), sub)
-    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"] and x["rooms"])
     room = feat["rooms"][0]
     good = _good_draft(f)
 
@@ -213,7 +213,7 @@ def test_d030_lint_closes_the_perverse_routes(sub):
     sk = _skeleton(sub)
     f = facts(sk, sub)
     good = _good_draft(f)
-    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"] and x["rooms"])
     room = feat["rooms"][0]
 
     def rules(text):
@@ -253,7 +253,7 @@ def test_lint_reads_chained_brackets_and_the_determiner_one(sub):
     """D-032 addendum: [f ×N; g ×M] and [f ×N, g ×M] are several citations in one bracket;
     the word "one" is a determiner, not a measurement; a room under a count must share its bracket."""
     f = facts(_skeleton(sub), sub)
-    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"] and x["rooms"])
     other = next(x for x in f["features"] if x["diagnostic"] and x is not feat)
     # a consequence-implying name must be disclosed where first used (R5); do it in the chained sentence
     disclose = (
@@ -299,7 +299,7 @@ def test_lint_reads_compound_spelled_numbers(sub):
     }
     assert list(_spelled_numbers("the seventy-fifth percentile")) == []
     f = facts(_skeleton(sub), sub)
-    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"] and x["rooms"])
     pop_words = {7: "seven", 8: "eight", 9: "nine", 10: "ten", 11: "eleven", 12: "twelve"}.get(
         f["population"]
     )
@@ -323,7 +323,7 @@ def test_lint_reads_the_connective_prose(sub):
     room (R10), no distributional adverb (R11), and a number binds to the sentence that cites
     its feature (R3)."""
     f = facts(_skeleton(sub), sub)
-    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"] and x["rooms"])
     room = feat["rooms"][0]
     base = _good_draft(f)
     assert lint(base, f) == []
@@ -332,7 +332,7 @@ def test_lint_reads_the_connective_prose(sub):
         (
             x
             for x in f["features"]
-            if x["diagnostic"] and x is not feat and x["count"] != feat["count"]
+            if x["diagnostic"] and x is not feat and x["count"] and x["count"] != feat["count"]  # D-057: not a roster row at 0
         ),
         None,
     )
@@ -396,7 +396,7 @@ def test_lint_types_the_sheet(sub):
     differing predicates names the inert conjunct (R13), 'validated' is refused where no signal
     holds it (R14), a feature's dominant directory is named and cited (R15), rankings are refused."""
     f = facts(_skeleton(sub), sub)
-    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"] and x["rooms"])
     base = _good_draft(f)
     assert lint(base, f) == []
     # R12: the diagnostic-mark count called rooms; the population called marks
@@ -471,7 +471,7 @@ def test_lint_reads_nestings_shared_predicates_and_the_decorative_reason(sub):
     """D-038 (third seating, run 19): a within overlap states the rooms outside and no identity
     noun; an identical overlap with a shared predicate says so; 'findings' is not a unit."""
     f = facts(_skeleton(sub), sub)
-    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"] and x["rooms"])
     base = _good_draft(f)
     key = f"{feat['profile']}/{feat['feature']}"
     g = dict(f)
@@ -545,7 +545,7 @@ def test_register_table_carries_the_inventory_and_the_prose_is_the_reading(sub):
     r = relint(page, _skeleton(sub), sub)
     assert r["text"].strip() == prose.strip() and r["passed"]
     # a nesting called one set is still refused with the register present
-    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"] and x["rooms"])
     g = dict(f)
     key = f"{feat['profile']}/{feat['feature']}"
     g["overlaps"] = [
@@ -578,7 +578,7 @@ def test_register_cells_are_linted_by_their_tests(sub):
             x["count"] >= 6
         )
     g = json.loads(json.dumps(f))
-    feat = next(x for x in g["features"] if x["diagnostic"])
+    feat = next(x for x in g["features"] if x["diagnostic"] and x["rooms"])
     key = f"{feat['profile']}/{feat['feature']}"
     g["overlaps"] = [
         {"a": key, "b": "p/wider", "relation": "within", "n": feat["count"], "n_outside": 8}
@@ -636,7 +636,7 @@ def test_register_fallbacks_say_the_reason_that_is_the_reason(sub):
     for o in f["overlaps"]:
         assert o["n"] >= 3
     g = json.loads(json.dumps(f))
-    feat = next(x for x in g["features"] if x["diagnostic"])
+    feat = next(x for x in g["features"] if x["diagnostic"] and x["rooms"])
     key = f"{feat['profile']}/{feat['feature']}"
     tiny = dict(feat)
     tiny.update(
@@ -669,7 +669,7 @@ def test_register_fallbacks_say_the_reason_that_is_the_reason(sub):
     assert "too few rooms to place (1)" in table
     assert "POSITION NAME MISSING (ruleset defect)" in table
     assert "caveat: a caveat from the ruleset" in table
-    assert "(1 wider room outside this set)" in table and "1 of these room outside it" in table
+    assert "(1 wider room outside this set)" in table and "1 of these rooms outside it" in table  # D-057: the partitive stays plural
     big = dict(feat)
     big.update(
         {
@@ -729,7 +729,7 @@ def test_explanations_are_split_by_cause_and_the_rule_list_has_one_source(sub):
     for rid, desc in RULES:
         assert f"{rid} {desc}" in page
     assert "dominant directory is named with its population and cited" not in page
-    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"] and x["rooms"])
     base = _good_draft(f)
     largest = max(f["wings"], key=lambda w: (f["wings"][w], w))
     n = feat["by_wing"].get(largest)
@@ -765,7 +765,7 @@ def test_note_is_generated_from_the_constants_and_disclosures_cover_the_register
             assert f"{x['position_name']} ({record_of(x['predicate'])})" in table
     assert record_of("last_touched_days >= p90 and load_index >= 0.10") == "import graph and clock and size"  # D-048: the load blend reads size
     assert "drawn as it is" not in STANCE and "reinforced" not in STANCE
-    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"] and x["rooms"])
     base = _good_draft(f)
     room = feat["rooms"][0]
     deco = base + f"Nothing more is said here [{feat['feature']} ×{feat['count']}].\n\n"
@@ -834,7 +834,7 @@ def test_register_relations_cover_every_set_and_positions_always_name_a_record(s
         if line.startswith("| ") and not line.startswith("| feature") and "|---" not in line:
             pos = line.split("|")[3].strip()
             assert any(r in pos for r in records), pos
-    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"] and x["rooms"])
     base = _good_draft(f)
     largest = max(f["wings"], key=lambda w: (f["wings"][w], w))
     wing = next(
@@ -863,7 +863,7 @@ def test_fixes_are_as_wide_as_the_shape_they_close(sub):
     not the number is in the prose; a located subset carries its total; a named directory carries
     its share and its rooms; a family of marks the sheet does not define is refused."""
     f = facts(_skeleton(sub), sub)
-    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"] and x["rooms"])
     base = _good_draft(f)
     room = feat["rooms"][0]
     whole = next(
@@ -928,7 +928,7 @@ def test_every_refusal_admits_the_sentence_it_must_admit(sub):
     the lint must ADMIT beside the one it must refuse. Three were found in one day by the pipeline
     refusing correct prose."""
     f = facts(_skeleton(sub), sub)
-    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"] and x["rooms"])
     base = _good_draft(f)
     largest = max(f["wings"], key=lambda w: (f["wings"][w], w))
     wings_only = (
@@ -1039,7 +1039,7 @@ def test_fixed_texts_are_tested_against_their_computation(sub):
 
     f = facts(_skeleton(sub), sub)
     g = json.loads(json.dumps(f))
-    feat = next(x for x in g["features"] if x["diagnostic"])
+    feat = next(x for x in g["features"] if x["diagnostic"] and x["rooms"])
     key = f"{feat['profile']}/{feat['feature']}"
     rooms = feat["rooms"]
     # two identical pairs sharing every room count the rooms once
@@ -1083,7 +1083,7 @@ def test_fixed_texts_are_tested_against_their_computation(sub):
     # the relation cell under the floor
     tiny = next(x for x in f["features"] if x["count"] < 3)
     table = render_register(f)
-    assert f"too few rooms for any other relation ({tiny['count']})" in table  # D-055: the wording
+    assert f"too few rooms to relate ({tiny['count']})" in table  # D-057: the D-047 wording where nothing is drawn
     # every rule id the lint can emit is on the page
     ids = {rid for rid, _ in RULES}
     import inspect, re as _re
@@ -1123,7 +1123,7 @@ def test_the_reading_is_bound_to_what_the_register_does_not_print(sub, tmp_path)
     from repo_substrate.mapper.ruleset import RulesetError
 
     f = facts(_skeleton(sub), sub)
-    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"])
+    feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"] and x["rooms"])
     base = _good_draft(f)
     # 1. a sentence opening with a digit is a sentence: the page's own pair, which R2b read as one
     pair = "The register draws 3 relations: 1 identical and 2 within. 254 rooms carry two or more diagnostic marks [hub ×50]."
@@ -1282,7 +1282,7 @@ def test_a_position_wears_no_feature_name_and_the_most_marked_list_says_when_it_
     f = facts(_skeleton(sub), sub)
     assert f["rooms_at_most_sets"] == 0 and "rooms_at_most_sets" in f["units"]
     g = json.loads(json.dumps(f))
-    feat = next(x for x in g["features"] if x["diagnostic"])
+    feat = next(x for x in g["features"] if x["diagnostic"] and x["rooms"])
     second = next(x for x in g["features"] if not x["diagnostic"] and feat["rooms"][0] in x["rooms"] and set(x["rooms"]) != set(feat["rooms"]))  # D-052: a different set
     second["diagnostic"], second["decorative"] = True, False
     g["most_marked_rooms"] = _b.most_marked(g["features"])
@@ -1332,7 +1332,7 @@ def test_the_page_is_rendered_by_code_and_its_fixed_texts_match_their_fields(sub
     assert "R3-number" not in {v.rule for v in lint(sent, f, register=True)}
     # the most-marked lead says whether the list is cut, against rooms_at_most_marks
     g = json.loads(json.dumps(f))
-    feat = next(x for x in g["features"] if x["diagnostic"])
+    feat = next(x for x in g["features"] if x["diagnostic"] and x["rooms"])
     second = next(x for x in g["features"] if not x["diagnostic"] and feat["rooms"][0] in x["rooms"] and set(x["rooms"]) != set(feat["rooms"]))  # D-052: a different set
     second["diagnostic"], second["decorative"] = True, False
     g["most_marked_rooms"] = _b.most_marked(g["features"])
@@ -1365,7 +1365,7 @@ def test_the_page_is_rendered_by_code_and_its_fixed_texts_match_their_fields(sub
     if dec:
         assert str(f["decorative"]["count"]) in dis and "not a diagnosis" in dis
         for x in dec:
-            assert x["feature"] in dis and (not x.get("position_name") or x["position_name"] in dis)
+            assert x["feature"] in dis and (not x["count"] or not x.get("position_name") or x["position_name"] in dis)  # D-057: an unfired feature is named, not positioned
             for sig in re.findall(r"[a-z_]+_index", x.get("decorative_reason") or ""):
                 assert sig in dis
     else:
@@ -1681,7 +1681,7 @@ def test_a_tier_orders_by_path_and_the_scope_count_is_over_the_population(sub, t
     assert rows and any(r.startswith("| ◌ crack |") for r in rows)  # crack fires on the fixture
     assert all("zero to fix history" in r for r in rows)
     assert page.count("zero to fix history") == len(rows) + 1  # every decorative row, and the disclosure once
-    assert "rest on bug_pressure_index, which is unvalidated on the pre-registered test set (D-015): its tuned weights assign zero to fix history" in page
+    assert re.search(r"rests? on bug_pressure_index, which is unvalidated on the pre-registered test set \(D-015\): its tuned weights assign zero to fix history", page)
     # the loader: a signal with a reason is read by decorative features only; no orphan reasons
     def _rs(body):
         p = tmp_path / "rs.toml"
@@ -1728,7 +1728,7 @@ def test_a_guaranteed_containment_is_drawn_under_the_floor_and_the_ordering_text
     row_in = next(line for line in reg.splitlines() if line.startswith("| ◌ tiny_in |"))
     row_off = next(line for line in reg.splitlines() if line.startswith("| tiny_off |"))
     assert f"⊂ {big['feature']} (by its predicate; {len(big_rooms) - 2} {big['feature']} room" in row_in and row_in.count("too few rooms for any other relation (2)") == 1
-    assert "| too few rooms for any other relation (2) |" in row_off and "⊂" not in row_off
+    assert "| too few rooms to relate (2) |" in row_off and "⊂" not in row_off  # D-057: no "other" without an antecedent
     # the other side draws it too, and the counts count it
     row_big = next(line for line in reg.splitlines() if line.startswith(f"| {big['feature']} |"))
     assert "⊃ ◌ tiny_in (by its predicate;" in row_big  # D-056: ◌ travels with the name
@@ -1807,3 +1807,62 @@ def test_a_containment_not_by_predicate_says_the_signal_in_common_and_a_scope_is
     # the sheet round-trips through sorted keys with its order intact
     back = json.loads(json.dumps(g, sort_keys=True))
     assert back["by_package"] == g["by_package"]
+
+
+def test_a_feature_that_fired_on_nothing_keeps_its_row_and_the_marker_is_defined_on_the_page(sub):
+    """D-057 (eighteenth seating, registry 0.24.0). (1) toothpick_wing fired on no room and had no
+    row; rows come from the ruleset's roster on the skeleton, so an unfired feature keeps a row at 0.
+    (2) "no signal in common" was undefined on the page and read as independence; the note defines
+    both values, and a derived index outside the tuned blends expands through its grounding
+    (reinforcement_index → test_fan_in). (3) The import graph and the test graph are one edge set:
+    a test file's import counts in fan_in and centrality and in test_fan_in — a fixed text, held
+    to the substrate (fan_in >= test_fan_in on every node). (4) scaffolding's floor and its test
+    convention are a caveat (maintainability 0.2.7). (5) Ruleset versions in the header."""
+    import repo_substrate.brief as _b
+
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    # (1) the roster: every feature of both rulesets has a row, fired or not
+    base, ov = load_ruleset(RULESET), load_ruleset(ONBOARDING)
+    on_sheet = {(x["profile"], x["feature"]) for x in f["features"]}
+    assert {(base.profile, x.name) for x in base.features} | {(ov.profile, x.name) for x in ov.features} <= on_sheet
+    assert sk["profile"]["roster"] and sk["overlays"][0]["roster"]
+    zero = [x for x in f["features"] if x["count"] == 0]
+    assert zero, "the small fixture leaves at least one feature unfired"
+    reg = _b.render_register(f)
+    for x in zero:
+        row = next(line for line in reg.splitlines() if line.startswith(f"| {'◌ ' if x['decorative'] else ''}{x['feature']} | {x['profile']} |"))
+        assert "| 0 | no wing (0) | no rooms | no rooms to relate (0) |" in row and f"`{x['predicate']}`" in row
+    assert "A feature that fired on no room keeps its row at 0." in reg
+    dec0 = [x for x in zero if x["decorative"]]
+    if dec0:
+        dis = _b.render_disclosure(f)
+        assert all(f"{x['feature']} fired on no room." in dis for x in dec0)
+        assert f"{dec0[0]['feature']} 0" in reg  # the header's decorative list carries the count
+    # (2) the marker's values are defined on the page; the grounding expansion
+    assert "otherwise it says which raw signals the two predicates read in common, a blend or index expanded through its declared inputs, or 'no signal in common'" in reg
+    assert _b._signals_read("reinforcement_index >= 0.5") == {"test_fan_in"}
+    assert _b._signals_read("centrality >= p90 and fan_out >= p50") & _b._signals_read("reinforcement_index >= 0.5") == set()
+    # (3) one edge set: the fixed text, and the invariant it states, on the substrate
+    assert "the import graph and the test graph are one edge set read twice, a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone" in reg
+    for n in sub["nodes"]:
+        m = n["metrics"]
+        assert m.get("fan_in", 0) >= m.get("test_fan_in", 0), n["id"]
+    # (4) the caveat reaches the page; the floor it states is the index's
+    sc = next(x for x in f["features"] if x["feature"] == "scaffolding")
+    assert sc["caveat"] and "0.5 is its floor, not a midpoint" in reg and "helper or fixture under the test paths counts" in reg
+    for n in sub["nodes"]:
+        r = (n.get("derived") or {}).get("reinforcement_index")
+        if r is not None:
+            assert r == 0.0 or r >= 0.5, (n["id"], r)
+    # (5) versions in the header
+    page = run_brief(sk, sub)["markdown"]
+    assert f"Profile {base.profile} {base.version} + {ov.profile} {ov.version}," in page
+    assert f["profile_versions"] == {base.profile: base.version, ov.profile: ov.version}
+    # a skeleton without a roster (older) still renders the fired set
+    sk_old = json.loads(json.dumps(sk))
+    sk_old["profile"].pop("roster")
+    for od in sk_old["overlays"]:
+        od.pop("roster")
+    g = facts(sk_old, sub)
+    assert all(x["count"] > 0 for x in g["features"])

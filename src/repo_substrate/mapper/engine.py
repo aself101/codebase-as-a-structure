@@ -145,6 +145,25 @@ def _cmp(v: float, op: str, thr: float) -> bool:
     }[op]
 
 
+def _roster(ruleset: Ruleset) -> list[dict[str, Any]]:
+    """D-057 (eighteenth seating): every feature the ruleset defines, fired or not — on registry
+    toothpick_wing fired on no room and left no trace, though its own note says it is kept on the
+    page so its absence is visible. The brief builds its rows from this roster."""
+    return [
+        {
+            "feature": f.name,
+            "predicate": f.predicate,
+            "decorative": f.decorative,
+            "decorative_reason": f.decorative_reason,
+            "decorative_signal_reasons": dict(f.decorative_signal_reasons),
+            "name_implies_consequence": f.name_implies_consequence,
+            "position_name": f.position_name,
+            "caveat": f.caveat,
+        }
+        for f in ruleset.features
+    ]
+
+
 def _apply(
     ruleset: Ruleset,
     population: list[dict[str, Any]],
@@ -258,6 +277,7 @@ def map_skeleton(
             {
                 "profile": o.profile,
                 "ruleset": {"name": o.name, "version": o.version, "source": o.source},
+                "roster": _roster(o),  # D-057
                 "features": of,
                 "summary": osum,
             }
@@ -278,7 +298,7 @@ def map_skeleton(
         "mapper_version": __version__,
         "mapped_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "ruleset": {"name": ruleset.name, "version": ruleset.version, "source": ruleset.source},
-        "profile": {"name": ruleset.profile, "version": ruleset.version},
+        "profile": {"name": ruleset.profile, "version": ruleset.version, "roster": _roster(ruleset)},  # D-057: roster
         "substrate_seed": substrate["seed"],
         "substrate_config_fingerprint": substrate["repo"]["config_fingerprint"],
         "validation_config_fingerprint": validation.get("validation_config_fingerprint"),
