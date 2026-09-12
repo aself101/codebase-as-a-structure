@@ -9,6 +9,8 @@
 > **Revision, 2026-09-11 (D-052; brief 0.20.0).** The thirteenth seating fired D-050's second clause: the most-marked table's fourth column is now *listed of rooms at this count* ("3 of 4", the first by path) and the lead labels nothing per row; `package_entry`'s record is the package manifest; distinct sets, co-location and the table share one computation of set identity, and co-location is counted in sets; the page's own citations are tested against their targets.
 >
 > **Revision, 2026-09-11 (D-053; brief 0.21.0).** The fourteenth seating fired D-052's first clause: a blend's records are now derived from `config.ALLOWED_INPUTS` (`crack` reads "clock and edit record"); a partly listed tier is "the first by marks, then by path"; a containment the predicates guarantee says "by its predicate"; the page defines a wing and says how many `package.json` scopes its one population pools (§5 Q5 is still open — the pooling is now stated, not resolved); maintainability 0.2.5 gives `flooded_basement` its caveat.
+>
+> **Revision, 2026-09-12 (D-054; brief 0.22.0).** The fifteenth seating: the scope count D-053 put on the page was over every substrate node, not the population (eslint: 21 stated, 6 true); the count is now the rooms' and the rooms per scope are listed beside it (§5 Q5 remains open, now with its sizes — mapper §7 Q7 records it); a tie in the directory column names its partner with its numbers; the most-marked tier orders by sets then path, marks shown and ordering nothing; a reason about a signal lives in the ruleset's `[signal_reason]` table and reaches every row that reads the signal; the citation tests share one grammar.
 
 ## 1. Contract
 

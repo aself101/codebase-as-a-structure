@@ -1349,7 +1349,7 @@ def test_the_page_is_rendered_by_code_and_its_fixed_texts_match_their_fields(sub
     h["rooms_at_most_sets"] = 1
     mm = render_most_marked(h)
     # D-052: the lead says the ordering, the cap and the most; what a row is, its cell says
-    assert "1 room carries the most (5). The listed column is rows listed of rooms at the row's sets count; where fewer are listed than carry the count, the listed are the first by marks, then by path." in mm
+    assert "1 room carries the most (5). The listed column is rows listed of rooms at the row's sets count; where fewer are listed than carry the count, the listed are the first by path." in mm
     assert "| b.ts | 4 | 6 | 1 of 8 |" in mm and "| a.ts | 5 | 7 | 1 of 1 |" in mm
     assert "| room | distinct sets | marks | listed of rooms at this count |" in mm
     assert "first by path, and its row says" not in mm  # the clause that was false as a per-row label (D-052)
@@ -1375,6 +1375,44 @@ def test_the_page_is_rendered_by_code_and_its_fixed_texts_match_their_fields(sub
     assert r["passed"] and "## Reading (draft)" in r["markdown"] and "## Register lint" in r["markdown"]
     assert render_brief(None, f, [], {}).count("## ") == render_brief("", f, [], {}).count("## ")
 
+
+
+# D-054 (fifteenth seating): the page cited "mapper §7" for a question §7 did not list, and the two
+# citation tests below matched "§n.n" only — an undotted section was never checked, and a dotted
+# one resolved to the first such heading in three specs concatenated, whichever spec it was in.
+# This is the citation grammar the page and the rulesets use: an optional spec name, a section
+# (dotted or not), an optional "Qn" item. A named citation resolves in the named spec only.
+_SPEC_FILES = {
+    "system spec": "codebase-as-structure-system-spec.md",
+    "mapper": "structural-mapper-spec.md",
+    "architect-brief spec": "architect-brief-spec.md",
+}
+_CITE = re.compile(r"(?:(system spec|mapper|architect-brief spec)\s+)?§\s*(\d+(?:\.\d+)?)(?:\s+Q(\d+))?")
+
+
+def _section_body(text: str, heading: str) -> str | None:
+    pat = rf"^#+\s*{re.escape(heading)}\b" if "." in heading else rf"^#+\s*{re.escape(heading)}\.?\s"
+    m = re.search(pat, text, re.M)
+    if not m:
+        return None
+    rest = text[m.end():]
+    nxt = re.search(r"^#{1,3}\s", rest, re.M)
+    return rest[: nxt.start()] if nxt else rest
+
+
+def _spec_citations(root: Path, text: str) -> list[tuple[str, str | None]]:
+    """Every §-citation in `text` resolved to its section body (None when it does not resolve);
+    a Qn suffix requires a numbered item n inside that section."""
+    specs = {k: (root / v).read_text(encoding="utf-8") for k, v in _SPEC_FILES.items()}
+    out: list[tuple[str, str | None]] = []
+    for m in _CITE.finditer(text):
+        name, sec, q = m.group(1), m.group(2), m.group(3)
+        bodies = [specs[name]] if name else list(specs.values())
+        body = next((b for b in (_section_body(t, sec) for t in bodies) if b is not None), None)
+        if body is not None and q and not re.search(rf"^{q}\.\s", body, re.M):
+            body = None
+        out.append((m.group(0), body))
+    return out
 
 def test_a_citation_in_a_ruleset_text_that_reaches_the_page_cites_a_section_that_speaks_of_the_feature():
     """D-050: the twelfth seating found the import_root caveat citing "§5.5" — the system spec's
@@ -1407,11 +1445,10 @@ def test_a_citation_in_a_ruleset_text_that_reaches_the_page_cites_a_section_that
             words = {f["name"], *re.findall(r"[a-z_]+", str(f.get("predicate", "")))} - {"and", "or", "p"}
             for field in ("position_name", "caveat", "decorative_reason"):
                 text = str(f.get(field) or "")
-                for sec in re.findall(r"§\s*(\d+\.\d+)", text):
+                for cite, body in _spec_citations(root, text):
                     seen += 1
-                    body = section(specs, rf"^#+\s*{re.escape(sec)}\b")
-                    assert body is not None, (rs, f["name"], field, f"§{sec} resolves to no heading")
-                    assert any(re.search(rf"\b{re.escape(w)}\b", body) for w in words), (rs, f["name"], field, f"§{sec} speaks of none of {sorted(words)}")
+                    assert body is not None, (rs, f["name"], field, f"{cite} resolves to no heading (or no Qn item)")
+                    assert any(re.search(rf"\b{re.escape(w)}\b", body) for w in words), (rs, f["name"], field, f"{cite} speaks of none of {sorted(words)}")
                 for d in re.findall(r"\bD-\d{3}\b", text):
                     seen += 1
                     body = section(log, rf"^## {d}\b")
@@ -1486,17 +1523,20 @@ def test_a_citation_on_the_rendered_page_names_a_section_that_speaks_of_its_sent
     page = run_brief(_skeleton(sub), sub)["markdown"]
     seen = 0
     for sent in re.split(r"(?<=[.;])\s+", page):
-        cites = [("§", x) for x in re.findall(r"§\s*(\d+\.\d+)", sent)] + [("D", x) for x in re.findall(r"\b(D-\d{3})\b", sent)]
+        cites = [(c, b) for c, b in _spec_citations(root, sent)] + [(x, section(log, rf"^## {x}\b")) for x in re.findall(r"\b(D-\d{3})\b", sent)]
         if not cites:
             continue
         words = {w.lower() for w in re.findall(r"[A-Za-z][a-z]{5,}", sent)}
-        for kind, ref in cites:
+        for ref, body in cites:
             seen += 1
-            body = section(specs, rf"^#+\s*{re.escape(ref)}\b") if kind == "§" else section(log, rf"^## {ref}\b")
-            assert body is not None, (kind, ref, sent[:120])
+            assert body is not None, (ref, sent[:120])
             low = body.lower()
-            assert any(re.search(rf"\b{w}", low) for w in words), (kind, ref, sorted(words), sent[:120])
-    assert seen >= 3  # D-004 Q3, D-049, §5.3 at least
+            assert any(re.search(rf"\b{w}", low) for w in words), (ref, sorted(words), sent[:120])
+    assert seen >= 5  # D-004 Q3, D-049, system spec §5.3, architect-brief spec §5, mapper §7 Q7 at least
+    # the shape the seating found: an undotted, spec-named citation is checked in the named spec
+    assert _spec_citations(root, "mapper §7 Q7")[0][1] is not None
+    assert _spec_citations(root, "mapper §7 Q9")[0][1] is None  # no such item
+    assert _spec_citations(root, "architect-brief spec §5.3")[0][1] is None  # the brief spec has no 5.3; the system spec does
 
 
 def test_a_partly_listed_tier_is_the_first_by_marks_then_path_and_a_blend_names_every_record_it_reads(sub):
@@ -1520,11 +1560,12 @@ def test_a_partly_listed_tier_is_the_first_by_marks_then_path_and_a_blend_names_
     tier = [m for m in top if m["sets"] == 2]
     assert [m["room"] for m in tier] == ["r0", "r1", "r2", "r3"] and all(m["listed_at_this_count"] == 4 and m["rooms_at_this_count"] == 6 for m in tier)
     gs = [feat("x", rooms), feat("y", rooms + ["z"]), feat("v", ["r5", "r6", "q1", "q2", "q3"], predicate="y >= p90"), feat("u", ["r5", "r6", "q1", "q2", "q3"], profile="o", predicate="y >= p90")]
-    # r5 and r6: three sets (x, y, v=u); the rest of the tier two — within a tier marks order first
+    # r5 and r6: three sets (x, y, v=u); the rest of the tier two. D-053 ordered a tier by marks then
+    # path; D-054 dropped marks from the key (test_a_tier_orders_by_path_and_the_scope_count_is_over_the_population)
     top = _b.most_marked(gs)
     three = [m for m in top if m["sets"] == 3]
     assert [m["room"] for m in three] == ["r5", "r6"] and three[0]["marks"] == 4
-    assert "first by marks, then by path" in _b.render_most_marked({"most_marked_rooms": top, "rooms_at_most_sets": 2})
+    assert "the first by path" in _b.render_most_marked({"most_marked_rooms": top, "rooms_at_most_sets": 2})
     # every blend names the records of its declared inputs; every input maps to a raw signal
     for index, inputs in ALLOWED_INPUTS.items():
         for inp in inputs:
@@ -1556,3 +1597,95 @@ def test_a_partly_listed_tier_is_the_first_by_marks_then_path_and_a_blend_names_
     for x in f["features"]:
         if x["feature"] == "flooded_basement":
             assert x.get("caveat") and "not an importer" in reg
+
+
+def test_a_tier_orders_by_path_and_the_scope_count_is_over_the_population(sub, tmp_path):
+    """D-054 (fifteenth seating, eslint 0.21.0). (1) The page said the 473 rooms span 21 package
+    scopes; 21 was counted over every substrate node (1481) and the rooms span 6 — the three other
+    pages coincided, so D-053's fixture could not fail. The count is over the population and the
+    rooms per scope are on the page. (2) "(tied)" named no partner: package_entry's cell named
+    packages/eslint-config-eslint 4 / 5 over lib 4 by name order. (3) Within a tier of equal sets,
+    marks differ only by the double count the register discounts; the tier orders by path. (4) A
+    reason about a signal is written once ([signal_reason]) and every row that reads the signal
+    carries it — crack said "unvalidated" where toothpick_wing said what the tuning did; the
+    tuning claim is tested against config/tuned.toml. (5) The page cited mapper §7 for a question
+    it did not list (see the citation grammar above)."""
+    import tomllib
+
+    import repo_substrate.brief as _b
+    from repo_substrate.config import ALLOWED_INPUTS
+    from repo_substrate.mapper.ruleset import RulesetError
+
+    root = Path(__file__).resolve().parents[1]
+    sk = _skeleton(sub)
+    # (1) nodes outside the population carry scopes the population does not
+    sub2 = json.loads(json.dumps(sub))
+    rooms = set(sk["strata"]["by_node"])
+    for n in sub2["nodes"]:
+        if n["id"] in rooms:
+            n.setdefault("metrics", {})["package"] = "pkg/a" if n["id"] < "src/m" else ""
+    sub2["nodes"].append({"id": "tests/x.test.ts", "kind": "file", "lang": "ts", "metrics": {"package": "tests/only"}, "derived": {}})
+    sub2["nodes"].append({"id": "tests/y.test.ts", "kind": "file", "lang": "ts", "metrics": {"package": "tests/other"}, "derived": {}})
+    f = facts(sk, sub2)
+    over_rooms = {(next(n for n in sub2["nodes"] if n["id"] == r)["metrics"].get("package") or "(root)") for r in rooms}
+    assert f["packages"] == len(over_rooms) and set(f["by_package"]) == over_rooms
+    assert sum(f["by_package"].values()) == f["population"]
+    assert list(f["by_package"].values()) == sorted(f["by_package"].values(), reverse=True)
+    reg = _b.render_register(f)
+    scopes = " · ".join(f"{k} {v}" for k, v in f["by_package"].items())
+    assert f"spans {f['packages']} package scopes (rooms per scope, largest first: {scopes})." in reg
+    assert "tests/only" not in reg and f"across {f['packages']} package scopes" in f["calibration"]
+    # (2) a tie names every partner with its numbers; the wing-named partner is marked as the parent
+    sk2 = json.loads(json.dumps(sk))
+    tmpl = next(x for x in sk2["features"] if x["diagnostic"] and not x["decorative"])
+    tie_rooms = ("lib/a.ts", "lib/b.ts", "lib/c.ts", "pkg/d.ts", "pkg/e.ts", "pkg/f.ts")
+    for nid in tie_rooms + ("lib/g.ts",):
+        sk2["strata"]["by_node"][nid] = sk2["strata"]["by_node"][tmpl["node"]]
+    sk2["features"] = [dict(tmpl, feature="tie", node=nid) for nid in tie_rooms]
+    sk2["overlays"] = []
+    g = facts(sk2, sub2)
+    dd = next(x for x in g["features"] if x["feature"] == "tie")["dominant_dir"]
+    assert dd["tied"] and dd["dir"] == "pkg" and dd["tied_with"] == [{"dir": "lib", "n": 3, "population": 4}]
+    cell = _b.render_register(g)
+    m = re.search(r"\| [^|]*tied[^|]*\|", cell)
+    assert m and m.group(0) == "| pkg (as parent, not the wing) 3 / 3 (tied with lib (as parent, not the wing) 3 / 4) |", m.group(0) if m else cell
+    # (3) equal sets, unequal marks: path orders the tier
+    def feat(name, rooms, profile="p", predicate="x >= p90"):
+        return {"feature": name, "profile": profile, "diagnostic": True, "decorative": False, "rooms": rooms, "predicate": predicate}
+
+    # a: sets {x, w}, 2 marks; b: sets {x, y=y}, 3 marks — the same count of sets, one of b's doubled
+    fs = [feat("x", ["a", "b"]), feat("w", ["a"], predicate="w >= p90"), feat("y", ["b"], predicate="y >= p90"), feat("y", ["b"], profile="o", predicate="y >= p90")]
+    top = _b.most_marked(fs)
+    assert [(m["room"], m["sets"], m["marks"]) for m in top] == [("a", 2, 2), ("b", 2, 3)]
+    lead = _b.render_most_marked({"most_marked_rooms": top, "rooms_at_most_sets": 2})
+    assert "then by path — marks (one per feature per profile) are shown and order nothing" in lead and "by marks" not in lead.split("order nothing")[1]
+    # (4) the signal's reason on every row that reads it, once in the disclosure, and true of the tuning
+    rs = load_ruleset(RULESET)
+    dec = {x.name: x for x in rs.features if x.decorative}
+    assert set(rs.signal_reasons) == {"bug_pressure_index"} and set(dec) == {"crack", "toothpick_wing"}
+    for x in dec.values():
+        assert x.decorative_reason.startswith("bug_pressure_index is " + rs.signal_reasons["bug_pressure_index"])
+        assert x.decorative_signal_reasons == rs.signal_reasons
+    assert "fragility half" in dec["toothpick_wing"].decorative_reason and "fragility half" not in dec["crack"].decorative_reason
+    tuned = tomllib.loads((root / "config" / "tuned.toml").read_text(encoding="utf-8"))["weights"]["bug_pressure_index"]
+    fix_inputs = [i for i in ALLOWED_INPUTS["bug_pressure_index"] if i.startswith("fix")]
+    assert fix_inputs and all(tuned.get(i, 0) == 0 for i in fix_inputs)  # "assign zero to fix history"
+    assert "zero to fix history" in rs.signal_reasons["bug_pressure_index"]
+    page = run_brief(sk, sub)["markdown"]
+    rows = [line for line in page.splitlines() if line.startswith("| ◌ ")]
+    assert rows and any(r.startswith("| ◌ crack |") for r in rows)  # crack fires on the fixture
+    assert all("zero to fix history" in r for r in rows)
+    assert page.count("zero to fix history") == len(rows) + 1  # every decorative row, and the disclosure once
+    assert "rest on bug_pressure_index, which is unvalidated on the pre-registered test set (D-015): its tuned weights assign zero to fix history" in page
+    # the loader: a signal with a reason is read by decorative features only; no orphan reasons
+    def _rs(body):
+        p = tmp_path / "rs.toml"
+        p.write_text('[ruleset]\nname = "t"\nversion = "0.0.1"\nprofile = "t"\ndescription = "t"\nwing_depth = 1\n\n' + body, encoding="utf-8")
+        return load_ruleset(p)
+
+    with pytest.raises(RulesetError, match="without decorative"):
+        _rs('[signal_reason]\nbug_pressure_index = "unvalidated"\n\n[[feature]]\nname = "x"\npredicate = "bug_pressure_index >= p90"\n')
+    with pytest.raises(RulesetError, match="no feature reads"):
+        _rs('[signal_reason]\nneglect_index = "unvalidated"\n\n[[feature]]\nname = "x"\npredicate = "fan_in >= p90"\n')
+    ok = _rs('[signal_reason]\nbug_pressure_index = "unvalidated (D-015)"\n\n[[feature]]\nname = "x"\npredicate = "bug_pressure_index >= p90"\ndecorative = true\n')
+    assert ok.features[0].decorative_reason == "bug_pressure_index is unvalidated (D-015)."

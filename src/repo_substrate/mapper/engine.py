@@ -192,6 +192,7 @@ def _apply(
                     "validation_status": f_status,
                     "decorative": f.decorative,
                     "decorative_reason": f.decorative_reason,
+                    "decorative_signal_reasons": dict(f.decorative_signal_reasons),  # D-054
                     "degraded": degraded,
                     "diagnostic": diagnostic,
                     "name_implies_consequence": f.name_implies_consequence,

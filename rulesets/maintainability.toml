@@ -14,10 +14,17 @@
 
 [ruleset]
 name = "maintainability"
-version = "0.2.5"
+version = "0.2.6"
 profile = "maintainability"
 description = "v0 maintainability lens: load, neglect, reinforcement, activity — over asserted signals only; the two pressure indices are unvalidated (D-015) and appear only as decorative features."
 wing_depth = 1
+
+# D-054 (fifteenth seating): a reason about a signal is written once, here, and composed into
+# every decorative feature that reads the signal — crack's row said "unvalidated" and
+# toothpick_wing's said what the tuning did to the blend, on one signal. The tuning claim is
+# tested against config/tuned.toml (tests/test_brief.py).
+[signal_reason]
+bug_pressure_index = "unvalidated on the pre-registered test set (D-015): its tuned weights assign zero to fix history and it does not beat busyness by the margin"
 
 [[feature]]
 name = "foundation"
@@ -67,7 +74,7 @@ name = "toothpick_wing"
 predicate = "load_index >= p90 and bug_pressure_index >= p90 and reinforcement_index <= 0.0"
 graph_dependent = true
 decorative = true
-decorative_reason = "bug_pressure_index is unvalidated on the pre-registered test set (D-015): its tuned weights assign zero to fix history and it does not beat busyness by the margin. The fragility half of this feature has no forecast to stand on; it renders as decorative, counted, and excluded from diagnostic claims until a reference repo validates the index."
+decorative_reason = "The fragility half of this feature has no forecast to stand on; it renders as decorative, counted, and excluded from diagnostic claims until a reference repo validates the index."
 name_implies_consequence = true
 position_name = "unreinforced high-load node with high edit pressure"
 note = "The flagship June feature, kept on the page so its absence from the diagnosis is visible rather than silent."
@@ -76,6 +83,5 @@ note = "The flagship June feature, kept on the page so its absence from the diag
 name = "crack"
 predicate = "bug_pressure_index >= p90"
 decorative = true
-decorative_reason = "bug_pressure_index is unvalidated (D-015)."
 name_implies_consequence = true
 position_name = "high edit-pressure node"

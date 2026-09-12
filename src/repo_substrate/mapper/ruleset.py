@@ -103,6 +103,9 @@ class Feature:
     terms: tuple[Term, ...]
     decorative: bool = False
     decorative_reason: str | None = None
+    # D-054: the part of decorative_reason that is about a signal, keyed by signal — written once
+    # in the ruleset's [signal_reason] table and composed into every feature that reads the signal
+    decorative_signal_reasons: dict[str, str] = field(default_factory=dict, compare=False)
     graph_dependent: bool = False
     name_implies_consequence: bool = False
     position_name: str | None = None  # the position-denoting alternative name (D-004 Q3)
@@ -127,6 +130,7 @@ class Ruleset:
     wing_depth: int = (
         1  # directory depth that defines a wing (geometry; the same for every profile)
     )
+    signal_reasons: dict[str, str] = field(default_factory=dict, compare=False)  # D-054
     _extra: dict = field(default_factory=dict, compare=False)
 
 
@@ -152,10 +156,10 @@ def load_ruleset(path: Path) -> Ruleset:
     raw = tomllib.loads(Path(path).read_text(encoding="utf-8"))
     # D-019: a ruleset names per-node features and nothing else. An `[archetype]` table (or
     # any other whole-repo claim) has no reader here and must not ride along silently.
-    unknown = sorted(set(raw) - {"ruleset", "feature"})
+    unknown = sorted(set(raw) - {"ruleset", "feature", "signal_reason"})  # D-054: signal_reason
     if unknown:
         raise RulesetError(
-            f"unknown top-level table(s) {unknown}; a ruleset carries [ruleset] and [[feature]] only"
+            f"unknown top-level table(s) {unknown}; a ruleset carries [ruleset], [[feature]] and [signal_reason] only"
         )
     hdr = raw.get("ruleset") or {}
     for key in ("name", "version", "profile"):
@@ -163,6 +167,11 @@ def load_ruleset(path: Path) -> Ruleset:
             raise RulesetError(f"[ruleset] missing {key}")
     feats: list[Feature] = []
     seen: set[str] = set()
+    sr_raw = raw.get("signal_reason") or {}
+    if not isinstance(sr_raw, dict) or not all(isinstance(v, str) and v.strip() for v in sr_raw.values()):
+        raise RulesetError("[signal_reason] maps signal names to non-empty strings")
+    signal_reasons: dict[str, str] = {str(k): str(v).strip() for k, v in sr_raw.items()}
+    signals_excused: set[str] = set()
     raw_names = [str(x.get("name")) for x in raw.get("feature") or [] if x.get("name")]
     for f in raw.get("feature") or []:
         name = f.get("name")
@@ -173,11 +182,26 @@ def load_ruleset(path: Path) -> Ruleset:
         if not pred:
             raise RulesetError(f"feature {name}: missing predicate")
         decorative = bool(f.get("decorative", False))
-        reason = f.get("decorative_reason")
+        own_reason = f.get("decorative_reason")
+        terms_ = parse_predicate(pred)
+        # D-054 (fifteenth seating): a reason about a signal belongs to the signal. crack's row said
+        # "unvalidated" and toothpick_wing's said what the tuning did to the blend, on one signal;
+        # the [signal_reason] table says it once and every feature reading the signal carries it.
+        sig_reasons = {t.signal: signal_reasons[t.signal] for t in terms_ if t.signal in signal_reasons}
+        if sig_reasons and not decorative:
+            raise RulesetError(
+                f"feature {name}: reads {', '.join(sorted(sig_reasons))}, which [signal_reason] excuses, without decorative = true"
+            )
+        for sg in sig_reasons:
+            signals_excused.add(sg)
+        composed = " ".join(
+            [f"{sg} is {txt.rstrip('.')}." for sg, txt in sorted(sig_reasons.items())]
+            + ([str(own_reason).strip()] if own_reason else [])
+        )
+        reason = composed or None
         # mapper §3 (D-004): the hatch is audited — a decorative rule must say why.
         if decorative and not reason:
-            raise RulesetError(f"feature {name}: decorative = true requires decorative_reason")
-        terms_ = parse_predicate(pred)
+            raise RulesetError(f"feature {name}: decorative = true requires decorative_reason or a [signal_reason] for a signal it reads")
         if decorative and reason and not any(t.signal in str(reason) for t in terms_):
             # mapper §3: the reason must NAME the ungrounded signal; a non-empty string is not a reason (D-030)
             raise RulesetError(
@@ -265,6 +289,7 @@ def load_ruleset(path: Path) -> Ruleset:
                 terms=terms_,
                 decorative=decorative,
                 decorative_reason=reason,
+                decorative_signal_reasons=sig_reasons,
                 graph_dependent=bool(f.get("graph_dependent", False)),
                 name_implies_consequence=bool(f.get("name_implies_consequence", False)),
                 position_name=f.get("position_name"),
@@ -274,6 +299,9 @@ def load_ruleset(path: Path) -> Ruleset:
         )
     if not feats:
         raise RulesetError("ruleset has no features")
+    orphan = set(signal_reasons) - signals_excused
+    if orphan:
+        raise RulesetError(f"[signal_reason] names signals no feature reads: {', '.join(sorted(orphan))}")
     return Ruleset(
         name=hdr["name"],
         version=str(hdr["version"]),
@@ -282,4 +310,5 @@ def load_ruleset(path: Path) -> Ruleset:
         features=tuple(feats),
         source=str(path),
         wing_depth=int(hdr.get("wing_depth", 1)),
+        signal_reasons=signal_reasons,
     )

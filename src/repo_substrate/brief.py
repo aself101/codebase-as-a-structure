@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.21.0"  # D-053: a blend's records come from its declared inputs; wings and packages are defined on the page
+BRIEF_VERSION = "0.22.0"  # D-054: packages counted over the population with rooms per scope; a tie names its partner; a tier orders by path; a signal's reason on every row that reads it
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -57,6 +57,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
                     "diagnostic": bool(f["diagnostic"] and not f["decorative"]),
                     "decorative": bool(f["decorative"]),
                     "decorative_reason": f.get("decorative_reason"),
+                    "decorative_signal_reasons": dict(f.get("decorative_signal_reasons") or {}),  # D-054
                     "validation_status": f.get("validation_status"),
                     "name_implies_consequence": bool(f.get("name_implies_consequence")),
                     "position_name": f.get("position_name"),
@@ -92,11 +93,23 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         )  # D-040: a silent tie-break is a claim
         # D-038: the directory's population is the denominator the share needs — on a monorepo
         # one directory can be two thirds of the building, and a share without it is the base rate
-        pop = sum(
-            1
-            for nid in skeleton["strata"]["by_node"]
-            if (nid.rsplit("/", 1)[0] if "/" in nid else "(root)") == top[0]
-        )
+        def _parent_pop(d: str) -> int:
+            return sum(
+                1
+                for nid in skeleton["strata"]["by_node"]
+                if (nid.rsplit("/", 1)[0] if "/" in nid else "(root)") == d
+            )
+
+        pop = _parent_pop(top[0])
+        # D-054 (fifteenth seating): "(tied)" named no partner — on eslint package_entry's cell
+        # named packages/eslint-config-eslint 4 / 5 over lib 4 by name order, and the wing-named
+        # parent the note promises to mark was the one left out. A tie names every partner with
+        # its numbers (D-045 item 3: a directory the register names carries its numbers).
+        tied_with = [
+            {"dir": d, "n": n, "population": _parent_pop(d)}
+            for d, n in sorted(bd.items())
+            if n == top[1] and d != top[0]
+        ]
         # D-040: `dir` is the room's immediate parent (non-recursive), `population` the rooms whose
         # parent it is; `holds_third` is R15's bar — below it the register prints no directory
         e["dominant_dir"] = {
@@ -104,6 +117,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "n": top[1],
             "population": pop,
             "tied": tied,
+            "tied_with": tied_with,
             "holds_third": bool(top[1] * DIRECTORY_SHARE >= len(e["rooms"])),
             # D-041: the size guard is its own field — a cell says the reason that is the reason
             "placeable": len(e["rooms"]) >= DIRECTORY_MIN_ROOMS,
@@ -234,7 +248,15 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "skeleton carries no substrate_config_fingerprint; the brief cannot name its gate (D-036)"
         )
     s = skeleton["summary"]
-    n_packages = len({(n.get("metrics") or {}).get("package", "") for n in nodes.values()})
+    # D-054 (fifteenth seating): D-053 counted package scopes over every substrate node — on eslint
+    # 21 over 1481 nodes where the 473 rooms span 6 (the test files the population excludes carry
+    # the other 15); the three other pages coincided. The count is over the population, and the
+    # rooms per scope travel with it so the pooling the calibration sentence discloses has a size.
+    by_package: dict[str, int] = {}
+    for nid in skeleton["strata"]["by_node"]:
+        scope = ((nodes.get(nid) or {}).get("metrics") or {}).get("package", "") or "(root)"
+        by_package[scope] = by_package.get(scope, 0) + 1
+    n_packages = len(by_package)
     population = s["population"]
     doc = {
         "brief_version": BRIEF_VERSION,
@@ -245,7 +267,8 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         "geometry": skeleton["geometry"]["name"],
         # D-053: what a wing is, and how many package scopes the one population spans
         "wing_depth": int(skeleton["geometry"].get("wing_depth", 1)),
-        "packages": len({(n.get("metrics") or {}).get("package", "") for n in nodes.values()}),
+        "packages": n_packages,
+        "by_package": dict(sorted(by_package.items(), key=lambda kv: (-kv[1], kv[0]))),
         "population": s["population"],
         "wings": dict(sorted(wings.items())),
         "wing_count": len(wings),
@@ -286,13 +309,14 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             "rooms_marked_twice_inert_conjunct": "of those, rooms where two predicates draw one set because a conjunct excludes nothing",
             "rooms_in_both_kinds": "rooms counted under both causes (the two counts overlap by this many)",
             "relation_counts": "relations the register draws, by kind, over every feature with enough rooms, decorative included",
-            "dominant_dir": "the immediate parent directory (non-recursive) holding the most of a feature's rooms; shown only when it holds a third or more",
+            "dominant_dir": "the immediate parent directory (non-recursive) holding the most of a feature's rooms; shown only when it holds a third or more; tied_with names every other directory holding as many",
+            "by_package": "rooms of the population per package.json scope (the nearest manifest above the room; (root) is the repository's own), largest first",
             "feature.count": "rooms (one mark per room)",
         },
         "overlaps": overlaps,
         "calibration": (
             f"in-repo, self-relative (system spec §5.3): every pNN ranks the {population} rooms as one population"
-            + (f", across {n_packages} package scopes (package.json) pooled — per-package calibration is an open question of the mapper (architect-brief spec §5, mapper §7)" if n_packages > 1 else "")
+            + (f", across {n_packages} package scopes (package.json) pooled — per-package calibration is an open question of the mapper (architect-brief spec §5, mapper §7 Q7)" if n_packages > 1 else "")
             + "; one frame — stability is read from a time-lapse, not from this page"
         ),
         "gate_fingerprint": gate_fp,
@@ -1639,8 +1663,11 @@ def most_marked(features) -> list[dict[str, Any]]:
     for r, n in sets.items():
         if n >= 2:
             at_count[n] = at_count.get(n, 0) + 1
+    # D-054 (fifteenth seating): within a tier of equal sets, marks differ only by the double count
+    # the header discounts (a set under two profiles); on eslint's tier of 13 at six sets the marks
+    # key was foundation's two profiles and nothing else. Sets, then path.
     top = [
-        (r, n) for r, n in sorted(marks.items(), key=lambda kv: (-sets[kv[0]], -kv[1], kv[0])) if sets[r] >= 2
+        (r, n) for r, n in sorted(marks.items(), key=lambda kv: (-sets[kv[0]], kv[0])) if sets[r] >= 2
     ][:MOST_MARKED_ROOMS]
     listed: dict[int, int] = {}
     for r, _ in top:
@@ -1793,8 +1820,12 @@ def render_register(facts_doc: dict[str, Any]) -> str:
             dom = f"too few rooms to place ({f['count']})"
         elif dd.get("holds_third"):
             as_parent = " (as parent, not the wing)" if dd["dir"] in facts_doc["wings"] else ""
+            partners = ", ".join(
+                f"{t['dir']}{' (as parent, not the wing)' if t['dir'] in facts_doc['wings'] else ''} {t['n']} / {t['population']}"
+                for t in dd.get("tied_with") or []
+            )
             dom = f"{dd['dir']}{as_parent} {dd['n']} / {dd['population']}" + (
-                " (tied)" if dd.get("tied") else ""
+                (f" (tied with {partners})" if partners else " (tied)") if dd.get("tied") else ""
             )
         else:
             dom = "none holds a third"
@@ -1819,6 +1850,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
             f"| {name} | {f['profile']} | {pos} | {f['count']} | {bw} | {dom} | {relation_cell(f, key)} | {what} |"
         )
     wings = " · ".join(f"{k} {v}" for k, v in facts_doc["wings"].items())
+    scopes = " · ".join(f"{k} {v}" for k, v in (facts_doc.get("by_package") or {}).items())  # D-054
     gate = facts_doc.get("gate") or {}
     asserted = sum(1 for v in gate.values() if v == "asserted")
     # D-050: "none validated" was a literal beside a counted "asserted"; both are read from the gate
@@ -1836,7 +1868,9 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + f"({base} in the base profile), one mark per feature per room; identical pairs of diagnostic features mark {facts_doc.get('rooms_marked_twice', 0)} rooms twice ({facts_doc.get('rooms_marked_twice_shared_predicate', 0)} under one predicate in two profiles, {facts_doc.get('rooms_marked_twice_inert_conjunct', 0)} where two predicates draw one set because a conjunct excludes nothing, {facts_doc.get('rooms_in_both_kinds', 0)} under both); "
         + f"the diagnostic features name {facts_doc.get('distinct_room_sets', '?')} distinct sets of rooms; {facts_doc['decorative']['count']} decorative marks ({dec}); "
         + f"{facts_doc['co_located_rooms']} rooms carry two or more distinct diagnostic sets; gate `{fp}`, {asserted} of {len(gate)} signals asserted, {validated_text}. "
-        + f"A wing is a directory at depth {facts_doc.get('wing_depth', 1)} of the tree (the ruleset's wing_depth), not a package; the population spans {facts_doc.get('packages', 1)} package scope{'s' if facts_doc.get('packages', 1) != 1 else ''}. "
+        + f"A wing is a directory at depth {facts_doc.get('wing_depth', 1)} of the tree (the ruleset's wing_depth), not a package; the population spans {facts_doc.get('packages', 1)} package scope{'s' if facts_doc.get('packages', 1) != 1 else ''}"
+        + (f" (rooms per scope, largest first: {scopes})" if facts_doc.get("by_package") else "")
+        + ". "
         + "◌ marks a decorative feature: excluded from the diagnosis. A position names where a room sits in the record its predicate reads — the record is named beside each position — and is not a claim about its condition (D-004 Q3). "
         + f"The directory column is the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent. "
         + f"The relation column draws identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap. The most-marked rooms and the rooms each pair of diagnostic features shares follow the table.*"
@@ -1869,9 +1903,9 @@ def render_most_marked(facts_doc: dict[str, Any]) -> str:
     most = top[0].get("sets", top[0]["marks"])
     at = facts_doc.get("rooms_at_most_sets", top[0].get("rooms_at_this_count", len(top)))
     lead = (
-        f"*Rooms under two or more distinct diagnostic sets, ordered by sets (a feature under two profiles, or two features drawing one set, is one set), then by marks (one per feature per profile), then by path; at most {MOST_MARKED_ROOMS} are listed. "
+        f"*Rooms under two or more distinct diagnostic sets, ordered by sets (a feature under two profiles, or two features drawing one set, is one set), then by path — marks (one per feature per profile) are shown and order nothing, since within a tier they differ only by the double count the register discounts; at most {MOST_MARKED_ROOMS} are listed. "
         f"{at} room{'s' if at != 1 else ''} carr{'y' if at != 1 else 'ies'} the most ({most}). "
-        "The listed column is rows listed of rooms at the row's sets count; where fewer are listed than carry the count, the listed are the first by marks, then by path.*"
+        "The listed column is rows listed of rooms at the row's sets count; where fewer are listed than carry the count, the listed are the first by path.*"
     )
     body = NL.join(
         f"| {m['room']} | {m.get('sets', m['marks'])} | {m['marks']} | {m.get('listed_at_this_count', '')} of {m.get('rooms_at_this_count', '')} | {', '.join(m['features'])} |"
@@ -1922,9 +1956,20 @@ def render_disclosure(facts_doc: dict[str, Any]) -> str:
     names = " and ".join(
         f"{f['feature']}" + (f" — {f['position_name']} —" if f.get("position_name") else "") for f in dec
     )
+    # D-054: the signal's reason is on the signal and is said here once, the same words every row
+    # that reads the signal carries — the tuning fact was on the 1-room row and not the 48-room one
+    reasons: dict[str, str] = {}
+    for f in dec:
+        reasons.update(f.get("decorative_signal_reasons") or {})
+    if len(sigs) == 1 and sigs[0] in reasons:
+        which = f"which is {reasons[sigs[0]].rstrip('.')}."
+    elif any(sg in reasons for sg in sigs):
+        which = "which are unvalidated: " + "; ".join(f"{sg} is {reasons[sg].rstrip('.')}" for sg in sigs if sg in reasons) + "."
+    else:
+        which = "which is unvalidated."
     return (
         f"{n} decorative mark{'s' if n != 1 else ''} render but are not a diagnosis: {names} rest on "
-        f"{', '.join(sigs) or 'nothing confirmed'}, which is unvalidated."
+        f"{', '.join(sigs) or 'nothing confirmed'}, {which}"
     )
 
 
