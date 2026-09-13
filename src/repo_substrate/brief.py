@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.27.0"  # D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
+BRIEF_VERSION = "0.28.0"  # D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -90,6 +90,14 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         # the number; the count is a field beside it)
         if e.get("caveat_case"):
             e["caveat_case_count"] = sum(1 for r in e["rooms"] if _case_holds(e["caveat_case"], (nodes.get(r) or {}).get("metrics") or {}))
+        # D-062 (the typeorm control): where a general mechanism dominates this repository's instance, the
+        # page counts it — all 70 dark rooms sat at the p90 cutoff (one mass commit), and every one of
+        # src/index.ts's 1374 importers was a test file, while the page said "ties" and "one edge set"
+        e["at_cutoff"] = _rooms_at_cutoff(e, nodes)
+        if nodes and _signals_read(e["predicate"]) & {"fan_in", "centrality"}:
+            fi = sum(int(((nodes.get(r) or {}).get("metrics") or {}).get("fan_in", 0) or 0) for r in e["rooms"])
+            tf = sum(int(((nodes.get(r) or {}).get("metrics") or {}).get("test_fan_in", 0) or 0) for r in e["rooms"])
+            e["importers"] = {"total": fi, "from_tests": tf}
         # D-036: the share of a mark per wing is on the sheet, so the prose can state a count
         # per wing instead of an adverb ("mostly", "concentrated") the sheet cannot carry
         bw: dict[str, int] = {}
@@ -276,6 +284,12 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         # the mapper's population rule (engine.map_skeleton): not a test file, and with computed indices
         "unindexed_nodes": sum(1 for n in nodes.values() if not (n.get("metrics") or {}).get("is_test") and (n.get("derived") or {}).get("indices") is None) if nodes else None,
         "unresolved_imports": ((substrate or {}).get("summary") or {}).get("unresolved_imports"),
+        # D-062: edges whose ends sit in different package scopes — typeorm's packages/ trees share one edge with the core
+        "cross_scope_edges": (
+            sum(1 for ed in (substrate or {}).get("edges") or [] if ((nodes.get(ed.get("from")) or {}).get("metrics") or {}).get("package", "") != ((nodes.get(ed.get("to")) or {}).get("metrics") or {}).get("package", ""))
+            if nodes and (substrate or {}).get("edges") is not None else None
+        ),
+        "edge_count": len((substrate or {}).get("edges") or []) if substrate else None,
         "external_imports": ((substrate or {}).get("summary") or {}).get("external_imports"),
         "skeleton_hash": skeleton["skeleton_hash"],
         "profile": skeleton["profile"]["name"],
@@ -340,9 +354,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         },
         "overlaps": overlaps,
         "calibration": (
-            f"in-repo, self-relative (system spec §5.3): every pNN ranks the {population} rooms as one population"
-            + (f", across {n_packages} package scopes (package.json) pooled — per-package calibration is an open question of the mapper (architect-brief spec §5, mapper §7 Q7)" if n_packages > 1 else "")
-            + "; one frame — stability is read from a time-lapse, not from this page"
+            f"in-repo, self-relative (system spec §5.3)"
+            + (f", {n_packages} package scopes pooled — per-package calibration is an open question of the mapper (architect-brief spec §5, mapper §7 Q7)" if n_packages > 1 else "")
+            + "; one frame"
         ),
         "gate_fingerprint": gate_fp,
         "features": [feats[k] for k in sorted(feats)],
@@ -1738,7 +1752,29 @@ def _case_holds(case: str, metrics: dict[str, Any]) -> bool:
     return True
 
 
-def _share_by_construction(predicate: str, count: int | None = None, population: int | None = None, thresholds: dict[str, Any] | None = None) -> str:
+def _rooms_at_cutoff(e: dict[str, Any], nodes: dict[str, Any]) -> int | None:
+    """D-062: how many of a single-pNN feature's rooms sit exactly at the cutoff the population resolved to."""
+    from .mapper.ruleset import parse_predicate
+
+    terms = parse_predicate(str(e.get("predicate") or ""))
+    if len(terms) != 1 or terms[0].percentile is None or not nodes:
+        return None
+    cut = (e.get("thresholds") or {}).get(str(e["predicate"]).strip())
+    if not isinstance(cut, (int, float)):
+        return None
+    sig = terms[0].signal
+    n = 0
+    for r in e["rooms"]:
+        node = nodes.get(r) or {}
+        v = (node.get("metrics") or {}).get(sig)
+        if v is None:
+            v = ((node.get("derived") or {}).get("indices") or {}).get(sig)
+        if isinstance(v, (int, float)) and abs(float(v) - float(cut)) < 1e-9:
+            n += 1
+    return n
+
+
+def _share_by_construction(predicate: str, count: int | None = None, population: int | None = None, thresholds: dict[str, Any] | None = None, at_cutoff: int | None = None) -> str:
     """D-060 said a single-pNN row is "the top 10% … by construction"; D-061 (the eslint control):
     beside dark_room 83 of 473 — 80 rooms tie at the p90 cutoff. The rank fixes which rooms, not
     how many; the row states the share it realized and the cutoff this population resolved to."""
@@ -1757,8 +1793,14 @@ def _share_by_construction(predicate: str, count: int | None = None, population:
     if count is None or not population:
         return f" — rooms {side} this repository's p{t.percentile} on {t.signal} (here {cut_text})"
     share = 100.0 * count / population
-    nominal = (100 - t.percentile) if side == "at or above" else t.percentile
-    tie = "; ties at the cutoff carry the row past a tenth" if share > nominal + 2 and nominal == 10 else (f"; ties at the cutoff carry the row past {nominal}%" if share > nominal + 2 else "")
+    # D-062: the tie is counted, not described — "ties carry the row past a tenth" read as a few
+    # tied rooms on a row where all 70 sat at the cutoff
+    if at_cutoff is None or at_cutoff <= 1:
+        tie = ""
+    elif at_cutoff == count:
+        tie = f"; all {count} at the cutoff value"
+    else:
+        tie = f"; {at_cutoff} at the cutoff value"
     return f" — rooms {side} this repository's p{t.percentile} on {t.signal} (here {cut_text}): {count} of {population}, {share:.1f}%{tie}"
 
 
@@ -1892,7 +1934,8 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         if "shared_signals" not in ov:
             return ""
         sh = ov["shared_signals"]
-        return (f"reads {', '.join(sh)} with it; " if sh else "no signal in common; ")
+        # D-062: the cell carries its own correction — "no signal in common" read as independence 400 words from the note
+        return (f"reads {', '.join(sh)} with it; " if sh else "no raw signal in common, one edge set read twice; ")
 
     def relations(key: str) -> str:
         out = []
@@ -1939,7 +1982,8 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         return relations(key)
 
     rows = []
-    for f in facts_doc["features"]:
+    # D-062 (the third skimmer): roster order put ◌ crack in the first row, the point of maximum attention; excluded rows render last
+    for f in sorted(facts_doc["features"], key=lambda x: (bool(x["decorative"]),)):
         key = f"{f['profile']}/{f['feature']}"
         bw = ", ".join(f"{k} {v}" for k, v in f.get("by_wing", {}).items()) or "no wing (0)"  # D-057: a zero row says so
         dd = f.get("dominant_dir") or {}
@@ -1964,9 +2008,13 @@ def render_register(facts_doc: dict[str, Any]) -> str:
             # D-055: the predicate is on the row — "the fragility half" of a reason was unresolvable
             # from a row that printed the reason and not the conjunction it is half of.
             # D-060: "decorative" read as cosmetic by the skimmer; the row says what the mark is
-            what = f"`{f['predicate']}`" + _share_by_construction(f["predicate"], f["count"], facts_doc["population"], f.get("thresholds")) + f" — ◌ excluded from the diagnosis: {f.get('decorative_reason') or ''}".rstrip()
+            what = f"`{f['predicate']}`" + _share_by_construction(f["predicate"], f["count"], facts_doc["population"], f.get("thresholds"), f.get("at_cutoff")) + f" — ◌ excluded from the diagnosis: {f.get('decorative_reason') or ''}".rstrip()
         else:
-            what = f"`{f['predicate']}`" + _share_by_construction(f["predicate"], f["count"], facts_doc["population"], f.get("thresholds"))
+            what = f"`{f['predicate']}`" + _share_by_construction(f["predicate"], f["count"], facts_doc["population"], f.get("thresholds"), f.get("at_cutoff"))
+        if f.get("importers") and f["importers"]["total"]:
+            # D-062: the import-graph positions are read from a graph that holds the test files; the row says how much of its importing is theirs
+            imp = f["importers"]
+            what += f" — importers of these rooms: {imp['total']}, {imp['from_tests']} ({100.0 * imp['from_tests'] / imp['total']:.0f}%) from test files"
         if f.get("caveat"):
             what += f" — caveat: {f['caveat']}"
             if f.get("caveat_case_count") is not None:
@@ -2016,19 +2064,29 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + "**"
         + NL
         + NL
-        + f"*Rendered from the facts sheet by code (brief {facts_doc.get('brief_version', BRIEF_VERSION)}); every cell is a field, a count, or a fixed text over them; no cell is written. "
-        + f"{facts_doc['population']} rooms in {facts_doc['wing_count']} wings ({wings}); {facts_doc['diagnostic_count']} diagnostic marks across all profiles "
+        # D-062 (Rams): the note is a legend — one line per column or marker, the counts first — and no
+        # longer repeats what the header, the cells or the column headers already say. D-043's rule
+        # (a note sentence per renderer rule) generated one repetition per seating; the skimmer skipped
+        # the paragraph whole (D-060, D-061). What remains defines what has no cell of its own.
+        + f"*{facts_doc['population']} rooms in {facts_doc['wing_count']} wings ({wings}); {facts_doc['diagnostic_count']} diagnostic marks across all profiles "
         + f"({base} in the base profile), one mark per feature per room; identical pairs of diagnostic features mark {facts_doc.get('rooms_marked_twice', 0)} rooms twice ({facts_doc.get('rooms_marked_twice_shared_predicate', 0)} under one predicate in two profiles, {facts_doc.get('rooms_marked_twice_inert_conjunct', 0)} where two predicates draw one set because a conjunct excludes nothing, {facts_doc.get('rooms_in_both_kinds', 0)} under both); "
         + f"the diagnostic features name {facts_doc.get('distinct_room_sets', '?')} distinct sets of rooms; {facts_doc['decorative']['count']} excluded marks ◌ ({dec}); "
-        + f"{facts_doc['co_located_rooms']} rooms carry two or more distinct diagnostic sets; gate `{fp}`, {asserted} of {len(gate)} signals asserted, {validated_text} — asserted is a description that held under the stability budget and the corroboration its grounding class requires (validation spec §2.4), validated a forecast confirmed by a temporal holdout (validation spec §3). "
-        + f"A wing is a directory at depth {facts_doc.get('wing_depth', 1)} of the tree (the ruleset's wing_depth), not a package; the population spans {facts_doc.get('packages', 1)} package scope{'s' if facts_doc.get('packages', 1) != 1 else ''}"
-        + (f" (rooms per scope, largest first, each scope named by the manifest that holds it: {scopes})" if facts_doc.get("by_package") else "")
-        + ". "
-        + "◌ marks an excluded feature (the ruleset's word is decorative): computed and counted, excluded from the diagnosis because a signal it reads is unvalidated. The record a position is read from is named beside it. "
-        + f"The directory column is the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent. "
-        + f"The relation column draws identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms — and a containment the predicates guarantee at any count; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A containment says 'by its predicate' when the inner predicate conjoins every term of the outer; otherwise it says which raw signals the two predicates read in common, a blend or index expanded through its declared inputs, or 'no signal in common' — a signal, not an instrument: the import graph and the test graph are one edge set read twice, a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone. "
-        + (f"The import graph is resolved statically: {facts_doc['unresolved_imports']} imports in the tree did not resolve to a file and {facts_doc['external_imports']} are external packages; an import computed at run time is not an edge, so a room loaded only that way reads as unimported. " if facts_doc.get("unresolved_imports") is not None else "")
-        + "A feature that fired on no room keeps its row at 0. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap. The rooms at the most positions and the rooms each pair of diagnostic features shares follow the table.*"
+        + f"{facts_doc['co_located_rooms']} rooms carry two or more distinct diagnostic sets; gate `{fp}`, {asserted} of {len(gate)} signals asserted, {validated_text} — asserted is a description that held under the stability budget and the corroboration its grounding class requires (validation spec §2.4), validated a forecast confirmed by a temporal holdout (validation spec §3).*"
+        + NL + NL
+        + f"- **wing** — a directory at depth {facts_doc.get('wing_depth', 1)} of the tree (the ruleset's wing_depth), not a package"
+        + (
+            f"; the population spans {facts_doc.get('packages', 1)} package scopes, pooled (rooms per scope, largest first, each scope named by the manifest that holds it: {scopes})"
+            + (f"; {facts_doc['cross_scope_edges']} of {facts_doc['edge_count']} imports cross a package scope" if facts_doc.get("cross_scope_edges") is not None else "")
+            if (facts_doc.get("packages") or 1) > 1 else "; the population is one package scope (package.json)"
+        )
+        + "." + NL
+        + "- **◌** — an excluded feature (the ruleset's word is decorative): computed and counted, excluded from the diagnosis because a signal it reads is unvalidated." + NL
+        + f"- **largest parent directory** — the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent." + NL
+        + f"- **relation to** — identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms — and a containment the predicates guarantee at any count; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. 'By its predicate': the inner predicate conjoins every term of the outer. Otherwise the cell says which raw signals the two predicates read in common (a blend or index expanded through its declared inputs), or 'no raw signal in common' — a signal, not an instrument." + NL
+        + "- **the import graph and the test graph** — one edge set read twice: a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone; an import-graph row says how many of its rooms' importers are test files."
+        + (f" The graph is resolved statically: {facts_doc['unresolved_imports']} imports in the tree did not resolve to a file and {facts_doc['external_imports']} are external packages; an import computed at run time is not an edge, so a room loaded only that way reads as unimported." if facts_doc.get("unresolved_imports") is not None else "")
+        + NL
+        + "- **caveat** — the ruleset's own limit on what a predicate reads, never a claim about this repository; the count beside it ('this case: N of M here') is this repository's."
         + NL
         + NL
         + "| position (the record it reads) | feature | profile | rooms | by wing | largest parent directory n / rooms in it | relation to | predicate; caveat or reason |"
@@ -2064,6 +2122,8 @@ def top_tier(features, room_metrics: dict[str, dict[str, Any]]) -> dict[str, Any
             {
                 "room": r,
                 "lines": (room_metrics.get(r) or {}).get("size_loc", (room_metrics.get(r) or {}).get("lines")),
+                "fan_in": (room_metrics.get(r) or {}).get("fan_in"),
+                "test_fan_in": (room_metrics.get(r) or {}).get("test_fan_in"),
                 "features": sorted((f"{e['profile']}/{e['feature']}" if e["feature"] in twice else e["feature"]) for e in feats if r in set(e["rooms"])),
             }
             for r in rooms
@@ -2101,16 +2161,22 @@ def render_most_marked(facts_doc: dict[str, Any]) -> str:
         f"*Every room under the most distinct diagnostic sets ({most}), by path — {len(rooms)} room{'s' if len(rooms) != 1 else ''}{more}. "
         "A set is a distinct set of rooms a diagnostic feature draws (a feature under two profiles, or two features drawing one set, is one set). "
         + (f"Rooms at fewer positions are not listed; {co} rooms carry two or more distinct sets. " if co is not None else "")
-        + "Size is the room's line count.*"
+        + "Size is the room's line count; importers is the room's fan_in, with the test files among them in parentheses.*"
     )
-    body = NL.join(f"| {m['room']} | {m.get('lines') if m.get('lines') is not None else '—'} | {most} | {', '.join(m['features'])} |" for m in shown)
+    def _imp(m: dict[str, Any]) -> str:
+        if m.get("fan_in") is None:
+            return "—"
+        return f"{m['fan_in']} ({m.get('test_fan_in', 0)})"
+
+    body = NL.join(f"| {m['room']} | {m.get('lines') if m.get('lines') is not None else '—'} | {_imp(m)} | {', '.join(m['features'])} |" for m in shown)
     return (
         NL + f"### Rooms at the most positions ({most})" + NL + NL
         # D-060: the skimmer read a capped, count-ordered list as a leaderboard; D-061: the caption
         # over it was read and bounced, so the table is the whole top tier by path — a set, with size
         + "**Every room at the most positions, in path order — a set, not a ranking and not a severity (D-004 Q3).**" + NL + NL
         + lead + NL + NL
-        + "| room | lines | positions (distinct sets) | diagnostic features that mark it |" + NL + "|---|---|---|---|" + NL + body + NL
+        # D-062 (Rams): the positions column was a constant already in the heading; (the typeorm control): importers, and how many are tests
+        + "| room | lines | importers (from test files) | diagnostic features that mark it |" + NL + "|---|---|---|---|" + NL + body + NL
     )
 
 
@@ -2142,14 +2208,21 @@ def render_shared(facts_doc: dict[str, Any]) -> str:
     """D-049: rooms each pair of diagnostic features shares, as a matrix; the diagonal is the
     feature's own count. Identity and containment are the relation column's; this is the rest."""
     pairs = facts_doc.get("shared_rooms") or []
-    keys = sorted({k for sr in pairs for k in (sr["a"], sr["b"])})
-    if not keys:
+    all_keys = sorted({k for sr in pairs for k in (sr["a"], sr["b"])})
+    if not all_keys:
         return ""
     counts = {f"{f['profile']}/{f['feature']}": f["count"] for f in facts_doc["features"]}
     cell = {(sr["a"], sr["b"]): sr["shared"] for sr in pairs}
     cell.update({(b, a): n for (a, b), n in list(cell.items())})
-    _label = qualified_labels(keys)
-    labels = [_label[k] for k in keys]
+    _label = qualified_labels(all_keys)
+    # D-062 (Rams): two features drawing one set were two identical rows and columns — one measurement
+    # shown as two agreeing (the reading R13 forbade in prose); they share one row, named with both names
+    room_sets = {f"{f['profile']}/{f['feature']}": frozenset(f["rooms"]) for f in facts_doc["features"]}
+    groups: dict[frozenset, list[str]] = {}
+    for k in all_keys:
+        groups.setdefault(room_sets.get(k) or frozenset([k]), []).append(k)  # an empty set is its own row
+    keys = [ks[0] for ks in groups.values()]
+    labels = [" = ".join(_label[k] for k in groups[room_sets.get(k) or frozenset([k])]) for k in keys]
     head = "| shared rooms | " + " | ".join(labels) + " |" + NL + "|---|" + "---|" * len(keys) + NL
     rows = NL.join(
         f"| {labels[i]} | "
@@ -2161,7 +2234,7 @@ def render_shared(facts_doc: dict[str, Any]) -> str:
     )
     return (
         NL + "### Shared rooms" + NL + NL
-        + "*Rooms both features mark, for every pair of diagnostic features (a feature under two profiles is two rows); the diagonal is the feature's own count. A shared count equal to the smaller of the two features' own counts is containment, and equal to both is identity; the relation column above draws those, and only between features with " + str(RELATION_MIN_ROOMS) + " or more rooms or where the predicates guarantee the containment — any other pair under that floor is read here and not there.*"
+        + "*Rooms both features mark, for every pair of diagnostic features (features drawing one set of rooms share one row, named with each name); the diagonal is the feature's own count. A shared count equal to the smaller of the two features' own counts is containment, and equal to both is identity; the relation column above draws those, and only between features with " + str(RELATION_MIN_ROOMS) + " or more rooms or where the predicates guarantee the containment — any other pair under that floor is read here and not there.*"
         + NL + NL + head + rows + NL
     )
 
@@ -2177,28 +2250,15 @@ def render_disclosure(facts_doc: dict[str, Any]) -> str:
     names = " and ".join(
         f"{f['feature']}" + (f" — {f['position_name']} —" if f.get("position_name") else "") for f in dec
     )
-    # D-054: the signal's reason is on the signal and is said here once, the same words every row
-    # that reads the signal carries — the tuning fact was on the 1-room row and not the 48-room one
-    reasons: dict[str, str] = {}
-    for f in dec:
-        reasons.update(f.get("decorative_signal_reasons") or {})
-    if len(sigs) == 1 and sigs[0] in reasons:
-        which = f"which is {reasons[sigs[0]].rstrip('.')}."
-    elif any(sg in reasons for sg in sigs):
-        which = "which are unvalidated: " + "; ".join(f"{sg} is {reasons[sg].rstrip('.')}" for sg in sigs if sg in reasons) + "."
-    else:
-        which = "which is unvalidated."
-    fired = [f for f in dec if f["count"] > 0]
-    unfired = [f for f in dec if f["count"] == 0]
-    names = " and ".join(
-        f"{f['feature']}" + (f" — {f['position_name']} —" if f.get("position_name") else "") for f in fired
-    ) or "no feature"
-    tail = (
-        f" {' and '.join(f['feature'] for f in unfired)} fired on no room." if unfired else ""
-    )
+    # D-054 said the signal's reason once here; D-062 (Rams): that was its third copy — every ◌ row
+    # carries it — and the section repeated three cells. One line: the names with counts, what ◌
+    # means, which signal, and where the reason is. The heading stays as the ◌ legend the skimmer
+    # (D-060) looked for below the table.
+    listed = " · ".join(f"◌ {f['feature']} {f['count']}" for f in dec)
+    where = f"the signal {'they read' if len(dec) != 1 else 'it reads'} ({', '.join(sigs)}) is unvalidated" if sigs else "a signal is unvalidated"
     return (
-        f"{n} excluded mark{'s' if n != 1 else ''} (◌) render but are not a diagnosis: {names} rest{'s' if len(fired) == 1 else ''} on "
-        f"{', '.join(sigs) or 'nothing confirmed'}, {which}{tail}"
+        f"{listed} — {n} mark{'s' if n != 1 else ''} computed and counted, excluded from the diagnosis: {where}; "
+        "each row carries the reason."
     )
 
 
@@ -2224,7 +2284,7 @@ def render_brief(
         + (f" + {', '.join(o + _ver(facts_doc, o) for o in facts_doc['overlays'])}" if facts_doc["overlays"] else "")
         + f", geometry {facts_doc['geometry']}, skeleton `{facts_doc['skeleton_hash'][:12]}…`, facts `{facts_doc['facts_hash'][:12]}…`. "
         + (f"As of {str(facts_doc['as_of'])[:10]}, commit `{facts_doc['repo']['head_sha'][:12]}`. " if facts_doc.get("as_of") else f"Commit `{facts_doc['repo']['head_sha'][:12]}`. ")  # D-060: the clock's now
-        + f"Calibration: {facts_doc.get('calibration', 'in-repo, self-relative')} — the time-lapse for this skeleton is a `substrate timelapse` run under gate `{fp}`; this page carries no stability value. "
+        + f"Calibration: {facts_doc.get('calibration', 'in-repo, self-relative')} — stability is the `substrate timelapse` run under gate `{fp}`, not this page. "
         f"Brief {facts_doc.get('brief_version', BRIEF_VERSION)}."
     )
     if draft:
@@ -2245,7 +2305,7 @@ def render_brief(
     else:
         head = (
             f"# {facts_doc['repo']['name']} — architect's brief\n\n"
-            f"*Rendered from the facts sheet by code; no model wrote any of it. The model-written reading was cut at D-049 after eleven hostile seatings found it reciting the register and everything it could add was a field. "
+            f"*Rendered from the facts sheet by code; no model wrote any of it. "
             f"Every cell is a field, and every fixed text on the page has a test that asserts it against the sheet it is rendered from (`tests/test_brief.py`); the tests run on a fixture, not on this page. "
             + where
             + "*\n\n"

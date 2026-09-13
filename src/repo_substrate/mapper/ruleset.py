@@ -40,7 +40,7 @@ _SPLIT = re.compile(r"\s+(?:and|∧)\s+")
 # D-050: the phrases a position name wears for a pNN in its predicate — one phrase per quantile
 # term; "long-untouched" wears last_touched_days >= p90, "at or above the median" wears p50,
 # "at or above the upper quartile" wears p75, "high" wears p75 or above (D-048)
-QUANTILE_PHRASES = r"\b(?:upper quartile|lower quartile|upper decile|lower decile|high|long|median|top|most|percentile)\b"
+QUANTILE_PHRASES = r"\b(?:upper quartile|lower quartile|upper decile|lower decile|high|long|recently|median|top|most|percentile)\b"  # D-062: "recently" wears p10 on the clock as "long" wears p90
 
 POSITION_RECORD_WORDS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("imported", ("fan_in", "fan_in_nonzero", "is_package_entry", "test_fan_in", "reinforcement_index")),

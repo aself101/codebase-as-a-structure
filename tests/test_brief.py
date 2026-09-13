@@ -1371,9 +1371,9 @@ def test_the_page_is_rendered_by_code_and_its_fixed_texts_match_their_fields(sub
     dis = render_disclosure(f)
     dec = [x for x in f["features"] if x["decorative"]]
     if dec:
-        assert str(f["decorative"]["count"]) in dis and "not a diagnosis" in dis
+        assert str(f["decorative"]["count"]) in dis and "excluded from the diagnosis" in dis  # D-062: one line
         for x in dec:
-            assert x["feature"] in dis and (not x["count"] or not x.get("position_name") or x["position_name"] in dis)  # D-057: an unfired feature is named, not positioned
+            assert f"◌ {x['feature']} {x['count']}" in dis  # D-062: one line — each ◌ feature with its count; the position and reason are on the row
             for sig in re.findall(r"[a-z_]+_index", x.get("decorative_reason") or ""):
                 assert sig in dis
     else:
@@ -1594,16 +1594,16 @@ def test_a_partly_listed_tier_is_the_first_by_marks_then_path_and_a_blend_names_
     f = facts(_skeleton(sub), sub)
     assert f["wing_depth"] >= 1 and f["packages"] >= 1
     reg = _b.render_register(f)
-    assert f"A wing is a directory at depth {f['wing_depth']} of the tree" in reg
-    assert f"spans {f['packages']} package scope" in reg
-    assert f"ranks the {f['population']} rooms as one population" in f["calibration"]
+    assert f"**wing** — a directory at depth {f['wing_depth']} of the tree" in reg  # D-062: the note is a legend
+    assert (f"spans {f['packages']} package scopes" in reg) == (f["packages"] > 1) and ("one package scope" in reg) == (f["packages"] == 1)
+    assert f"ranks this repository's own {f['population']} rooms" in reg  # D-062: the pNN fact lives in the bold rule, not the calibration string
     for ov in f["overlaps"]:
         if ov["relation"] == "within":
             assert "by_predicate" in ov
             if ov["by_predicate"]:
                 cell = "by its predicate; "
             else:  # D-056: the complement is defined — the signals in common, or none
-                cell = f"reads {', '.join(ov['shared_signals'])} with it; " if ov["shared_signals"] else "no signal in common; "
+                cell = f"reads {', '.join(ov['shared_signals'])} with it; " if ov["shared_signals"] else "no raw signal in common, one edge set read twice; "
             assert f"({cell}{ov['n_outside']} " in reg  # D-055: no fallback admitted (the sixteenth seating quoted the `or`)
     # the flooded_basement caveat reaches the page
     for x in f["features"]:
@@ -1646,9 +1646,9 @@ def test_a_tier_orders_by_path_and_the_scope_count_is_over_the_population(sub, t
     assert isinstance(f["by_package"], list)  # D-056: an ordered list survives the sheet's sorted keys
     reg = _b.render_register(f)
     scopes = " · ".join(f"{e['scope']} {e['rooms']}" for e in f["by_package"])
-    assert f"spans {f['packages']} package scopes (rooms per scope, largest first, each scope named by the manifest that holds it: {scopes})." in reg
+    assert f"spans {f['packages']} package scopes, pooled (rooms per scope, largest first, each scope named by the manifest that holds it: {scopes})" in reg  # D-062: in the wing legend line
     assert "pkg/a/package.json" in scopes and _b.ROOT_SCOPE == "package.json"
-    assert "tests/only" not in reg and f"across {f['packages']} package scopes" in f["calibration"]
+    assert "tests/only" not in reg and f"{f['packages']} package scopes pooled" in f["calibration"]  # D-062: the header keeps the pointer; the bold rule carries the pNN fact
     # (2) a tie names every partner with its numbers; the wing-named partner is marked as the parent
     sk2 = json.loads(json.dumps(sk))
     tmpl = next(x for x in sk2["features"] if x["diagnostic"] and not x["decorative"])
@@ -1689,8 +1689,8 @@ def test_a_tier_orders_by_path_and_the_scope_count_is_over_the_population(sub, t
     rows = [line for line in page.splitlines() if line.startswith("| ") and "| ◌ " in line]
     assert rows and any("| ◌ crack |" in r for r in rows)  # crack fires on the fixture
     assert all("zero to fix history" in r for r in rows)
-    assert page.count("zero to fix history") == len(rows) + 1  # every decorative row, and the disclosure once
-    assert re.search(r"rests? on bug_pressure_index, which is unvalidated on the pre-registered test set \(D-015\): its tuned weights assign zero to fix history", page)
+    assert page.count("zero to fix history") == len(rows)  # every decorative row; D-062: the section no longer repeats it
+    assert "excluded from the diagnosis: the signal they read (bug_pressure_index) is unvalidated; each row carries the reason." in page  # D-062: the section is one line; the reason is on the rows
     # the loader: a signal with a reason is read by decorative features only; no orphan reasons
     def _rs(body):
         p = tmp_path / "rs.toml"
@@ -1803,7 +1803,7 @@ def test_a_containment_not_by_predicate_says_the_signal_in_common_and_a_scope_is
     row_hot = _row(reg, "hot", decorative=True)
     assert "⊂ fresh (reads last_touched_days with it; 2 fresh rooms outside this set)" in row_hot
     row_narrow = _row(reg, "narrow")
-    assert "⊂ maintainability/wide = onboarding/wide (no signal in common; 3 " in row_narrow and row_narrow.count("wide") == 3  # two names, one entry, one outside count
+    assert "⊂ maintainability/wide = onboarding/wide (no raw signal in common, one edge set read twice; 3 " in row_narrow and row_narrow.count("wide") == 3  # D-062: the cell carries its correction  # two names, one entry, one outside count
     # (4) the decorative name carries ◌ where a diagnostic row names it
     row_fresh = _row(reg, "fresh")
     assert "⊃ ◌ hot (reads last_touched_days with it; 2 of these rooms outside it)" in row_fresh
@@ -1842,18 +1842,18 @@ def test_a_feature_that_fired_on_nothing_keeps_its_row_and_the_marker_is_defined
     for x in zero:
         row = _row(reg, x["feature"], decorative=x["decorative"], profile=x["profile"])
         assert "| 0 | no wing (0) | no rooms | no rooms to relate (0) |" in row and f"`{x['predicate']}`" in row
-    assert "A feature that fired on no room keeps its row at 0." in reg
+    assert "keeps its row at 0" not in reg  # D-062 (Rams): the row says it; the sentence was a repetition
     dec0 = [x for x in zero if x["decorative"]]
     if dec0:
         dis = _b.render_disclosure(f)
-        assert all(f"{x['feature']} fired on no room." in dis for x in dec0)
+        assert all(f"◌ {x['feature']} 0" in dis for x in dec0)  # D-062: the zero is in the one-line legend
         assert f"{dec0[0]['feature']} 0" in reg  # the header's decorative list carries the count
     # (2) the marker's values are defined on the page; the grounding expansion
-    assert "otherwise it says which raw signals the two predicates read in common, a blend or index expanded through its declared inputs, or 'no signal in common'" in reg
+    assert "Otherwise the cell says which raw signals the two predicates read in common (a blend or index expanded through its declared inputs), or 'no raw signal in common' — a signal, not an instrument." in reg
     assert _b._signals_read("reinforcement_index >= 0.5") == {"test_fan_in"}
     assert _b._signals_read("centrality >= p90 and fan_out >= p50") & _b._signals_read("reinforcement_index >= 0.5") == set()
     # (3) one edge set: the fixed text, and the invariant it states, on the substrate
-    assert "the import graph and the test graph are one edge set read twice, a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone" in reg
+    assert "one edge set read twice: a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone" in reg
     for n in sub["nodes"]:
         m = n["metrics"]
         assert m.get("fan_in", 0) >= m.get("test_fan_in", 0), n["id"]
@@ -1892,7 +1892,7 @@ def test_the_defence_sits_in_the_cell_it_defends_and_the_page_carries_its_snapsh
     reg = _b.render_register(f)
     page = run_brief(sk, sub)["markdown"]
     # the rule first, bold, before the italic note; the position is the first column
-    note_start = reg.index("*Rendered from the facts sheet")
+    note_start = reg.index(f"*{f['population']} rooms in ")  # D-062: the note opens on the counts
     rule = reg.index("**A position names where a room sits in a record")
     assert rule < note_start and f"ranks this repository's own {f['population']} rooms" in reg[rule:note_start]
     header = next(line for line in reg.splitlines() if line.startswith("| position"))
@@ -1902,19 +1902,20 @@ def test_the_defence_sits_in_the_cell_it_defends_and_the_page_carries_its_snapsh
     if f["most_marked_rooms"]:  # the small fixture has no tier; the caption is tested on a synthetic one below
         assert "**A count of the positions a room sits at; the order is the count, then the path — not a ranking and not a severity (D-004 Q3).**" in reg
     # ◌ = excluded, on the row, in the note and in the section
-    assert "◌ marks an excluded feature (the ruleset's word is decorative)" in reg and "## Excluded marks (◌)" in page
+    assert "**◌** — an excluded feature (the ruleset's word is decorative)" in reg and "## Excluded marks (◌)" in page
     for x in f["features"]:
         if x["decorative"] and x["count"]:
             assert "— ◌ excluded from the diagnosis:" in _row(reg, x["feature"], decorative=True)
     # the snapshot and the tier names, in the header
     assert f["as_of"] == sub["repo"]["as_of"] and f"As of {str(f['as_of'])[:10]}, commit `{f['repo']['head_sha'][:12]}`." in page
     assert "asserted is a description that held under the stability budget and the corroboration its grounding class requires (validation spec §2.4), validated a forecast confirmed by a temporal holdout (validation spec §3)" in reg  # D-061: the gloss no longer claims a cross-modal check
-    assert "this page carries no stability value" in page
+    assert "stability is the `substrate timelapse` run under gate" in page and "not this page" in page  # D-062: said once
     # a single-pNN row states its share by construction; a conjunction does not
     # D-061: the sentence states the realized share and the cutoff, not "10% by construction" (eslint: 83 of 473, 80 tied at the cutoff)
-    assert _b._share_by_construction("last_touched_days >= p90", 83, 473, {"last_touched_days >= p90": 533.966}) == " — rooms at or above this repository's p90 on last_touched_days (here 533.966 days): 83 of 473, 17.5%; ties at the cutoff carry the row past a tenth"
+    assert _b._share_by_construction("last_touched_days >= p90", 83, 473, {"last_touched_days >= p90": 533.966}, 80) == " — rooms at or above this repository's p90 on last_touched_days (here 533.966 days): 83 of 473, 17.5%; 80 at the cutoff value"
+    assert _b._share_by_construction("last_touched_days >= p90", 70, 583, {"last_touched_days >= p90": 1629.7122}, 70).endswith("70 of 583, 12.0%; all 70 at the cutoff value")  # D-062: typeorm's one mass commit
     assert _b._share_by_construction("last_touched_days <= p10", 48, 473, {"last_touched_days <= p10": 12.5}) == " — rooms at or below this repository's p10 on last_touched_days (here 12.5 days): 48 of 473, 10.1%"
-    assert _b._share_by_construction("fan_in >= p75", 148, 473, {}) == " — rooms at or above this repository's p75 on fan_in (here unresolved): 148 of 473, 31.3%; ties at the cutoff carry the row past 25%"
+    assert _b._share_by_construction("fan_in >= p75", 148, 473, {}) == " — rooms at or above this repository's p75 on fan_in (here unresolved): 148 of 473, 31.3%"
     assert _b._share_by_construction("centrality >= p90 and fan_out >= p50") == "" and _b._share_by_construction("reinforcement_index >= 0.5") == ""
     dark = _row(reg, "dark_room")
     dk = next(x for x in f["features"] if x["feature"] == "dark_room")
@@ -1980,7 +1981,7 @@ def test_a_row_states_its_realized_share_and_the_tier_table_is_the_whole_top_tie
     assert f"A room is a source file outside the test convention with computed signals: {f['population']} of the tree's {f['node_count']} files; the {n_test} test files are nodes of the import graph and not rooms" in reg
     if n_unindexed:
         assert f"{n_unindexed} file{'s' if n_unindexed != 1 else ''} with no computed signals" in reg
-    assert f["unresolved_imports"] == sub["summary"]["unresolved_imports"] and f"The import graph is resolved statically: {f['unresolved_imports']} imports in the tree did not resolve to a file and {f['external_imports']} are external packages" in reg
+    assert f["unresolved_imports"] == sub["summary"]["unresolved_imports"] and f"The graph is resolved statically: {f['unresolved_imports']} imports in the tree did not resolve to a file and {f['external_imports']} are external packages" in reg
     assert "cross-modal" not in reg and "the corroboration its grounding class requires (validation spec §2.4)" in reg
     # (2) the tier table: every room at the top count, by path, with lines, and no count-ordered cap
     def feat(name, rooms, profile="p", predicate="x >= p90"):
@@ -1993,14 +1994,79 @@ def test_a_row_states_its_realized_share_and_the_tier_table_is_the_whole_top_tie
     doc = {"top_tier": tier, "co_located_rooms": 9}
     mm = _b.render_most_marked(doc)
     assert "### Rooms at the most positions (3)" in mm and "in path order — a set, not a ranking" in mm
-    assert "| r03 | 40 | 3 | w, x, y |" in mm and "| r07 | 80 | 3 | w, x, y |" in mm and "marks" not in mm.split("|---")[0].split("| room")[1]
+    assert "| r03 | 40 | — | w, x, y |" in mm and "| r07 | 80 | — | w, x, y |" in mm and "marks" not in mm.split("|---")[0].split("| room")[1]  # D-062: no constant column; importers when known
     assert "2 rooms. " in mm and "9 rooms carry two or more distinct sets" in mm
     big = _b.top_tier([feat("x", [f"q{i:02d}" for i in range(30)]), feat("y", [f"q{i:02d}" for i in range(30)] + ["z"], predicate="y >= p90")], {})
     mmb = _b.render_most_marked({"top_tier": big})
-    assert f"the first {_b.TOP_TIER_CAP} by path are listed and 5 more are not" in mmb and mmb.count("| q") == _b.TOP_TIER_CAP and "| q00 | — | 2 |" in mmb
+    assert f"the first {_b.TOP_TIER_CAP} by path are listed and 5 more are not" in mmb and mmb.count("| q") == _b.TOP_TIER_CAP and "| q00 | — | — |" in mmb
     # a sheet without top_tier renders the legacy capped list
     assert "listed of rooms at this count" in _b.render_most_marked({"most_marked_rooms": _b.most_marked(fs), "rooms_at_most_sets": 2})
     # the real sheet's table is the whole top tier
     if f["top_tier"]["rooms"]:
         for m in f["top_tier"]["rooms"]:
             assert f"| {m['room']} |" in reg
+
+
+def test_instance_counts_where_a_mechanism_dominates_and_the_note_is_a_legend(sub):
+    """D-062 (the typeorm control, the third skimmer, the Rams audit — all unpointed, on 0.27.0).
+    Control: all 70 dark rooms sat at the cutoff and the row said "ties"; every importer of the
+    top room was a test file and the row said "one edge set"; a count each. Skimmer: the first
+    row was the excluded feature; ◌ rows render last. Rams: the note repeated the header, the
+    cells and the column headers — it is a legend now; two features drawing one set were two
+    identical matrix rows — one row; the tier table's constant column is gone; the excluded
+    section is one line; the scope list is gated as the calibration sentence is."""
+    import repo_substrate.brief as _b
+
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    reg = _b.render_register(f)
+    page = run_brief(sk, sub)["markdown"]
+    # ties at the cutoff are counted on the sheet and said on the row
+    for x in f["features"]:
+        if x.get("at_cutoff") is not None and x["count"]:
+            assert 0 <= x["at_cutoff"] <= x["count"]
+            row = _row(reg, x["feature"], decorative=x["decorative"], profile=x["profile"])
+            if x["at_cutoff"] > 1:
+                assert (f"all {x['count']} at the cutoff value" if x["at_cutoff"] == x["count"] else f"{x['at_cutoff']} at the cutoff value") in row
+            else:
+                assert "at the cutoff value" not in row
+    # importers from tests, per import-graph row, from the substrate
+    nodes = {n["id"]: n for n in sub["nodes"]}
+    for x in f["features"]:
+        if x.get("importers"):
+            assert x["importers"]["total"] == sum(nodes[r]["metrics"]["fan_in"] for r in x["rooms"])
+            assert x["importers"]["from_tests"] == sum(nodes[r]["metrics"]["test_fan_in"] for r in x["rooms"])
+            if x["importers"]["total"]:
+                assert f"importers of these rooms: {x['importers']['total']}, {x['importers']['from_tests']} (" in _row(reg, x["feature"], decorative=x["decorative"], profile=x["profile"])
+        elif x["count"] and _b._signals_read(x["predicate"]) & {"fan_in", "centrality"}:
+            raise AssertionError(x["feature"])
+    # cross-scope edges are counted; the sentence appears only on a multi-scope page
+    assert f["cross_scope_edges"] == sum(1 for e in sub["edges"] if nodes[e["from"]]["metrics"].get("package", "") != nodes[e["to"]]["metrics"].get("package", ""))
+    assert ("imports cross a package scope" in reg) == (f["packages"] > 1)
+    # ◌ rows last
+    order = [line for line in reg.splitlines() if line.startswith("| ") and "|---" not in line and not line.startswith("| position") and "| shared rooms" not in line]
+    table_rows = order[: len(f["features"])]
+    marks = [("| ◌ " in r) for r in table_rows]
+    assert marks == sorted(marks), "excluded rows are not last"
+    # the note is a legend: the counts, then one line per term; no repetition of the header or the zero-row sentence
+    assert "- **wing** —" in reg and "- **◌** —" in reg and "- **relation to** —" in reg and "- **caveat** —" in reg and "- **the import graph and the test graph** —" in reg
+    for gone in ("no cell is written", "The record a position is read from is named beside it", "keeps its row at 0", "is a cell's own answer, not a gap", "follow the table"):
+        assert gone not in reg, gone
+    assert page.count("was cut at D-049") == 0 and page.count("0.28.0") == 2  # header and provenance
+    # two features drawing one set share one matrix row, named with both names
+    ident = [o for o in f["overlaps"] if o["relation"] == "identical" and o.get("diagnostic")]
+    shared = _b.render_shared(f)
+    for o in ident:
+        la, lb = _b.qualified_labels([o["a"], o["b"]]).values()
+        assert f"| {la} = {lb} |" in shared or f"| {lb} = {la} |" in shared
+        assert shared.count(f"| {la} |") == 0 and shared.count(f"| {lb} |") == 0
+    # the tier table has no constant column; the excluded section is one line naming each ◌ feature with its count
+    if f["top_tier"]["rooms"]:  # the small fixture has no tier; the header is tested on the synthetic sheet in the D-061 test
+        assert "| room | lines | importers (from test files) | diagnostic features that mark it |" in page
+    mm = _b.render_most_marked({"top_tier": {"sets": 2, "rooms": [{"room": "a", "lines": 3, "fan_in": 9, "test_fan_in": 4, "features": ["x", "y"]}]}})
+    assert "| a | 3 | 9 (4) | x, y |" in mm and "| room | lines | importers (from test files) |" in mm
+    dis = _b.render_disclosure(f)
+    assert dis.count("\n") == 0 and all(f"◌ {x['feature']} {x['count']}" in dis for x in f["features"] if x["decorative"])
+    # hub and lit_room name their position (maintainability 0.2.9)
+    assert _row(reg, "hub").startswith("| high-centrality node (import graph) |") and _row(reg, "lit_room").startswith("| recently-touched room (clock) |")
+    assert "no consequence word in the name (lexicon)" not in reg
