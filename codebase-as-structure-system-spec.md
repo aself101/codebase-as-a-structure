@@ -101,6 +101,8 @@ How a metric (or several) becomes a structural claim. These compose; a feature's
 - **In-repo (self-relative).** Everything relative to this repo's own distribution. Needs no external data; honest about "this repo's worst," silent about "bad by global standards." v0 default.
 - **Corpus-relative.** Calibrate against a benchmark corpus ("unusually under-tested versus the population"). More meaningful, requires aggregate data, and only aggregates ever leave a repo (privacy-preserving by construction). A later phase.
 
+> **Revision, 2026-09-12 (D-059).** Forecast cycle 3 (D-058) found that D-004 Q3 — a position is not a claim about condition — disposes of every sentence a table cannot carry, and that a corpus's output is comparisons. The admissible form of a corpus-relative claim is fixed here, before the corpus runs: **a field with a corpus denominator** — "dark_room share 0.19 of rooms; corpus decile 9 of 10 (n = 100 repositories)" — which is a *position in the corpus's distribution*, the same kind of statement as a pNN in-repo. A comparison written as a verdict ("under-tested versus the population", the parenthetical above, is one) is not admissible on the page; the phrase above is kept as the June draft's and marked. So Phase 3 adds a population axis to calibration and changes no rule about sentences: the page carries corpus positions as cells, and what a corpus position *means* is the reader's, as an in-repo position already is (D-004 Q3, D-019).
+
 ### 5.4 Mapping profiles (lenses)
 
 A profile selects which features are emphasized, which predicate strategies and weights they use, and what gets foregrounded. The same substrate yields different skeletons under different profiles:

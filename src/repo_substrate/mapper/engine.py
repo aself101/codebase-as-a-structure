@@ -159,6 +159,7 @@ def _roster(ruleset: Ruleset) -> list[dict[str, Any]]:
             "name_implies_consequence": f.name_implies_consequence,
             "position_name": f.position_name,
             "caveat": f.caveat,
+            "caveat_case": f.caveat_case,  # D-060
         }
         for f in ruleset.features
     ]
@@ -217,6 +218,7 @@ def _apply(
                     "name_implies_consequence": f.name_implies_consequence,
                     "position_name": f.position_name,
                     "caveat": f.caveat,
+                    "caveat_case": f.caveat_case,  # D-060
                 }
             )
             counts[f.name] = counts.get(f.name, 0) + 1

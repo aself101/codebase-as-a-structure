@@ -59,6 +59,12 @@ def test_facts_sheet_is_the_closed_set(sub):
     assert facts(sk, sub)["facts_hash"] == f["facts_hash"]  # deterministic
 
 
+def _row(table: str, feature: str, decorative: bool = False, profile: str | None = None) -> str:
+    """D-060: the position is the first column; a row is found by its feature cell."""
+    cell = f"| {'◌ ' if decorative else ''}{feature} |" + (f" {profile} |" if profile else "")
+    return next(line for line in table.splitlines() if line.startswith("| ") and cell in line)
+
+
 def _at_floor(g, name):
     """A copy of the sheet where feature `name` has enough rooms for the relation cell (D-047)."""
     h = json.loads(json.dumps(g))
@@ -828,11 +834,11 @@ def test_register_relations_cover_every_set_and_positions_always_name_a_record(s
         1 for x in f["features"] if x["diagnostic"] and x["rooms"]
     )
     assert "features, not marks or rooms" in f["units"]["diagnostic_features"]
-    table = render_register(f).split("### Most-marked rooms", 1)[0]  # the feature table (D-049)
+    table = render_register(f).split("### Rooms at the most positions", 1)[0]  # the feature table (D-049)
     records = [name for name, _ in _RECORDS] + ["an unlisted record"]
     for line in table.splitlines():
-        if line.startswith("| ") and not line.startswith("| feature") and "|---" not in line:
-            pos = line.split("|")[3].strip()
+        if line.startswith("| ") and not line.startswith("| position") and "|---" not in line:
+            pos = line.split("|")[1].strip()  # D-060: the position is the first column
             assert any(r in pos for r in records), pos
     feat = next(x for x in f["features"] if x["diagnostic"] and not x["name_implies_consequence"] and x["rooms"])
     base = _good_draft(f)
@@ -1310,7 +1316,7 @@ def test_the_page_is_rendered_by_code_and_its_fixed_texts_match_their_fields(sub
 
     f = facts(_skeleton(sub), sub)
     page = run_brief(_skeleton(sub), sub)["markdown"]
-    order = ["## Register", "### Most-marked rooms", "### Shared rooms", "## Decorative marks", "## Stance", "## Provenance"]
+    order = ["## Register", "### Rooms at the most positions", "### Shared rooms", "## Excluded marks (◌)", "## Stance", "## Provenance"]
     idx = [page.index(h) for h in order]
     assert idx == sorted(idx) and "## Reading" not in page and "## Register lint" not in page
     assert f["stance"] in page and "R19" not in page
@@ -1351,7 +1357,7 @@ def test_the_page_is_rendered_by_code_and_its_fixed_texts_match_their_fields(sub
     # D-052: the lead says the ordering, the cap and the most; what a row is, its cell says
     assert "1 room carries the most (5). The listed column is rows listed of rooms at the row's sets count; where fewer are listed than carry the count, the listed are the first by path." in mm
     assert "| b.ts | 4 | 6 | 1 of 8 |" in mm and "| a.ts | 5 | 7 | 1 of 1 |" in mm
-    assert "| room | distinct sets | marks | listed of rooms at this count |" in mm
+    assert "| room | positions (distinct sets) | marks | listed of rooms at this count |" in mm
     assert "first by path, and its row says" not in mm  # the clause that was false as a per-row label (D-052)
     # a feature under two profiles is profile-qualified wherever it is named: the relation cell
     # and the most-marked features column use the matrix's labels
@@ -1386,8 +1392,9 @@ _SPEC_FILES = {
     "system spec": "codebase-as-structure-system-spec.md",
     "mapper": "structural-mapper-spec.md",
     "architect-brief spec": "architect-brief-spec.md",
+    "validation spec": "validation-spec.md",  # D-060: the header defines the tier names against it
 }
-_CITE = re.compile(r"(?:(system spec|mapper|architect-brief spec)\s+)?§\s*(\d+(?:\.\d+)?)(?:\s+Q(\d+))?")
+_CITE = re.compile(r"(?:(system spec|mapper|architect-brief spec|validation spec)\s+)?§\s*(\d+(?:\.\d+)?)(?:\s+Q(\d+))?")
 
 
 def _section_body(text: str, heading: str) -> str | None:
@@ -1487,7 +1494,7 @@ def test_sets_are_one_computation_co_location_is_in_sets_and_the_entry_record_is
     hs = [feat("x", [f"r{i}" for i in range(6)]), feat("y", [f"r{i}" for i in range(6)] + ["z"])]
     top = _b.most_marked(hs)
     assert len(top) == _b.MOST_MARKED_ROOMS and all(m["listed_at_this_count"] == 5 and m["rooms_at_this_count"] == 6 for m in top)
-    assert "| r0 | 2 | 2 | 5 of 6 |" in _b.render_most_marked({"most_marked_rooms": top, "rooms_at_most_sets": 6})
+    assert "| r0 | 2 | 2 | 5 of 6 (unlisted: r5) |" in _b.render_most_marked({"most_marked_rooms": top, "rooms_at_most_sets": 6})  # D-060: the tier names its unlisted room
     # the sheet agrees with the helpers on the fixture
     f = facts(_skeleton(sub), sub)
     assert f["distinct_room_sets"] == _b.distinct_sets(f["features"])
@@ -1677,8 +1684,8 @@ def test_a_tier_orders_by_path_and_the_scope_count_is_over_the_population(sub, t
     assert fix_inputs and all(tuned.get(i, 0) == 0 for i in fix_inputs)  # "assign zero to fix history"
     assert "zero to fix history" in rs.signal_reasons["bug_pressure_index"]
     page = run_brief(sk, sub)["markdown"]
-    rows = [line for line in page.splitlines() if line.startswith("| ◌ ")]
-    assert rows and any(r.startswith("| ◌ crack |") for r in rows)  # crack fires on the fixture
+    rows = [line for line in page.splitlines() if line.startswith("| ") and "| ◌ " in line]
+    assert rows and any("| ◌ crack |" in r for r in rows)  # crack fires on the fixture
     assert all("zero to fix history" in r for r in rows)
     assert page.count("zero to fix history") == len(rows) + 1  # every decorative row, and the disclosure once
     assert re.search(r"rests? on bug_pressure_index, which is unvalidated on the pre-registered test set \(D-015\): its tuned weights assign zero to fix history", page)
@@ -1725,16 +1732,16 @@ def test_a_guaranteed_containment_is_drawn_under_the_floor_and_the_ordering_text
     assert any(o["b"] == key(big["feature"]) and o["n_outside"] == len(big_rooms) - 2 for o in drawn)
     assert not [o for o in g["overlaps"] if key("tiny_off") in (o["a"], o["b"])]
     reg = _b.render_register(g)
-    row_in = next(line for line in reg.splitlines() if line.startswith("| ◌ tiny_in |"))
-    row_off = next(line for line in reg.splitlines() if line.startswith("| tiny_off |"))
+    row_in = _row(reg, "tiny_in", decorative=True)
+    row_off = _row(reg, "tiny_off")
     assert f"⊂ {big['feature']} (by its predicate; {len(big_rooms) - 2} {big['feature']} room" in row_in and row_in.count("too few rooms for any other relation (2)") == 1
     assert "| too few rooms to relate (2) |" in row_off and "⊂" not in row_off  # D-057: no "other" without an antecedent
     # the other side draws it too, and the counts count it
-    row_big = next(line for line in reg.splitlines() if line.startswith(f"| {big['feature']} |"))
+    row_big = _row(reg, big["feature"])
     assert "⊃ ◌ tiny_in (by its predicate;" in row_big  # D-056: ◌ travels with the name
     assert g["relation_counts"]["within"] >= len(drawn)
     # (2) the decorative row prints its predicate before its reason
-    assert f"| `{inner['predicate']}` — decorative: tiny_in is decorative on purpose (lines) |" in row_in
+    assert f"| `{inner['predicate']}` — ◌ excluded from the diagnosis: tiny_in is decorative on purpose (lines) |" in row_in  # D-060
     assert "and a containment the predicates guarantee at any count" in reg and "predicate; caveat or reason |" in reg
     # (3) one ordering text
     f = facts(sk, sub)
@@ -1747,7 +1754,7 @@ def test_a_guaranteed_containment_is_drawn_under_the_floor_and_the_ordering_text
     page = run_brief(sk, sub)["markdown"]
     for m in re.finditer(r"§", page):
         before = page[max(0, m.start() - 24) : m.start()]
-        assert re.search(r"(system spec|mapper|architect-brief spec)\s*$", before), page[max(0, m.start() - 60) : m.start() + 10]
+        assert re.search(r"(system spec|mapper|architect-brief spec|validation spec)\s*$", before), page[max(0, m.start() - 60) : m.start() + 10]
     assert page.count("§") >= 1  # system spec §5.3 at least; the pooled sentence needs two scopes
 
 
@@ -1791,12 +1798,12 @@ def test_a_containment_not_by_predicate_says_the_signal_in_common_and_a_scope_is
     narrow_wide = ov[(f"{P}/narrow", f"{P}/wide")]
     assert not narrow_wide["by_predicate"] and narrow_wide["shared_signals"] == []
     reg = _b.render_register(g)
-    row_hot = next(line for line in reg.splitlines() if line.startswith("| ◌ hot |"))
+    row_hot = _row(reg, "hot", decorative=True)
     assert "⊂ fresh (reads last_touched_days with it; 2 fresh rooms outside this set)" in row_hot
-    row_narrow = next(line for line in reg.splitlines() if line.startswith("| narrow |"))
+    row_narrow = _row(reg, "narrow")
     assert "⊂ maintainability/wide = onboarding/wide (no signal in common; 3 " in row_narrow and row_narrow.count("wide") == 3  # two names, one entry, one outside count
     # (4) the decorative name carries ◌ where a diagnostic row names it
-    row_fresh = next(line for line in reg.splitlines() if line.startswith("| fresh |"))
+    row_fresh = _row(reg, "fresh")
     assert "⊃ ◌ hot (reads last_touched_days with it; 2 of these rooms outside it)" in row_fresh
     # (2)/(3) the scope keyed by the wing's name is named by its manifest, and the list is ordered
     scopes = [e["scope"] for e in g["by_package"]]
@@ -1831,7 +1838,7 @@ def test_a_feature_that_fired_on_nothing_keeps_its_row_and_the_marker_is_defined
     assert zero, "the small fixture leaves at least one feature unfired"
     reg = _b.render_register(f)
     for x in zero:
-        row = next(line for line in reg.splitlines() if line.startswith(f"| {'◌ ' if x['decorative'] else ''}{x['feature']} | {x['profile']} |"))
+        row = _row(reg, x["feature"], decorative=x["decorative"], profile=x["profile"])
         assert "| 0 | no wing (0) | no rooms | no rooms to relate (0) |" in row and f"`{x['predicate']}`" in row
     assert "A feature that fired on no room keeps its row at 0." in reg
     dec0 = [x for x in zero if x["decorative"]]
@@ -1866,3 +1873,74 @@ def test_a_feature_that_fired_on_nothing_keeps_its_row_and_the_marker_is_defined
         od.pop("roster")
     g = facts(sk_old, sub)
     assert all(x["count"] > 0 for x in g["features"])
+
+
+def test_the_defence_sits_in_the_cell_it_defends_and_the_page_carries_its_snapshot(sub, tmp_path):
+    """D-060 (the control seating and the skimmer, both on registry 0.25.1, both unpointed). Skimmer:
+    the table read as a leaderboard, the note skipped whole, the feature name read for the position —
+    the rule stands first in bold, the position is the first column, the tier table carries the rule
+    over it, ◌ says "excluded". Control: the tier names are defined where they are used; the page
+    carries its snapshot; a caveat's case is counted beside it; a partly listed tier names its
+    unlisted rooms; a single-pNN row says the share the rank fixes by construction."""
+    import repo_substrate.brief as _b
+    from repo_substrate.mapper.ruleset import RulesetError
+
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    reg = _b.render_register(f)
+    page = run_brief(sk, sub)["markdown"]
+    # the rule first, bold, before the italic note; the position is the first column
+    note_start = reg.index("*Rendered from the facts sheet")
+    rule = reg.index("**A position names where a room sits in a record")
+    assert rule < note_start and f"ranks this repository's own {f['population']} rooms" in reg[rule:note_start]
+    header = next(line for line in reg.splitlines() if line.startswith("| position"))
+    assert header.startswith("| position (the record it reads) | feature | profile | rooms |")
+    # the tier table carries the rule over it and no longer calls itself "most-marked"
+    assert "### Rooms at the most positions" in reg and "Most-marked" not in reg
+    if f["most_marked_rooms"]:  # the small fixture has no tier; the caption is tested on a synthetic one below
+        assert "**A count of the positions a room sits at; the order is the count, then the path — not a ranking and not a severity (D-004 Q3).**" in reg
+    # ◌ = excluded, on the row, in the note and in the section
+    assert "◌ marks an excluded feature (the ruleset's word is decorative)" in reg and "## Excluded marks (◌)" in page
+    for x in f["features"]:
+        if x["decorative"] and x["count"]:
+            assert "— ◌ excluded from the diagnosis:" in _row(reg, x["feature"], decorative=True)
+    # the snapshot and the tier names, in the header
+    assert f["as_of"] == sub["repo"]["as_of"] and f"As of {str(f['as_of'])[:10]}, commit `{f['repo']['head_sha'][:12]}`." in page
+    assert "asserted is a description confirmed by a stability budget and a cross-modal check, validated a forecast confirmed by a temporal holdout" in reg
+    assert "this page carries no stability value" in page
+    # a single-pNN row states its share by construction; a conjunction does not
+    assert _b._share_by_construction("last_touched_days >= p90") == " — the top 10% of rooms on this signal, by construction"
+    assert _b._share_by_construction("last_touched_days <= p10") == " — the bottom 10% of rooms on this signal, by construction"
+    assert _b._share_by_construction("centrality >= p90 and fan_out >= p50") == "" and _b._share_by_construction("reinforcement_index >= 0.5") == ""
+    dark = _row(reg, "dark_room")
+    assert "`last_touched_days >= p90` — the top 10% of rooms on this signal, by construction" in dark
+    # a caveat's case is counted beside the caveat, from the substrate's metrics
+    fb = next(x for x in f["features"] if x["feature"] == "flooded_basement")
+    assert fb["caveat_case"] == "fan_in == 0" and fb["caveat_case_count"] == sum(1 for r in fb["rooms"] if f["rooms"][r]["fan_in"] == 0)
+    if fb["count"]:
+        assert f"(this case: {fb['caveat_case_count']} of {fb['count']} here)" in _row(reg, "flooded_basement")
+    assert _b._case_holds("fan_in == 0 and fan_out >= 2", {"fan_in": 0, "fan_out": 3}) and not _b._case_holds("fan_in == 0", {"fan_in": 1}) and not _b._case_holds("fan_in == 0", {})
+    # a partly listed tier names the rooms it leaves out
+    def feat(name, rooms, profile="p", predicate="x >= p90"):
+        return {"feature": name, "profile": profile, "diagnostic": True, "decorative": False, "rooms": rooms, "predicate": predicate}
+
+    rooms = [f"r{i}" for i in range(9)]
+    top = _b.most_marked([feat("x", rooms), feat("y", rooms, predicate="y >= p90")])  # x and y draw one set: one set each, no tier
+    assert top == []
+    top = _b.most_marked([feat("x", rooms), feat("y", rooms + ["z"], predicate="y >= p90")])
+    assert all(m["unlisted"] == ["r5", "r6", "r7", "r8"] for m in top)
+    mm = _b.render_most_marked({"most_marked_rooms": top, "rooms_at_most_sets": 9})
+    assert "5 of 9 (unlisted: r5, r6, r7, r8)" in mm
+    assert "**A count of the positions a room sits at; the order is the count, then the path — not a ranking and not a severity (D-004 Q3).**" in mm
+    big = _b.most_marked([feat("x", [f"q{i:02d}" for i in range(12)]), feat("y", [f"q{i:02d}" for i in range(12)] + ["z"], predicate="y >= p90")])
+    assert "(unlisted: q05, q06, q07, q08, q09 and 2 more)" in _b.render_most_marked({"most_marked_rooms": big, "rooms_at_most_sets": 12})
+    # the loader: a caveat_case needs a caveat and reads literals only
+    def _rs(body):
+        p = tmp_path / "rs.toml"
+        p.write_text('[ruleset]\nname = "t"\nversion = "0.0.1"\nprofile = "t"\ndescription = "t"\nwing_depth = 1\n\n' + body, encoding="utf-8")
+        return load_ruleset(p)
+
+    with pytest.raises(RulesetError, match="without a caveat"):
+        _rs('[[feature]]\nname = "x"\npredicate = "fan_in >= p90"\ncaveat_case = "fan_in == 0"\n')
+    with pytest.raises(RulesetError, match="percentile"):
+        _rs('[[feature]]\nname = "x"\npredicate = "fan_in >= p90"\ncaveat = "reads fan-in"\ncaveat_case = "fan_out >= p50"\n')

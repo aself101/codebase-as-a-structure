@@ -112,6 +112,10 @@ class Feature:
     # D-041/D-042: a limit on what the predicate can read — never a claim about a repository (the
     # sixth seating found one false of the room it sat beside)
     caveat: str | None = None
+    # D-060: the caveat's live case as a predicate over raw metrics (literal terms only), so the page
+    # can count how many of the feature's rooms are the case — a caveat says "can" and D-042 forbids
+    # it a repository fact; on registry the flooded_basement case was 12 of 26 and the page could not say so
+    caveat_case: str | None = None
     note: str = ""
 
     @property
@@ -207,6 +211,13 @@ def load_ruleset(path: Path) -> Ruleset:
             raise RulesetError(
                 f"feature {name}: decorative_reason must name the ungrounded signal(s) it excuses ({', '.join(sorted({t.signal for t in terms_}))})"
             )
+        caveat_case = f.get("caveat_case")
+        if caveat_case:
+            if not f.get("caveat"):
+                raise RulesetError(f"feature {name}: caveat_case given without a caveat")
+            for t in parse_predicate(str(caveat_case)):
+                if t.percentile is not None:
+                    raise RulesetError(f"feature {name}: caveat_case reads a percentile ({t}); the case is counted on raw metrics, literal terms only")
         implied = any(w in str(name).lower() for w in NAME_CONSEQUENCE_WORDS)
         if implied and not bool(f.get("name_implies_consequence", False)):
             raise RulesetError(
@@ -294,6 +305,7 @@ def load_ruleset(path: Path) -> Ruleset:
                 name_implies_consequence=bool(f.get("name_implies_consequence", False)),
                 position_name=f.get("position_name"),
                 caveat=f.get("caveat"),
+                caveat_case=caveat_case,
                 note=str(f.get("note", "")),
             )
         )

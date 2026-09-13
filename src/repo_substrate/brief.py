@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.25.1"  # D-058: the header no longer says the page is tested — its texts have tests on a fixture. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
+BRIEF_VERSION = "0.26.0"  # D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -69,6 +69,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
                     "name_implies_consequence": bool(f.get("name_implies_consequence")),
                     "position_name": f.get("position_name"),
                     "caveat": f.get("caveat"),  # D-041: a ruleset's own warning about a predicate
+                    "caveat_case": f.get("caveat_case"),  # D-060
                     "rooms": [],
                 },
             )
@@ -83,6 +84,11 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
     for e in feats.values():
         e["rooms"] = sorted(set(e["rooms"]))
         e["count"] = len(e["rooms"])
+        # D-060: how many of the feature's rooms are the caveat's case (the control seating found
+        # "can clear the floor" true of 12 of 26 flooded_basement rooms, and D-042 forbids the caveat
+        # the number; the count is a field beside it)
+        if e.get("caveat_case"):
+            e["caveat_case_count"] = sum(1 for r in e["rooms"] if _case_holds(e["caveat_case"], (nodes.get(r) or {}).get("metrics") or {}))
         # D-036: the share of a mark per wing is on the sheet, so the prose can state a count
         # per wing instead of an adverb ("mostly", "concentrated") the sheet cannot carry
         bw: dict[str, int] = {}
@@ -260,6 +266,8 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
     doc = {
         "brief_version": BRIEF_VERSION,
         "repo": {"name": skeleton["repo"]["name"], "head_sha": skeleton["repo"]["head_sha"]},
+        # D-060: the snapshot the clock positions are relative to — on the substrate and the sheet, never on the page until now
+        "as_of": ((substrate or {}).get("repo") or {}).get("as_of"),
         "skeleton_hash": skeleton["skeleton_hash"],
         "profile": skeleton["profile"]["name"],
         "overlays": list(s.get("overlay_profiles") or []),
@@ -1681,6 +1689,10 @@ def most_marked(features) -> list[dict[str, Any]]:
     listed: dict[int, int] = {}
     for r, _ in top:
         listed[sets[r]] = listed.get(sets[r], 0) + 1
+    # D-060: the rooms a partly listed tier leaves out, by name — the control seating found the cut
+    # room of a four-room tier was the one of a different kind, reachable only by recomputation
+    shown = {r for r, _ in top}
+    unlisted = {c: sorted(r for r, n in sets.items() if n == c and r not in shown) for c in at_count}
     return [
         {
             "room": r,
@@ -1688,6 +1700,7 @@ def most_marked(features) -> list[dict[str, Any]]:
             "marks": n,
             "rooms_at_this_count": at_count[sets[r]],
             "listed_at_this_count": listed[sets[r]],
+            "unlisted": unlisted.get(sets[r], []),
             "features": sorted(
                 (f"{e['profile']}/{e['feature']}" if e["feature"] in twice else e["feature"])
                 for e in feats
@@ -1696,6 +1709,37 @@ def most_marked(features) -> list[dict[str, Any]]:
         }
         for r, n in top
     ]
+
+
+def _case_holds(case: str, metrics: dict[str, Any]) -> bool:
+    """D-060: a caveat_case is a conjunction of literal terms over raw metrics."""
+    from .mapper.ruleset import parse_predicate
+
+    for t in parse_predicate(case):
+        v = metrics.get(t.signal)
+        if v is None:
+            return False
+        x = float(v)
+        ok = {"==": x == t.value, ">=": x >= t.value, "<=": x <= t.value, ">": x > t.value, "<": x < t.value, "!=": x != t.value}.get(t.op)
+        if not ok:
+            return False
+    return True
+
+
+def _share_by_construction(predicate: str) -> str:
+    """D-060: a single-pNN predicate marks a fixed share of the population by construction — the
+    skimmer carried "27 dark rooms" as a finding; the row says the share the rank fixes."""
+    from .mapper.ruleset import parse_predicate
+
+    terms = parse_predicate(str(predicate or ""))
+    if len(terms) != 1 or terms[0].percentile is None:
+        return ""
+    t = terms[0]
+    if t.op in (">=", ">"):
+        return f" — the top {100 - t.percentile}% of rooms on this signal, by construction"
+    if t.op in ("<=", "<"):
+        return f" — the bottom {t.percentile}% of rooms on this signal, by construction"
+    return ""
 
 
 def _signals_read(predicate: str) -> set[str]:
@@ -1898,12 +1942,16 @@ def render_register(facts_doc: dict[str, Any]) -> str:
             dom = "none holds a third"
         if f["decorative"]:
             # D-055: the predicate is on the row — "the fragility half" of a reason was unresolvable
-            # from a row that printed the reason and not the conjunction it is half of
-            what = f"`{f['predicate']}` — decorative: {f.get('decorative_reason') or ''}".strip()
+            # from a row that printed the reason and not the conjunction it is half of.
+            # D-060: "decorative" read as cosmetic by the skimmer; the row says what the mark is
+            what = f"`{f['predicate']}` — ◌ excluded from the diagnosis: {f.get('decorative_reason') or ''}".strip()
         else:
-            what = f"`{f['predicate']}`"
+            what = f"`{f['predicate']}`" + _share_by_construction(f["predicate"])
         if f.get("caveat"):
             what += f" — caveat: {f['caveat']}"
+            if f.get("caveat_case_count") is not None:
+                # D-060: the case's magnitude is a field beside the caveat, never in it (D-042)
+                what += f" (this case: {f['caveat_case_count']} of {f['count']} here)"
         name = ("◌ " if f["decorative"] else "") + f["feature"]
         # D-041: the cell reads the field it claims to report; a consequence-implying name without a
         # position name is a ruleset defect and the page says so rather than denying it
@@ -1915,8 +1963,10 @@ def render_register(facts_doc: dict[str, Any]) -> str:
             # D-044: the note promises the record beside every position; the lexicon is why there is
             # no position name, the record is what the predicate reads — both are said
             pos = f"no consequence word in the name (lexicon); a position in the {record_of(f['predicate'])}"
+        # D-060: the position is the first column — the skimmer reads column one and infers the rest
+        # from the name, and the name is the column that carries the consequence word
         rows.append(
-            f"| {name} | {f['profile']} | {pos} | {f['count']} | {bw} | {dom} | {relation_cell(f, key)} | {what} |"
+            f"| {pos} | {name} | {f['profile']} | {f['count']} | {bw} | {dom} | {relation_cell(f, key)} | {what} |"
         )
     wings = " · ".join(f"{k} {v}" for k, v in facts_doc["wings"].items())
     scopes = " · ".join(f"{e['scope']} {e['rooms']}" for e in (facts_doc.get("by_package") or []))  # D-054; D-056: a list
@@ -1933,20 +1983,26 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         "## Register"
         + NL
         + NL
+        # D-060: the skimmer read the table and skipped the note whole; the one rule the page rests on
+        # stands first, bold, outside the italic — and the calibration fact the numbers depend on beside it
+        + "**A position names where a room sits in a record — the import graph, the clock, the test graph, the edit record, size — and is not a claim about the room's condition (D-004 Q3). "
+        + f"Every pNN ranks this repository's own {facts_doc['population']} rooms, so a `>= p90` row holds about a tenth of them by construction, and no count on this page compares across repositories.**"
+        + NL
+        + NL
         + f"*Rendered from the facts sheet by code (brief {facts_doc.get('brief_version', BRIEF_VERSION)}); every cell is a field, a count, or a fixed text over them; no cell is written. "
         + f"{facts_doc['population']} rooms in {facts_doc['wing_count']} wings ({wings}); {facts_doc['diagnostic_count']} diagnostic marks across all profiles "
         + f"({base} in the base profile), one mark per feature per room; identical pairs of diagnostic features mark {facts_doc.get('rooms_marked_twice', 0)} rooms twice ({facts_doc.get('rooms_marked_twice_shared_predicate', 0)} under one predicate in two profiles, {facts_doc.get('rooms_marked_twice_inert_conjunct', 0)} where two predicates draw one set because a conjunct excludes nothing, {facts_doc.get('rooms_in_both_kinds', 0)} under both); "
-        + f"the diagnostic features name {facts_doc.get('distinct_room_sets', '?')} distinct sets of rooms; {facts_doc['decorative']['count']} decorative marks ({dec}); "
-        + f"{facts_doc['co_located_rooms']} rooms carry two or more distinct diagnostic sets; gate `{fp}`, {asserted} of {len(gate)} signals asserted, {validated_text}. "
+        + f"the diagnostic features name {facts_doc.get('distinct_room_sets', '?')} distinct sets of rooms; {facts_doc['decorative']['count']} excluded marks ◌ ({dec}); "
+        + f"{facts_doc['co_located_rooms']} rooms carry two or more distinct diagnostic sets; gate `{fp}`, {asserted} of {len(gate)} signals asserted, {validated_text} — asserted is a description confirmed by a stability budget and a cross-modal check, validated a forecast confirmed by a temporal holdout (system spec §3 and validation spec §3). "
         + f"A wing is a directory at depth {facts_doc.get('wing_depth', 1)} of the tree (the ruleset's wing_depth), not a package; the population spans {facts_doc.get('packages', 1)} package scope{'s' if facts_doc.get('packages', 1) != 1 else ''}"
         + (f" (rooms per scope, largest first, each scope named by the manifest that holds it: {scopes})" if facts_doc.get("by_package") else "")
         + ". "
-        + "◌ marks a decorative feature: excluded from the diagnosis. A position names where a room sits in the record its predicate reads — the record is named beside each position — and is not a claim about its condition (D-004 Q3). "
+        + "◌ marks an excluded feature (the ruleset's word is decorative): computed and counted, excluded from the diagnosis because a signal it reads is unvalidated. The record a position is read from is named beside it. "
         + f"The directory column is the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent. "
         + f"The relation column draws identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms — and a containment the predicates guarantee at any count; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A containment says 'by its predicate' when the inner predicate conjoins every term of the outer; otherwise it says which raw signals the two predicates read in common, a blend or index expanded through its declared inputs, or 'no signal in common' — a signal, not an instrument: the import graph and the test graph are one edge set read twice, a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone. A feature that fired on no room keeps its row at 0. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap. The most-marked rooms and the rooms each pair of diagnostic features shares follow the table.*"
         + NL
         + NL
-        + "| feature | profile | position | rooms | by wing | largest parent directory n / rooms in it | relation to | predicate; caveat or reason |"
+        + "| position (the record it reads) | feature | profile | rooms | by wing | largest parent directory n / rooms in it | relation to | predicate; caveat or reason |"
         + NL
         + "|---|---|---|---|---|---|---|---|"
         + NL
@@ -1961,6 +2017,16 @@ def qualified_labels(keys: list[str]) -> dict[str, str]:
     return {k: (n if names.count(n) == 1 else k) for k, n in zip(keys, names)}
 
 
+def _unlisted(m: dict[str, Any]) -> str:
+    """D-060: a partly listed tier names the rooms it leaves out (up to five), so the listed are not taken as the tier."""
+    u = m.get("unlisted") or []
+    if not u:
+        return ""
+    shown = ", ".join(u[:5])
+    more = f" and {len(u) - 5} more" if len(u) > 5 else ""
+    return f" (unlisted: {shown}{more})"
+
+
 def render_most_marked(facts_doc: dict[str, Any]) -> str:
     """D-049: the rooms carrying the most, with the count of rooms at that most so a capped list is
     not a claim of completeness. D-050: the count is distinct sets. D-052: what the lead said of
@@ -1969,7 +2035,7 @@ def render_most_marked(facts_doc: dict[str, Any]) -> str:
     first by path — and the lead says only the ordering and the cap."""
     top = facts_doc.get("most_marked_rooms") or []
     if not top:
-        return NL + "### Most-marked rooms" + NL + NL + "*No room carries two distinct diagnostic sets.*" + NL
+        return NL + "### Rooms at the most positions" + NL + NL + "*No room carries two distinct diagnostic sets.*" + NL
     most = top[0].get("sets", top[0]["marks"])
     at = facts_doc.get("rooms_at_most_sets", top[0].get("rooms_at_this_count", len(top)))
     lead = (
@@ -1978,12 +2044,15 @@ def render_most_marked(facts_doc: dict[str, Any]) -> str:
         "The listed column is rows listed of rooms at the row's sets count; where fewer are listed than carry the count, the listed are the first by path.*"
     )
     body = NL.join(
-        f"| {m['room']} | {m.get('sets', m['marks'])} | {m['marks']} | {m.get('listed_at_this_count', '')} of {m.get('rooms_at_this_count', '')} | {', '.join(m['features'])} |"
+        f"| {m['room']} | {m.get('sets', m['marks'])} | {m['marks']} | {m.get('listed_at_this_count', '')} of {m.get('rooms_at_this_count', '')}{_unlisted(m)} | {', '.join(m['features'])} |"
         for m in top
     )
     return (
-        NL + "### Most-marked rooms" + NL + NL + lead + NL + NL
-        + "| room | distinct sets | marks | listed of rooms at this count | diagnostic features that mark it |" + NL + "|---|---|---|---|---|" + NL + body + NL
+        NL + "### Rooms at the most positions" + NL + NL
+        # D-060: the skimmer read this table as a leaderboard by its shape; the rule stands over it, bold
+        + "**A count of the positions a room sits at; the order is the count, then the path — not a ranking and not a severity (D-004 Q3).**" + NL + NL
+        + lead + NL + NL
+        + "| room | positions (distinct sets) | marks | listed of rooms at this count | diagnostic features that mark it |" + NL + "|---|---|---|---|---|" + NL + body + NL
     )
 
 
@@ -2021,7 +2090,7 @@ def render_disclosure(facts_doc: dict[str, Any]) -> str:
     dec = [f for f in facts_doc["features"] if f["decorative"]]
     n = facts_doc["decorative"]["count"]
     if not dec:
-        return "No decorative marks: every feature that fired rests on an asserted signal."
+        return "No excluded marks: every feature that fired rests on an asserted signal."
     sigs = sorted({w for f in dec for w in re.findall(r"[a-z_]+_index", f.get("decorative_reason") or "")})
     names = " and ".join(
         f"{f['feature']}" + (f" — {f['position_name']} —" if f.get("position_name") else "") for f in dec
@@ -2046,7 +2115,7 @@ def render_disclosure(facts_doc: dict[str, Any]) -> str:
         f" {' and '.join(f['feature'] for f in unfired)} fired on no room." if unfired else ""
     )
     return (
-        f"{n} decorative mark{'s' if n != 1 else ''} render but are not a diagnosis: {names} rest{'s' if len(fired) == 1 else ''} on "
+        f"{n} excluded mark{'s' if n != 1 else ''} (◌) render but are not a diagnosis: {names} rest{'s' if len(fired) == 1 else ''} on "
         f"{', '.join(sigs) or 'nothing confirmed'}, {which}{tail}"
     )
 
@@ -2072,7 +2141,8 @@ def render_brief(
         f"Profile {facts_doc['profile']}{_ver(facts_doc, facts_doc['profile'])}"
         + (f" + {', '.join(o + _ver(facts_doc, o) for o in facts_doc['overlays'])}" if facts_doc["overlays"] else "")
         + f", geometry {facts_doc['geometry']}, skeleton `{facts_doc['skeleton_hash'][:12]}…`, facts `{facts_doc['facts_hash'][:12]}…`. "
-        f"Calibration: {facts_doc.get('calibration', 'in-repo, self-relative')} — the time-lapse for this skeleton is the one under gate `{fp}`. "
+        + (f"As of {str(facts_doc['as_of'])[:10]}, commit `{facts_doc['repo']['head_sha'][:12]}`. " if facts_doc.get("as_of") else f"Commit `{facts_doc['repo']['head_sha'][:12]}`. ")  # D-060: the clock's now
+        + f"Calibration: {facts_doc.get('calibration', 'in-repo, self-relative')} — the time-lapse for this skeleton is a `substrate timelapse` run under gate `{fp}`; this page carries no stability value. "
         f"Brief {facts_doc.get('brief_version', BRIEF_VERSION)}."
     )
     if draft:
@@ -2106,7 +2176,7 @@ def render_brief(
     page = (
         head
         + render_register(facts_doc)
-        + "\n## Decorative marks\n\n"
+        + "\n## Excluded marks (◌)\n\n"
         + render_disclosure(facts_doc)
         + "\n\n## Stance\n\n"
         + facts_doc.get("stance", STANCE)

@@ -14,7 +14,7 @@
 
 [ruleset]
 name = "maintainability"
-version = "0.2.7"
+version = "0.2.8"
 profile = "maintainability"
 description = "v0 maintainability lens: load, neglect, reinforcement, activity — over asserted signals only; the two pressure indices are unvalidated (D-015) and appear only as decorative features."
 wing_depth = 1
@@ -47,6 +47,7 @@ graph_dependent = true
 name_implies_consequence = true
 position_name = "long-untouched room above the load floor"
 caveat = "reads a floor on the load blend, not an importer (D-048): a room that nothing imports can clear the floor on inverse fan-out and size alone"  # D-053: the limit the note recorded reaches the page
+caveat_case = "fan_in == 0"  # D-060: the page counts the rooms that are this case
 note = "Long untouched and above the load floor: the position name says what the predicate reads, and no more — load_index >= 0.10 is a floor on a blend (fan_in_nonzero, centrality, inverse fan_out, size), which a leaf nothing imports can clear on inverse fan-out alone; 'still-imported' said an import the predicate does not read (D-048; 27 of 75 rooms on eslint at fan_in 0). D-031 replaced neglect_index (a blend whose recent_commit_share input is a window over the last fifth of commits and cannot be stable at K = 25 by construction) with the stable primitive last_touched_days, which the position name already meant. load_index is a G4 blend of checked measurements. Present-tense: this is where the water is, not a prediction that it rises."
 
 [[feature]]
