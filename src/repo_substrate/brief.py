@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.30.0"  # D-064: the unresolved imports are counted by kind (from test files; alias-shaped) so the test-graph cells they bias are said to be lower bounds; a set drawn twice says so in the rooms column; a tier lists one name per set. D-063: every ranked term states its cutoff (the corridor's median fan-out is 1 on registry); the tie count sits in the rooms column; two profiles on one predicate are one row; centrality is defined; column headers carry their own legend. D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
+BRIEF_VERSION = "0.31.0"  # D-065: the legend states the resolver's alias state beside the unresolved count — how many tsconfig `paths` patterns it was handed, or that the tsconfig could not be read and why (the caveat the substrate had carried since 0.4.1 and the page never rendered; substrate 0.5.0 fixed the loader that made it fire). D-064: the unresolved imports are counted by kind (from test files; alias-shaped) so the test-graph cells they bias are said to be lower bounds; a set drawn twice says so in the rooms column; a tier lists one name per set. D-063: every ranked term states its cutoff (the corridor's median fan-out is 1 on registry); the tie count sits in the rooms column; two profiles on one predicate are one row; centrality is defined; column headers carry their own legend. D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -295,6 +295,11 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         # the rooms they aim at is a lower bound; the page had named run-time imports as the mechanism
         "unresolved_by_kind": _unresolved_by_kind(substrate, nodes),
         "external_imports": ((substrate or {}).get("summary") or {}).get("external_imports"),
+        # D-065: the resolver's alias state — the substrate 0.4.1 caveat `tsconfig_malformed` fired on
+        # mcp-secure-server (its own JSONC stripper read the `/*` in "@/*" as a comment) and the page
+        # never said so; D-064 named the mechanism one layer too low. Stated beside the count it explains.
+        "tsconfig_aliases": ((substrate or {}).get("summary") or {}).get("tsconfig_aliases"),
+        "tsconfig_malformed": ((substrate or {}).get("caveats") or {}).get("tsconfig_malformed") if ((substrate or {}).get("summary") or {}).get("tsconfig_malformed") else None,
         "skeleton_hash": skeleton["skeleton_hash"],
         "profile": skeleton["profile"]["name"],
         "overlays": list(s.get("overlay_profiles") or []),
@@ -1771,6 +1776,21 @@ def _unresolved_text(facts_doc: dict[str, Any]) -> str:
     return f" ({', '.join(kinds)}{of}{tail})"
 
 
+def _alias_state_text(facts_doc: dict[str, Any]) -> str:
+    """D-065: what the resolver was given for path aliases, said where the unresolved count is read.
+    A malformed tsconfig is the substrate's caveat, rendered; an alias count is the positive fact
+    (0.5.0 substrates carry it; an older sheet says nothing rather than guessing)."""
+    bad = facts_doc.get("tsconfig_malformed")
+    if bad:
+        return f" The repository's tsconfig.json could not be read ({bad}), so no path alias reached the resolver and an alias-shaped import is unresolved for that reason."
+    n = facts_doc.get("tsconfig_aliases")
+    if n is None:
+        return ""
+    if n:
+        return f" The resolver was given the {n} path-alias pattern{'s' if n != 1 else ''} tsconfig.json declares."
+    return " No tsconfig.json path alias was read (none declared, or no tsconfig.json)."
+
+
 def _unresolved_by_kind(substrate: dict[str, Any] | None, nodes: dict[str, Any]) -> dict[str, int] | None:
     """D-064: the unresolved imports the substrate sampled, by the kind the page can state without
     resolving them itself — how many come from test files, and how many are alias-shaped (a
@@ -2147,7 +2167,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + f"- **largest parent directory** — the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent." + NL
         + f"- **relation to** — identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms — and a containment the predicates guarantee at any count; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. 'By its predicate': the inner predicate conjoins every term of the outer. Otherwise the cell says which raw signals the two predicates read in common (a blend or index expanded through its declared inputs), or 'no raw signal in common' — a signal, not an instrument." + NL
         + "- **the import graph and the test graph** — one edge set read twice: a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone; an import-graph row says how many of its rooms' importers are test files. Centrality is PageRank over that graph: a room's rank rises with the rank of its importers, not only with their number, so a room with four well-placed importers can outrank one with thirteen."
-        + (f" The graph is resolved statically: {facts_doc['unresolved_imports']} imports in the tree did not resolve to a file{_unresolved_text(facts_doc)}, and {facts_doc['external_imports']} are external packages; an import the resolver did not place, or one computed at run time, is not an edge, so a room reached only that way reads as unimported there." if facts_doc.get("unresolved_imports") is not None else "")
+        + (f" The graph is resolved statically: {facts_doc['unresolved_imports']} imports in the tree did not resolve to a file{_unresolved_text(facts_doc)}, and {facts_doc['external_imports']} are external packages; an import the resolver did not place, or one computed at run time, is not an edge, so a room reached only that way reads as unimported there.{_alias_state_text(facts_doc)}" if facts_doc.get("unresolved_imports") is not None else "")
         + NL
         + "- **caveat** — the ruleset's own limit on what a predicate reads, never a claim about this repository; the count beside it ('this case: N of M here') is this repository's."
         + NL

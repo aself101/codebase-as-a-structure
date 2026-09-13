@@ -357,3 +357,53 @@ def test_built_entries_under_dist_resolve_to_source(make_repo, small_cfg, tmp_pa
     assert m["src/index.ts"]["is_package_entry"]
     assert m["src/security/server.ts"]["is_package_entry"]
     assert not m["src/security/other.ts"]["is_package_entry"]
+
+
+def test_tsconfig_loader_keeps_the_alias_glob(tmp_path):
+    """D-065. The JSONC stripper the loader used through substrate 0.4.1 read the ``/*`` in
+    ``"@/*": ["./src/*"]`` as a comment opener, so every tsconfig whose ``paths`` block held a
+    glob — the shape of every alias — came back malformed, the aliases were never handed to the
+    resolver, and the 34 unresolved imports on mcp-secure-server (D-064) were this loader's,
+    not the resolver's. The fixture is that repository's tsconfig, with the comment forms the
+    stripper is for added around it."""
+    from repo_substrate.deps import load_tsconfig, strip_jsonc
+
+    (tmp_path / "tsconfig.json").write_text(
+        """{
+  // a line comment
+  "compilerOptions": {
+    "module": "NodeNext", /* a block comment */
+    "paths": {
+      "@/*": ["./src/*"],
+      "@tests/*": ["./test/*"],
+    },
+    "baseUrl": ".",
+    "note": "a string holding // and /* stays whole",
+  },
+  "include": ["src/**/*"],
+}
+""",
+        encoding="utf-8",
+    )
+    cfg = load_tsconfig(tmp_path)
+    assert cfg is not None
+    assert cfg["compilerOptions"]["paths"] == {"@/*": ["./src/*"], "@tests/*": ["./test/*"]}
+    assert cfg["compilerOptions"]["note"] == "a string holding // and /* stays whole"
+    assert cfg["include"] == ["src/**/*"]
+    # The escape inside a string does not end the string early.
+    assert strip_jsonc('{"a": "q\\"//x", // c\n}') == '{"a": "q\\"//x" \n}'
+
+
+def test_an_unresolved_specifier_is_alias_shaped_by_the_declared_paths_not_by_its_prefix():
+    """D-065 (D-064's breaks-if clause 3 fired): five `@tests/*` imports on mcp-secure-server were
+    counted external — scope-shaped, so the `@/` / `~/` / `#` guess missed them — and the page had
+    called external imports "never a quality problem". A declared `paths` pattern decides."""
+    from repo_substrate.deps import _is_relative_or_alias, alias_prefixes
+
+    cfg = {"compilerOptions": {"paths": {"@/*": ["./src/*"], "@tests/*": ["./test/*"], "lib": ["./src/lib"]}}}
+    assert alias_prefixes(cfg) == ("@/", "@tests/", "lib")
+    assert _is_relative_or_alias("@tests/helpers/x.js", alias_prefixes(cfg))
+    assert _is_relative_or_alias("lib", alias_prefixes(cfg))
+    assert not _is_relative_or_alias("@tests/helpers/x.js")  # without the declaration it reads as a scoped package
+    assert not _is_relative_or_alias("@scope/pkg", alias_prefixes(cfg))
+    assert alias_prefixes(None) == () and alias_prefixes({"compilerOptions": {}}) == ()

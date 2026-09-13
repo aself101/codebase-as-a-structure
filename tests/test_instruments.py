@@ -64,6 +64,8 @@ def test_instruments_can_disagree_and_type_imports_are_edges(adversarial, tmp_pa
     assert a["fan_in_alt"] == 3
     assert s["summary"]["fan_in_instrument_tau"] is not None
     assert _m(s, "src/lib/b.ts")["fan_in"] == 1  # e.ts re-exports b
+    assert s["summary"]["tsconfig_aliases"] == 1  # D-065: the `paths` patterns handed to the resolver, stated
+    assert s["summary"]["tsconfig_malformed"] is False
 
 
 def test_without_pre_compilation_deps_type_imports_vanish(adversarial, tmp_path):

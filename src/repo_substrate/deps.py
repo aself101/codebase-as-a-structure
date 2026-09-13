@@ -38,6 +38,7 @@ class DependencyResult:
     unresolved_samples: list[tuple[str, str]] = field(default_factory=list)  # (from, specifier)
     non_node_imports: int = 0  # resolved in-repo to a path that is not a node (excluded glob, .json/.css) — §8 third kind
     tsconfig_malformed: str | None = None
+    tsconfig_aliases: int = 0  # `paths` patterns handed to the resolver (D-065): the positive fact beside the caveat
     backend_version: str = "unknown"
 
 
@@ -49,14 +50,23 @@ class DependencyExtractor(Protocol):
     def version(self) -> str: ...
 
 
-def _is_relative_or_alias(spec: str) -> bool:
-    """A specifier that *should* resolve in-repo: relative, absolute, or alias-shaped
-    (tsconfig paths like ``@/x`` or ``~/x``). Anything else is treated as external."""
+def _is_relative_or_alias(spec: str, alias_prefixes: tuple[str, ...] = ()) -> bool:
+    """A specifier that *should* resolve in-repo: relative, absolute, or alias-shaped —
+    matching a ``paths`` pattern the repository's tsconfig declares (D-065: ``@tests/*`` is
+    scope-shaped and was counted external until the declared patterns were consulted), or,
+    when no tsconfig could be read, the conventional shapes ``@/x``, ``~/x``, ``#x``.
+    Anything else is treated as external."""
     if spec.startswith((".", "/")):
         return True
     if spec.startswith(("@/", "~/", "#")):
         return True
-    return False
+    return any(spec == a or spec.startswith(a) for a in alias_prefixes)
+
+
+def alias_prefixes(cfg: dict | None) -> tuple[str, ...]:
+    """The literal prefix of each tsconfig ``paths`` pattern (``@tests/*`` → ``@tests/``)."""
+    paths = ((cfg or {}).get("compilerOptions") or {}).get("paths") or {}
+    return tuple(sorted(str(k).split("*", 1)[0] for k in paths if str(k).split("*", 1)[0]))
 
 
 class TsconfigMalformed(RuntimeError):
@@ -65,40 +75,83 @@ class TsconfigMalformed(RuntimeError):
     must be a visible caveat, not a quiet default (2026-09-04 audit)."""
 
 
+def strip_jsonc(text: str) -> str:
+    """JSONC → JSON: drop ``//`` and ``/* */`` comments and trailing commas, *outside strings
+    only*. A single left-to-right pass that tracks string state, because the regex it replaces
+    (D-065) read the ``/*`` inside ``"@/*": ["./src/*"]`` — the alias glob every tsconfig
+    ``paths`` block is made of — as a comment opener, destroyed the config, and so disabled the
+    very aliases the loader exists to carry. The failure was recorded (``tsconfig_malformed``)
+    and never read: the second instrument shares this loader, so G2 could not see it either."""
+    out: list[str] = []
+    i, n = 0, len(text)
+    in_str = False
+    last_comma = -1  # index in `out` of the last comma emitted with only whitespace/comments after it
+    while i < n:
+        c = text[i]
+        if in_str:
+            out.append(c)
+            if c == "\\" and i + 1 < n:
+                out.append(text[i + 1])
+                i += 2
+                continue
+            if c == '"':
+                in_str = False
+            i += 1
+            continue
+        if c == "/" and i + 1 < n and text[i + 1] == "/":
+            j = text.find("\n", i)
+            i = n if j < 0 else j
+            continue
+        if c == "/" and i + 1 < n and text[i + 1] == "*":
+            j = text.find("*/", i + 2)
+            i = n if j < 0 else j + 2
+            continue
+        if c in "}]" and last_comma >= 0:
+            # A trailing comma: nothing but whitespace and comments between it and the closer.
+            out[last_comma] = ""
+        if c == ",":
+            last_comma = len(out)
+        elif c not in " \t\r\n":
+            last_comma = -1
+        if c == '"':
+            in_str = True
+        out.append(c)
+        i += 1
+    return "".join(out)
+
+
 def load_tsconfig(worktree: Path) -> dict | None:
     """tsconfig.json with comments and trailing commas stripped (it is JSONC in practice).
     Returns None only when the file is absent; raises TsconfigMalformed when it is unparseable."""
     p = worktree / "tsconfig.json"
     if not p.exists():
         return None
-    text = p.read_text(encoding="utf-8", errors="replace")
-    text = re.sub(r"/\*.*?\*/", "", text, flags=re.DOTALL)
-    text = re.sub(r"(^|[^:\"'])//[^\n]*", r"\1", text)
-    text = re.sub(r",(\s*[}\]])", r"\1", text)
+    text = strip_jsonc(p.read_text(encoding="utf-8", errors="replace"))
     try:
         return json.loads(text)
     except json.JSONDecodeError as e:
         raise TsconfigMalformed(f"tsconfig.json unparseable: {e}") from e
 
 
-def _usable_tsconfig(worktree: Path) -> str | None:
+def _usable_tsconfig(worktree: Path) -> tuple[str | None, dict | None]:
     """dependency-cruiser loads tsconfig through the TypeScript API, which fails hard when
     `extends` names a package that is not installed (a fresh clone has no node_modules).
     Path aliases are the only thing we need from it, so: if the config is self-contained,
     use it; if it extends a package, write a stripped copy into the (temporary) worktree
-    with `extends` removed and use that; if there is nothing alias-relevant, skip it."""
+    with `extends` removed and use that; if there is nothing alias-relevant, skip it.
+    Returns (the file name to pass, the parsed config)."""
     cfg = load_tsconfig(worktree)  # TsconfigMalformed propagates: the caller records it as a caveat
     if cfg is None:
-        return None
+        return None, None
     ext = cfg.get("extends")
     if not ext:
-        return "tsconfig.json"
+        return "tsconfig.json", cfg
     if isinstance(ext, str) and ext.startswith(".") and (worktree / ext).exists():
-        return "tsconfig.json"
+        return "tsconfig.json", cfg
     stripped = {k: v for k, v in cfg.items() if k != "extends"}
     out = worktree / "tsconfig.substrate.json"
     out.write_text(json.dumps(stripped), encoding="utf-8")
-    return out.name
+    return out.name, cfg
 
 
 class DependencyCruiserExtractor:
@@ -130,8 +183,11 @@ class DependencyCruiserExtractor:
         res = DependencyResult(backend_version=self.version())
         if not node_paths:
             return res
+        prefixes: tuple[str, ...] = ()
         try:
-            ts_arg = _usable_tsconfig(worktree)
+            ts_arg, cfg = _usable_tsconfig(worktree)
+            prefixes = alias_prefixes(cfg)
+            res.tsconfig_aliases = len(prefixes)
         except TsconfigMalformed as e:
             res.tsconfig_malformed = str(e)
             ts_arg = None
@@ -197,7 +253,7 @@ class DependencyCruiserExtractor:
                     or "undetermined" in types
                     or "npm-unknown" in types
                 ):
-                    if _is_relative_or_alias(spec):
+                    if _is_relative_or_alias(spec, prefixes):
                         res.unresolved_imports += 1
                         if len(res.unresolved_samples) < 50:
                             res.unresolved_samples.append((src, spec))

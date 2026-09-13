@@ -2170,3 +2170,32 @@ def test_unresolved_imports_are_counted_by_kind_and_a_set_drawn_twice_says_so_wh
     fs = [feat("x", ["a", "b"]), feat("x", ["a", "b"], profile="o"), feat("w", ["a"], predicate="w >= p90"), feat("v", ["a"], predicate="v >= p90")]
     tier = _b.top_tier(fs, {})
     assert tier["sets"] == 2 and tier["rooms"][0]["features"] == ["v = w", "x (2 profiles)"]  # one name per set: two profiles of one feature; two features drawing one set
+
+
+def test_the_legend_states_the_resolvers_alias_state_beside_the_unresolved_count(sub):
+    """D-065. Substrate 0.4.1's tsconfig loader read the ``/*`` in ``"@/*": ["./src/*"]`` as a
+    comment opener; mcp-secure-server's config came back malformed, the caveat fired on the
+    substrate, and the page never rendered it — so D-064 attributed the 34 unresolved imports
+    to a resolver never given the aliases, one layer below the true mechanism. The legend now
+    says what the resolver was given: the alias count (0.5.0's positive fact), or the caveat."""
+    import repo_substrate.brief as _b
+
+    sk = _skeleton(sub)
+    sub2 = json.loads(json.dumps(sub))
+    sub2["summary"]["tsconfig_aliases"] = 2
+    sub2["summary"]["tsconfig_malformed"] = False
+    f = facts(sk, sub2)
+    assert f["tsconfig_aliases"] == 2 and f["tsconfig_malformed"] is None
+    reg = _b.render_register(f)
+    assert "is not an edge, so a room reached only that way reads as unimported there. The resolver was given the 2 path-alias patterns tsconfig.json declares." in reg
+    # the caveat, rendered with its reason, on the same sentence
+    sub3 = json.loads(json.dumps(sub))
+    sub3["summary"]["tsconfig_malformed"] = True
+    sub3.setdefault("caveats", {})["tsconfig_malformed"] = "tsconfig.json unparseable: Expecting ':' delimiter: line 28 column 11 (char 735)"
+    g = facts(sk, sub3)
+    assert "line 28 column 11" in g["tsconfig_malformed"]
+    assert "The repository's tsconfig.json could not be read (tsconfig.json unparseable: Expecting ':' delimiter: line 28 column 11 (char 735)), so no path alias reached the resolver and an alias-shaped import is unresolved for that reason." in _b.render_register(g)
+    # none declared; and an older sheet without the count says nothing
+    assert _b._alias_state_text({"tsconfig_aliases": 0}) == " No tsconfig.json path alias was read (none declared, or no tsconfig.json)."
+    assert _b._alias_state_text({"tsconfig_aliases": 1}) == " The resolver was given the 1 path-alias pattern tsconfig.json declares."
+    assert _b._alias_state_text({}) == ""

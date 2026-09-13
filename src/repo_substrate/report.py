@@ -89,6 +89,7 @@ def render_report(sub: dict[str, Any], cfg: SubstrateConfig) -> str:
         "blame_failed",
         "alt_scanner_unreadable",
         "tsconfig_malformed",
+        "tsconfig_aliases",
         "total_loc",
         "repo_age_days",
         "commit_count",

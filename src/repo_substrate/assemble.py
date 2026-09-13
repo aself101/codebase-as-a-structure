@@ -280,6 +280,7 @@ def extract(
         "blame_failed": len(blame_failed),
         "alt_scanner_unreadable": len(alt_unreadable),
         "tsconfig_malformed": dep.tsconfig_malformed is not None,
+        "tsconfig_aliases": dep.tsconfig_aliases,
         "total_loc": total_loc,
         "repo_age_days": repo_age_days,
         "commit_count": n_commits,
