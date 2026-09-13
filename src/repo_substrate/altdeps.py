@@ -69,10 +69,21 @@ def _alias_map(tsconfig: dict | None) -> tuple[str, list[tuple[str, list[str]]]]
 
 
 def _resolve(
-    spec: str, importer: str, nodes: set[str], base_url: str, aliases: list[tuple[str, list[str]]]
+    spec: str,
+    importer: str,
+    nodes: set[str],
+    base_url: str,
+    aliases: list[tuple[str, list[str]]],
+    package_entries: dict[str, str] | None = None,
 ) -> str | None:
     spec = spec.split("?", 1)[0]
     targets: list[str] = []
+    if package_entries and spec in package_entries:
+        # D-066: a bare specifier naming an in-repo package is that package's entry. The map is
+        # the inventory's, shared with the primary extractor — a fault there is invisible to G2,
+        # as the tsconfig loader's was (D-065); stated in spec §5.
+        t = package_entries[spec]
+        return t if t in nodes else None
     if spec.startswith("."):
         targets.append(_normalize(PurePosixPath(importer).parent / spec))
     elif spec.startswith("/"):
@@ -97,7 +108,10 @@ def _resolve(
 
 
 def scan_fan_in_alt(
-    worktree: Path, node_paths: set[str], test_paths: set[str] | None = None
+    worktree: Path,
+    node_paths: set[str],
+    test_paths: set[str] | None = None,
+    package_entries: dict[str, str] | None = None,
 ) -> tuple[dict[str, int], dict[str, int], dict[str, int], list[str]]:
     """Returns (fan_in_alt, fan_out_alt, test_fan_in_alt, unreadable_paths) over in-repo resolved
     edges, self-loops dropped, duplicates collapsed — the same edge contract as the primary
@@ -123,7 +137,7 @@ def scan_fan_in_alt(
             spec = m.group(1) or m.group(2) or m.group(3)
             if not spec:
                 continue
-            target = _resolve(spec, p, js_ts, base_url, aliases)
+            target = _resolve(spec, p, js_ts, base_url, aliases, package_entries)
             if target and target != p:
                 importers[target].add(p)
                 out_edges[p].add(target)

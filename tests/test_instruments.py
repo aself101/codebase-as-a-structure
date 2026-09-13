@@ -37,6 +37,10 @@ def adversarial(make_repo):
         "src/lib/d.ts", "export const s = `import x from './a'`;\nexport const d = 4;\n"
     )  # looks like an import, is a string
     r.write("src/e.ts", "export * from './lib/b';\n")  # re-export
+    # D-066: an in-repo package imported by its own name (a cookbook under a file:../.. manifest)
+    r.write("package.json", '{"name": "adv-pkg", "main": "./dist/index.js"}\n')
+    r.write("src/index.ts", "export * from './e';\n")
+    r.write("examples/use.ts", "import { a } from 'adv-pkg';\nimport sub from 'adv-pkg/lib/a';\nexport const u = a;\n")
     for i in range(30):  # enough nodes to clear n_min
         r.write(f"src/pad/p{i}.ts", f"export const p{i} = {i};\n")
     r.commit("feat: adversarial fixture")
@@ -66,6 +70,13 @@ def test_instruments_can_disagree_and_type_imports_are_edges(adversarial, tmp_pa
     assert _m(s, "src/lib/b.ts")["fan_in"] == 1  # e.ts re-exports b
     assert s["summary"]["tsconfig_aliases"] == 1  # D-065: the `paths` patterns handed to the resolver, stated
     assert s["summary"]["tsconfig_malformed"] is False
+    # D-066: "adv-pkg" is this repository; the import is an edge to its entry on both instruments,
+    # the subpath of the built layout is unresolved (in-repo-shaped), and neither is external
+    idx = _m(s, "src/index.ts")
+    assert idx["fan_in"] == 1 and idx["fan_in_alt"] == 1
+    assert s["summary"]["package_name_imports"] == 1
+    assert s["summary"]["unresolved_imports"] == 1
+    assert ("examples/use.ts", "adv-pkg/lib/a") in {(x["from"], x["specifier"]) for x in s["caveats"]["unresolved_import_samples"]}
 
 
 def test_without_pre_compilation_deps_type_imports_vanish(adversarial, tmp_path):

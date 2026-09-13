@@ -97,7 +97,7 @@ def extract(
     fix_fallback = re.compile(cfg.fix_subject_regex, re.IGNORECASE)
 
     # --- steps 2–4: inventory + seed (by blob, no worktree), edges (worktree), history
-    static_nodes, seed = build_inventory(repo, rev, cfg)
+    static_nodes, seed, package_entries = build_inventory(repo, rev, cfg)
     node_paths = {n.path for n in static_nodes}
     static_by_path = {n.path: n for n in static_nodes}
     js_ts = {n.path for n in static_nodes if n.lang in ("ts", "js")}
@@ -110,10 +110,10 @@ def extract(
     if js_ts:
         with detached_worktree(repo, rev, opts.scratch_dir) as wt:
             if extractor is not None:
-                dep = extractor.extract(wt, js_ts)
+                dep = extractor.extract(wt, js_ts, package_entries)
             # Second instrument for the fan-in family (validation §2.4.2 G2, D-008/D-011): independent scanner.
             fan_in_alt, fan_out_alt, test_fan_in_alt, alt_unreadable = scan_fan_in_alt(
-                wt, js_ts, test_paths
+                wt, js_ts, test_paths, package_entries
             )
     hist = miner.mine(repo, rev, fix_fallback)
     as_of = hist.as_of
@@ -281,6 +281,7 @@ def extract(
         "alt_scanner_unreadable": len(alt_unreadable),
         "tsconfig_malformed": dep.tsconfig_malformed is not None,
         "tsconfig_aliases": dep.tsconfig_aliases,
+        "package_name_imports": dep.package_name_imports,
         "total_loc": total_loc,
         "repo_age_days": repo_age_days,
         "commit_count": n_commits,

@@ -220,10 +220,14 @@ def _resolve_entry(pkg_dir: str, target: str, present: set[str]) -> str | None:
 
 def package_facts(
     entries: list[tuple[str, str]], included: list[tuple[str, str]], repo: Path
-) -> tuple[dict[str, str], set[str]]:
-    """(package_of: included path → nearest package dir, entry paths) from every
-    package.json in the tree (D-029). `node_modules` and the exclude globs are honoured by
-    the caller's `included` list for nodes; package.json files under node_modules are skipped."""
+) -> tuple[dict[str, str], set[str], dict[str, str]]:
+    """(package_of: included path → nearest package dir, entry paths, entry_by_name: package
+    name → its resolved runtime entry) from every package.json in the tree (D-029). `node_modules`
+    and the exclude globs are honoured by the caller's `included` list for nodes; package.json
+    files under node_modules are skipped. entry_by_name (D-066) is the map a bare specifier
+    naming an in-repo package resolves through: the first of `main`, `module`, `browser` that
+    resolves to a node, so the dependency backends can place `import x from "<this repo's
+    name>"` in-repo instead of counting it external."""
     pkg_blobs = [
         (path, sha)
         for path, sha in entries
@@ -232,6 +236,7 @@ def package_facts(
     present = {p for p, _ in included}
     pkg_dirs: list[str] = []
     entry_paths: set[str] = set()
+    entry_by_name: dict[str, str] = {}
     if pkg_blobs:
         blobs = cat_blobs(repo, [sha for _, sha in pkg_blobs])
         for path, sha in pkg_blobs:
@@ -253,6 +258,13 @@ def package_facts(
                 r = _resolve_entry(pkg_dir, d, present)
                 if r:
                     entry_paths.add(r)
+            name = doc.get("name")
+            if isinstance(name, str) and name and name not in entry_by_name:
+                for f in ("main", "module", "browser"):
+                    hit = next((r for r in (_resolve_entry(pkg_dir, d, present) for d in _entry_strings(doc.get(f))) if r), None)
+                    if hit:
+                        entry_by_name[name] = hit
+                        break
     pkg_dirs = sorted(set(pkg_dirs), key=len, reverse=True)
     package_of: dict[str, str] = {}
     for path in present:
@@ -262,16 +274,19 @@ def package_facts(
                 owner = d
                 break
         package_of[path] = owner
-    return package_of, entry_paths
+    return package_of, entry_paths, entry_by_name
 
 
-def build_inventory(repo: Path, rev: str, cfg: SubstrateConfig) -> tuple[list[StaticNode], str]:
-    """Nodes at ``rev`` and the seed. Contents are read by blob SHA (``git cat-file``),
-    never by worktree path, so a case-insensitive filesystem cannot swap two files."""
+def build_inventory(
+    repo: Path, rev: str, cfg: SubstrateConfig
+) -> tuple[list[StaticNode], str, dict[str, str]]:
+    """Nodes at ``rev``, the seed, and the package-name → entry map (D-066). Contents are read
+    by blob SHA (``git cat-file``), never by worktree path, so a case-insensitive filesystem
+    cannot swap two files."""
     entries = ls_tree(repo, rev)
     included = included_paths(entries, cfg)
     seed = tree_seed(included)
-    package_of, entry_paths = package_facts(entries, included, repo)
+    package_of, entry_paths, entry_by_name = package_facts(entries, included, repo)
     paths = [p for p, _ in included]
     prox = test_proximity(paths, cfg)
     blobs = cat_blobs(repo, [sha for _, sha in included])
@@ -291,4 +306,4 @@ def build_inventory(repo: Path, rev: str, cfg: SubstrateConfig) -> tuple[list[St
                 is_package_entry=path in entry_paths,
             )
         )
-    return nodes, seed
+    return nodes, seed, entry_by_name

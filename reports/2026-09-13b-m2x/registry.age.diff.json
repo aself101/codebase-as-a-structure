@@ -1,0 +1,723 @@
+{
+ "after": {
+  "geometry": "age",
+  "repo": {
+   "head_sha": "f4f6ebd23eb45effc4c2b9a66ee705b4134a9955",
+   "name": "uluops-registry-api"
+  },
+  "skeleton_hash": "32a92e99ba2ec92011778cea45c649acfbe28b2726b4a86eca5f173402a9fc54"
+ },
+ "before": {
+  "geometry": "age",
+  "repo": {
+   "head_sha": "8319623b2b776a2af771133b7d6cc14dd2291079",
+   "name": "uluops-registry-api"
+  },
+  "skeleton_hash": "e8792e0ab3511e72e3901b708c59786610cde3a1a1c8281318c6562d4c125cf7"
+ },
+ "born": 1,
+ "budget": {
+  "feature_churn_max": 0.05,
+  "k": 25,
+  "max_k": 50,
+  "max_touched_frac": 0.5,
+  "min_jitter_union": 20,
+  "min_untouched_n": 30,
+  "operand": "jitter: rank + mixed feature churn, and strata moves, over untouched rooms",
+  "pinned_k": 25,
+  "reason": null,
+  "strata_moved_max": 0.05,
+  "verdict": "within_budget"
+ },
+ "commits_between": 25,
+ "common_nodes": 266,
+ "deleted": 0,
+ "feature_churn": 0.17357512953367876,
+ "kinds": {
+  "maintainability/crack": "rank",
+  "maintainability/dark_room": "clock",
+  "maintainability/flooded_basement": "mixed",
+  "maintainability/foundation": "rank",
+  "maintainability/hub": "rank",
+  "maintainability/lit_room": "clock",
+  "maintainability/scaffolding": "rank",
+  "onboarding/corridor": "rank",
+  "onboarding/foundation": "rank",
+  "onboarding/import_root": "rank",
+  "onboarding/leaf_utility": "rank",
+  "onboarding/package_entry": "rank"
+ },
+ "per_feature": {
+  "maintainability/dark_room": {
+   "added": [],
+   "after": 27,
+   "before": 27,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "clock",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/flooded_basement": {
+   "added": [],
+   "after": 26,
+   "before": 26,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "mixed",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/foundation": {
+   "added": [],
+   "after": 27,
+   "before": 27,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/hub": {
+   "added": [
+    "src/schemas/validation/schema.ts"
+   ],
+   "after": 27,
+   "before": 28,
+   "evidence": {
+    "src/index.ts": {
+     "after": null,
+     "before": {
+      "centrality": 0.0047
+     }
+    },
+    "src/schemas/definition/types.ts": {
+     "after": null,
+     "before": {
+      "centrality": 0.0047
+     }
+    },
+    "src/schemas/validation/schema.ts": {
+     "after": {
+      "centrality": 0.0048
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.896551724137931,
+   "kind": "rank",
+   "removed": [
+    "src/index.ts",
+    "src/schemas/definition/types.ts"
+   ],
+   "untouched_changes": 1
+  },
+  "maintainability/lit_room": {
+   "added": [
+    "src/controllers/dependency-controller.ts",
+    "src/controllers/fork-controller.ts",
+    "src/controllers/model-controller.ts",
+    "src/controllers/translation-controller.ts",
+    "src/controllers/user-controller.ts",
+    "src/db/connection.ts",
+    "src/db/migrations/042_create_definition_lineages.ts",
+    "src/db/repository/alias-repository.ts",
+    "src/db/repository/lineage-repository.ts",
+    "src/index.ts",
+    "src/middleware/validate.ts",
+    "src/routes/v1/definitions.ts",
+    "src/routes/v1/schemas.ts",
+    "src/schemas/enums.ts",
+    "src/schemas/validation/schema.ts",
+    "src/schemas/version/schema.ts",
+    "src/services/analytics/analytics-service.ts",
+    "src/services/analytics/health.ts",
+    "src/services/analytics/types.ts",
+    "src/services/definition/lifecycle.ts",
+    "src/services/definition/queries.ts",
+    "src/services/definition/types.ts",
+    "src/services/dependency/index.ts",
+    "src/services/safety/capabilities.ts",
+    "src/services/translation/index.ts",
+    "src/services/translation/translator.ts",
+    "src/services/validation/index.ts",
+    "src/services/version-service.ts"
+   ],
+   "after": 39,
+   "before": 42,
+   "evidence": {
+    "scripts/backfill-is-latest.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "scripts/backfill-missing-risk-profiles.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "scripts/backfill-risk-scalars.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "scripts/backfill-stale-risk-profiles.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 2.9581
+     }
+    },
+    "scripts/calibration-gate.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "scripts/check-optionalauth-nonget.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.8814
+     }
+    },
+    "scripts/cron/deep-analysis.sh": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "scripts/cron/executions-retention.sh": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "scripts/cron/models-sync.sh": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "scripts/lineage-consistency-check.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.8357
+     }
+    },
+    "scripts/list-pre-a1-versions.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "scripts/requeue-deep-stale.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 2.9548
+     }
+    },
+    "src/config/index.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "src/controllers/dependency-controller.ts": {
+     "after": {
+      "last_touched_days": 19.0145
+     },
+     "before": null
+    },
+    "src/controllers/fork-controller.ts": {
+     "after": {
+      "last_touched_days": 21.8106
+     },
+     "before": null
+    },
+    "src/controllers/model-controller.ts": {
+     "after": {
+      "last_touched_days": 21.6977
+     },
+     "before": null
+    },
+    "src/controllers/translation-controller.ts": {
+     "after": {
+      "last_touched_days": 21.8106
+     },
+     "before": null
+    },
+    "src/controllers/user-controller.ts": {
+     "after": {
+      "last_touched_days": 21.6977
+     },
+     "before": null
+    },
+    "src/db/connection.ts": {
+     "after": {
+      "last_touched_days": 16.0052
+     },
+     "before": null
+    },
+    "src/db/migrations/035_scope_execution_run_id_to_definition.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "src/db/migrations/036_add_risk_profile_to_definition_versions.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "src/db/migrations/037_add_deep_analysis_columns.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "src/db/migrations/042_create_definition_lineages.ts": {
+     "after": {
+      "last_touched_days": 19.9165
+     },
+     "before": null
+    },
+    "src/db/migrations/051_repoint_grok_alias.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.8357
+     }
+    },
+    "src/db/migrations/20260712000000_add_risk_scalars_to_definitions.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "src/db/migrations/20260718000000_add_analyzer_version_to_definitions.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "src/db/repository/alias-repository.ts": {
+     "after": {
+      "last_touched_days": 21.8106
+     },
+     "before": null
+    },
+    "src/db/repository/lineage-repository.ts": {
+     "after": {
+      "last_touched_days": 19.9165
+     },
+     "before": null
+    },
+    "src/index.ts": {
+     "after": {
+      "last_touched_days": 16.0052
+     },
+     "before": null
+    },
+    "src/middleware/index.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "src/middleware/rate-limit.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "src/middleware/validate.ts": {
+     "after": {
+      "last_touched_days": 19.9163
+     },
+     "before": null
+    },
+    "src/routes/v1/analytics.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9465
+     }
+    },
+    "src/routes/v1/definitions.ts": {
+     "after": {
+      "last_touched_days": 19.0145
+     },
+     "before": null
+    },
+    "src/routes/v1/schemas.ts": {
+     "after": {
+      "last_touched_days": 21.8106
+     },
+     "before": null
+    },
+    "src/schemas/enums.ts": {
+     "after": {
+      "last_touched_days": 19.9165
+     },
+     "before": null
+    },
+    "src/schemas/index.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "src/schemas/validation/schema.ts": {
+     "after": {
+      "last_touched_days": 21.8106
+     },
+     "before": null
+    },
+    "src/schemas/version/schema.ts": {
+     "after": {
+      "last_touched_days": 21.8106
+     },
+     "before": null
+    },
+    "src/services/analytics/analytics-service.ts": {
+     "after": {
+      "last_touched_days": 19.9165
+     },
+     "before": null
+    },
+    "src/services/analytics/health.ts": {
+     "after": {
+      "last_touched_days": 19.9165
+     },
+     "before": null
+    },
+    "src/services/analytics/types.ts": {
+     "after": {
+      "last_touched_days": 19.9165
+     },
+     "before": null
+    },
+    "src/services/definition/lifecycle.ts": {
+     "after": {
+      "last_touched_days": 19.9165
+     },
+     "before": null
+    },
+    "src/services/definition/mutations.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.7968
+     }
+    },
+    "src/services/definition/queries.ts": {
+     "after": {
+      "last_touched_days": 19.9165
+     },
+     "before": null
+    },
+    "src/services/definition/types.ts": {
+     "after": {
+      "last_touched_days": 21.8106
+     },
+     "before": null
+    },
+    "src/services/dependency/index.ts": {
+     "after": {
+      "last_touched_days": 19.0145
+     },
+     "before": null
+    },
+    "src/services/safety/analyzer-version.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 2.9581
+     }
+    },
+    "src/services/safety/capabilities.ts": {
+     "after": {
+      "last_touched_days": 19.0145
+     },
+     "before": null
+    },
+    "src/services/safety/deep-analysis-worker.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 2.9581
+     }
+    },
+    "src/services/safety/definition-scanner.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 2.9581
+     }
+    },
+    "src/services/safety/risk-calculator.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 2.9581
+     }
+    },
+    "src/services/safety/types.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 3.687
+     }
+    },
+    "src/services/translation/index.ts": {
+     "after": {
+      "last_touched_days": 21.8106
+     },
+     "before": null
+    },
+    "src/services/translation/translator.ts": {
+     "after": {
+      "last_touched_days": 0.0
+     },
+     "before": null
+    },
+    "src/services/validation/index.ts": {
+     "after": {
+      "last_touched_days": 21.8106
+     },
+     "before": null
+    },
+    "src/services/validation/reference-validator.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 5.9893
+     }
+    },
+    "src/services/version-service.ts": {
+     "after": {
+      "last_touched_days": 21.8106
+     },
+     "before": null
+    },
+    "src/utils/errors.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 0.7968
+     }
+    }
+   },
+   "jaccard": 0.15714285714285714,
+   "kind": "clock",
+   "removed": [
+    "scripts/backfill-is-latest.ts",
+    "scripts/backfill-missing-risk-profiles.ts",
+    "scripts/backfill-risk-scalars.ts",
+    "scripts/backfill-stale-risk-profiles.ts",
+    "scripts/calibration-gate.ts",
+    "scripts/check-optionalauth-nonget.ts",
+    "scripts/cron/deep-analysis.sh",
+    "scripts/cron/executions-retention.sh",
+    "scripts/cron/models-sync.sh",
+    "scripts/lineage-consistency-check.ts",
+    "scripts/list-pre-a1-versions.ts",
+    "scripts/requeue-deep-stale.ts",
+    "src/config/index.ts",
+    "src/db/migrations/035_scope_execution_run_id_to_definition.ts",
+    "src/db/migrations/036_add_risk_profile_to_definition_versions.ts",
+    "src/db/migrations/037_add_deep_analysis_columns.ts",
+    "src/db/migrations/051_repoint_grok_alias.ts",
+    "src/db/migrations/20260712000000_add_risk_scalars_to_definitions.ts",
+    "src/db/migrations/20260718000000_add_analyzer_version_to_definitions.ts",
+    "src/middleware/index.ts",
+    "src/middleware/rate-limit.ts",
+    "src/routes/v1/analytics.ts",
+    "src/schemas/index.ts",
+    "src/services/definition/mutations.ts",
+    "src/services/safety/analyzer-version.ts",
+    "src/services/safety/deep-analysis-worker.ts",
+    "src/services/safety/definition-scanner.ts",
+    "src/services/safety/risk-calculator.ts",
+    "src/services/safety/types.ts",
+    "src/services/validation/reference-validator.ts",
+    "src/utils/errors.ts"
+   ],
+   "untouched_changes": 31
+  },
+  "maintainability/scaffolding": {
+   "added": [
+    "src/schemas/validation/types.ts",
+    "src/services/validation/index.ts",
+    "src/utils/definition-response.ts"
+   ],
+   "after": 133,
+   "before": 130,
+   "evidence": {
+    "src/schemas/validation/types.ts": {
+     "after": {
+      "reinforcement_index": 0.6504
+     },
+     "before": null
+    },
+    "src/services/validation/index.ts": {
+     "after": {
+      "reinforcement_index": 0.6504
+     },
+     "before": null
+    },
+    "src/utils/definition-response.ts": {
+     "after": {
+      "reinforcement_index": 0.6504
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.9774436090225563,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 1
+  },
+  "onboarding/corridor": {
+   "added": [],
+   "after": 13,
+   "before": 15,
+   "evidence": {
+    "src/index.ts": {
+     "after": null,
+     "before": {
+      "centrality": 0.0047,
+      "fan_out": 14
+     }
+    },
+    "src/schemas/definition/types.ts": {
+     "after": null,
+     "before": {
+      "centrality": 0.0047,
+      "fan_out": 1
+     }
+    }
+   },
+   "jaccard": 0.8666666666666667,
+   "kind": "rank",
+   "removed": [
+    "src/index.ts",
+    "src/schemas/definition/types.ts"
+   ],
+   "untouched_changes": 1
+  },
+  "onboarding/foundation": {
+   "added": [],
+   "after": 27,
+   "before": 27,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/import_root": {
+   "added": [],
+   "after": 11,
+   "before": 11,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/leaf_utility": {
+   "added": [],
+   "after": 20,
+   "before": 20,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/package_entry": {
+   "added": [],
+   "after": 1,
+   "before": 1,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  }
+ },
+ "strata_moved": [
+  "scripts/list-pre-a1-versions.ts",
+  "src/db/migrations/024_sync_visibility_across_versions.ts"
+ ],
+ "strata_moved_frac": 0.007518796992481203,
+ "touched": {
+  "frac": 0.14661654135338345,
+  "n": 39,
+  "nodes": [
+   "src/controllers/definition-controller.ts",
+   "src/controllers/dependency-controller.ts",
+   "src/controllers/fork-controller.ts",
+   "src/controllers/model-controller.ts",
+   "src/controllers/translation-controller.ts",
+   "src/controllers/user-controller.ts",
+   "src/db/connection.ts",
+   "src/db/migrations/042_create_definition_lineages.ts",
+   "src/db/repository/alias-repository.ts",
+   "src/db/repository/definition-repository.ts",
+   "src/db/repository/lineage-repository.ts",
+   "src/db/repository/version-repository.ts",
+   "src/db/seeds/003_aliases.ts",
+   "src/index.ts",
+   "src/middleware/validate.ts",
+   "src/routes/v1/definitions.ts",
+   "src/routes/v1/index.ts",
+   "src/routes/v1/schemas.ts",
+   "src/schemas/enums.ts",
+   "src/schemas/validation/schema.ts",
+   "src/schemas/version/schema.ts",
+   "src/services/analytics/analytics-service.ts",
+   "src/services/analytics/health.ts",
+   "src/services/analytics/types.ts",
+   "src/services/definition/lifecycle.ts",
+   "src/services/definition/queries.ts",
+   "src/services/definition/quota.ts",
+   "src/services/definition/types.ts",
+   "src/services/dependency/index.ts",
+   "src/services/fork/index.ts",
+   "src/services/model/index.ts",
+   "src/services/safety/capabilities.ts",
+   "src/services/safety/deep-analysis-queue.ts",
+   "src/services/safety/publish-gate.ts",
+   "src/services/translation/index.ts",
+   "src/services/translation/translator.ts",
+   "src/services/validation/index.ts",
+   "src/services/version-service.ts",
+   "src/utils/definition-response.ts"
+  ]
+ },
+ "untouched": {
+  "by_kind": {
+   "clock": {
+    "changes": 31,
+    "churn": 0.5344827586206896,
+    "union": 58
+   },
+   "mixed": {
+    "changes": 0,
+    "churn": 0.0,
+    "union": 26
+   },
+   "rank": {
+    "changes": 3,
+    "churn": 0.014563106796116505,
+    "union": 206
+   }
+  },
+  "clock_churn": 0.5344827586206896,
+  "decorative_changes": 6,
+  "decorative_churn": 0.5,
+  "feature_churn": 0.11724137931034483,
+  "jitter_churn": 0.01293103448275862,
+  "n": 227,
+  "strata_moved": [
+   "scripts/list-pre-a1-versions.ts",
+   "src/db/migrations/024_sync_visibility_across_versions.ts"
+  ],
+  "strata_moved_frac": 0.00881057268722467
+ }
+}

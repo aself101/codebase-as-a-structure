@@ -333,6 +333,16 @@ def test_package_facts_resolve_entries_and_owners(make_repo, small_cfg, tmp_path
         m["src/index.ts"]["package"] == ""
         and m["packages/sub/lib/helper.ts"]["package"] == "packages/sub"
     )
+    # D-066: the package-name → entry map the backends resolve bare self-imports through
+    from repo_substrate.deps import package_name_target
+    from repo_substrate.inventory import build_inventory
+
+    _, _, by_name = build_inventory(r.path, "HEAD", small_cfg)
+    assert by_name == {"root": "src/index.ts"}  # `sub` declares only exports, which the map does not read
+    assert package_name_target("root", by_name) == ("root", True)
+    assert package_name_target("root/lib/x", by_name) == ("root", False)
+    assert package_name_target("rootless", by_name) == (None, False)
+    assert package_name_target("react", None) == (None, False)
 
 
 def test_built_entries_under_dist_resolve_to_source(make_repo, small_cfg, tmp_path):

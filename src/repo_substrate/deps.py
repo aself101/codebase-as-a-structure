@@ -39,13 +39,16 @@ class DependencyResult:
     non_node_imports: int = 0  # resolved in-repo to a path that is not a node (excluded glob, .json/.css) — §8 third kind
     tsconfig_malformed: str | None = None
     tsconfig_aliases: int = 0  # `paths` patterns handed to the resolver (D-065): the positive fact beside the caveat
+    package_name_imports: int = 0  # bare specifiers naming an in-repo package, resolved to its entry (D-066)
     backend_version: str = "unknown"
 
 
 class DependencyExtractor(Protocol):
     name: str
 
-    def extract(self, worktree: Path, node_paths: set[str]) -> DependencyResult: ...
+    def extract(
+        self, worktree: Path, node_paths: set[str], package_entries: dict[str, str] | None = None
+    ) -> DependencyResult: ...
 
     def version(self) -> str: ...
 
@@ -61,6 +64,23 @@ def _is_relative_or_alias(spec: str, alias_prefixes: tuple[str, ...] = ()) -> bo
     if spec.startswith(("@/", "~/", "#")):
         return True
     return any(spec == a or spec.startswith(a) for a in alias_prefixes)
+
+
+def package_name_target(spec: str, package_entries: dict[str, str] | None) -> tuple[str | None, bool]:
+    """(the in-repo package a bare specifier names, whether it is the bare name) — D-066: a
+    specifier equal to an in-repo package's name resolves to that package's declared entry (the
+    cookbook's thirteen `import … from "mcp-secure-server"` under a `file:../..` manifest; typeorm's
+    codemod fixtures importing "typeorm"). A subpath of that name (`typeorm/metadata/X`) names the
+    package's *built* layout, which the tree does not hold: reported as unresolved, in-repo-shaped,
+    never external. Returns (None, False) when the specifier names no in-repo package."""
+    if not package_entries:
+        return None, False
+    if spec in package_entries:
+        return spec, True
+    for name in package_entries:
+        if spec.startswith(name + "/"):
+            return name, False
+    return None, False
 
 
 def alias_prefixes(cfg: dict | None) -> tuple[str, ...]:
@@ -179,7 +199,9 @@ class DependencyCruiserExtractor:
         except (OSError, json.JSONDecodeError, KeyError) as e:
             raise RuntimeError(f"cannot read dependency-cruiser version from {p}: {e}") from e
 
-    def extract(self, worktree: Path, node_paths: set[str]) -> DependencyResult:
+    def extract(
+        self, worktree: Path, node_paths: set[str], package_entries: dict[str, str] | None = None
+    ) -> DependencyResult:
         res = DependencyResult(backend_version=self.version())
         if not node_paths:
             return res
@@ -253,7 +275,15 @@ class DependencyCruiserExtractor:
                     or "undetermined" in types
                     or "npm-unknown" in types
                 ):
-                    if _is_relative_or_alias(spec, prefixes):
+                    pkg, bare = package_name_target(spec, package_entries)
+                    if pkg and bare:
+                        # D-066: the repository's own package name is not external
+                        target = package_entries[pkg]  # type: ignore[index]
+                        res.package_name_imports += 1
+                        if target in node_paths and target != src:
+                            res.edges.add((src, target))
+                        continue
+                    if pkg or _is_relative_or_alias(spec, prefixes):
                         res.unresolved_imports += 1
                         if len(res.unresolved_samples) < 50:
                             res.unresolved_samples.append((src, spec))

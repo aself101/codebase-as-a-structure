@@ -1928,7 +1928,7 @@ def test_the_defence_sits_in_the_cell_it_defends_and_the_page_carries_its_snapsh
     fb = next(x for x in f["features"] if x["feature"] == "flooded_basement")
     assert fb["caveat_case"] == "fan_in == 0" and fb["caveat_case_count"] == sum(1 for r in fb["rooms"] if f["rooms"][r]["fan_in"] == 0)
     if fb["count"]:
-        assert f"(this case: {fb['caveat_case_count']} of {fb['count']} here)" in _row(reg, "flooded_basement")
+        assert f"({fb['caveat_case_count']} of {fb['count']} here have no importer)" in _row(reg, "flooded_basement")  # D-066: the count sits beside the clause
     assert _b._case_holds("fan_in == 0 and fan_out >= 2", {"fan_in": 0, "fan_out": 3}) and not _b._case_holds("fan_in == 0", {"fan_in": 1}) and not _b._case_holds("fan_in == 0", {})
     # a partly listed tier names the rooms it leaves out
     def feat(name, rooms, profile="p", predicate="x >= p90"):
@@ -1982,7 +1982,7 @@ def test_a_row_states_its_realized_share_and_the_tier_table_is_the_whole_top_tie
     n_unindexed = sum(1 for n in sub["nodes"] if not n["metrics"].get("is_test") and (n.get("derived") or {}).get("indices") is None)
     assert f["node_count"] == len(sub["nodes"]) and f["test_nodes"] == n_test and f["unindexed_nodes"] == n_unindexed
     assert f["population"] + n_test + n_unindexed == len(sub["nodes"])  # the mapper's population rule, restated on the page
-    assert f"A room is a source file outside the test convention with computed signals: {f['population']} of the tree's {f['node_count']} files; the {n_test} test files are nodes of the import graph and not rooms" in reg
+    assert f"A room is a source file outside the test convention with computed signals: {f['population']} of the {f['node_count']} files with a source extension the substrate reads (manifests, documents and the rest of the tree are not counted); the {n_test} test files are nodes of the import graph and not rooms" in reg  # D-066: node_count is not the tree
     if n_unindexed:
         assert f"{n_unindexed} file{'s' if n_unindexed != 1 else ''} with no computed signals" in reg
     assert f["unresolved_imports"] == sub["summary"]["unresolved_imports"] and f"The graph is resolved statically: {f['unresolved_imports']} imports in the tree did not resolve to a file, and {f['external_imports']} are external packages" in reg
@@ -2199,3 +2199,51 @@ def test_the_legend_states_the_resolvers_alias_state_beside_the_unresolved_count
     assert _b._alias_state_text({"tsconfig_aliases": 0}) == " No tsconfig.json path alias was read (none declared, or no tsconfig.json)."
     assert _b._alias_state_text({"tsconfig_aliases": 1}) == " The resolver was given the 1 path-alias pattern tsconfig.json declares."
     assert _b._alias_state_text({}) == ""
+
+
+def test_a_ranked_row_states_its_far_boundary_and_a_wing_of_scopes_counts_them(sub):
+    """D-066 (the sixth unpointed round: the cookbook's author on mcp-secure-server 0.31.0; the
+    skimmer on registry 0.31.0). Control: 35 rooms tied at the p90 clock cutoff and 24 more
+    0.0195 days under it — the tie count (D-062) closed the rank's discreteness on one side; the
+    row now states the next value beyond the cutoff and the rooms at it. A wing of fourteen
+    package scopes read as one location; the by-wing cell says how many of the wing's scopes
+    hold the feature. "the tree's 264 files" was node_count. Nineteen imports of the
+    repository's own package name were external (substrate 0.6.0 places them; the legend counts
+    them). Skimmer: "(this case: 0 of 11 here)" after a two-clause caveat did not say which clause
+    it counted; a caveat places the count with {case}."""
+    import repo_substrate.brief as _b
+
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    reg = _b.render_register(f)
+    # the far boundary, on every single-pNN row that has one
+    for e in f["features"]:
+        b = e.get("beyond_cutoff")
+        if b:
+            assert b["count"] >= 1 and b["gap"] > 0 and b["side"] in ("below", "above")
+            assert f"the next value {b['side']} the cutoff holds {b['count']} room" in _row(reg, e["feature"], e["decorative"])
+    # the helper on a fixture: rooms at 10, 9.5 (two), 3; cutoff 10, >= → next below is 9.5 with 2 rooms
+    nodes = {r: {"metrics": {"x": v}} for r, v in {"a": 10, "b": 9.5, "c": 9.5, "d": 3}.items()}
+    e = {"predicate": "x >= p90", "rooms": ["a"], "thresholds": {"x >= p90": 10}}
+    assert _b._rooms_beyond_cutoff(e, nodes, set(nodes)) == {"value": 9.5, "count": 2, "gap": 0.5, "side": "below"}
+    e2 = {"predicate": "x <= p10", "rooms": ["d"], "thresholds": {"x <= p10": 3}}
+    assert _b._rooms_beyond_cutoff(e2, nodes, set(nodes)) == {"value": 9.5, "count": 2, "gap": 6.5, "side": "above"}
+    assert _b._rooms_beyond_cutoff({"predicate": "x >= p90 and y >= 1", "rooms": [], "thresholds": {}}, nodes, set(nodes)) is None
+    assert "; the next value below the cutoff holds 2 rooms, 0.5 under it" in _b._share_by_construction("x >= p90", 1, 4, {"x >= p90": 10}, None, {"value": 9.5, "count": 2, "gap": 0.5, "side": "below"})
+    # a wing of many scopes: the by-wing cell says how many hold the feature
+    g = json.loads(json.dumps(f))
+    g["scopes_by_wing"] = {w: 14 for w in g["scopes_by_wing"]}
+    tmpl = next(x for x in g["features"] if x["count"] > 0 and not x["decorative"])
+    tmpl["by_wing_scopes"] = {w: 6 for w in tmpl["by_wing"]}
+    reg2 = _b.render_register(g)
+    w0 = next(iter(tmpl["by_wing"]))
+    assert f"{w0} {tmpl['by_wing'][w0]} (in 6 of the wing's 14 scopes)" in _row(reg2, tmpl["feature"], profile=tmpl["profile"])
+    # a wing of one scope says nothing more
+    assert "of the wing's" not in reg or any(v > 1 for v in f["scopes_by_wing"].values())
+    # the package-name imports, said beside the external count they left
+    assert _b._package_name_text({"package_name_imports": 19}) == " 19 imports name a package this repository declares and resolve to its entry."
+    assert _b._package_name_text({"package_name_imports": 0}) == "" and _b._package_name_text({}) == ""
+    # {case} places the count beside its clause; a caveat without it keeps the trailing form
+    ir = next(x for x in f["features"] if x["feature"] == "import_root")
+    assert f"({ir['caveat_case_count']} of {ir['count']} here are declared package entries)" in _row(reg, "import_root")
+    assert "(this case:" not in reg

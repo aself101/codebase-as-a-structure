@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.31.0"  # D-065: the legend states the resolver's alias state beside the unresolved count — how many tsconfig `paths` patterns it was handed, or that the tsconfig could not be read and why (the caveat the substrate had carried since 0.4.1 and the page never rendered; substrate 0.5.0 fixed the loader that made it fire). D-064: the unresolved imports are counted by kind (from test files; alias-shaped) so the test-graph cells they bias are said to be lower bounds; a set drawn twice says so in the rooms column; a tier lists one name per set. D-063: every ranked term states its cutoff (the corridor's median fan-out is 1 on registry); the tie count sits in the rooms column; two profiles on one predicate are one row; centrality is defined; column headers carry their own legend. D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
+BRIEF_VERSION = "0.32.0"  # D-066: a ranked row states the next value beyond its cutoff and how many rooms sit there (a batch commit divides at the cutoff; the tie count closed one side); a by-wing count on a wing of many package scopes says how many scopes hold the feature; the population sentence says node_count is the files with a source extension, not the tree; the legend counts the imports that name this repository's own package; a caveat carries its case count beside the clause it counts (`{case}`). D-065: the legend states the resolver's alias state beside the unresolved count — how many tsconfig `paths` patterns it was handed, or that the tsconfig could not be read and why (the caveat the substrate had carried since 0.4.1 and the page never rendered; substrate 0.5.0 fixed the loader that made it fire). D-064: the unresolved imports are counted by kind (from test files; alias-shaped) so the test-graph cells they bias are said to be lower bounds; a set drawn twice says so in the rooms column; a tier lists one name per set. D-063: every ranked term states its cutoff (the corridor's median fan-out is 1 on registry); the tie count sits in the rooms column; two profiles on one predicate are one row; centrality is defined; column headers carry their own legend. D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -82,6 +82,12 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         parts = nid.split("/")
         return "/".join(parts[:depth]) if len(parts) > depth else "(root)"
 
+    def scope_of(nid: str) -> str:
+        pkg = ((nodes.get(nid) or {}).get("metrics") or {}).get("package", "")
+        return f"{pkg}/{ROOT_SCOPE}" if pkg else ROOT_SCOPE
+
+    population_ids = set(skeleton["strata"]["by_node"])
+
     for e in feats.values():
         e["rooms"] = sorted(set(e["rooms"]))
         e["count"] = len(e["rooms"])
@@ -94,6 +100,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         # page counts it — all 70 dark rooms sat at the p90 cutoff (one mass commit), and every one of
         # src/index.ts's 1374 importers was a test file, while the page said "ties" and "one edge set"
         e["at_cutoff"] = _rooms_at_cutoff(e, nodes)
+        # D-066 (the cookbook control): 35 rooms tied at the p90 cutoff and 24 more 28 minutes younger —
+        # the tie count closed the rank's discreteness on one side; the row states the other
+        e["beyond_cutoff"] = _rooms_beyond_cutoff(e, nodes, population_ids)
         if nodes and _signals_read(e["predicate"]) & {"fan_in", "centrality"}:
             fi = sum(int(((nodes.get(r) or {}).get("metrics") or {}).get("fan_in", 0) or 0) for r in e["rooms"])
             tf = sum(int(((nodes.get(r) or {}).get("metrics") or {}).get("test_fan_in", 0) or 0) for r in e["rooms"])
@@ -104,6 +113,15 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         for r in e["rooms"]:
             bw[wing_of(r)] = bw.get(wing_of(r), 0) + 1
         e["by_wing"] = dict(sorted(bw.items()))
+        # D-066 (the cookbook control): a wing of fourteen package scopes reads as one location; the
+        # feature's rooms per scope travel, and the by-wing cell says how many of the wing's scopes hold it
+        bs: dict[str, int] = {}
+        wsc: dict[str, set[str]] = {}
+        for r in e["rooms"]:
+            bs[scope_of(r)] = bs.get(scope_of(r), 0) + 1
+            wsc.setdefault(wing_of(r), set()).add(scope_of(r))
+        e["by_scope"] = dict(sorted(bs.items()))
+        e["by_wing_scopes"] = {w: len(v) for w, v in sorted(wsc.items())}
         # D-037: the largest single directory in the set — the composition a two-room exemplar
         # list can hide (typeorm's dark_room is half src/error)
         bd: dict[str, int] = {}
@@ -271,6 +289,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         scope = f"{pkg}/{ROOT_SCOPE}" if pkg else ROOT_SCOPE
         by_package[scope] = by_package.get(scope, 0) + 1
     n_packages = len(by_package)
+    scopes_by_wing: dict[str, set[str]] = {}
+    for nid in skeleton["strata"]["by_node"]:
+        scopes_by_wing.setdefault(wing_of(nid), set()).add(scope_of(nid))
     population = s["population"]
     doc = {
         "brief_version": BRIEF_VERSION,
@@ -312,6 +333,8 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         # D-056: an ordered list — the sheet is written with sorted keys, and a dict's "largest
         # first" was true of the render and false of the file the viewer would read
         "by_package": [{"scope": k, "rooms": v} for k, v in sorted(by_package.items(), key=lambda kv: (-kv[1], kv[0]))],
+        "scopes_by_wing": {w: len(v) for w, v in sorted(scopes_by_wing.items())},  # D-066
+        "package_name_imports": ((substrate or {}).get("summary") or {}).get("package_name_imports"),  # D-066
         "population": s["population"],
         "wings": dict(sorted(wings.items())),
         "wing_count": len(wings),
@@ -1791,6 +1814,16 @@ def _alias_state_text(facts_doc: dict[str, Any]) -> str:
     return " No tsconfig.json path alias was read (none declared, or no tsconfig.json)."
 
 
+def _package_name_text(facts_doc: dict[str, Any]) -> str:
+    """D-066: the imports that name this repository's own package (a cookbook example under a
+    `file:../..` manifest; a fixture importing "typeorm") — placed at the package's declared entry
+    by substrate 0.6.0, and counted external before it. Said beside the external count they left."""
+    n = facts_doc.get("package_name_imports")
+    if not n:
+        return ""
+    return f" {n} import{'s' if n != 1 else ''} name a package this repository declares and resolve to its entry."
+
+
 def _unresolved_by_kind(substrate: dict[str, Any] | None, nodes: dict[str, Any]) -> dict[str, int] | None:
     """D-064: the unresolved imports the substrate sampled, by the kind the page can state without
     resolving them itself — how many come from test files, and how many are alias-shaped (a
@@ -1827,7 +1860,45 @@ def _rooms_at_cutoff(e: dict[str, Any], nodes: dict[str, Any]) -> int | None:
     return n
 
 
-def _share_by_construction(predicate: str, count: int | None = None, population: int | None = None, thresholds: dict[str, Any] | None = None, at_cutoff: int | None = None) -> str:
+def _rooms_beyond_cutoff(e: dict[str, Any], nodes: dict[str, Any], population_ids: set[str]) -> dict[str, Any] | None:
+    """D-066: for a single-pNN feature, the nearest value on the far side of the cutoff among the
+    population's rooms outside the set — how many rooms sit at it and how far it is from the cutoff.
+    On mcp-secure-server the p90 clock cutoff fell inside one afternoon's commits: 35 rooms at the
+    value, 24 more 0.0195 days under it, invisible to a tie count."""
+    from .mapper.ruleset import parse_predicate
+
+    terms = parse_predicate(str(e.get("predicate") or ""))
+    if len(terms) != 1 or terms[0].percentile is None or not nodes:
+        return None
+    cut = (e.get("thresholds") or {}).get(str(e["predicate"]).strip())
+    if not isinstance(cut, (int, float)):
+        return None
+    t = terms[0]
+    above = t.op in (">=", ">")
+    sig = t.signal
+    members = set(e["rooms"])
+    best: float | None = None
+    n = 0
+    for r in population_ids - members:
+        node = nodes.get(r) or {}
+        v = (node.get("metrics") or {}).get(sig)
+        if v is None:
+            v = ((node.get("derived") or {}).get("indices") or {}).get(sig)
+        if not isinstance(v, (int, float)):
+            continue
+        v = float(v)
+        if (above and v >= cut) or (not above and v <= cut):
+            continue  # a non-member on the set's side (a null elsewhere); not the far side
+        if best is None or (above and v > best) or (not above and v < best):
+            best, n = v, 1
+        elif abs(v - best) < 1e-9:
+            n += 1
+    if best is None:
+        return None
+    return {"value": best, "count": n, "gap": abs(float(cut) - best), "side": "below" if above else "above"}
+
+
+def _share_by_construction(predicate: str, count: int | None = None, population: int | None = None, thresholds: dict[str, Any] | None = None, at_cutoff: int | None = None, beyond: dict[str, Any] | None = None) -> str:
     """D-060 said a single-pNN row is "the top 10% … by construction"; D-061 (the eslint control):
     beside dark_room 83 of 473 — 80 rooms tie at the p90 cutoff. The rank fixes which rooms, not
     how many; the row states the share it realized and the cutoff this population resolved to."""
@@ -1858,7 +1929,11 @@ def _share_by_construction(predicate: str, count: int | None = None, population:
     share = 100.0 * count / population
     # D-062 counted the tie here; D-063 (the fourth skimmer): "83" travels and "80 at the cutoff value",
     # fourth in a run-on cell, does not — the tie count sits in the rooms column beside the number it qualifies
-    return f" — rooms {side} this repository's p{t.percentile} on {t.signal} (here {cut_text}): {count} of {population}, {share:.1f}%"
+    text = f" — rooms {side} this repository's p{t.percentile} on {t.signal} (here {cut_text}): {count} of {population}, {share:.1f}%"
+    if beyond:
+        # D-066: the rank's other boundary — the next value beyond the cutoff and the rooms at it
+        text += f"; the next value {beyond['side']} the cutoff holds {beyond['count']} room{'s' if beyond['count'] != 1 else ''}, {beyond['gap']:.4g}{unit} {'under' if beyond['side'] == 'below' else 'over'} it"
+    return text
 
 
 def _signals_read(predicate: str) -> set[str]:
@@ -2062,7 +2137,12 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         key = f"{f['profile']}/{f['feature']}"
         if key in _skip:
             continue
-        bw = ", ".join(f"{k} {v}" for k, v in f.get("by_wing", {}).items()) or "no wing (0)"  # D-057: a zero row says so
+        sbw = facts_doc.get("scopes_by_wing") or {}
+        fws = f.get("by_wing_scopes") or {}
+        bw = ", ".join(
+            f"{k} {v}" + (f" (in {fws.get(k, 0)} of the wing's {sbw[k]} scopes)" if sbw.get(k, 1) > 1 else "")
+            for k, v in f.get("by_wing", {}).items()
+        ) or "no wing (0)"  # D-057: a zero row says so; D-066: a wing of many scopes says how many hold the feature
         dd = f.get("dominant_dir") or {}
         # D-041: every fallback says the reason that is the reason, and a directory that is also a
         # wing name is marked as the parent, not the wing
@@ -2085,18 +2165,22 @@ def render_register(facts_doc: dict[str, Any]) -> str:
             # D-055: the predicate is on the row — "the fragility half" of a reason was unresolvable
             # from a row that printed the reason and not the conjunction it is half of.
             # D-060: "decorative" read as cosmetic by the skimmer; the row says what the mark is
-            what = f"`{f['predicate']}`" + _share_by_construction(f["predicate"], f["count"], facts_doc["population"], f.get("thresholds"), f.get("at_cutoff")) + f" — ◌ excluded from the diagnosis: {f.get('decorative_reason') or ''}".rstrip()
+            what = f"`{f['predicate']}`" + _share_by_construction(f["predicate"], f["count"], facts_doc["population"], f.get("thresholds"), f.get("at_cutoff"), f.get("beyond_cutoff")) + f" — ◌ excluded from the diagnosis: {f.get('decorative_reason') or ''}".rstrip()
         else:
-            what = f"`{f['predicate']}`" + _share_by_construction(f["predicate"], f["count"], facts_doc["population"], f.get("thresholds"), f.get("at_cutoff"))
+            what = f"`{f['predicate']}`" + _share_by_construction(f["predicate"], f["count"], facts_doc["population"], f.get("thresholds"), f.get("at_cutoff"), f.get("beyond_cutoff"))
         if f.get("importers") and f["importers"]["total"]:
             # D-062: the import-graph positions are read from a graph that holds the test files; the row says how much of its importing is theirs
             imp = f["importers"]
             what += f" — importers of these rooms: {imp['total']}, {imp['from_tests']} ({100.0 * imp['from_tests'] / imp['total']:.0f}%) from test files"
         if f.get("caveat"):
-            what += f" — caveat: {f['caveat']}"
+            cav = str(f["caveat"])
             if f.get("caveat_case_count") is not None:
-                # D-060: the case's magnitude is a field beside the caveat, never in it (D-042)
-                what += f" (this case: {f['caveat_case_count']} of {f['count']} here)"
+                # D-060: the case's magnitude is a field beside the caveat, never in it (D-042). D-066 (the
+                # sixth skimmer): "(this case: 0 of 11 here)" after a two-clause caveat did not say which
+                # clause it counted; a caveat places the count with `{case}`, beside the clause it counts
+                n_of_m = f"{f['caveat_case_count']} of {f['count']} here"
+                cav = cav.replace("{case}", n_of_m) if "{case}" in cav else f"{cav} (this case: {n_of_m})"
+            what += f" — caveat: {cav}"
         name = ("◌ " if f["decorative"] else "") + f["feature"]
         # D-041: the cell reads the field it claims to report; a consequence-implying name without a
         # position name is a ruleset defect and the page says so rather than denying it
@@ -2139,7 +2223,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + "**A position names where a room sits in a record — the import graph, the clock, the test graph, the edit record, size — and is not a claim about the room's condition (D-004 Q3). "
         + f"Every pNN ranks this repository's own {facts_doc['population']} rooms, so a `>= p90` row holds a tenth of them — or more where rooms tie at the cutoff, and the rooms column says how many are tied; a single-rank row states its share, and every ranked term states the value its rank resolved to here — and no count on this page compares across repositories."
         + (
-            f" A room is a source file outside the test convention with computed signals: {facts_doc['population']} of the tree's {facts_doc['node_count']} files; the {facts_doc['test_nodes']} test files are nodes of the import graph and not rooms"
+            f" A room is a source file outside the test convention with computed signals: {facts_doc['population']} of the {facts_doc['node_count']} files with a source extension the substrate reads (manifests, documents and the rest of the tree are not counted); the {facts_doc['test_nodes']} test files are nodes of the import graph and not rooms"
             + (f", and {facts_doc['unindexed_nodes']} file{'s' if facts_doc['unindexed_nodes'] != 1 else ''} with no computed signals {'are' if facts_doc['unindexed_nodes'] != 1 else 'is'} not a room either" if facts_doc.get("unindexed_nodes") else "")
             + "."
             if facts_doc.get("node_count") else ""
@@ -2167,9 +2251,9 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + f"- **largest parent directory** — the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent." + NL
         + f"- **relation to** — identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms — and a containment the predicates guarantee at any count; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. 'By its predicate': the inner predicate conjoins every term of the outer. Otherwise the cell says which raw signals the two predicates read in common (a blend or index expanded through its declared inputs), or 'no raw signal in common' — a signal, not an instrument." + NL
         + "- **the import graph and the test graph** — one edge set read twice: a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone; an import-graph row says how many of its rooms' importers are test files. Centrality is PageRank over that graph: a room's rank rises with the rank of its importers, not only with their number, so a room with four well-placed importers can outrank one with thirteen."
-        + (f" The graph is resolved statically: {facts_doc['unresolved_imports']} imports in the tree did not resolve to a file{_unresolved_text(facts_doc)}, and {facts_doc['external_imports']} are external packages; an import the resolver did not place, or one computed at run time, is not an edge, so a room reached only that way reads as unimported there.{_alias_state_text(facts_doc)}" if facts_doc.get("unresolved_imports") is not None else "")
+        + (f" The graph is resolved statically: {facts_doc['unresolved_imports']} imports in the tree did not resolve to a file{_unresolved_text(facts_doc)}, and {facts_doc['external_imports']} are external packages; an import the resolver did not place, or one computed at run time, is not an edge, so a room reached only that way reads as unimported there.{_alias_state_text(facts_doc)}{_package_name_text(facts_doc)}" if facts_doc.get("unresolved_imports") is not None else "")
         + NL
-        + "- **caveat** — the ruleset's own limit on what a predicate reads, never a claim about this repository; the count beside it ('this case: N of M here') is this repository's."
+        + "- **caveat** — the ruleset's own limit on what a predicate reads, never a claim about this repository; the count in it ('N of M here') is this repository's, beside the clause it counts."
         + NL
         + NL
         + "| position (the record it reads) | feature | profile | rooms (tied at the cutoff) | by wing | largest parent directory n / rooms in it | relation to (= one set · ⊂ inside · ⊃ contains) | predicate (with the cutoffs resolved here); caveat, a limit on the predicate; or reason |"

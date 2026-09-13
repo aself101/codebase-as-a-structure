@@ -90,6 +90,7 @@ def render_report(sub: dict[str, Any], cfg: SubstrateConfig) -> str:
         "alt_scanner_unreadable",
         "tsconfig_malformed",
         "tsconfig_aliases",
+        "package_name_imports",
         "total_loc",
         "repo_age_days",
         "commit_count",

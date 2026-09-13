@@ -10,7 +10,7 @@
 
 [ruleset]
 name = "onboarding"
-version = "0.2.6"
+version = "0.2.7"
 profile = "onboarding"
 description = "Where to start reading: package entries (declared in package.json), import-graph roots (import much, imported by nothing), corridors (high centrality and high fan-out — everything routes through), foundations. Position names throughout."
 
@@ -23,7 +23,7 @@ note = "The file a package.json names as main, module, types, bin, or an export 
 [[feature]]
 name = "import_root"
 predicate = "fan_in == 0 and fan_out >= p75"
-caveat = "reads no fan-in, not entrance (D-029): a package entry that anything imports — a room or a test file — cannot qualify, and one that nothing imports can"  # D-063: fan_in counts test files; registry's sole entry is imported by four tests and no room
+caveat = "reads no fan-in, not entrance (D-029): a package entry that anything imports — a room or a test file — cannot qualify, and one that nothing imports can ({case} are declared package entries)"  # D-063: fan_in counts test files; registry's sole entry is imported by four tests and no room. D-066: the case count sits beside the clause it counts
 caveat_case = "is_package_entry == 1"  # D-060: the declared entries among the roots — the case the caveat says cannot qualify when imported
 graph_dependent = true
 position_name = "import-graph root with fan-out at or above the upper quartile"  # D-050: the name wore one conjunct of two
