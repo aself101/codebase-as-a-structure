@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.29.0"  # D-063: every ranked term states its cutoff (the corridor's median fan-out is 1 on registry); the tie count sits in the rooms column; two profiles on one predicate are one row; centrality is defined; column headers carry their own legend. D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
+BRIEF_VERSION = "0.30.0"  # D-064: the unresolved imports are counted by kind (from test files; alias-shaped) so the test-graph cells they bias are said to be lower bounds; a set drawn twice says so in the rooms column; a tier lists one name per set. D-063: every ranked term states its cutoff (the corridor's median fan-out is 1 on registry); the tie count sits in the rooms column; two profiles on one predicate are one row; centrality is defined; column headers carry their own legend. D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -290,6 +290,10 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             if nodes and (substrate or {}).get("edges") is not None else None
         ),
         "edge_count": len((substrate or {}).get("edges") or []) if substrate else None,
+        # D-064 (the security reviewer): 34 of mcp-secure-server's 34 unresolved imports are test files
+        # importing src/security through a tsconfig alias — static, not run-time — so test_fan_in on
+        # the rooms they aim at is a lower bound; the page had named run-time imports as the mechanism
+        "unresolved_by_kind": _unresolved_by_kind(substrate, nodes),
         "external_imports": ((substrate or {}).get("summary") or {}).get("external_imports"),
         "skeleton_hash": skeleton["skeleton_hash"],
         "profile": skeleton["profile"]["name"],
@@ -1752,6 +1756,35 @@ def _case_holds(case: str, metrics: dict[str, Any]) -> bool:
     return True
 
 
+def _unresolved_text(facts_doc: dict[str, Any]) -> str:
+    """D-064: the unresolved imports by kind, and what they do to the test graph."""
+    u = facts_doc.get("unresolved_by_kind")
+    if not u or not u.get("sampled"):
+        return ""
+    n, t, a = u["sampled"], u["from_test_files"], u["alias_shaped"]
+    of = "" if n == facts_doc.get("unresolved_imports") else f" (of {n} sampled)"
+    kinds = []
+    kinds.append(f"{'all ' if t == n else ''}{t} from test files" if t else "none from test files")
+    if a:
+        kinds.append(f"{'all ' if a == n else ''}{a} alias-shaped (a path the resolver should have placed in-repo)")
+    tail = f"; test_fan_in on the rooms those {t} aim at is a lower bound" if t else ""
+    return f" ({', '.join(kinds)}{of}{tail})"
+
+
+def _unresolved_by_kind(substrate: dict[str, Any] | None, nodes: dict[str, Any]) -> dict[str, int] | None:
+    """D-064: the unresolved imports the substrate sampled, by the kind the page can state without
+    resolving them itself — how many come from test files, and how many are alias-shaped (a
+    specifier the resolver should have placed in-repo: `@/x`, `~/x`)."""
+    if not substrate:
+        return None
+    samples = ((substrate.get("caveats") or {}).get("unresolved_import_samples")) or []
+    if not samples:
+        return {"sampled": 0, "from_test_files": 0, "alias_shaped": 0} if (substrate.get("summary") or {}).get("unresolved_imports") is not None else None
+    from_tests = sum(1 for x in samples if ((nodes.get(x.get("from")) or {}).get("metrics") or {}).get("is_test"))
+    alias = sum(1 for x in samples if str(x.get("specifier", "")).startswith(("@/", "~/", "#")))
+    return {"sampled": len(samples), "from_test_files": from_tests, "alias_shaped": alias}
+
+
 def _rooms_at_cutoff(e: dict[str, Any], nodes: dict[str, Any]) -> int | None:
     """D-062: how many of a single-pNN feature's rooms sit exactly at the cutoff the population resolved to."""
     from .mapper.ruleset import parse_predicate
@@ -2059,6 +2092,10 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         # from the name, and the name is the column that carries the consequence word
         # D-063: the tie count travels with the count; two profiles on one predicate are one row
         tie = f" ({'all' if f.get('at_cutoff') == f['count'] else f.get('at_cutoff')} tied at the cutoff)" if (f.get("at_cutoff") or 0) > 1 else ""
+        # D-064 (the fifth skimmer): dark_room 70 and flooded_basement 70 summed to 140; a set drawn twice says so where the count is read
+        twins = [ov["b"] if ov["a"] == key else ov["a"] for ov in facts_doc.get("overlaps") or [] if ov["relation"] == "identical" and not ov.get("shared_predicate") and key in (ov["a"], ov["b"])]
+        if twins:
+            tie += f" (the same rooms as {', '.join(plain(t) for t in twins)})"
         rows.append(
             f"| {pos} | {name} | {profile_cell(f)} | {f['count']}{tie} | {bw} | {dom} | {relation_cell(f, key)} | {what} |"
         )
@@ -2110,7 +2147,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + f"- **largest parent directory** — the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent." + NL
         + f"- **relation to** — identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms — and a containment the predicates guarantee at any count; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. 'By its predicate': the inner predicate conjoins every term of the outer. Otherwise the cell says which raw signals the two predicates read in common (a blend or index expanded through its declared inputs), or 'no raw signal in common' — a signal, not an instrument." + NL
         + "- **the import graph and the test graph** — one edge set read twice: a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone; an import-graph row says how many of its rooms' importers are test files. Centrality is PageRank over that graph: a room's rank rises with the rank of its importers, not only with their number, so a room with four well-placed importers can outrank one with thirteen."
-        + (f" The graph is resolved statically: {facts_doc['unresolved_imports']} imports in the tree did not resolve to a file and {facts_doc['external_imports']} are external packages; an import computed at run time is not an edge, so a room loaded only that way reads as unimported." if facts_doc.get("unresolved_imports") is not None else "")
+        + (f" The graph is resolved statically: {facts_doc['unresolved_imports']} imports in the tree did not resolve to a file{_unresolved_text(facts_doc)}, and {facts_doc['external_imports']} are external packages; an import the resolver did not place, or one computed at run time, is not an edge, so a room reached only that way reads as unimported there." if facts_doc.get("unresolved_imports") is not None else "")
         + NL
         + "- **caveat** — the ruleset's own limit on what a predicate reads, never a claim about this repository; the count beside it ('this case: N of M here') is this repository's."
         + NL
@@ -2133,6 +2170,23 @@ def qualified_labels(keys: list[str]) -> dict[str, str]:
 TOP_TIER_CAP = 25  # D-061: rooms of the top tier named before "and N more"
 
 
+def _names_per_set(marking, twice: set[str]) -> list[str]:
+    """D-064: features that draw one set of rooms are one name in a tier's feature list ('foundation (2 profiles)')."""
+    groups: dict[frozenset, list[dict[str, Any]]] = {}
+    for e in marking:
+        groups.setdefault(frozenset(e["rooms"]), []).append(e)
+    out = []
+    for es in groups.values():
+        names = sorted({e["feature"] for e in es})
+        if len(names) == 1 and len(es) > 1:
+            out.append(f"{names[0]} ({len(es)} profiles)")
+        elif len(names) == 1:
+            out.append(f"{es[0]['profile']}/{names[0]}" if names[0] in twice else names[0])
+        else:
+            out.append(" = ".join(names))
+    return sorted(out)
+
+
 def top_tier(features, room_metrics: dict[str, dict[str, Any]]) -> dict[str, Any]:
     """D-061: every room under the most distinct diagnostic sets (two or more), by path, with its
     size and the features that mark it. A set, not a list ordered by anything a reader can take
@@ -2150,7 +2204,8 @@ def top_tier(features, room_metrics: dict[str, dict[str, Any]]) -> dict[str, Any
                 "lines": (room_metrics.get(r) or {}).get("size_loc", (room_metrics.get(r) or {}).get("lines")),
                 "fan_in": (room_metrics.get(r) or {}).get("fan_in"),
                 "test_fan_in": (room_metrics.get(r) or {}).get("test_fan_in"),
-                "features": sorted((f"{e['profile']}/{e['feature']}" if e["feature"] in twice else e["feature"]) for e in feats if r in set(e["rooms"])),
+                # D-064: one name per set — the heading said 6 and the cell listed 7 where foundation is two profiles of one predicate
+                "features": _names_per_set([e for e in feats if r in set(e["rooms"])], twice),
             }
             for r in rooms
         ],

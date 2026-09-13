@@ -14,7 +14,7 @@
 
 [ruleset]
 name = "maintainability"
-version = "0.2.9"
+version = "0.2.10"
 profile = "maintainability"
 description = "v0 maintainability lens: load, neglect, reinforcement, activity — over asserted signals only; the two pressure indices are unvalidated (D-015) and appear only as decorative features."
 wing_depth = 1
@@ -84,6 +84,7 @@ decorative = true
 decorative_reason = "The fragility half of this feature has no forecast to stand on; it renders as decorative, counted, and excluded from diagnostic claims until a reference repo validates the index."
 name_implies_consequence = true
 position_name = "unreinforced high-load node with high edit pressure"
+caveat = "reads test_fan_in == 0 as the graph resolved it (D-011): a room whose tests import it through an alias the resolver did not place, or only through a re-exporting barrel, reads as unreinforced"  # D-064: the security reviewer found two tests importing the policy file by alias
 note = "The flagship June feature, kept on the page so its absence from the diagnosis is visible rather than silent."
 
 [[feature]]

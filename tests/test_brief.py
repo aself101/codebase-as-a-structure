@@ -1985,7 +1985,7 @@ def test_a_row_states_its_realized_share_and_the_tier_table_is_the_whole_top_tie
     assert f"A room is a source file outside the test convention with computed signals: {f['population']} of the tree's {f['node_count']} files; the {n_test} test files are nodes of the import graph and not rooms" in reg
     if n_unindexed:
         assert f"{n_unindexed} file{'s' if n_unindexed != 1 else ''} with no computed signals" in reg
-    assert f["unresolved_imports"] == sub["summary"]["unresolved_imports"] and f"The graph is resolved statically: {f['unresolved_imports']} imports in the tree did not resolve to a file and {f['external_imports']} are external packages" in reg
+    assert f["unresolved_imports"] == sub["summary"]["unresolved_imports"] and f"The graph is resolved statically: {f['unresolved_imports']} imports in the tree did not resolve to a file, and {f['external_imports']} are external packages" in reg
     assert "cross-modal" not in reg and "the corroboration its grounding class requires (validation spec §2.4)" in reg
     # (2) the tier table: every room at the top count, by path, with lines, and no count-ordered cap
     def feat(name, rooms, profile="p", predicate="x >= p90"):
@@ -2114,3 +2114,59 @@ def test_every_ranked_term_states_its_cutoff_and_two_profiles_on_one_predicate_a
     # the onboarding caveat names the disqualifier the predicate reads
     ir = next(x for x in f["features"] if x["feature"] == "import_root")
     assert "a package entry that anything imports — a room or a test file — cannot qualify" in ir["caveat"]
+
+
+def test_unresolved_imports_are_counted_by_kind_and_a_set_drawn_twice_says_so_where_the_count_is_read(sub):
+    """D-064 (the security-reviewer control on mcp-secure-server 0.29.0 and the fifth skimmer on
+    typeorm). Control: all 34 of the repository's unresolved imports are test files importing
+    src/security through a tsconfig alias — the disclosure had named run-time imports as the
+    mechanism and the test-graph cells over those rooms are lower bounds; the sheet counts the
+    unresolved imports by kind and the legend says what they do. toothpick_wing carries the
+    reinforcement caveat (maintainability 0.2.10). Skimmer: dark_room 70 and flooded_basement 70
+    summed to 140 — a set drawn twice says so in the rooms column; a tier lists one name per set."""
+    import repo_substrate.brief as _b
+
+    sk = _skeleton(sub)
+    # the kinds, from a substrate with sampled unresolved imports
+    sub2 = json.loads(json.dumps(sub))
+    sub2["summary"]["unresolved_imports"] = 3
+    test_node = next((n["id"] for n in sub2["nodes"] if n["metrics"].get("is_test")), None)
+    src_node = next(n["id"] for n in sub2["nodes"] if not n["metrics"].get("is_test"))
+    sub2.setdefault("caveats", {})["unresolved_import_samples"] = [
+        {"from": test_node or src_node, "specifier": "@/security/x.js"},
+        {"from": test_node or src_node, "specifier": "~/y"},
+        {"from": src_node, "specifier": "./missing"},
+    ]
+    f = facts(sk, sub2)
+    u = f["unresolved_by_kind"]
+    assert u["sampled"] == 3 and u["alias_shaped"] == 2 and u["from_test_files"] == (2 if test_node else 0)
+    reg = _b.render_register(f)
+    if test_node:
+        assert "3 imports in the tree did not resolve to a file (2 from test files, 2 alias-shaped (a path the resolver should have placed in-repo); test_fan_in on the rooms those 2 aim at is a lower bound), and" in reg
+    else:
+        assert "none from test files, 2 alias-shaped" in reg
+    assert "an import the resolver did not place, or one computed at run time, is not an edge" in reg
+    # a substrate with none sampled says nothing more than the count
+    assert _b._unresolved_text({"unresolved_imports": 0, "unresolved_by_kind": {"sampled": 0, "from_test_files": 0, "alias_shaped": 0}}) == ""
+    assert _b._unresolved_text({"unresolved_imports": 34, "unresolved_by_kind": {"sampled": 34, "from_test_files": 34, "alias_shaped": 34}}) == " (all 34 from test files, all 34 alias-shaped (a path the resolver should have placed in-repo); test_fan_in on the rooms those 34 aim at is a lower bound)"
+    # toothpick_wing's caveat reaches the sheet
+    tw = next(x for x in f["features"] if x["feature"] == "toothpick_wing")
+    assert tw["caveat"] and "alias the resolver did not place" in tw["caveat"]
+    # a set drawn twice by different predicates says so in the rooms column
+    sk2 = json.loads(json.dumps(sk))
+    tmpl = next(x for x in sk2["features"] if x["diagnostic"] and not x["decorative"])
+    rooms = sorted(sk2["strata"]["by_node"])[:4]
+    a = dict(tmpl, feature="dark", predicate="last_touched_days >= p90", decorative=False, decorative_reason=None)
+    b = dict(tmpl, feature="flooded", predicate="last_touched_days >= p90 and load_index >= 0.1", decorative=False, decorative_reason=None)
+    sk2["features"] = [dict(a, node=r) for r in rooms] + [dict(b, node=r) for r in rooms]
+    sk2["overlays"] = []
+    g = facts(sk2, sub)
+    reg2 = _b.render_register(g)
+    assert "| 4 (the same rooms as flooded) |" in _row(reg2, "dark") and "| 4 (the same rooms as dark) |" in _row(reg2, "flooded")
+    # a tier lists one name per set
+    def feat(name, rooms, profile="p", predicate="x >= p90"):
+        return {"feature": name, "profile": profile, "diagnostic": True, "decorative": False, "rooms": rooms, "predicate": predicate}
+
+    fs = [feat("x", ["a", "b"]), feat("x", ["a", "b"], profile="o"), feat("w", ["a"], predicate="w >= p90"), feat("v", ["a"], predicate="v >= p90")]
+    tier = _b.top_tier(fs, {})
+    assert tier["sets"] == 2 and tier["rooms"][0]["features"] == ["v = w", "x (2 profiles)"]  # one name per set: two profiles of one feature; two features drawing one set
