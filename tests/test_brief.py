@@ -1343,7 +1343,8 @@ def test_the_page_is_rendered_by_code_and_its_fixed_texts_match_their_fields(sub
     second["diagnostic"], second["decorative"] = True, False
     g["most_marked_rooms"] = _b.most_marked(g["features"])
     g["rooms_at_most_sets"] = len(g["most_marked_rooms"])
-    assert f"{len(g['most_marked_rooms'])} room" in render_most_marked(g) and "carr" in render_most_marked(g)
+    g["top_tier"] = _b.top_tier(g["features"], {r: {"size_loc": m["lines"]} for r, m in g["rooms"].items()})  # D-061: the rendered table is the whole top tier
+    assert f"{len(g['top_tier']['rooms'])} room" in render_most_marked(g) and "in path order" in render_most_marked(g)
     assert "No room carries two distinct diagnostic sets" in render_most_marked(f)  # the fixture has none
     # D-050: the third case — fewer rooms at the most than the cap, the list filled from the next
     # count (typeorm: four at seven, then one of eight at six, first by path, under "all are listed")
@@ -1353,6 +1354,7 @@ def test_the_page_is_rendered_by_code_and_its_fixed_texts_match_their_fields(sub
         {"room": "b.ts", "sets": 4, "marks": 6, "rooms_at_this_count": 8, "listed_at_this_count": 1, "features": ["x", "y"]},
     ]
     h["rooms_at_most_sets"] = 1
+    h.pop("top_tier", None)  # D-061: the D-050/D-052 fill-row shape lives in the legacy (capped) renderer
     mm = render_most_marked(h)
     # D-052: the lead says the ordering, the cap and the most; what a row is, its cell says
     assert "1 room carries the most (5). The listed column is rows listed of rooms at the row's sets count; where fewer are listed than carry the count, the listed are the first by path." in mm
@@ -1745,7 +1747,7 @@ def test_a_guaranteed_containment_is_drawn_under_the_floor_and_the_ordering_text
     assert "and a containment the predicates guarantee at any count" in reg and "predicate; caveat or reason |" in reg
     # (3) one ordering text
     f = facts(sk, sub)
-    lead = _b.render_most_marked(g)  # bigf and tiny_off share two rooms: a tier exists on the synthetic sheet
+    lead = _b._render_most_marked_legacy(g)  # D-061: the capped list is legacy; its lead and the sheet's gloss still share one text
     assert g["most_marked_rooms"] and _b.MOST_MARKED_ORDER in g["units"]["most_marked_rooms"] and _b.MOST_MARKED_ORDER in lead
     assert "then marks" not in f["units"]["most_marked_rooms"] and "by marks" not in f["units"]["most_marked_rooms"]
     # (4) the scope's root is not the wing's
@@ -1906,14 +1908,17 @@ def test_the_defence_sits_in_the_cell_it_defends_and_the_page_carries_its_snapsh
             assert "— ◌ excluded from the diagnosis:" in _row(reg, x["feature"], decorative=True)
     # the snapshot and the tier names, in the header
     assert f["as_of"] == sub["repo"]["as_of"] and f"As of {str(f['as_of'])[:10]}, commit `{f['repo']['head_sha'][:12]}`." in page
-    assert "asserted is a description confirmed by a stability budget and a cross-modal check, validated a forecast confirmed by a temporal holdout" in reg
+    assert "asserted is a description that held under the stability budget and the corroboration its grounding class requires (validation spec §2.4), validated a forecast confirmed by a temporal holdout (validation spec §3)" in reg  # D-061: the gloss no longer claims a cross-modal check
     assert "this page carries no stability value" in page
     # a single-pNN row states its share by construction; a conjunction does not
-    assert _b._share_by_construction("last_touched_days >= p90") == " — the top 10% of rooms on this signal, by construction"
-    assert _b._share_by_construction("last_touched_days <= p10") == " — the bottom 10% of rooms on this signal, by construction"
+    # D-061: the sentence states the realized share and the cutoff, not "10% by construction" (eslint: 83 of 473, 80 tied at the cutoff)
+    assert _b._share_by_construction("last_touched_days >= p90", 83, 473, {"last_touched_days >= p90": 533.966}) == " — rooms at or above this repository's p90 on last_touched_days (here 533.966 days): 83 of 473, 17.5%; ties at the cutoff carry the row past a tenth"
+    assert _b._share_by_construction("last_touched_days <= p10", 48, 473, {"last_touched_days <= p10": 12.5}) == " — rooms at or below this repository's p10 on last_touched_days (here 12.5 days): 48 of 473, 10.1%"
+    assert _b._share_by_construction("fan_in >= p75", 148, 473, {}) == " — rooms at or above this repository's p75 on fan_in (here unresolved): 148 of 473, 31.3%; ties at the cutoff carry the row past 25%"
     assert _b._share_by_construction("centrality >= p90 and fan_out >= p50") == "" and _b._share_by_construction("reinforcement_index >= 0.5") == ""
     dark = _row(reg, "dark_room")
-    assert "`last_touched_days >= p90` — the top 10% of rooms on this signal, by construction" in dark
+    dk = next(x for x in f["features"] if x["feature"] == "dark_room")
+    assert f"on last_touched_days (here {dk['thresholds']['last_touched_days >= p90']:g} days): {dk['count']} of {f['population']}, {100.0 * dk['count'] / f['population']:.1f}%" in dark
     # a caveat's case is counted beside the caveat, from the substrate's metrics
     fb = next(x for x in f["features"] if x["feature"] == "flooded_basement")
     assert fb["caveat_case"] == "fan_in == 0" and fb["caveat_case_count"] == sum(1 for r in fb["rooms"] if f["rooms"][r]["fan_in"] == 0)
@@ -1944,3 +1949,58 @@ def test_the_defence_sits_in_the_cell_it_defends_and_the_page_carries_its_snapsh
         _rs('[[feature]]\nname = "x"\npredicate = "fan_in >= p90"\ncaveat_case = "fan_in == 0"\n')
     with pytest.raises(RulesetError, match="percentile"):
         _rs('[[feature]]\nname = "x"\npredicate = "fan_in >= p90"\ncaveat = "reads fan-in"\ncaveat_case = "fan_out >= p50"\n')
+
+
+def test_a_row_states_its_realized_share_and_the_tier_table_is_the_whole_top_tier_by_path(sub):
+    """D-061 (the eslint control and the second skimmer, both unpointed, on 0.26.0). (1) "the top 10%
+    … by construction" stood beside dark_room 83 of 473 — 80 rooms tied at the cutoff; a row states
+    the share it realized and the cutoff this population resolved to, from the sheet. (2) The bold
+    caption over a capped, count-ordered list was read and bounced; the table is every room at the
+    most positions, by path, with its size. (3) The population rule (a room is a source file outside
+    the test convention; N of M files), the resolver's limit (unresolved / external imports) and the
+    tier gloss (grounding class, not "cross-modal") are on the page, from the substrate."""
+    import repo_substrate.brief as _b
+
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    reg = _b.render_register(f)
+    # (1) thresholds travel and the row's share is computed from its count
+    for x in f["features"]:
+        if x["count"] and len(x["predicate"].split(" and ")) == 1 and "p" in x["predicate"].split()[-1]:
+            assert x["predicate"] in x["thresholds"], x["feature"]
+            share = 100.0 * x["count"] / f["population"]
+            assert f"{x['count']} of {f['population']}, {share:.1f}%" in _row(reg, x["feature"], decorative=x["decorative"], profile=x["profile"])
+    assert "by construction" not in reg.split("*Rendered")[0]  # the bold rule no longer says "a tenth by construction"
+    assert "or more where rooms tie at the cutoff; each row states its share" in reg
+    # (3) the population rule and the resolver's limit, from the substrate
+    n_test = sum(1 for n in sub["nodes"] if n["metrics"].get("is_test"))
+    n_unindexed = sum(1 for n in sub["nodes"] if not n["metrics"].get("is_test") and (n.get("derived") or {}).get("indices") is None)
+    assert f["node_count"] == len(sub["nodes"]) and f["test_nodes"] == n_test and f["unindexed_nodes"] == n_unindexed
+    assert f["population"] + n_test + n_unindexed == len(sub["nodes"])  # the mapper's population rule, restated on the page
+    assert f"A room is a source file outside the test convention with computed signals: {f['population']} of the tree's {f['node_count']} files; the {n_test} test files are nodes of the import graph and not rooms" in reg
+    if n_unindexed:
+        assert f"{n_unindexed} file{'s' if n_unindexed != 1 else ''} with no computed signals" in reg
+    assert f["unresolved_imports"] == sub["summary"]["unresolved_imports"] and f"The import graph is resolved statically: {f['unresolved_imports']} imports in the tree did not resolve to a file and {f['external_imports']} are external packages" in reg
+    assert "cross-modal" not in reg and "the corroboration its grounding class requires (validation spec §2.4)" in reg
+    # (2) the tier table: every room at the top count, by path, with lines, and no count-ordered cap
+    def feat(name, rooms, profile="p", predicate="x >= p90"):
+        return {"feature": name, "profile": profile, "diagnostic": True, "decorative": False, "rooms": rooms, "predicate": predicate}
+
+    rooms = [f"r{i:02d}" for i in range(9)]
+    fs = [feat("x", rooms + ["z"]), feat("y", rooms, predicate="y >= p90"), feat("w", ["r03", "r07"], predicate="w >= p90")]
+    tier = _b.top_tier(fs, {r: {"size_loc": 10 * (i + 1)} for i, r in enumerate(rooms)})
+    assert tier["sets"] == 3 and [m["room"] for m in tier["rooms"]] == ["r03", "r07"] and tier["rooms"][0]["lines"] == 40
+    doc = {"top_tier": tier, "co_located_rooms": 9}
+    mm = _b.render_most_marked(doc)
+    assert "### Rooms at the most positions (3)" in mm and "in path order — a set, not a ranking" in mm
+    assert "| r03 | 40 | 3 | w, x, y |" in mm and "| r07 | 80 | 3 | w, x, y |" in mm and "marks" not in mm.split("|---")[0].split("| room")[1]
+    assert "2 rooms. " in mm and "9 rooms carry two or more distinct sets" in mm
+    big = _b.top_tier([feat("x", [f"q{i:02d}" for i in range(30)]), feat("y", [f"q{i:02d}" for i in range(30)] + ["z"], predicate="y >= p90")], {})
+    mmb = _b.render_most_marked({"top_tier": big})
+    assert f"the first {_b.TOP_TIER_CAP} by path are listed and 5 more are not" in mmb and mmb.count("| q") == _b.TOP_TIER_CAP and "| q00 | — | 2 |" in mmb
+    # a sheet without top_tier renders the legacy capped list
+    assert "listed of rooms at this count" in _b.render_most_marked({"most_marked_rooms": _b.most_marked(fs), "rooms_at_most_sets": 2})
+    # the real sheet's table is the whole top tier
+    if f["top_tier"]["rooms"]:
+        for m in f["top_tier"]["rooms"]:
+            assert f"| {m['room']} |" in reg

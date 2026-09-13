@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.26.0"  # D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
+BRIEF_VERSION = "0.27.0"  # D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -70,6 +70,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
                     "position_name": f.get("position_name"),
                     "caveat": f.get("caveat"),  # D-041: a ruleset's own warning about a predicate
                     "caveat_case": f.get("caveat_case"),  # D-060
+                    "thresholds": dict(f.get("thresholds") or {}),  # D-061: the pNN cutoffs this population resolved to
                     "rooms": [],
                 },
             )
@@ -268,6 +269,14 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         "repo": {"name": skeleton["repo"]["name"], "head_sha": skeleton["repo"]["head_sha"]},
         # D-060: the snapshot the clock positions are relative to — on the substrate and the sheet, never on the page until now
         "as_of": ((substrate or {}).get("repo") or {}).get("as_of"),
+        # D-061 (the eslint control): what a room is and how the import graph was read — 1008 of
+        # eslint's 1481 nodes are test files and not rooms; 20 imports did not resolve; neither was said
+        "node_count": len(nodes) or None,
+        "test_nodes": sum(1 for n in nodes.values() if (n.get("metrics") or {}).get("is_test")) if nodes else None,
+        # the mapper's population rule (engine.map_skeleton): not a test file, and with computed indices
+        "unindexed_nodes": sum(1 for n in nodes.values() if not (n.get("metrics") or {}).get("is_test") and (n.get("derived") or {}).get("indices") is None) if nodes else None,
+        "unresolved_imports": ((substrate or {}).get("summary") or {}).get("unresolved_imports"),
+        "external_imports": ((substrate or {}).get("summary") or {}).get("external_imports"),
         "skeleton_hash": skeleton["skeleton_hash"],
         "profile": skeleton["profile"]["name"],
         "overlays": list(s.get("overlay_profiles") or []),
@@ -295,6 +304,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         "co_located_rooms": co_located_all,
         "most_marked_rooms": most_marked_rooms,
         "rooms_at_most_sets": rooms_at_most_sets,
+        # D-061: every room at the most positions, by path, with its size — the table the page
+        # renders since 0.27.0 (the skimmer read a capped, count-ordered list as a leaderboard twice)
+        "top_tier": top_tier([e for e in feats.values() if e["diagnostic"]], {r: (nodes.get(r) or {}).get("metrics") or {} for r in skeleton["strata"]["by_node"]}),
         "shared_rooms": shared_rooms,
         # D-046 addendum: the prose kept computing this to say "the N features name M sets"
         "diagnostic_features": n_diag,
@@ -1726,20 +1738,28 @@ def _case_holds(case: str, metrics: dict[str, Any]) -> bool:
     return True
 
 
-def _share_by_construction(predicate: str) -> str:
-    """D-060: a single-pNN predicate marks a fixed share of the population by construction — the
-    skimmer carried "27 dark rooms" as a finding; the row says the share the rank fixes."""
+def _share_by_construction(predicate: str, count: int | None = None, population: int | None = None, thresholds: dict[str, Any] | None = None) -> str:
+    """D-060 said a single-pNN row is "the top 10% … by construction"; D-061 (the eslint control):
+    beside dark_room 83 of 473 — 80 rooms tie at the p90 cutoff. The rank fixes which rooms, not
+    how many; the row states the share it realized and the cutoff this population resolved to."""
     from .mapper.ruleset import parse_predicate
 
     terms = parse_predicate(str(predicate or ""))
     if len(terms) != 1 or terms[0].percentile is None:
         return ""
     t = terms[0]
-    if t.op in (">=", ">"):
-        return f" — the top {100 - t.percentile}% of rooms on this signal, by construction"
-    if t.op in ("<=", "<"):
-        return f" — the bottom {t.percentile}% of rooms on this signal, by construction"
-    return ""
+    side = "at or above" if t.op in (">=", ">") else "at or below" if t.op in ("<=", "<") else None
+    if side is None:
+        return ""
+    cut = (thresholds or {}).get(str(predicate).strip())
+    unit = " days" if t.signal.endswith("_days") else ""
+    cut_text = f"{cut:g}{unit}" if isinstance(cut, (int, float)) else "unresolved"
+    if count is None or not population:
+        return f" — rooms {side} this repository's p{t.percentile} on {t.signal} (here {cut_text})"
+    share = 100.0 * count / population
+    nominal = (100 - t.percentile) if side == "at or above" else t.percentile
+    tie = "; ties at the cutoff carry the row past a tenth" if share > nominal + 2 and nominal == 10 else (f"; ties at the cutoff carry the row past {nominal}%" if share > nominal + 2 else "")
+    return f" — rooms {side} this repository's p{t.percentile} on {t.signal} (here {cut_text}): {count} of {population}, {share:.1f}%{tie}"
 
 
 def _signals_read(predicate: str) -> set[str]:
@@ -1944,9 +1964,9 @@ def render_register(facts_doc: dict[str, Any]) -> str:
             # D-055: the predicate is on the row — "the fragility half" of a reason was unresolvable
             # from a row that printed the reason and not the conjunction it is half of.
             # D-060: "decorative" read as cosmetic by the skimmer; the row says what the mark is
-            what = f"`{f['predicate']}` — ◌ excluded from the diagnosis: {f.get('decorative_reason') or ''}".strip()
+            what = f"`{f['predicate']}`" + _share_by_construction(f["predicate"], f["count"], facts_doc["population"], f.get("thresholds")) + f" — ◌ excluded from the diagnosis: {f.get('decorative_reason') or ''}".rstrip()
         else:
-            what = f"`{f['predicate']}`" + _share_by_construction(f["predicate"])
+            what = f"`{f['predicate']}`" + _share_by_construction(f["predicate"], f["count"], facts_doc["population"], f.get("thresholds"))
         if f.get("caveat"):
             what += f" — caveat: {f['caveat']}"
             if f.get("caveat_case_count") is not None:
@@ -1986,20 +2006,29 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         # D-060: the skimmer read the table and skipped the note whole; the one rule the page rests on
         # stands first, bold, outside the italic — and the calibration fact the numbers depend on beside it
         + "**A position names where a room sits in a record — the import graph, the clock, the test graph, the edit record, size — and is not a claim about the room's condition (D-004 Q3). "
-        + f"Every pNN ranks this repository's own {facts_doc['population']} rooms, so a `>= p90` row holds about a tenth of them by construction, and no count on this page compares across repositories.**"
+        + f"Every pNN ranks this repository's own {facts_doc['population']} rooms, so a `>= p90` row holds a tenth of them — or more where rooms tie at the cutoff; each row states its share — and no count on this page compares across repositories."
+        + (
+            f" A room is a source file outside the test convention with computed signals: {facts_doc['population']} of the tree's {facts_doc['node_count']} files; the {facts_doc['test_nodes']} test files are nodes of the import graph and not rooms"
+            + (f", and {facts_doc['unindexed_nodes']} file{'s' if facts_doc['unindexed_nodes'] != 1 else ''} with no computed signals {'are' if facts_doc['unindexed_nodes'] != 1 else 'is'} not a room either" if facts_doc.get("unindexed_nodes") else "")
+            + "."
+            if facts_doc.get("node_count") else ""
+        )
+        + "**"
         + NL
         + NL
         + f"*Rendered from the facts sheet by code (brief {facts_doc.get('brief_version', BRIEF_VERSION)}); every cell is a field, a count, or a fixed text over them; no cell is written. "
         + f"{facts_doc['population']} rooms in {facts_doc['wing_count']} wings ({wings}); {facts_doc['diagnostic_count']} diagnostic marks across all profiles "
         + f"({base} in the base profile), one mark per feature per room; identical pairs of diagnostic features mark {facts_doc.get('rooms_marked_twice', 0)} rooms twice ({facts_doc.get('rooms_marked_twice_shared_predicate', 0)} under one predicate in two profiles, {facts_doc.get('rooms_marked_twice_inert_conjunct', 0)} where two predicates draw one set because a conjunct excludes nothing, {facts_doc.get('rooms_in_both_kinds', 0)} under both); "
         + f"the diagnostic features name {facts_doc.get('distinct_room_sets', '?')} distinct sets of rooms; {facts_doc['decorative']['count']} excluded marks ◌ ({dec}); "
-        + f"{facts_doc['co_located_rooms']} rooms carry two or more distinct diagnostic sets; gate `{fp}`, {asserted} of {len(gate)} signals asserted, {validated_text} — asserted is a description confirmed by a stability budget and a cross-modal check, validated a forecast confirmed by a temporal holdout (system spec §3 and validation spec §3). "
+        + f"{facts_doc['co_located_rooms']} rooms carry two or more distinct diagnostic sets; gate `{fp}`, {asserted} of {len(gate)} signals asserted, {validated_text} — asserted is a description that held under the stability budget and the corroboration its grounding class requires (validation spec §2.4), validated a forecast confirmed by a temporal holdout (validation spec §3). "
         + f"A wing is a directory at depth {facts_doc.get('wing_depth', 1)} of the tree (the ruleset's wing_depth), not a package; the population spans {facts_doc.get('packages', 1)} package scope{'s' if facts_doc.get('packages', 1) != 1 else ''}"
         + (f" (rooms per scope, largest first, each scope named by the manifest that holds it: {scopes})" if facts_doc.get("by_package") else "")
         + ". "
         + "◌ marks an excluded feature (the ruleset's word is decorative): computed and counted, excluded from the diagnosis because a signal it reads is unvalidated. The record a position is read from is named beside it. "
         + f"The directory column is the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent. "
-        + f"The relation column draws identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms — and a containment the predicates guarantee at any count; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A containment says 'by its predicate' when the inner predicate conjoins every term of the outer; otherwise it says which raw signals the two predicates read in common, a blend or index expanded through its declared inputs, or 'no signal in common' — a signal, not an instrument: the import graph and the test graph are one edge set read twice, a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone. A feature that fired on no room keeps its row at 0. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap. The most-marked rooms and the rooms each pair of diagnostic features shares follow the table.*"
+        + f"The relation column draws identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms — and a containment the predicates guarantee at any count; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. A containment says 'by its predicate' when the inner predicate conjoins every term of the outer; otherwise it says which raw signals the two predicates read in common, a blend or index expanded through its declared inputs, or 'no signal in common' — a signal, not an instrument: the import graph and the test graph are one edge set read twice, a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone. "
+        + (f"The import graph is resolved statically: {facts_doc['unresolved_imports']} imports in the tree did not resolve to a file and {facts_doc['external_imports']} are external packages; an import computed at run time is not an edge, so a room loaded only that way reads as unimported. " if facts_doc.get("unresolved_imports") is not None else "")
+        + "A feature that fired on no room keeps its row at 0. A caveat is the ruleset's own limit on what a predicate reads, never a claim about this repository. Every cell that is not a number is a cell's own answer, not a gap. The rooms at the most positions and the rooms each pair of diagnostic features shares follow the table.*"
         + NL
         + NL
         + "| position (the record it reads) | feature | profile | rooms | by wing | largest parent directory n / rooms in it | relation to | predicate; caveat or reason |"
@@ -2015,6 +2044,31 @@ def qualified_labels(keys: list[str]) -> dict[str, str]:
     when the name is under two profiles, in every place a feature is named."""
     names = [k.split("/")[-1] for k in keys]
     return {k: (n if names.count(n) == 1 else k) for k, n in zip(keys, names)}
+
+
+TOP_TIER_CAP = 25  # D-061: rooms of the top tier named before "and N more"
+
+
+def top_tier(features, room_metrics: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    """D-061: every room under the most distinct diagnostic sets (two or more), by path, with its
+    size and the features that mark it. A set, not a list ordered by anything a reader can take
+    for severity."""
+    feats = [e for e in features if e["diagnostic"]]
+    twice = {e["feature"] for e in feats if sum(1 for x in feats if x["feature"] == e["feature"]) > 1}
+    sets = sets_per_room(feats)
+    most = max((n for n in sets.values() if n >= 2), default=0)
+    rooms = sorted(r for r, n in sets.items() if n == most and most >= 2)
+    return {
+        "sets": most,
+        "rooms": [
+            {
+                "room": r,
+                "lines": (room_metrics.get(r) or {}).get("size_loc", (room_metrics.get(r) or {}).get("lines")),
+                "features": sorted((f"{e['profile']}/{e['feature']}" if e["feature"] in twice else e["feature"]) for e in feats if r in set(e["rooms"])),
+            }
+            for r in rooms
+        ],
+    }
 
 
 def _unlisted(m: dict[str, Any]) -> str:
@@ -2033,6 +2087,35 @@ def render_most_marked(facts_doc: dict[str, Any]) -> str:
     "a row below that count" was true of the list and false as a label on the second row of a
     tier; the cell now says it — "3 of 4" is three rows listed of four rooms at this count, the
     first by path — and the lead says only the ordering and the cap."""
+    tier = facts_doc.get("top_tier")
+    if tier is None:  # an older sheet without the field renders the capped list it carries (pre-0.27.0)
+        return _render_most_marked_legacy(facts_doc)
+    rooms = tier.get("rooms") or []
+    most = tier.get("sets", 0)
+    if not rooms:
+        return NL + "### Rooms at the most positions" + NL + NL + "*No room carries two distinct diagnostic sets.*" + NL
+    co = facts_doc.get("co_located_rooms")
+    shown = rooms[:TOP_TIER_CAP]
+    more = f"; the first {TOP_TIER_CAP} by path are listed and {len(rooms) - TOP_TIER_CAP} more are not" if len(rooms) > TOP_TIER_CAP else ""
+    lead = (
+        f"*Every room under the most distinct diagnostic sets ({most}), by path — {len(rooms)} room{'s' if len(rooms) != 1 else ''}{more}. "
+        "A set is a distinct set of rooms a diagnostic feature draws (a feature under two profiles, or two features drawing one set, is one set). "
+        + (f"Rooms at fewer positions are not listed; {co} rooms carry two or more distinct sets. " if co is not None else "")
+        + "Size is the room's line count.*"
+    )
+    body = NL.join(f"| {m['room']} | {m.get('lines') if m.get('lines') is not None else '—'} | {most} | {', '.join(m['features'])} |" for m in shown)
+    return (
+        NL + f"### Rooms at the most positions ({most})" + NL + NL
+        # D-060: the skimmer read a capped, count-ordered list as a leaderboard; D-061: the caption
+        # over it was read and bounced, so the table is the whole top tier by path — a set, with size
+        + "**Every room at the most positions, in path order — a set, not a ranking and not a severity (D-004 Q3).**" + NL + NL
+        + lead + NL + NL
+        + "| room | lines | positions (distinct sets) | diagnostic features that mark it |" + NL + "|---|---|---|---|" + NL + body + NL
+    )
+
+
+def _render_most_marked_legacy(facts_doc: dict[str, Any]) -> str:
+    """The capped, count-ordered list rendered from 0.19.0 to 0.26.0 (D-049 … D-060), kept for sheets without `top_tier`."""
     top = facts_doc.get("most_marked_rooms") or []
     if not top:
         return NL + "### Rooms at the most positions" + NL + NL + "*No room carries two distinct diagnostic sets.*" + NL
@@ -2049,7 +2132,6 @@ def render_most_marked(facts_doc: dict[str, Any]) -> str:
     )
     return (
         NL + "### Rooms at the most positions" + NL + NL
-        # D-060: the skimmer read this table as a leaderboard by its shape; the rule stands over it, bold
         + "**A count of the positions a room sits at; the order is the count, then the path — not a ranking and not a severity (D-004 Q3).**" + NL + NL
         + lead + NL + NL
         + "| room | positions (distinct sets) | marks | listed of rooms at this count | diagnostic features that mark it |" + NL + "|---|---|---|---|---|" + NL + body + NL
