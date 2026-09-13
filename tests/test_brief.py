@@ -61,8 +61,11 @@ def test_facts_sheet_is_the_closed_set(sub):
 
 def _row(table: str, feature: str, decorative: bool = False, profile: str | None = None) -> str:
     """D-060: the position is the first column; a row is found by its feature cell."""
-    cell = f"| {'◌ ' if decorative else ''}{feature} |" + (f" {profile} |" if profile else "")
-    return next(line for line in table.splitlines() if line.startswith("| ") and cell in line)
+    cell = f"| {'◌ ' if decorative else ''}{feature} |" + (f" {profile}" if profile else "")  # D-063: a profile cell may name two profiles
+    rows = [line for line in table.splitlines() if line.startswith("| ") and cell in line]
+    if not rows and profile:  # D-063: a feature under two profiles with one predicate is one row, listed under the base profile
+        rows = [line for line in table.splitlines() if line.startswith("| ") and f"| {'◌ ' if decorative else ''}{feature} |" in line and "(one predicate, two profiles)" in line]
+    return rows[0]
 
 
 def _at_floor(g, name):
@@ -1661,7 +1664,7 @@ def test_a_tier_orders_by_path_and_the_scope_count_is_over_the_population(sub, t
     dd = next(x for x in g["features"] if x["feature"] == "tie")["dominant_dir"]
     assert dd["tied"] and dd["dir"] == "pkg" and dd["tied_with"] == [{"dir": "lib", "n": 3, "population": 4}]
     cell = _b.render_register(g)
-    m = re.search(r"\| [^|]*tied[^|]*\|", cell)
+    m = re.search(r"\| [^|]*\(tied with[^|]*\|", cell)
     assert m and m.group(0) == "| pkg (as parent, not the wing) 3 / 3 (tied with lib (as parent, not the wing) 3 / 4) |", m.group(0) if m else cell
     # (3) equal sets, unequal marks: path orders the tier
     def feat(name, rooms, profile="p", predicate="x >= p90"):
@@ -1743,8 +1746,8 @@ def test_a_guaranteed_containment_is_drawn_under_the_floor_and_the_ordering_text
     assert "⊃ ◌ tiny_in (by its predicate;" in row_big  # D-056: ◌ travels with the name
     assert g["relation_counts"]["within"] >= len(drawn)
     # (2) the decorative row prints its predicate before its reason
-    assert f"| `{inner['predicate']}` — ◌ excluded from the diagnosis: tiny_in is decorative on purpose (lines) |" in row_in  # D-060
-    assert "and a containment the predicates guarantee at any count" in reg and "predicate; caveat or reason |" in reg
+    assert f"| `{inner['predicate']}` — here p90 on fan_in unresolved, p50 on lines unresolved — ◌ excluded from the diagnosis: tiny_in is decorative on purpose (lines) |" in row_in  # D-063: every ranked term states its cutoff
+    assert "and a containment the predicates guarantee at any count" in reg and "caveat, a limit on the predicate; or reason |" in reg
     # (3) one ordering text
     f = facts(sk, sub)
     lead = _b._render_most_marked_legacy(g)  # D-061: the capped list is legacy; its lead and the sheet's gloss still share one text
@@ -1896,7 +1899,7 @@ def test_the_defence_sits_in_the_cell_it_defends_and_the_page_carries_its_snapsh
     rule = reg.index("**A position names where a room sits in a record")
     assert rule < note_start and f"ranks this repository's own {f['population']} rooms" in reg[rule:note_start]
     header = next(line for line in reg.splitlines() if line.startswith("| position"))
-    assert header.startswith("| position (the record it reads) | feature | profile | rooms |")
+    assert header.startswith("| position (the record it reads) | feature | profile | rooms (tied at the cutoff) |")  # D-063: the header carries its legend
     # the tier table carries the rule over it and no longer calls itself "most-marked"
     assert "### Rooms at the most positions" in reg and "Most-marked" not in reg
     if f["most_marked_rooms"]:  # the small fixture has no tier; the caption is tested on a synthetic one below
@@ -1912,11 +1915,12 @@ def test_the_defence_sits_in_the_cell_it_defends_and_the_page_carries_its_snapsh
     assert "stability is the `substrate timelapse` run under gate" in page and "not this page" in page  # D-062: said once
     # a single-pNN row states its share by construction; a conjunction does not
     # D-061: the sentence states the realized share and the cutoff, not "10% by construction" (eslint: 83 of 473, 80 tied at the cutoff)
-    assert _b._share_by_construction("last_touched_days >= p90", 83, 473, {"last_touched_days >= p90": 533.966}, 80) == " — rooms at or above this repository's p90 on last_touched_days (here 533.966 days): 83 of 473, 17.5%; 80 at the cutoff value"
-    assert _b._share_by_construction("last_touched_days >= p90", 70, 583, {"last_touched_days >= p90": 1629.7122}, 70).endswith("70 of 583, 12.0%; all 70 at the cutoff value")  # D-062: typeorm's one mass commit
+    assert _b._share_by_construction("last_touched_days >= p90", 83, 473, {"last_touched_days >= p90": 533.966}, 80) == " — rooms at or above this repository's p90 on last_touched_days (here 533.966 days): 83 of 473, 17.5%"
+    # D-063: the tie count is in the rooms column, beside the number that travels
+    assert _b._share_by_construction("centrality >= p90 and fan_out >= p50", 13, 267, {"centrality >= p90": 0.00474, "fan_out >= p50": 1.0}) == " — here p90 on centrality is 0.00474, p50 on fan_out is 1"
     assert _b._share_by_construction("last_touched_days <= p10", 48, 473, {"last_touched_days <= p10": 12.5}) == " — rooms at or below this repository's p10 on last_touched_days (here 12.5 days): 48 of 473, 10.1%"
     assert _b._share_by_construction("fan_in >= p75", 148, 473, {}) == " — rooms at or above this repository's p75 on fan_in (here unresolved): 148 of 473, 31.3%"
-    assert _b._share_by_construction("centrality >= p90 and fan_out >= p50") == "" and _b._share_by_construction("reinforcement_index >= 0.5") == ""
+    assert _b._share_by_construction("centrality >= p90 and fan_out >= p50").startswith(" — here p90 on centrality") and _b._share_by_construction("reinforcement_index >= 0.5") == ""  # D-063: ranked terms of a conjunction state their cutoffs
     dark = _row(reg, "dark_room")
     dk = next(x for x in f["features"] if x["feature"] == "dark_room")
     assert f"on last_touched_days (here {dk['thresholds']['last_touched_days >= p90']:g} days): {dk['count']} of {f['population']}, {100.0 * dk['count'] / f['population']:.1f}%" in dark
@@ -1972,7 +1976,7 @@ def test_a_row_states_its_realized_share_and_the_tier_table_is_the_whole_top_tie
             share = 100.0 * x["count"] / f["population"]
             assert f"{x['count']} of {f['population']}, {share:.1f}%" in _row(reg, x["feature"], decorative=x["decorative"], profile=x["profile"])
     assert "by construction" not in reg.split("*Rendered")[0]  # the bold rule no longer says "a tenth by construction"
-    assert "or more where rooms tie at the cutoff; each row states its share" in reg
+    assert "or more where rooms tie at the cutoff, and the rooms column says how many are tied" in reg  # D-063
     # (3) the population rule and the resolver's limit, from the substrate
     n_test = sum(1 for n in sub["nodes"] if n["metrics"].get("is_test"))
     n_unindexed = sum(1 for n in sub["nodes"] if not n["metrics"].get("is_test") and (n.get("derived") or {}).get("indices") is None)
@@ -2026,10 +2030,10 @@ def test_instance_counts_where_a_mechanism_dominates_and_the_note_is_a_legend(su
         if x.get("at_cutoff") is not None and x["count"]:
             assert 0 <= x["at_cutoff"] <= x["count"]
             row = _row(reg, x["feature"], decorative=x["decorative"], profile=x["profile"])
-            if x["at_cutoff"] > 1:
-                assert (f"all {x['count']} at the cutoff value" if x["at_cutoff"] == x["count"] else f"{x['at_cutoff']} at the cutoff value") in row
+            if x["at_cutoff"] > 1:  # D-063: the tie count sits in the rooms column
+                assert (f"| {x['count']} (all tied at the cutoff) |" if x["at_cutoff"] == x["count"] else f"| {x['count']} ({x['at_cutoff']} tied at the cutoff) |") in row
             else:
-                assert "at the cutoff value" not in row
+                assert "tied at the cutoff) |" not in row.split("|", 5)[4] if row.count("|") > 5 else True
     # importers from tests, per import-graph row, from the substrate
     nodes = {n["id"]: n for n in sub["nodes"]}
     for x in f["features"]:
@@ -2044,15 +2048,16 @@ def test_instance_counts_where_a_mechanism_dominates_and_the_note_is_a_legend(su
     assert f["cross_scope_edges"] == sum(1 for e in sub["edges"] if nodes[e["from"]]["metrics"].get("package", "") != nodes[e["to"]]["metrics"].get("package", ""))
     assert ("imports cross a package scope" in reg) == (f["packages"] > 1)
     # ◌ rows last
-    order = [line for line in reg.splitlines() if line.startswith("| ") and "|---" not in line and not line.startswith("| position") and "| shared rooms" not in line]
-    table_rows = order[: len(f["features"])]
+    table = reg.split("### Rooms at the most positions", 1)[0]
+    table_rows = [line for line in table.splitlines() if line.startswith("| ") and "|---" not in line and not line.startswith("| position")]
+    assert 0 < len(table_rows) <= len(f["features"])  # D-063: a feature under two profiles with one predicate is one row
     marks = [("| ◌ " in r) for r in table_rows]
     assert marks == sorted(marks), "excluded rows are not last"
     # the note is a legend: the counts, then one line per term; no repetition of the header or the zero-row sentence
     assert "- **wing** —" in reg and "- **◌** —" in reg and "- **relation to** —" in reg and "- **caveat** —" in reg and "- **the import graph and the test graph** —" in reg
     for gone in ("no cell is written", "The record a position is read from is named beside it", "keeps its row at 0", "is a cell's own answer, not a gap", "follow the table"):
         assert gone not in reg, gone
-    assert page.count("was cut at D-049") == 0 and page.count("0.28.0") == 2  # header and provenance
+    assert page.count("was cut at D-049") == 0 and page.count(_b.BRIEF_VERSION) == 2  # header and provenance
     # two features drawing one set share one matrix row, named with both names
     ident = [o for o in f["overlaps"] if o["relation"] == "identical" and o.get("diagnostic")]
     shared = _b.render_shared(f)
@@ -2070,3 +2075,42 @@ def test_instance_counts_where_a_mechanism_dominates_and_the_note_is_a_legend(su
     # hub and lit_room name their position (maintainability 0.2.9)
     assert _row(reg, "hub").startswith("| high-centrality node (import graph) |") and _row(reg, "lit_room").startswith("| recently-touched room (clock) |")
     assert "no consequence word in the name (lexicon)" not in reg
+
+
+def test_every_ranked_term_states_its_cutoff_and_two_profiles_on_one_predicate_are_one_row(sub):
+    """D-063 (the registry control and the fourth skimmer, both unpointed, on 0.28.0). Control: the
+    bold rule said each row states its share while four conjunctive rows printed no cutoff, and
+    registry's corridor resolves 'at or above the median' fan-out to 1; the import_root caveat said
+    'other rooms' where fan_in counts test files; centrality was undefined. Skimmer: '83' travels
+    and '80 at the cutoff value' does not; two identical foundation rows read as a bug; the legend's
+    heads are read and its bodies are not, so the column headers carry their own legend."""
+    import repo_substrate.brief as _b
+
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    reg = _b.render_register(f)
+    # every ranked term of a conjunction states its cutoff on the row
+    for x in f["features"]:
+        terms = x["predicate"].split(" and ")
+        if x["count"] and len(terms) > 1 and any(" p" in t for t in terms):
+            row = _row(reg, x["feature"], decorative=x["decorative"], profile=x["profile"])
+            for t in terms:
+                if " p" in t:
+                    sig, pnn = t.split()[0], t.split()[-1]
+                    assert f"{pnn} on {sig} is " in row or f"{pnn} on {sig} unresolved" in row, (x["feature"], t)
+    # the tie count is in the rooms column; the rooms header says so
+    assert "| rooms (tied at the cutoff) |" in reg
+    # one predicate under two profiles: one row, the profile cell names both, no '= other/same' relation entry
+    ident = [o for o in f["overlaps"] if o["relation"] == "identical" and o.get("shared_predicate")]
+    table = reg.split("### Rooms at the most positions", 1)[0]
+    for o in ident:
+        name = o["a"].split("/")[-1]
+        rows = [line for line in table.splitlines() if f"| {name} |" in line]
+        assert len(rows) == 1 and "(one predicate, two profiles)" in rows[0] and " + " in rows[0]
+        assert "same predicate, two profiles" not in reg
+    # centrality is defined; the column headers carry their legend
+    assert "Centrality is PageRank over that graph" in reg
+    assert "| relation to (= one set · ⊂ inside · ⊃ contains) |" in reg and "caveat, a limit on the predicate; or reason |" in reg
+    # the onboarding caveat names the disqualifier the predicate reads
+    ir = next(x for x in f["features"] if x["feature"] == "import_root")
+    assert "a package entry that anything imports — a room or a test file — cannot qualify" in ir["caveat"]

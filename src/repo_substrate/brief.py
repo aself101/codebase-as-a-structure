@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.28.0"  # D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
+BRIEF_VERSION = "0.29.0"  # D-063: every ranked term states its cutoff (the corridor's median fan-out is 1 on registry); the tie count sits in the rooms column; two profiles on one predicate are one row; centrality is defined; column headers carry their own legend. D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -1781,8 +1781,18 @@ def _share_by_construction(predicate: str, count: int | None = None, population:
     from .mapper.ruleset import parse_predicate
 
     terms = parse_predicate(str(predicate or ""))
+    ranked = [t for t in terms if t.percentile is not None]
     if len(terms) != 1 or terms[0].percentile is None:
-        return ""
+        # D-063 (the registry control): a conjunctive row stated no cutoff, and on registry the
+        # corridor's "at or above the median" fan-out resolves to 1; every ranked term says its value
+        if not ranked:
+            return ""
+        parts = []
+        for t in ranked:
+            cut = (thresholds or {}).get(t.render())
+            unit = " days" if t.signal.endswith("_days") else ""
+            parts.append(f"p{t.percentile} on {t.signal} is {cut:g}{unit}" if isinstance(cut, (int, float)) else f"p{t.percentile} on {t.signal} unresolved")
+        return " — here " + ", ".join(parts)
     t = terms[0]
     side = "at or above" if t.op in (">=", ">") else "at or below" if t.op in ("<=", "<") else None
     if side is None:
@@ -1793,15 +1803,9 @@ def _share_by_construction(predicate: str, count: int | None = None, population:
     if count is None or not population:
         return f" — rooms {side} this repository's p{t.percentile} on {t.signal} (here {cut_text})"
     share = 100.0 * count / population
-    # D-062: the tie is counted, not described — "ties carry the row past a tenth" read as a few
-    # tied rooms on a row where all 70 sat at the cutoff
-    if at_cutoff is None or at_cutoff <= 1:
-        tie = ""
-    elif at_cutoff == count:
-        tie = f"; all {count} at the cutoff value"
-    else:
-        tie = f"; {at_cutoff} at the cutoff value"
-    return f" — rooms {side} this repository's p{t.percentile} on {t.signal} (here {cut_text}): {count} of {population}, {share:.1f}%{tie}"
+    # D-062 counted the tie here; D-063 (the fourth skimmer): "83" travels and "80 at the cutoff value",
+    # fourth in a run-on cell, does not — the tie count sits in the rooms column beside the number it qualifies
+    return f" — rooms {side} this repository's p{t.percentile} on {t.signal} (here {cut_text}): {count} of {population}, {share:.1f}%"
 
 
 def _signals_read(predicate: str) -> set[str]:
@@ -1945,7 +1949,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
             other = ov["b"] if ov["a"] == key else ov["a"]
             if ov["relation"] == "identical":
                 if ov.get("shared_predicate"):
-                    why = "same predicate, two profiles"
+                    continue  # D-063: the row's profile cell says it
                 elif ov.get("inert_terms"):
                     why = f"{', '.join(ov['inert_terms'])} excludes nothing"
                 else:
@@ -1982,9 +1986,29 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         return relations(key)
 
     rows = []
+    # D-063 (the fourth skimmer): two identical rows under two profiles read as a generator bug; a
+    # feature under two profiles with one predicate is one row whose profile cell names both
+    _same = {}
+    for ov in facts_doc.get("overlaps") or []:
+        if ov["relation"] == "identical" and ov.get("shared_predicate"):
+            _same.setdefault(ov["a"], []).append(ov["b"])
+            _same.setdefault(ov["b"], []).append(ov["a"])
+    _skip = set()
+    for a, bs in _same.items():
+        for b in bs:
+            if b > a:
+                _skip.add(b)
+
+    def profile_cell(f: dict[str, Any]) -> str:
+        k = f"{f['profile']}/{f['feature']}"
+        others = sorted(x.split("/")[0] for x in _same.get(k, []))
+        return f["profile"] if not others else " + ".join([f["profile"]] + others) + " (one predicate, two profiles)"
+
     # D-062 (the third skimmer): roster order put ◌ crack in the first row, the point of maximum attention; excluded rows render last
     for f in sorted(facts_doc["features"], key=lambda x: (bool(x["decorative"]),)):
         key = f"{f['profile']}/{f['feature']}"
+        if key in _skip:
+            continue
         bw = ", ".join(f"{k} {v}" for k, v in f.get("by_wing", {}).items()) or "no wing (0)"  # D-057: a zero row says so
         dd = f.get("dominant_dir") or {}
         # D-041: every fallback says the reason that is the reason, and a directory that is also a
@@ -2033,8 +2057,10 @@ def render_register(facts_doc: dict[str, Any]) -> str:
             pos = f"no consequence word in the name (lexicon); a position in the {record_of(f['predicate'])}"
         # D-060: the position is the first column — the skimmer reads column one and infers the rest
         # from the name, and the name is the column that carries the consequence word
+        # D-063: the tie count travels with the count; two profiles on one predicate are one row
+        tie = f" ({'all' if f.get('at_cutoff') == f['count'] else f.get('at_cutoff')} tied at the cutoff)" if (f.get("at_cutoff") or 0) > 1 else ""
         rows.append(
-            f"| {pos} | {name} | {f['profile']} | {f['count']} | {bw} | {dom} | {relation_cell(f, key)} | {what} |"
+            f"| {pos} | {name} | {profile_cell(f)} | {f['count']}{tie} | {bw} | {dom} | {relation_cell(f, key)} | {what} |"
         )
     wings = " · ".join(f"{k} {v}" for k, v in facts_doc["wings"].items())
     scopes = " · ".join(f"{e['scope']} {e['rooms']}" for e in (facts_doc.get("by_package") or []))  # D-054; D-056: a list
@@ -2054,7 +2080,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         # D-060: the skimmer read the table and skipped the note whole; the one rule the page rests on
         # stands first, bold, outside the italic — and the calibration fact the numbers depend on beside it
         + "**A position names where a room sits in a record — the import graph, the clock, the test graph, the edit record, size — and is not a claim about the room's condition (D-004 Q3). "
-        + f"Every pNN ranks this repository's own {facts_doc['population']} rooms, so a `>= p90` row holds a tenth of them — or more where rooms tie at the cutoff; each row states its share — and no count on this page compares across repositories."
+        + f"Every pNN ranks this repository's own {facts_doc['population']} rooms, so a `>= p90` row holds a tenth of them — or more where rooms tie at the cutoff, and the rooms column says how many are tied; a single-rank row states its share, and every ranked term states the value its rank resolved to here — and no count on this page compares across repositories."
         + (
             f" A room is a source file outside the test convention with computed signals: {facts_doc['population']} of the tree's {facts_doc['node_count']} files; the {facts_doc['test_nodes']} test files are nodes of the import graph and not rooms"
             + (f", and {facts_doc['unindexed_nodes']} file{'s' if facts_doc['unindexed_nodes'] != 1 else ''} with no computed signals {'are' if facts_doc['unindexed_nodes'] != 1 else 'is'} not a room either" if facts_doc.get("unindexed_nodes") else "")
@@ -2083,13 +2109,13 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + "- **◌** — an excluded feature (the ruleset's word is decorative): computed and counted, excluded from the diagnosis because a signal it reads is unvalidated." + NL
         + f"- **largest parent directory** — the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent." + NL
         + f"- **relation to** — identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms — and a containment the predicates guarantee at any count; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. 'By its predicate': the inner predicate conjoins every term of the outer. Otherwise the cell says which raw signals the two predicates read in common (a blend or index expanded through its declared inputs), or 'no raw signal in common' — a signal, not an instrument." + NL
-        + "- **the import graph and the test graph** — one edge set read twice: a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone; an import-graph row says how many of its rooms' importers are test files."
+        + "- **the import graph and the test graph** — one edge set read twice: a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone; an import-graph row says how many of its rooms' importers are test files. Centrality is PageRank over that graph: a room's rank rises with the rank of its importers, not only with their number, so a room with four well-placed importers can outrank one with thirteen."
         + (f" The graph is resolved statically: {facts_doc['unresolved_imports']} imports in the tree did not resolve to a file and {facts_doc['external_imports']} are external packages; an import computed at run time is not an edge, so a room loaded only that way reads as unimported." if facts_doc.get("unresolved_imports") is not None else "")
         + NL
         + "- **caveat** — the ruleset's own limit on what a predicate reads, never a claim about this repository; the count beside it ('this case: N of M here') is this repository's."
         + NL
         + NL
-        + "| position (the record it reads) | feature | profile | rooms | by wing | largest parent directory n / rooms in it | relation to | predicate; caveat or reason |"
+        + "| position (the record it reads) | feature | profile | rooms (tied at the cutoff) | by wing | largest parent directory n / rooms in it | relation to (= one set · ⊂ inside · ⊃ contains) | predicate (with the cutoffs resolved here); caveat, a limit on the predicate; or reason |"
         + NL
         + "|---|---|---|---|---|---|---|---|"
         + NL
