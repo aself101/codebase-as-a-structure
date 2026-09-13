@@ -142,6 +142,17 @@ class SubstrateConfig:
     test_suffixes: tuple[str, ...] = DEFAULT_TEST_SUFFIXES
     n_min: int = 30
     exclude_tests_from_population: bool = True
+    # --- file kinds (D-067): declared conventions, each a G1 flag; the substrate records the kind
+    # and a ruleset chooses whether a kind is a room. Three instances forced it (D-064, D-066): test-
+    # runner configs and `export {}` placeholders as the whole of a caveat's case, migrations as the
+    # largest parent of a dark-room set. Precedence config > migration > placeholder.
+    # config: the basename is a tool configuration (`vitest.config.ts`, `.eslintrc.js`, `karma.conf.js`)
+    # AND the file sits at its package's root — `src/app.config.ts` is a module, not a tool's config.
+    config_file_regex: str = r"^(\.?[A-Za-z0-9_-]+rc|[A-Za-z0-9_.-]+\.(config|conf))\.[cm]?[jt]sx?$"
+    # migration: a directory segment named migration(s) anywhere above the file
+    migration_dir_regex: str = r"(^|/)migrations?/"
+    # placeholder: nothing but an empty export once comments are stripped
+    placeholder_content_regex: str = r"^\s*(export\s*\{\s*\}\s*;?\s*|module\.exports\s*=\s*\{\s*\}\s*;?\s*)?$"
     rounding_dp: int = 4
     # --- history (§5, §7)
     fix_subject_regex: str = r"\b(bug|hotfix|patch)\b"

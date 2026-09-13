@@ -58,6 +58,18 @@ def _blind_seal(path: Path) -> dict[str, str | None]:
     }
 
 
+def _repo_arg(arg: str | Path) -> tuple[Path, str]:
+    """D-067: `path@rev` pins a live reference repository's tip so a re-run can isolate a substrate
+    change from the repository's own drift (the registry moved under the gate three times on
+    2026-09-13 and `recent_commit_share` flapped across eps with it); bare `path` reads HEAD."""
+    a = str(arg)
+    if "@" in a and not a.endswith("@"):
+        path, rev = a.rsplit("@", 1)
+        if rev and "/" not in rev:
+            return Path(path), rev
+    return Path(a), "HEAD"
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="substrate-validate")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -66,15 +78,15 @@ def main(argv: list[str] | None = None) -> int:
         "--repo",
         "--test-repo",
         dest="test_repos",
-        type=Path,
+        type=str,
         action="append",
         default=[],
-        help="TEST-role repo (D-009): only these can confer `validated`",
+        help="TEST-role repo (D-009): only these can confer `validated`; `path@rev` pins the tip (D-067)",
     )
     run.add_argument(
         "--tuning-repo",
         dest="tuning_repos",
-        type=Path,
+        type=str,
         action="append",
         default=[],
         help="TUNING-role repo: scored and reported in-sample, never counted toward the verdict",
@@ -147,7 +159,7 @@ def main(argv: list[str] | None = None) -> int:
         ap.error(
             "at least one --repo/--test-repo is required (D-009: the verdict comes from test-role repos)"
         )
-    repos = [(r, "test") for r in args.test_repos] + [(r, "tuning") for r in args.tuning_repos]
+    repos = [(*_repo_arg(r), "test") for r in args.test_repos] + [(*_repo_arg(r), "tuning") for r in args.tuning_repos]
     tuned_commit = args.tuned_config_commit
     if tuned_commit is None and args.config is not None:
         import subprocess
@@ -159,10 +171,10 @@ def main(argv: list[str] | None = None) -> int:
             check=False,
         )
         tuned_commit = proc.stdout.strip() or None
-    for repo, role in repos:
+    for repo, rev, role in repos:
         repo = repo.resolve()
-        print(f"[{repo.name}] ({role}) holdout…", file=sys.stderr)
-        h = run_holdout(repo, cache, vcfg)
+        print(f"[{repo.name}] ({role}) holdout…" + (f" (pinned at {rev})" if rev != "HEAD" else ""), file=sys.stderr)
+        h = run_holdout(repo, cache, vcfg, rev)
         print(
             f"[{repo.name}] split={h.split_sha[:10]} eligible={h.n_eligible} positives={h.n_positives} "
             f"coverage={h.coverage:.2f} degenerate={h.degenerate}",
@@ -170,7 +182,7 @@ def main(argv: list[str] | None = None) -> int:
         )
         print(f"[{repo.name}] asserted bar…", file=sys.stderr)
         blind = args.blind_dir / f"{repo.name}.md"
-        a = run_asserted(repo, cache, vcfg, blind if blind.exists() else None)
+        a = run_asserted(repo, cache, vcfg, blind if blind.exists() else None, rev)
         holdouts.append(h)
         asserted.append(a)
         refs.append(

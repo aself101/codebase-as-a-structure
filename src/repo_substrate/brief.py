@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.32.0"  # D-066: a ranked row states the next value beyond its cutoff and how many rooms sit there (a batch commit divides at the cutoff; the tie count closed one side); a by-wing count on a wing of many package scopes says how many scopes hold the feature; the population sentence says node_count is the files with a source extension, not the tree; the legend counts the imports that name this repository's own package; a caveat carries its case count beside the clause it counts (`{case}`). D-065: the legend states the resolver's alias state beside the unresolved count — how many tsconfig `paths` patterns it was handed, or that the tsconfig could not be read and why (the caveat the substrate had carried since 0.4.1 and the page never rendered; substrate 0.5.0 fixed the loader that made it fire). D-064: the unresolved imports are counted by kind (from test files; alias-shaped) so the test-graph cells they bias are said to be lower bounds; a set drawn twice says so in the rooms column; a tier lists one name per set. D-063: every ranked term states its cutoff (the corridor's median fan-out is 1 on registry); the tie count sits in the rooms column; two profiles on one predicate are one row; centrality is defined; column headers carry their own legend. D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
+BRIEF_VERSION = "0.33.0"  # D-067: the population sentence counts the files a ruleset's kind exclusion removed (config / migration / placeholder — substrate 0.7.0's G1 flags; Alex's call). D-066: a ranked row states the next value beyond its cutoff and how many rooms sit there (a batch commit divides at the cutoff; the tie count closed one side); a by-wing count on a wing of many package scopes says how many scopes hold the feature; the population sentence says node_count is the files with a source extension, not the tree; the legend counts the imports that name this repository's own package; a caveat carries its case count beside the clause it counts (`{case}`). D-065: the legend states the resolver's alias state beside the unresolved count — how many tsconfig `paths` patterns it was handed, or that the tsconfig could not be read and why (the caveat the substrate had carried since 0.4.1 and the page never rendered; substrate 0.5.0 fixed the loader that made it fire). D-064: the unresolved imports are counted by kind (from test files; alias-shaped) so the test-graph cells they bias are said to be lower bounds; a set drawn twice says so in the rooms column; a tier lists one name per set. D-063: every ranked term states its cutoff (the corridor's median fan-out is 1 on registry); the tie count sits in the rooms column; two profiles on one predicate are one row; centrality is defined; column headers carry their own legend. D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -334,6 +334,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         # first" was true of the render and false of the file the viewer would read
         "by_package": [{"scope": k, "rooms": v} for k, v in sorted(by_package.items(), key=lambda kv: (-kv[1], kv[0]))],
         "scopes_by_wing": {w: len(v) for w, v in sorted(scopes_by_wing.items())},  # D-066
+        # D-067: the kinds the ruleset does not count as rooms, with the count each removed
+        "excluded_kinds": list(s.get("excluded_kinds") or []),
+        "excluded_by_kind": dict(s.get("excluded_by_kind") or {}),
         "package_name_imports": ((substrate or {}).get("summary") or {}).get("package_name_imports"),  # D-066
         "population": s["population"],
         "wings": dict(sorted(wings.items())),
@@ -1814,6 +1817,24 @@ def _alias_state_text(facts_doc: dict[str, Any]) -> str:
     return " No tsconfig.json path alias was read (none declared, or no tsconfig.json)."
 
 
+def _kinds_rule_text(facts_doc: dict[str, Any]) -> str:
+    """D-067: the ruleset's kind exclusion, in the population rule."""
+    ks = facts_doc.get("excluded_kinds") or []
+    return f", and not a {' or '.join(ks)} file (the ruleset excludes those kinds)" if ks else ""
+
+
+def _kinds_count_text(facts_doc: dict[str, Any]) -> str:
+    """D-067: what the exclusion removed, counted per kind, beside the test-file count."""
+    ebk = facts_doc.get("excluded_by_kind") or {}
+    if not facts_doc.get("excluded_kinds"):
+        return ""
+    total = sum(ebk.values())
+    if not total:
+        return "; no file of an excluded kind is in the tree"
+    parts = ", ".join(f"{k} {v}" for k, v in ebk.items() if v)
+    return f"; the {total} file{'s' if total != 1 else ''} of an excluded kind ({parts}) {'are' if total != 1 else 'is'} in the graph and not a room"
+
+
 def _package_name_text(facts_doc: dict[str, Any]) -> str:
     """D-066: the imports that name this repository's own package (a cookbook example under a
     `file:../..` manifest; a fixture importing "typeorm") — placed at the package's declared entry
@@ -2223,7 +2244,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + "**A position names where a room sits in a record — the import graph, the clock, the test graph, the edit record, size — and is not a claim about the room's condition (D-004 Q3). "
         + f"Every pNN ranks this repository's own {facts_doc['population']} rooms, so a `>= p90` row holds a tenth of them — or more where rooms tie at the cutoff, and the rooms column says how many are tied; a single-rank row states its share, and every ranked term states the value its rank resolved to here — and no count on this page compares across repositories."
         + (
-            f" A room is a source file outside the test convention with computed signals: {facts_doc['population']} of the {facts_doc['node_count']} files with a source extension the substrate reads (manifests, documents and the rest of the tree are not counted); the {facts_doc['test_nodes']} test files are nodes of the import graph and not rooms"
+            f" A room is a source file outside the test convention with computed signals{_kinds_rule_text(facts_doc)}: {facts_doc['population']} of the {facts_doc['node_count']} files with a source extension the substrate reads (manifests, documents and the rest of the tree are not counted); the {facts_doc['test_nodes']} test files are nodes of the import graph and not rooms{_kinds_count_text(facts_doc)}"
             + (f", and {facts_doc['unindexed_nodes']} file{'s' if facts_doc['unindexed_nodes'] != 1 else ''} with no computed signals {'are' if facts_doc['unindexed_nodes'] != 1 else 'is'} not a room either" if facts_doc.get("unindexed_nodes") else "")
             + "."
             if facts_doc.get("node_count") else ""

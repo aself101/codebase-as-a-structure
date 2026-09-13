@@ -34,6 +34,29 @@ class StaticNode:
     is_package_entry: bool = (
         False  # declared entry of its package (package.json main/module/types/bin/exports) (D-029)
     )
+    file_kind: str = "source"  # source | config | migration | placeholder (D-067; declared conventions in SubstrateConfig)
+
+
+FILE_KINDS = ("config", "migration", "placeholder")
+
+
+def file_kind(path: str, data: bytes, package_dir: str, cfg: SubstrateConfig) -> str:
+    """D-067: the kind a declared convention assigns a file, precedence config > migration >
+    placeholder > source. Each is a G1 flag on the substrate (`is_config`, `is_migration`,
+    `is_placeholder`); the heuristic is the regex in the config, fingerprinted."""
+    p = PurePosixPath(path)
+    parent = str(p.parent)
+    parent = "" if parent == "." else parent
+    if parent == package_dir and re.match(cfg.config_file_regex, p.name):
+        return "config"
+    if re.search(cfg.migration_dir_regex, path):
+        return "migration"
+    text = data.decode("utf-8", errors="replace")
+    text = re.sub(r"/\*.*?\*/", "", text, flags=re.DOTALL)
+    text = re.sub(r"(^|[^:\\\"'])//[^\n]*", r"\1", text)
+    if re.match(cfg.placeholder_content_regex, text):
+        return "placeholder"
+    return "source"
 
 
 def _matches_any(path: str, globs: tuple[str, ...]) -> bool:
@@ -304,6 +327,7 @@ def build_inventory(
                 nesting_proxy=nesting_proxy(data, cfg.nesting_max_bytes),
                 package=package_of.get(path, ""),
                 is_package_entry=path in entry_paths,
+                file_kind=file_kind(path, data, package_of.get(path, ""), cfg),
             )
         )
     return nodes, seed, entry_by_name

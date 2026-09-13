@@ -88,3 +88,17 @@ def test_compositions_grid_sums_to_one():
     for w in grid:
         assert sum(w.values()) == pytest.approx(1.0)
     assert {"a": 1.0, "b": 0.0, "c": 0.0} in grid
+
+
+def test_a_repo_argument_can_pin_its_tip():
+    """D-067: `path@rev` pins a live reference repository so a re-run isolates a substrate change
+    from the repository's drift; a bare path reads HEAD; an `@` inside a path is not a pin."""
+    from pathlib import Path
+
+    from repo_substrate.validation.cli import _repo_arg
+
+    assert _repo_arg("reference/typeorm") == (Path("reference/typeorm"), "HEAD")
+    assert _repo_arg("reference/typeorm@ac41823b9e27") == (Path("reference/typeorm"), "ac41823b9e27")
+    assert _repo_arg("/Users/x/repo@v1.2.0") == (Path("/Users/x/repo"), "v1.2.0")
+    assert _repo_arg("/Users/x/some@dir/repo") == (Path("/Users/x/some@dir/repo"), "HEAD")  # a slash after the @ is a path
+    assert _repo_arg(Path("reference/eslint")) == (Path("reference/eslint"), "HEAD")

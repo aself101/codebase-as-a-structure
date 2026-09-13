@@ -175,6 +175,11 @@ def extract(
             "has_sibling_test": s.test_proximity == 1.0,
             "package": s.package,
             "is_package_entry": s.is_package_entry,
+            # D-067: the kind and its three G1 flags (one true at most; "source" is all false)
+            "file_kind": s.file_kind,
+            "is_config": s.file_kind == "config",
+            "is_migration": s.file_kind == "migration",
+            "is_placeholder": s.file_kind == "placeholder",
             "nesting_proxy": s.nesting_proxy,
             "cochange_degree": cochange.get(p, 0),
             "blame_age_median": blame.get(p),
@@ -282,6 +287,8 @@ def extract(
         "tsconfig_malformed": dep.tsconfig_malformed is not None,
         "tsconfig_aliases": dep.tsconfig_aliases,
         "package_name_imports": dep.package_name_imports,
+        # D-067: kinds over the non-test nodes, so a page can say how many rooms a ruleset's exclusion removes
+        "file_kinds": {k: sum(1 for n in static_nodes if not n.is_test and n.file_kind == k) for k in ("config", "migration", "placeholder")},
         "total_loc": total_loc,
         "repo_age_days": repo_age_days,
         "commit_count": n_commits,

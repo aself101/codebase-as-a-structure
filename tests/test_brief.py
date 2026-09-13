@@ -1982,7 +1982,7 @@ def test_a_row_states_its_realized_share_and_the_tier_table_is_the_whole_top_tie
     n_unindexed = sum(1 for n in sub["nodes"] if not n["metrics"].get("is_test") and (n.get("derived") or {}).get("indices") is None)
     assert f["node_count"] == len(sub["nodes"]) and f["test_nodes"] == n_test and f["unindexed_nodes"] == n_unindexed
     assert f["population"] + n_test + n_unindexed == len(sub["nodes"])  # the mapper's population rule, restated on the page
-    assert f"A room is a source file outside the test convention with computed signals: {f['population']} of the {f['node_count']} files with a source extension the substrate reads (manifests, documents and the rest of the tree are not counted); the {n_test} test files are nodes of the import graph and not rooms" in reg  # D-066: node_count is not the tree
+    assert f"A room is a source file outside the test convention with computed signals{_b._kinds_rule_text(f)}: {f['population']} of the {f['node_count']} files with a source extension the substrate reads (manifests, documents and the rest of the tree are not counted); the {n_test} test files are nodes of the import graph and not rooms{_b._kinds_count_text(f)}" in reg  # D-066: node_count is not the tree; D-067: the kinds excluded
     if n_unindexed:
         assert f"{n_unindexed} file{'s' if n_unindexed != 1 else ''} with no computed signals" in reg
     assert f["unresolved_imports"] == sub["summary"]["unresolved_imports"] and f"The graph is resolved statically: {f['unresolved_imports']} imports in the tree did not resolve to a file, and {f['external_imports']} are external packages" in reg
@@ -2247,3 +2247,19 @@ def test_a_ranked_row_states_its_far_boundary_and_a_wing_of_scopes_counts_them(s
     ir = next(x for x in f["features"] if x["feature"] == "import_root")
     assert f"({ir['caveat_case_count']} of {ir['count']} here are declared package entries)" in _row(reg, "import_root")
     assert "(this case:" not in reg
+
+
+def test_the_population_sentence_counts_the_kinds_the_ruleset_excludes(sub):
+    """D-067 (Alex's call after D-066): file kinds are G1 flags on the substrate and a ruleset chooses;
+    the page's population rule names the exclusion and counts what it removed."""
+    import repo_substrate.brief as _b
+
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    assert f["excluded_kinds"] == ["config", "migration", "placeholder"]  # the shipped rulesets
+    reg = _b.render_register(f)
+    assert "and not a config or migration or placeholder file (the ruleset excludes those kinds)" in reg
+    assert _b._kinds_count_text({"excluded_kinds": ["config"], "excluded_by_kind": {"config": 14, "placeholder": 3}}) == "; the 17 files of an excluded kind (config 14, placeholder 3) are in the graph and not a room"
+    assert _b._kinds_count_text({"excluded_kinds": ["config"], "excluded_by_kind": {"config": 1}}) == "; the 1 file of an excluded kind (config 1) is in the graph and not a room"
+    assert _b._kinds_count_text({"excluded_kinds": ["config"], "excluded_by_kind": {"config": 0}}) == "; no file of an excluded kind is in the tree"
+    assert _b._kinds_count_text({"excluded_kinds": [], "excluded_by_kind": {}}) == "" and _b._kinds_rule_text({}) == ""

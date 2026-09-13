@@ -62,8 +62,10 @@ def label_type(commit: dict[str, Any], label_regex: re.Pattern[str]) -> str:
     return t
 
 
-def split_and_eligible(repo: Path, cache: SubstrateCache, vcfg: ValidationConfig) -> SplitContext:
-    full = cache.get(repo, "HEAD")
+def split_and_eligible(
+    repo: Path, cache: SubstrateCache, vcfg: ValidationConfig, rev: str = "HEAD"
+) -> SplitContext:
+    full = cache.get(repo, rev)  # D-067: a pinned tip (`--repo path@sha`) or HEAD
     timeline = full["timeline"]
     n = len(timeline)
     split_idx = math.floor(n * (1.0 - vcfg.holdout_frac))
@@ -154,8 +156,10 @@ def _metrics(
     }
 
 
-def run_holdout(repo: Path, cache: SubstrateCache, vcfg: ValidationConfig) -> RepoHoldout:
-    ctx = split_and_eligible(repo, cache, vcfg)
+def run_holdout(
+    repo: Path, cache: SubstrateCache, vcfg: ValidationConfig, rev: str = "HEAD"
+) -> RepoHoldout:
+    ctx = split_and_eligible(repo, cache, vcfg, rev)
     ids, labels = ctx.ids, ctx.labels
     n_pos = ctx.n_positives
     br = base_rate(labels) if ids else float("nan")

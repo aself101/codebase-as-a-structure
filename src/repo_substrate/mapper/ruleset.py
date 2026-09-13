@@ -135,6 +135,10 @@ class Ruleset:
         1  # directory depth that defines a wing (geometry; the same for every profile)
     )
     signal_reasons: dict[str, str] = field(default_factory=dict, compare=False)  # D-054
+    # D-067: kinds the ruleset does not count as rooms (substrate `file_kind`: config, migration,
+    # placeholder). A choice of the ruleset, stated on the page with the count it removes; an overlay
+    # must choose the same set as its base, because the population is one.
+    exclude_kinds: tuple[str, ...] = ()
     _extra: dict = field(default_factory=dict, compare=False)
 
 
@@ -293,6 +297,9 @@ def load_ruleset(path: Path) -> Ruleset:
             wing_depth_ok = False
         if not wing_depth_ok:
             raise RulesetError("[ruleset] wing_depth must be an integer >= 1")
+        ek = hdr.get("exclude_kinds", [])
+        if not isinstance(ek, list) or any(k not in ("config", "migration", "placeholder") for k in ek):
+            raise RulesetError("[ruleset] exclude_kinds must be a list drawn from config, migration, placeholder (D-067)")
         feats.append(
             Feature(
                 name=name,
@@ -323,4 +330,5 @@ def load_ruleset(path: Path) -> Ruleset:
         source=str(path),
         wing_depth=int(hdr.get("wing_depth", 1)),
         signal_reasons=signal_reasons,
+        exclude_kinds=tuple(sorted(set(str(k) for k in hdr.get("exclude_kinds", [])))),
     )

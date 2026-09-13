@@ -417,3 +417,35 @@ def test_an_unresolved_specifier_is_alias_shaped_by_the_declared_paths_not_by_it
     assert not _is_relative_or_alias("@tests/helpers/x.js")  # without the declaration it reads as a scoped package
     assert not _is_relative_or_alias("@scope/pkg", alias_prefixes(cfg))
     assert alias_prefixes(None) == () and alias_prefixes({"compilerOptions": {}}) == ()
+
+
+def test_file_kinds_are_declared_conventions(make_repo, small_cfg, tmp_path):
+    """D-067 (Alex's call after D-066): a file's kind by a declared convention — config at the
+    package root, a migration directory above it, an empty export — each a G1 flag on the substrate."""
+    from repo_substrate.assemble import ExtractOptions, extract
+    from repo_substrate.inventory import file_kind
+
+    cfg = small_cfg
+    assert file_kind("vitest.config.ts", b"export default {}", "", cfg) == "config"
+    assert file_kind("pkg/a/vitest.config.ts", b"x", "pkg/a", cfg) == "config"
+    assert file_kind("src/app.config.ts", b"x", "", cfg) == "source"  # not at its package's root
+    assert file_kind(".eslintrc.js", b"x", "", cfg) == "config" and file_kind("karma.conf.js", b"x", "", cfg) == "config"
+    assert file_kind("src/db/migrations/001-init.ts", b"export class M {}", "", cfg) == "migration"
+    assert file_kind("src/migrationsx/x.ts", b"a", "", cfg) == "source"
+    assert file_kind("src/utils/index.ts", b"/** utilities */\n// later\nexport {};\n", "", cfg) == "placeholder"
+    assert file_kind("src/cjs.js", b"module.exports = {};", "", cfg) == "placeholder"
+    assert file_kind("src/url.ts", b"const u = 'http://x'; export {}", "", cfg) == "source"
+    assert file_kind("migrations/vitest.config.ts", b"", "migrations", cfg) == "config"  # precedence config > migration > placeholder
+    r = make_repo()
+    r.write("package.json", '{"name": "k", "main": "./src/index.ts"}')
+    r.write("vitest.config.ts", "export default {};\n")
+    r.write("src/index.ts", "export const a = 1;\n")
+    r.write("src/db/migrations/001.ts", "export const m = 1;\n")
+    r.write("src/stub.ts", "export {};\n")
+    r.commit("feat: kinds")
+    sub = extract(r.path, cfg, ExtractOptions(scratch_dir=tmp_path, blame_workers=1), extractor=None)
+    m = {n["id"]: n["metrics"] for n in sub["nodes"]}
+    assert m["vitest.config.ts"]["file_kind"] == "config" and m["vitest.config.ts"]["is_config"] and not m["vitest.config.ts"]["is_migration"]
+    assert m["src/db/migrations/001.ts"]["is_migration"] and m["src/stub.ts"]["is_placeholder"]
+    assert m["src/index.ts"]["file_kind"] == "source" and not m["src/index.ts"]["is_config"]
+    assert sub["summary"]["file_kinds"] == {"config": 1, "migration": 1, "placeholder": 1}

@@ -265,11 +265,21 @@ def map_skeleton(
     statuses = check_gate(ruleset, validation)
     for o in overlays:
         statuses.update(check_gate(o, validation))
-    population = [
+        if o.exclude_kinds != ruleset.exclude_kinds:
+            raise RulesetError(
+                f"overlay {o.profile!r} excludes kinds {list(o.exclude_kinds)} but the base excludes {list(ruleset.exclude_kinds)}: the population is one (D-067)"
+            )
+    # D-067: a room is a source file outside the test convention with computed signals and not of a
+    # kind the ruleset excludes; the kinds removed are counted so the page can say so
+    candidates = [
         n
         for n in substrate["nodes"]
         if (n.get("derived") or {}).get("indices") is not None and not n["metrics"].get("is_test")
     ]
+    excluded_by_kind = {
+        k: sum(1 for n in candidates if n["metrics"].get("file_kind", "source") == k) for k in ruleset.exclude_kinds
+    }
+    population = [n for n in candidates if n["metrics"].get("file_kind", "source") not in ruleset.exclude_kinds]
     graph_degraded = bool(substrate["summary"].get("graph_degraded"))
     features_out, summary = _apply(ruleset, population, statuses, graph_degraded)
     overlay_docs = []
@@ -337,6 +347,8 @@ def map_skeleton(
         "co_located_nodes": co_located,
         "summary": {
             "population": len(population),
+            "excluded_kinds": list(ruleset.exclude_kinds),  # D-067
+            "excluded_by_kind": excluded_by_kind,  # D-067: rooms the exclusion removed, per kind
             **summary,
             "overlay_profiles": [o.profile for o in overlays],
             "co_located_count": len(co_located),

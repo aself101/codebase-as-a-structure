@@ -84,6 +84,29 @@ GROUNDING: dict[str, dict[str, Any]] = {
         "heuristic": "built entry → source mapping (./index.js → src/index.ts, dir → index)",
         "flag": True,
     },
+    # D-067: three more flags — a file's kind by a declared convention (SubstrateConfig regexes,
+    # fingerprinted). A ruleset may exclude a kind from its population (`exclude_kinds`).
+    "is_config": {
+        "ripple": "own",
+        "class": "G1",
+        "instrument": "basename regex (config_file_regex) at the package root",
+        "heuristic": "tool-config basename (`x.config.ts`, `.xrc.js`, `x.conf.js`) in the directory that holds its package.json",
+        "flag": True,
+    },
+    "is_migration": {
+        "ripple": "own",
+        "class": "G1",
+        "instrument": "path regex (migration_dir_regex)",
+        "heuristic": "a directory segment named migration(s) above the file",
+        "flag": True,
+    },
+    "is_placeholder": {
+        "ripple": "own",
+        "class": "G1",
+        "instrument": "content regex (placeholder_content_regex) after comment stripping",
+        "heuristic": "nothing but an empty export (`export {}` / `module.exports = {}`)",
+        "flag": True,
+    },
     # G2 instrument-checked (counterparts come from altdeps.py, which shares no code with dependency-cruiser)
     "fan_in": {
         "ripple": "coupled",
@@ -217,6 +240,9 @@ SPEC_G1: frozenset[str] = frozenset(
         "blame_age_median",
         "has_sibling_test",
         "is_package_entry",  # flag (D-029)
+        "is_config",  # flag (D-067)
+        "is_migration",  # flag (D-067)
+        "is_placeholder",  # flag (D-067)
     }
 )
 

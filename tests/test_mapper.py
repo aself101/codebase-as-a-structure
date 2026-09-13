@@ -622,3 +622,43 @@ def test_mapper_refuses_a_validation_document_from_another_config(sub):
     v.pop("substrate_config_fingerprint")
     with pytest.raises(GateError, match="no substrate_config_fingerprint"):
         map_skeleton(sub, v, base)
+
+
+def test_a_ruleset_excludes_kinds_from_its_population_and_the_overlay_must_agree(sub, tmp_path):
+    """D-067: a room is not of a kind the ruleset excludes; the skeleton counts what the exclusion
+    removed; a pNN ranks the reduced population; an overlay choosing a different set is refused."""
+    import copy
+    import json
+
+    s = copy.deepcopy(sub)
+    rooms = [n for n in s["nodes"] if not n["metrics"].get("is_test") and (n.get("derived") or {}).get("indices") is not None]
+    assert len(rooms) >= 3
+    rooms[0]["metrics"]["file_kind"] = "config"
+    rooms[1]["metrics"]["file_kind"] = "migration"
+    for n in s["nodes"]:
+        n["metrics"].setdefault("file_kind", "source")
+    body = '[[feature]]\nname = "x"\npredicate = "size_loc >= p50"\n'
+    base = load_ruleset(_write_ruleset(tmp_path, 'exclude_kinds = ["config", "migration"]\n' + body))
+    assert base.exclude_kinds == ("config", "migration")
+    v = _validation(size_loc="asserted")
+    sk = map_skeleton(s, v, base)
+    assert sk["summary"]["population"] == len(rooms) - 2
+    assert sk["summary"]["excluded_by_kind"] == {"config": 1, "migration": 1} and sk["summary"]["excluded_kinds"] == ["config", "migration"]
+    assert rooms[0]["id"] not in sk["strata"]["by_node"] and rooms[1]["id"] not in sk["strata"]["by_node"]
+    # a ruleset that excludes nothing keeps them
+    plain = load_ruleset(_write_ruleset(tmp_path, body))
+    assert plain.exclude_kinds == () and map_skeleton(s, v, plain)["summary"]["population"] == len(rooms)
+    # the loader refuses an unknown kind; the engine refuses an overlay that disagrees with its base
+    with pytest.raises(RulesetError, match="exclude_kinds"):
+        load_ruleset(_write_ruleset(tmp_path, 'exclude_kinds = ["tests"]\n' + body))
+    ov_path = tmp_path / "ov.toml"
+    ov_path.write_text('[ruleset]\nname = "o"\nversion = "0.0.1"\nprofile = "o"\n' + body, encoding="utf-8")
+    with pytest.raises(RulesetError, match="the population is one"):
+        map_skeleton(s, v, base, overlays=[load_ruleset(ov_path)])
+    # the shipped rulesets agree with each other, and the three flags are flags in the grounding table
+    from repo_substrate.validation.config import GROUNDING
+
+    m = load_ruleset(Path("rulesets/maintainability.toml"))
+    o = load_ruleset(Path("rulesets/onboarding.toml"))
+    assert m.exclude_kinds == o.exclude_kinds == ("config", "migration", "placeholder")
+    assert all(GROUNDING[k].get("flag") is True and GROUNDING[k]["class"] == "G1" for k in ("is_config", "is_migration", "is_placeholder"))

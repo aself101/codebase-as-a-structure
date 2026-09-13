@@ -14,10 +14,16 @@
 
 [ruleset]
 name = "maintainability"
-version = "0.2.11"
+version = "0.3.0"
 profile = "maintainability"
 description = "v0 maintainability lens: load, neglect, reinforcement, activity — over asserted signals only; the two pressure indices are unvalidated (D-015) and appear only as decorative features."
 wing_depth = 1
+# D-067: a maintenance norm has no visit for a tool's configuration, a migration whose correct state
+# is never touched, or an empty placeholder export — on mcp-secure-server fourteen test-runner and lint
+# configs and two `export {}` barrels were the whole of flooded_basement's fan_in-0 case (D-064, D-066);
+# on the registry eleven migrations were the largest parent of the dark rooms. The kinds are the
+# substrate's G1 flags; this ruleset does not count them as rooms, and the page says how many it removed.
+exclude_kinds = ["config", "migration", "placeholder"]
 
 # D-054 (fifteenth seating): a reason about a signal is written once, here, and composed into
 # every decorative feature that reads the signal — crack's row said "unvalidated" and

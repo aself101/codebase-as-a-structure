@@ -345,9 +345,13 @@ def run_recognition(
 
 
 def run_asserted(
-    repo: Path, cache: SubstrateCache, vcfg: ValidationConfig, blind_path: Path | None
+    repo: Path,
+    cache: SubstrateCache,
+    vcfg: ValidationConfig,
+    blind_path: Path | None,
+    rev: str = "HEAD",
 ) -> RepoAsserted:
-    full = cache.get(repo, "HEAD")
+    full = cache.get(repo, rev)  # D-067: a pinned tip (`--repo path@sha`) or HEAD
     timeline = full["timeline"]
     k = vcfg.stability_perturbation_k
     if len(timeline) <= k + 1:
