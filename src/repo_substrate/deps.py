@@ -40,6 +40,7 @@ class DependencyResult:
     tsconfig_malformed: str | None = None
     tsconfig_aliases: int = 0  # `paths` patterns handed to the resolver (D-065): the positive fact beside the caveat
     package_name_imports: int = 0  # bare specifiers naming an in-repo package, resolved to its entry (D-066)
+    package_name_samples: list[tuple[str, str, str]] = field(default_factory=list)  # (from, specifier, to) — D-068: so a page can split the count by importer kind
     backend_version: str = "unknown"
 
 
@@ -280,6 +281,7 @@ class DependencyCruiserExtractor:
                         # D-066: the repository's own package name is not external
                         target = package_entries[pkg]  # type: ignore[index]
                         res.package_name_imports += 1
+                        res.package_name_samples.append((src, spec, target))
                         if target in node_paths and target != src:
                             res.edges.add((src, target))
                         continue
@@ -301,6 +303,7 @@ class DependencyCruiserExtractor:
                 # extension such as .json/.css). Not an edge, not a failure — counted (§8 third kind).
                 res.non_node_imports += 1
         res.unresolved_samples.sort()
+        res.package_name_samples.sort()
         return res
 
 

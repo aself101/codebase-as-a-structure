@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.33.0"  # D-067: the population sentence counts the files a ruleset's kind exclusion removed (config / migration / placeholder — substrate 0.7.0's G1 flags; Alex's call). D-066: a ranked row states the next value beyond its cutoff and how many rooms sit there (a batch commit divides at the cutoff; the tie count closed one side); a by-wing count on a wing of many package scopes says how many scopes hold the feature; the population sentence says node_count is the files with a source extension, not the tree; the legend counts the imports that name this repository's own package; a caveat carries its case count beside the clause it counts (`{case}`). D-065: the legend states the resolver's alias state beside the unresolved count — how many tsconfig `paths` patterns it was handed, or that the tsconfig could not be read and why (the caveat the substrate had carried since 0.4.1 and the page never rendered; substrate 0.5.0 fixed the loader that made it fire). D-064: the unresolved imports are counted by kind (from test files; alias-shaped) so the test-graph cells they bias are said to be lower bounds; a set drawn twice says so in the rooms column; a tier lists one name per set. D-063: every ranked term states its cutoff (the corridor's median fan-out is 1 on registry); the tie count sits in the rooms column; two profiles on one predicate are one row; centrality is defined; column headers carry their own legend. D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
+BRIEF_VERSION = "0.34.0"  # D-068: the legend's cross-scope and package-name counts carry their test-file split; a wing's scopes are named where two or fewer hold the feature; the centrality illustration is this sheet's pair, not a literal; the test convention is stated from the substrate's effective config; a caveat's case count sits in the rooms column; "excluded" means one thing (◌ marks) and a kind the ruleset does not count says so; the reinforcement caveats name the run-time mechanism (maintainability 0.3.1). D-067: the population sentence counts the files a ruleset's kind exclusion removed (config / migration / placeholder — substrate 0.7.0's G1 flags; Alex's call). D-066: a ranked row states the next value beyond its cutoff and how many rooms sit there (a batch commit divides at the cutoff; the tie count closed one side); a by-wing count on a wing of many package scopes says how many scopes hold the feature; the population sentence says node_count is the files with a source extension, not the tree; the legend counts the imports that name this repository's own package; a caveat carries its case count beside the clause it counts (`{case}`). D-065: the legend states the resolver's alias state beside the unresolved count — how many tsconfig `paths` patterns it was handed, or that the tsconfig could not be read and why (the caveat the substrate had carried since 0.4.1 and the page never rendered; substrate 0.5.0 fixed the loader that made it fire). D-064: the unresolved imports are counted by kind (from test files; alias-shaped) so the test-graph cells they bias are said to be lower bounds; a set drawn twice says so in the rooms column; a tier lists one name per set. D-063: every ranked term states its cutoff (the corridor's median fan-out is 1 on registry); the tie count sits in the rooms column; two profiles on one predicate are one row; centrality is defined; column headers carry their own legend. D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -122,6 +122,12 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             wsc.setdefault(wing_of(r), set()).add(scope_of(r))
         e["by_scope"] = dict(sorted(bs.items()))
         e["by_wing_scopes"] = {w: len(v) for w, v in sorted(wsc.items())}
+        # D-068: at two scopes or fewer the cell names them (D-066's breaks-if clause 3)
+        wscn: dict[str, dict[str, int]] = {}
+        for r in e["rooms"]:
+            wscn.setdefault(wing_of(r), {})
+            wscn[wing_of(r)][scope_of(r)] = wscn[wing_of(r)].get(scope_of(r), 0) + 1
+        e["by_wing_scope_counts"] = {w: dict(sorted(v.items())) for w, v in sorted(wscn.items())}
         # D-037: the largest single directory in the set — the composition a two-room exemplar
         # list can hide (typeorm's dark_room is half src/error)
         bd: dict[str, int] = {}
@@ -311,6 +317,19 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             if nodes and (substrate or {}).get("edges") is not None else None
         ),
         "edge_count": len((substrate or {}).get("edges") or []) if substrate else None,
+        # D-068 (the codemod control): 214 of typeorm's 219 cross-scope edges are transform fixtures under
+        # the test convention; the D-062 split applied to rows and the tier, not to the legend's counts
+        "cross_scope_from_tests": (
+            sum(1 for ed in (substrate or {}).get("edges") or [] if ((nodes.get(ed.get("from")) or {}).get("metrics") or {}).get("is_test") and ((nodes.get(ed.get("from")) or {}).get("metrics") or {}).get("package", "") != ((nodes.get(ed.get("to")) or {}).get("metrics") or {}).get("package", ""))
+            if nodes and (substrate or {}).get("edges") is not None else None
+        ),
+        "package_name_from_tests": (
+            sum(1 for x in ((substrate or {}).get("caveats") or {}).get("package_name_samples") or [] if ((nodes.get(x.get("from")) or {}).get("metrics") or {}).get("is_test"))
+            if nodes and ((substrate or {}).get("caveats") or {}).get("package_name_samples") is not None else None
+        ),
+        "package_names": list(((substrate or {}).get("summary") or {}).get("package_names") or []),
+        "test_globs": list((((substrate or {}).get("repo") or {}).get("effective_config") or {}).get("test_globs") or []),
+        "centrality_illustration": _centrality_illustration(feats, nodes, population_ids),
         # D-064 (the security reviewer): 34 of mcp-secure-server's 34 unresolved imports are test files
         # importing src/security through a tsconfig alias — static, not run-time — so test_fan_in on
         # the rooms they aim at is a lower bound; the page had named run-time imports as the mechanism
@@ -1820,7 +1839,7 @@ def _alias_state_text(facts_doc: dict[str, Any]) -> str:
 def _kinds_rule_text(facts_doc: dict[str, Any]) -> str:
     """D-067: the ruleset's kind exclusion, in the population rule."""
     ks = facts_doc.get("excluded_kinds") or []
-    return f", and not a {' or '.join(ks)} file (the ruleset excludes those kinds)" if ks else ""
+    return f", and not a {' or '.join(ks)} file (kinds the ruleset does not count as rooms)" if ks else ""
 
 
 def _kinds_count_text(facts_doc: dict[str, Any]) -> str:
@@ -1830,9 +1849,9 @@ def _kinds_count_text(facts_doc: dict[str, Any]) -> str:
         return ""
     total = sum(ebk.values())
     if not total:
-        return "; no file of an excluded kind is in the tree"
+        return "; no file of a kind the ruleset does not count is in the tree"
     parts = ", ".join(f"{k} {v}" for k, v in ebk.items() if v)
-    return f"; the {total} file{'s' if total != 1 else ''} of an excluded kind ({parts}) {'are' if total != 1 else 'is'} in the graph and not a room"
+    return f"; the {total} file{'s' if total != 1 else ''} of a kind the ruleset does not count ({parts}) {'are' if total != 1 else 'is'} in the graph and not a room"
 
 
 def _package_name_text(facts_doc: dict[str, Any]) -> str:
@@ -1842,7 +1861,83 @@ def _package_name_text(facts_doc: dict[str, Any]) -> str:
     n = facts_doc.get("package_name_imports")
     if not n:
         return ""
-    return f" {n} import{'s' if n != 1 else ''} name a package this repository declares and resolve to its entry."
+    names = facts_doc.get("package_names") or []
+    named = f" ({', '.join(names)})" if names and len(names) <= 3 else (f" ({len(names)} names)" if names else "")
+    return f" {n} import{'s' if n != 1 else ''} name a package this repository declares{named} and resolve to its entry{_from_tests_text(facts_doc.get('package_name_from_tests'), n)}."
+
+
+def _from_tests_text(k: int | None, n: int | None) -> str:
+    """D-068: the test-file split every import-graph count carries (D-062), on the legend's counts too."""
+    if k is None or not n:
+        return ""
+    return f" ({'all ' if k == n else ''}{k} from test files)" if k else " (none from test files)"
+
+
+def _wing_scopes_text(wing: str, n_feat: int, n_wing: int, counts: dict[str, int]) -> str:
+    """D-068: a wing of more than one scope says how many hold the feature (D-066), and names them at
+    two or fewer — "(in 1 of the wing's 2 scopes)" withheld the one word that located the rooms."""
+    if n_wing <= 1:
+        return ""
+    if counts and len(counts) <= 2:
+        if len(counts) == 1:
+            return f" (all in {next(iter(counts))})"
+        return " (" + ", ".join(f"{k} {v}" for k, v in counts.items()) + ")"
+    return f" (in {n_feat} of the wing's {n_wing} scopes)"
+
+
+def _case_label(caveat: str) -> str:
+    """D-068: the clause a caveat's `{case}` count belongs to — the words after the placeholder up to
+    the closing parenthesis ("have no importer", "are declared package entries")."""
+    if "{case}" not in caveat:
+        return ""
+    tail = caveat.split("{case}", 1)[1]
+    return tail.split(")", 1)[0].strip()
+
+
+def _test_convention_text(facts_doc: dict[str, Any]) -> str:
+    """D-068: the term "the test convention" defined from the substrate's effective config (0.8.0)."""
+    globs = facts_doc.get("test_globs") or []
+    if not globs:
+        return ""
+    return f" (a path matching {', '.join(f'`{g}`' for g in globs)})"
+
+
+def _centrality_illustration(feats: dict[str, Any], nodes: dict[str, Any], population_ids: set[str]) -> dict[str, Any] | None:
+    """D-068: the legend illustrated "four well-placed importers can outrank thirteen" with the
+    registry's D-063 pair as a literal on every page; the illustration is this sheet's own pair —
+    the hub room with the fewest importers and the non-hub room with the most — or nothing."""
+    from .mapper.ruleset import parse_predicate
+
+    if not nodes:
+        return None
+    hub = None
+    for e in feats.values():
+        terms = parse_predicate(str(e.get("predicate") or ""))
+        if len(terms) == 1 and terms[0].signal == "centrality" and terms[0].percentile is not None and not e.get("decorative"):
+            hub = e
+            break
+    if hub is None or not hub["rooms"]:
+        return None
+    members = set(hub["rooms"])
+
+    def fi(r: str) -> int:
+        return int(((nodes.get(r) or {}).get("metrics") or {}).get("fan_in", 0) or 0)
+
+    lo = min(sorted(members), key=fi)
+    others = sorted(population_ids - members)
+    if not others:
+        return None
+    hi = max(others, key=fi)
+    if fi(lo) >= fi(hi):
+        return None
+    return {"hub_room": lo, "hub_fan_in": fi(lo), "other_room": hi, "other_fan_in": fi(hi), "feature": hub["feature"]}
+
+
+def _centrality_illustration_text(facts_doc: dict[str, Any]) -> str:
+    ill = facts_doc.get("centrality_illustration")
+    if not ill:
+        return ""
+    return f", so a room with {ill['hub_fan_in']} well-placed importer{'s' if ill['hub_fan_in'] != 1 else ''} can outrank one with {ill['other_fan_in']} (here {ill['hub_room']} at {ill['hub_fan_in']} is a {ill['feature']} and {ill['other_room']} at {ill['other_fan_in']} is not)"
 
 
 def _unresolved_by_kind(substrate: dict[str, Any] | None, nodes: dict[str, Any]) -> dict[str, int] | None:
@@ -2160,10 +2255,11 @@ def render_register(facts_doc: dict[str, Any]) -> str:
             continue
         sbw = facts_doc.get("scopes_by_wing") or {}
         fws = f.get("by_wing_scopes") or {}
+        fwsc = f.get("by_wing_scope_counts") or {}
         bw = ", ".join(
-            f"{k} {v}" + (f" (in {fws.get(k, 0)} of the wing's {sbw[k]} scopes)" if sbw.get(k, 1) > 1 else "")
+            f"{k} {v}" + _wing_scopes_text(k, fws.get(k, 0), sbw.get(k, 1), fwsc.get(k) or {})
             for k, v in f.get("by_wing", {}).items()
-        ) or "no wing (0)"  # D-057: a zero row says so; D-066: a wing of many scopes says how many hold the feature
+        ) or "no wing (0)"  # D-057: a zero row says so; D-066: a wing of many scopes says how many hold the feature; D-068: two or fewer are named
         dd = f.get("dominant_dir") or {}
         # D-041: every fallback says the reason that is the reason, and a directory that is also a
         # wing name is marked as the parent, not the wing
@@ -2221,6 +2317,12 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         twins = [ov["b"] if ov["a"] == key else ov["a"] for ov in facts_doc.get("overlaps") or [] if ov["relation"] == "identical" and not ov.get("shared_predicate") and key in (ov["a"], ov["b"])]
         if twins:
             tie += f" (the same rooms as {', '.join(plain(t) for t in twins)})"
+        # D-068 (the seventh skimmer): every caveat count sat in the eighth column, which a rendered table
+        # crushes; the case count travels with the count it qualifies, as the tie count does (D-063)
+        if f.get("caveat_case_count") is not None and f.get("caveat"):
+            lab = _case_label(str(f["caveat"]))
+            if lab:
+                tie += f" ({f['caveat_case_count']} {lab})"
         rows.append(
             f"| {pos} | {name} | {profile_cell(f)} | {f['count']}{tie} | {bw} | {dom} | {relation_cell(f, key)} | {what} |"
         )
@@ -2244,7 +2346,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + "**A position names where a room sits in a record — the import graph, the clock, the test graph, the edit record, size — and is not a claim about the room's condition (D-004 Q3). "
         + f"Every pNN ranks this repository's own {facts_doc['population']} rooms, so a `>= p90` row holds a tenth of them — or more where rooms tie at the cutoff, and the rooms column says how many are tied; a single-rank row states its share, and every ranked term states the value its rank resolved to here — and no count on this page compares across repositories."
         + (
-            f" A room is a source file outside the test convention with computed signals{_kinds_rule_text(facts_doc)}: {facts_doc['population']} of the {facts_doc['node_count']} files with a source extension the substrate reads (manifests, documents and the rest of the tree are not counted); the {facts_doc['test_nodes']} test files are nodes of the import graph and not rooms{_kinds_count_text(facts_doc)}"
+            f" A room is a source file outside the test convention{_test_convention_text(facts_doc)} with computed signals{_kinds_rule_text(facts_doc)}: {facts_doc['population']} of the {facts_doc['node_count']} files with a source extension the substrate reads (manifests, documents and the rest of the tree are not counted); the {facts_doc['test_nodes']} test files are nodes of the import graph and not rooms{_kinds_count_text(facts_doc)}"
             + (f", and {facts_doc['unindexed_nodes']} file{'s' if facts_doc['unindexed_nodes'] != 1 else ''} with no computed signals {'are' if facts_doc['unindexed_nodes'] != 1 else 'is'} not a room either" if facts_doc.get("unindexed_nodes") else "")
             + "."
             if facts_doc.get("node_count") else ""
@@ -2264,14 +2366,14 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + f"- **wing** — a directory at depth {facts_doc.get('wing_depth', 1)} of the tree (the ruleset's wing_depth), not a package"
         + (
             f"; the population spans {facts_doc.get('packages', 1)} package scopes, pooled (rooms per scope, largest first, each scope named by the manifest that holds it: {scopes})"
-            + (f"; {facts_doc['cross_scope_edges']} of {facts_doc['edge_count']} imports cross a package scope" if facts_doc.get("cross_scope_edges") is not None else "")
+            + (f"; {facts_doc['cross_scope_edges']} of {facts_doc['edge_count']} imports cross a package scope{_from_tests_text(facts_doc.get('cross_scope_from_tests'), facts_doc['cross_scope_edges'])}" if facts_doc.get("cross_scope_edges") is not None else "")
             if (facts_doc.get("packages") or 1) > 1 else "; the population is one package scope (package.json)"
         )
         + "." + NL
-        + "- **◌** — an excluded feature (the ruleset's word is decorative): computed and counted, excluded from the diagnosis because a signal it reads is unvalidated." + NL
+        + "- **◌** — a feature excluded from the diagnosis (the ruleset's word is decorative): computed and counted, not claimed, because a signal it reads is unvalidated. 'Excluded' on this page means this and nothing else; a file kind the ruleset does not count as a room is said in those words." + NL
         + f"- **largest parent directory** — the immediate parent (non-recursive) holding the most of a feature's rooms, shown only when it holds a {DIRECTORY_SHARE}rd or more of them and the feature has {DIRECTORY_MIN_ROOMS} or more rooms; a parent that shares a wing's name is marked as the parent." + NL
         + f"- **relation to** — identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms — and a containment the predicates guarantee at any count; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. 'By its predicate': the inner predicate conjoins every term of the outer. Otherwise the cell says which raw signals the two predicates read in common (a blend or index expanded through its declared inputs), or 'no raw signal in common' — a signal, not an instrument." + NL
-        + "- **the import graph and the test graph** — one edge set read twice: a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone; an import-graph row says how many of its rooms' importers are test files. Centrality is PageRank over that graph: a room's rank rises with the rank of its importers, not only with their number, so a room with four well-placed importers can outrank one with thirteen."
+        + "- **the import graph and the test graph** — one edge set read twice: a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone; an import-graph row says how many of its rooms' importers are test files. Centrality is PageRank over that graph: a room's rank rises with the rank of its importers, not only with their number" + _centrality_illustration_text(facts_doc) + "."
         + (f" The graph is resolved statically: {facts_doc['unresolved_imports']} imports in the tree did not resolve to a file{_unresolved_text(facts_doc)}, and {facts_doc['external_imports']} are external packages; an import the resolver did not place, or one computed at run time, is not an edge, so a room reached only that way reads as unimported there.{_alias_state_text(facts_doc)}{_package_name_text(facts_doc)}" if facts_doc.get("unresolved_imports") is not None else "")
         + NL
         + "- **caveat** — the ruleset's own limit on what a predicate reads, never a claim about this repository; the count in it ('N of M here') is this repository's, beside the clause it counts."
@@ -2524,7 +2626,7 @@ def render_brief(
     page = (
         head
         + render_register(facts_doc)
-        + "\n## Excluded marks (◌)\n\n"
+        + "\n## Marks excluded from the diagnosis (◌)\n\n"
         + render_disclosure(facts_doc)
         + "\n\n## Stance\n\n"
         + facts_doc.get("stance", STANCE)

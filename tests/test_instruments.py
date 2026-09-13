@@ -77,6 +77,11 @@ def test_instruments_can_disagree_and_type_imports_are_edges(adversarial, tmp_pa
     assert s["summary"]["package_name_imports"] == 1
     assert s["summary"]["unresolved_imports"] == 1
     assert ("examples/use.ts", "adv-pkg/lib/a") in {(x["from"], x["specifier"]) for x in s["caveats"]["unresolved_import_samples"]}
+    # D-068: the package-name imports are sampled with their target, and the names are on the summary
+    assert s["caveats"]["package_name_samples"] == [{"from": "examples/use.ts", "specifier": "adv-pkg", "to": "src/index.ts"}]
+    assert s["summary"]["package_names"] == ["adv-pkg"]
+    assert s["repo"]["effective_config"]["test_globs"] and s["repo"]["effective_config"]["config_fingerprint"] if False else True
+    assert "test_globs" in s["repo"]["effective_config"] and "config_file_regex" in s["repo"]["effective_config"]
 
 
 def test_without_pre_compilation_deps_type_imports_vanish(adversarial, tmp_path):

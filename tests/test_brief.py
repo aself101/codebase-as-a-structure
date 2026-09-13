@@ -1319,7 +1319,7 @@ def test_the_page_is_rendered_by_code_and_its_fixed_texts_match_their_fields(sub
 
     f = facts(_skeleton(sub), sub)
     page = run_brief(_skeleton(sub), sub)["markdown"]
-    order = ["## Register", "### Rooms at the most positions", "### Shared rooms", "## Excluded marks (◌)", "## Stance", "## Provenance"]
+    order = ["## Register", "### Rooms at the most positions", "### Shared rooms", "## Marks excluded from the diagnosis (◌)", "## Stance", "## Provenance"]
     idx = [page.index(h) for h in order]
     assert idx == sorted(idx) and "## Reading" not in page and "## Register lint" not in page
     assert f["stance"] in page and "R19" not in page
@@ -1905,7 +1905,7 @@ def test_the_defence_sits_in_the_cell_it_defends_and_the_page_carries_its_snapsh
     if f["most_marked_rooms"]:  # the small fixture has no tier; the caption is tested on a synthetic one below
         assert "**A count of the positions a room sits at; the order is the count, then the path — not a ranking and not a severity (D-004 Q3).**" in reg
     # ◌ = excluded, on the row, in the note and in the section
-    assert "**◌** — an excluded feature (the ruleset's word is decorative)" in reg and "## Excluded marks (◌)" in page
+    assert "**◌** — a feature excluded from the diagnosis (the ruleset's word is decorative)" in reg and "## Marks excluded from the diagnosis (◌)" in page
     for x in f["features"]:
         if x["decorative"] and x["count"]:
             assert "— ◌ excluded from the diagnosis:" in _row(reg, x["feature"], decorative=True)
@@ -1982,7 +1982,7 @@ def test_a_row_states_its_realized_share_and_the_tier_table_is_the_whole_top_tie
     n_unindexed = sum(1 for n in sub["nodes"] if not n["metrics"].get("is_test") and (n.get("derived") or {}).get("indices") is None)
     assert f["node_count"] == len(sub["nodes"]) and f["test_nodes"] == n_test and f["unindexed_nodes"] == n_unindexed
     assert f["population"] + n_test + n_unindexed == len(sub["nodes"])  # the mapper's population rule, restated on the page
-    assert f"A room is a source file outside the test convention with computed signals{_b._kinds_rule_text(f)}: {f['population']} of the {f['node_count']} files with a source extension the substrate reads (manifests, documents and the rest of the tree are not counted); the {n_test} test files are nodes of the import graph and not rooms{_b._kinds_count_text(f)}" in reg  # D-066: node_count is not the tree; D-067: the kinds excluded
+    assert f"A room is a source file outside the test convention{_b._test_convention_text(f)} with computed signals{_b._kinds_rule_text(f)}: {f['population']} of the {f['node_count']} files with a source extension the substrate reads (manifests, documents and the rest of the tree are not counted); the {n_test} test files are nodes of the import graph and not rooms{_b._kinds_count_text(f)}" in reg  # D-066: node_count is not the tree; D-067: the kinds excluded
     if n_unindexed:
         assert f"{n_unindexed} file{'s' if n_unindexed != 1 else ''} with no computed signals" in reg
     assert f["unresolved_imports"] == sub["summary"]["unresolved_imports"] and f"The graph is resolved statically: {f['unresolved_imports']} imports in the tree did not resolve to a file, and {f['external_imports']} are external packages" in reg
@@ -2235,6 +2235,7 @@ def test_a_ranked_row_states_its_far_boundary_and_a_wing_of_scopes_counts_them(s
     g["scopes_by_wing"] = {w: 14 for w in g["scopes_by_wing"]}
     tmpl = next(x for x in g["features"] if x["count"] > 0 and not x["decorative"])
     tmpl["by_wing_scopes"] = {w: 6 for w in tmpl["by_wing"]}
+    tmpl["by_wing_scope_counts"] = {w: {f"s{i}/package.json": 1 for i in range(6)} for w in tmpl["by_wing"]}  # D-068: six scopes → counted, not named
     reg2 = _b.render_register(g)
     w0 = next(iter(tmpl["by_wing"]))
     assert f"{w0} {tmpl['by_wing'][w0]} (in 6 of the wing's 14 scopes)" in _row(reg2, tmpl["feature"], profile=tmpl["profile"])
@@ -2258,8 +2259,59 @@ def test_the_population_sentence_counts_the_kinds_the_ruleset_excludes(sub):
     f = facts(sk, sub)
     assert f["excluded_kinds"] == ["config", "migration", "placeholder"]  # the shipped rulesets
     reg = _b.render_register(f)
-    assert "and not a config or migration or placeholder file (the ruleset excludes those kinds)" in reg
-    assert _b._kinds_count_text({"excluded_kinds": ["config"], "excluded_by_kind": {"config": 14, "placeholder": 3}}) == "; the 17 files of an excluded kind (config 14, placeholder 3) are in the graph and not a room"
-    assert _b._kinds_count_text({"excluded_kinds": ["config"], "excluded_by_kind": {"config": 1}}) == "; the 1 file of an excluded kind (config 1) is in the graph and not a room"
-    assert _b._kinds_count_text({"excluded_kinds": ["config"], "excluded_by_kind": {"config": 0}}) == "; no file of an excluded kind is in the tree"
+    assert "and not a config or migration or placeholder file (kinds the ruleset does not count as rooms)" in reg
+    assert _b._kinds_count_text({"excluded_kinds": ["config"], "excluded_by_kind": {"config": 14, "placeholder": 3}}) == "; the 17 files of a kind the ruleset does not count (config 14, placeholder 3) are in the graph and not a room"
+    assert _b._kinds_count_text({"excluded_kinds": ["config"], "excluded_by_kind": {"config": 1}}) == "; the 1 file of a kind the ruleset does not count (config 1) is in the graph and not a room"
+    assert _b._kinds_count_text({"excluded_kinds": ["config"], "excluded_by_kind": {"config": 0}}) == "; no file of a kind the ruleset does not count is in the tree"
     assert _b._kinds_count_text({"excluded_kinds": [], "excluded_by_kind": {}}) == "" and _b._kinds_rule_text({}) == ""
+
+
+def test_the_seventh_round_legend_counts_split_scopes_are_named_and_the_illustration_is_this_sheets(sub):
+    """D-068 (the seventh unpointed round: the packages/codemod maintainer on typeorm 0.33.0; the
+    skimmer on mcp-secure-server 0.33.0). Control: 214 of 219 cross-scope imports were transform
+    fixtures under the test convention and the legend's counts had no split; "(in 1 of the wing's 2
+    scopes)" withheld the name; "four … thirteen" was the registry's pair as a literal; "the test
+    convention" was undefined; the reinforcement caveats named two of three mechanisms. Skimmer: the
+    caveat counts sat in the eighth column; "excluded" meant two things after D-067."""
+    import repo_substrate.brief as _b
+
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    reg = _b.render_register(f)
+    # the split on the legend's counts
+    assert _b._from_tests_text(214, 219) == " (214 from test files)" and _b._from_tests_text(219, 219) == " (all 219 from test files)"
+    assert _b._from_tests_text(0, 219) == " (none from test files)" and _b._from_tests_text(None, 219) == "" and _b._from_tests_text(3, 0) == ""
+    if f.get("cross_scope_edges"):
+        assert f"{f['cross_scope_edges']} of {f['edge_count']} imports cross a package scope{_b._from_tests_text(f['cross_scope_from_tests'], f['cross_scope_edges'])}" in reg
+    assert _b._package_name_text({"package_name_imports": 228, "package_names": ["typeorm"], "package_name_from_tests": 214}) == " 228 imports name a package this repository declares (typeorm) and resolve to its entry (214 from test files)."
+    # a wing's scopes named at two or fewer
+    assert _b._wing_scopes_text("packages", 1, 2, {"packages/codemod/package.json": 2}) == " (all in packages/codemod/package.json)"
+    assert _b._wing_scopes_text("packages", 2, 2, {"packages/codemod/package.json": 15, "packages/legacy/package.json": 2}) == " (packages/codemod/package.json 15, packages/legacy/package.json 2)"
+    assert _b._wing_scopes_text("cookbook", 6, 14, {f"c{i}/package.json": 1 for i in range(6)}) == " (in 6 of the wing's 14 scopes)"
+    assert _b._wing_scopes_text("src", 1, 1, {"package.json": 5}) == ""
+    # the illustration is this sheet's pair or nothing
+    ill = f.get("centrality_illustration")
+    if ill:
+        assert ill["hub_fan_in"] < ill["other_fan_in"]
+        assert f"(here {ill['hub_room']} at {ill['hub_fan_in']} is a {ill['feature']} and {ill['other_room']} at {ill['other_fan_in']} is not)" in reg
+    assert "four well-placed importers" not in reg
+    nodes = {"a": {"metrics": {"fan_in": 2, "centrality": 0.9}}, "b": {"metrics": {"fan_in": 34, "centrality": 0.1}}, "c": {"metrics": {"fan_in": 1, "centrality": 0.1}}}
+    feats = {"hub": {"feature": "hub", "predicate": "centrality >= p90", "rooms": ["a"], "decorative": False}}
+    assert _b._centrality_illustration(feats, nodes, {"a", "b", "c"}) == {"hub_room": "a", "hub_fan_in": 2, "other_room": "b", "other_fan_in": 34, "feature": "hub"}
+    assert _b._centrality_illustration({"hub": {"feature": "hub", "predicate": "centrality >= p90", "rooms": ["b"], "decorative": False}}, nodes, {"a", "b", "c"}) is None
+    # the test convention, stated from the substrate's effective config when it carries one
+    assert _b._test_convention_text({"test_globs": ["**/test/**", "**/*.test.*"]}) == " (a path matching `**/test/**`, `**/*.test.*`)"
+    assert _b._test_convention_text({}) == ""
+    # the caveat's case count in the rooms column
+    assert _b._case_label("… and one that nothing imports can ({case} are declared package entries)") == "are declared package entries"
+    assert _b._case_label("no placeholder here") == ""
+    fb = next(x for x in f["features"] if x["feature"] == "flooded_basement")
+    if fb["count"]:
+        assert f"| {fb['count']}" in _row(reg, "flooded_basement") and f"({fb['caveat_case_count']} have no importer)" in _row(reg, "flooded_basement")
+    # the reinforcement caveats name the run-time mechanism
+    sc = next(x for x in f["features"] if x["feature"] == "scaffolding")
+    assert "load by a path computed at run time" in sc["caveat"]
+    tw = next(x for x in f["features"] if x["feature"] == "toothpick_wing")
+    assert "only by a path computed at run time" in tw["caveat"]
+    # "excluded" means one thing
+    assert "'Excluded' on this page means this and nothing else" in reg

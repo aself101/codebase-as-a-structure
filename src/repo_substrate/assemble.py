@@ -287,6 +287,7 @@ def extract(
         "tsconfig_malformed": dep.tsconfig_malformed is not None,
         "tsconfig_aliases": dep.tsconfig_aliases,
         "package_name_imports": dep.package_name_imports,
+        "package_names": sorted(package_entries),  # D-068: the names a bare specifier resolves through
         # D-067: kinds over the non-test nodes, so a page can say how many rooms a ruleset's exclusion removes
         "file_kinds": {k: sum(1 for n in static_nodes if not n.is_test and n.file_kind == k) for k in ("config", "migration", "placeholder")},
         "total_loc": total_loc,
@@ -327,6 +328,9 @@ def extract(
             "truncated_at": (rev if opts.truncate_at else None),
             "config_fingerprint": fingerprint,
             "toolchain_versions": dict(sorted(tv.items())),
+            # D-068: the fingerprint's preimage travels with the substrate, so a page can state the
+            # conventions it was read under (the test globs, the kind regexes) instead of naming them
+            "effective_config": cfg.effective(tv),
         },
         "summary": summary,
         "languages": dict(sorted(languages.items())),
@@ -345,6 +349,9 @@ def extract(
             "blame_failed": blame_failed,  # instrument broken, not absent (audit 2026-09-04)
             "alt_scanner_unreadable": alt_unreadable,
             "tsconfig_malformed": dep.tsconfig_malformed,
+            "package_name_samples": [
+                {"from": a, "specifier": sp, "to": t} for a, sp, t in dep.package_name_samples
+            ],  # D-068: every package-name import, so the count splits by importer kind on the page
         },
     }
     return _round(out, cfg.rounding_dp)
