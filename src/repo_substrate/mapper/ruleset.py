@@ -116,6 +116,9 @@ class Feature:
     # can count how many of the feature's rooms are the case — a caveat says "can" and D-042 forbids
     # it a repository fact; on registry the flooded_basement case was 12 of 26 and the page could not say so
     caveat_case: str | None = None
+    # D-069: a predicate that reads two records carries a limit on each — flooded_basement reads the load
+    # floor (D-048's caveat) and the clock (D-069's); each extra caveat is a (text, case) pair like the first
+    extra_caveats: tuple[tuple[str, str | None], ...] = ()
     note: str = ""
 
     @property
@@ -222,6 +225,18 @@ def load_ruleset(path: Path) -> Ruleset:
             for t in parse_predicate(str(caveat_case)):
                 if t.percentile is not None:
                     raise RulesetError(f"feature {name}: caveat_case reads a percentile ({t}); the case is counted on raw metrics, literal terms only")
+        extra: list[tuple[str, str | None]] = []
+        for ec in f.get("extra_caveats") or []:
+            if not isinstance(ec, dict) or not ec.get("text"):
+                raise RulesetError(f"feature {name}: each extra_caveats entry needs a text (D-069)")
+            if not f.get("caveat"):
+                raise RulesetError(f"feature {name}: extra_caveats given without a caveat")
+            case = ec.get("case")
+            if case:
+                for t in parse_predicate(str(case)):
+                    if t.percentile is not None:
+                        raise RulesetError(f"feature {name}: an extra caveat's case reads a percentile ({t}); literal terms only")
+            extra.append((str(ec["text"]), str(case) if case else None))
         implied = any(w in str(name).lower() for w in NAME_CONSEQUENCE_WORDS)
         if implied and not bool(f.get("name_implies_consequence", False)):
             raise RulesetError(
@@ -313,6 +328,7 @@ def load_ruleset(path: Path) -> Ruleset:
                 position_name=f.get("position_name"),
                 caveat=f.get("caveat"),
                 caveat_case=caveat_case,
+                extra_caveats=tuple(extra),
                 note=str(f.get("note", "")),
             )
         )

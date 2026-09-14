@@ -695,7 +695,7 @@ def test_register_fallbacks_say_the_reason_that_is_the_reason(sub):
         }
     )
     g["features"].append(big)
-    assert "src (as parent, not the wing) 9 / 9" in render_register(_at_floor(g, feat["feature"]))
+    assert "src (as parent, not the wing) 9 of its 9" in render_register(_at_floor(g, feat["feature"]))  # D-069
     base = _good_draft(f)
     apart = (
         base
@@ -1665,7 +1665,7 @@ def test_a_tier_orders_by_path_and_the_scope_count_is_over_the_population(sub, t
     assert dd["tied"] and dd["dir"] == "pkg" and dd["tied_with"] == [{"dir": "lib", "n": 3, "population": 4}]
     cell = _b.render_register(g)
     m = re.search(r"\| [^|]*\(tied with[^|]*\|", cell)
-    assert m and m.group(0) == "| pkg (as parent, not the wing) 3 / 3 (tied with lib (as parent, not the wing) 3 / 4) |", m.group(0) if m else cell
+    assert m and m.group(0) == "| pkg (as parent, not the wing) 3 of its 3 (tied with lib (as parent, not the wing) 3 of its 4) |", m.group(0) if m else cell  # D-069: "33 / 61" was read as 33 of the feature's rooms
     # (3) equal sets, unequal marks: path orders the tier
     def feat(name, rooms, profile="p", predicate="x >= p90"):
         return {"feature": name, "profile": profile, "diagnostic": True, "decorative": False, "rooms": rooms, "predicate": predicate}
@@ -1725,7 +1725,7 @@ def test_a_guaranteed_containment_is_drawn_under_the_floor_and_the_ordering_text
     sk2 = json.loads(json.dumps(sk))
     tmpl = next(x for x in sk2["features"] if x["diagnostic"] and not x["decorative"])
     big_rooms = sorted(sk2["strata"]["by_node"])[:4]  # the fixture's features carry one room each; build one with four
-    big = dict(tmpl, feature="bigf", predicate="fan_in >= p90", decorative=False, decorative_reason=None)
+    big = dict(tmpl, feature="bigf", predicate="fan_in >= p90", decorative=False, decorative_reason=None, caveat=None, caveat_case=None, extra_caveats=[])  # D-069: the template (dark_room) now carries the clock caveat; this fixture's features read the graph
     inner = dict(big, feature="tiny_in", predicate="fan_in >= p90 and lines >= p50", decorative=True, decorative_reason="tiny_in is decorative on purpose (lines)", diagnostic=False)
     loose = dict(big, feature="tiny_off", predicate="fan_in >= p95")
     sk2["features"] = [dict(big, node=r) for r in big_rooms] + [dict(inner, node=r) for r in big_rooms[:2]] + [dict(loose, node=r) for r in big_rooms[:2]]
@@ -1778,7 +1778,7 @@ def test_a_containment_not_by_predicate_says_the_signal_in_common_and_a_scope_is
     sk2 = json.loads(json.dumps(sk))
     tmpl = next(x for x in sk2["features"] if x["diagnostic"] and not x["decorative"])
     rooms = sorted(sk2["strata"]["by_node"])
-    mk = lambda **kw: dict(tmpl, **{"decorative": False, "decorative_reason": None, **kw})  # noqa: E731
+    mk = lambda **kw: dict(tmpl, **{"decorative": False, "decorative_reason": None, "caveat": None, "caveat_case": None, "extra_caveats": [], **kw})  # noqa: E731  # D-069: the template carries the clock caveat; these fixtures test relations
     fresh = mk(feature="fresh", predicate="last_touched_days <= p10")  # the clock, directly
     hot = mk(feature="hot", predicate="bug_pressure_index >= p90", decorative=True, decorative_reason="hot rests on bug_pressure_index (unvalidated)")  # the clock, through a blend
     wide = mk(feature="wide", predicate="lines >= p50")
@@ -2307,7 +2307,7 @@ def test_the_seventh_round_legend_counts_split_scopes_are_named_and_the_illustra
     assert _b._case_label("no placeholder here") == ""
     fb = next(x for x in f["features"] if x["feature"] == "flooded_basement")
     if fb["count"]:
-        assert f"| {fb['count']}" in _row(reg, "flooded_basement") and f"({fb['caveat_case_count']} have no importer)" in _row(reg, "flooded_basement")
+        assert f"| {fb['count']}" in _row(reg, "flooded_basement") and (fb["caveat_case_count"] == 0 or f"({fb['caveat_case_count']} have no importer)" in _row(reg, "flooded_basement"))  # D-069: a zero case stays in the predicate cell
     # the reinforcement caveats name the run-time mechanism
     sc = next(x for x in f["features"] if x["feature"] == "scaffolding")
     assert "load by a path computed at run time" in sc["caveat"]
@@ -2315,3 +2315,52 @@ def test_the_seventh_round_legend_counts_split_scopes_are_named_and_the_illustra
     assert "only by a path computed at run time" in tw["caveat"]
     # "excluded" means one thing
     assert "'Excluded' on this page means this and nothing else" in reg
+
+
+def test_the_eighth_round_ties_on_conjunctive_terms_concentration_gap_and_the_clock_caveat(sub):
+    """D-069 (the eighth unpointed round: a core-rules maintainer on eslint 0.34.0; the skimmer on
+    typeorm 0.34.0). Control: a ranked term inside a conjunction printed its cutoff and not the tie at
+    it (p75 on fan_in is 2 with 330 of 467 rooms there); the clock cutoff was a formatter commit the
+    tree's .git-blame-ignore-revs disowns and the clock rows had no caveat; three importer sums were
+    one room's number; a gap rendered as 4e-05. Skimmer: "test-imported 162" leaves as "412 untested";
+    "33 / 61" read as 33 of the feature's rooms."""
+    import repo_substrate.brief as _b
+
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    reg = _b.render_register(f)
+    # ties per ranked term on a conjunctive row
+    nodes = {r: {"metrics": {"x": v, "y": 1}} for r, v in {"a": 2, "b": 2, "c": 2, "d": 5, "e": 0}.items()}
+    e = {"predicate": "x >= p75 and y == 1", "rooms": ["a", "b", "c", "d"], "thresholds": {"x >= p75": 2.0}}
+    assert _b._term_ties(e, nodes, set(nodes)) == {"x >= p75": 3}
+    assert _b._term_ties({"predicate": "x >= p75", "rooms": [], "thresholds": {"x >= p75": 2.0}}, nodes, set(nodes)) == {}  # single terms use at_cutoff
+    assert " — here p75 on x is 2 (3 of 5 rooms at that value)" == _b._share_by_construction("x >= p75 and y == 1", 4, 5, {"x >= p75": 2.0}, None, None, {"x >= p75": 3})
+    # a tied clock row states the commit's breadth when the tie is one commit
+    cl = {r: {"metrics": {"last_touched_days": 533.966, "last_touch_commit_files": 1060}} for r in ("a", "b")}
+    cl["c"] = {"metrics": {"last_touched_days": 600.0, "last_touch_commit_files": 3}}
+    ec = {"predicate": "last_touched_days >= p90", "rooms": ["a", "b", "c"], "thresholds": {"last_touched_days >= p90": 533.966}, "at_cutoff": 2}
+    assert _b._tie_touch_files(ec, cl) == 1060
+    cl["b"]["metrics"]["last_touch_commit_files"] = 7
+    assert _b._tie_touch_files(ec, cl) is None
+    # the gap never renders in exponent notation
+    assert _b._gap(4.0000000000040004e-05, "") == "0.00004" and _b._gap(8.985099999999989, " days") == "8.985 days" and _b._gap(0.0001, "") == "0.0001"
+    # concentration: the room holding a third or more of an importer sum is named
+    for e2 in f["features"]:
+        imp = e2.get("importers") or {}
+        if imp.get("top"):
+            assert imp["top"]["fan_in"] * 3 >= imp["total"]
+            assert f"({imp['top']['fan_in']} of them import {imp['top']['room']}, {imp['top']['from_tests']} from test files)" in _row(reg, e2["feature"], e2["decorative"], profile=e2["profile"])
+    # the rooms without a test importer that a test-imported room imports, beside the count
+    sc = next(x for x in f["features"] if x["feature"] == "scaffolding")
+    v = sc.get("via_importer")
+    if v and v["without"] and sc["count"]:
+        assert f"(of the {v['without']} rooms without a test importer, {v['reached']} are imported by a room that has one)" in _row(reg, "scaffolding")
+    assert v == {"without": 7, "reached": 0} or v is None or v["without"] >= v["reached"]
+    # the clock rows carry the caveat with the flag's case; flooded_basement carries it as an extra caveat
+    dr = next(x for x in f["features"] if x["feature"] == "dark_room")
+    assert dr["caveat"] and "git-blame-ignore-revs" in dr["caveat"] and dr["caveat_case"] == "last_touch_blame_ignored == 1" and dr["caveat_case_count"] is not None
+    fb = next(x for x in f["features"] if x["feature"] == "flooded_basement")
+    assert fb["extra_caveats"] and fb["extra_caveats"][0]["case"] == "last_touch_blame_ignored == 1" and fb["extra_caveats"][0]["case_count"] is not None
+    assert "— caveat: reads a floor on the load blend" in _row(reg, "flooded_basement") and "— caveat: reads the newest commit that touched the file" in _row(reg, "flooded_basement")
+    # the parent cell reads "n of its N"
+    assert " of its " in reg or all(not x.get("dominant_dir") for x in f["features"])

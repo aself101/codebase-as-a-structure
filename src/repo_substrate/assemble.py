@@ -66,6 +66,29 @@ def _gini(counts: list[int]) -> float:
     return (2.0 * cum) / (n * sum(xs)) - (n + 1.0) / n
 
 
+def _blame_ignore_revs(repo: Path, rev: str) -> set[str]:
+    """D-069: the full shas listed in `.git-blame-ignore-revs` at `rev` (comments and blanks
+    skipped); empty when the file is absent. eslint's lists the repository-wide Prettier commit
+    that 77 of its 79 dark rooms were last touched by."""
+    import subprocess
+
+    proc = subprocess.run(
+        ["git", "-C", str(repo), "show", f"{rev}:.git-blame-ignore-revs"],
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=60,
+    )
+    if proc.returncode != 0:
+        return set()
+    out: set[str] = set()
+    for line in proc.stdout.splitlines():
+        line = line.split("#", 1)[0].strip()
+        if len(line) >= 7 and all(c in "0123456789abcdef" for c in line):
+            out.add(line)
+    return out
+
+
 def toolchain_versions(extractor: DependencyExtractor | None) -> dict[str, str]:
     """§3 pinned capture format: role → name@version as each tool's own resolver reports it."""
     tv = {
@@ -117,6 +140,10 @@ def extract(
             )
     hist = miner.mine(repo, rev, fix_fallback)
     as_of = hist.as_of
+    # D-069: the repository's own list of commits blame should ignore (`.git-blame-ignore-revs`, a
+    # tree-declared convention like tsconfig paths and package names) — the clock reads a touch,
+    # whatever the commit did; the flag says when the last touch is one the repository disowns
+    blame_ignored = _blame_ignore_revs(repo, rev)
 
     # --- §5 node-set invariant: nodes = rev inventory; attach history; count orphans
     paths = sorted(node_paths)
@@ -208,12 +235,18 @@ def extract(
                 }
             )
             m["history_missing"] = True
+            m["last_touch_commit_files"] = None
+            m["last_touch_blame_ignored"] = False
             recent_share[p] = None
         else:
             m.update(fh.raw_metrics(as_of))
             m["history_missing"] = False
             recent = sum(1 for i in fh.commit_idxs if i >= recent_start)
             recent_share[p] = recent / fh.commit_count if fh.commit_count else None
+            # D-069: the last-touching commit's breadth and whether the repository disowns it for blame
+            last = hist.timeline[fh.commit_idxs[-1]] if fh.commit_idxs else None
+            m["last_touch_commit_files"] = len(last.nodes_touched) if last else None
+            m["last_touch_blame_ignored"] = bool(last and last.sha in blame_ignored)
         m["recent_commit_share"] = recent_share[p]
         metrics_by_node[p] = m
 

@@ -107,6 +107,21 @@ GROUNDING: dict[str, dict[str, Any]] = {
         "heuristic": "nothing but an empty export (`export {}` / `module.exports = {}`)",
         "flag": True,
     },
+    # D-069: the clock's last touch, qualified — how broad the last-touching commit was, and whether the
+    # repository's `.git-blame-ignore-revs` disowns it. The clock predicates' caveat case reads the flag.
+    "last_touch_commit_files": {
+        "ripple": "own",
+        "class": "G1",
+        "instrument": "timeline: nodes touched by the file's newest commit",
+        "heuristic": "a commit's breadth as the count of substrate nodes it touched",
+    },
+    "last_touch_blame_ignored": {
+        "ripple": "own",
+        "class": "G1",
+        "instrument": ".git-blame-ignore-revs at the analyzed rev",
+        "heuristic": "the newest commit's full sha appears in the file (comments stripped)",
+        "flag": True,
+    },
     # G2 instrument-checked (counterparts come from altdeps.py, which shares no code with dependency-cruiser)
     "fan_in": {
         "ripple": "coupled",
@@ -243,6 +258,8 @@ SPEC_G1: frozenset[str] = frozenset(
         "is_config",  # flag (D-067)
         "is_migration",  # flag (D-067)
         "is_placeholder",  # flag (D-067)
+        "last_touch_commit_files",  # D-069
+        "last_touch_blame_ignored",  # flag (D-069)
     }
 )
 
