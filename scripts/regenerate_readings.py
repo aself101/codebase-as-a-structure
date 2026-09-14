@@ -179,6 +179,7 @@ def main() -> int:
         print(r.stdout.strip() or r.stderr[-400:])
 
     # 3. briefs
+    failed = False  # D-069: `--skip-briefs` reached the return with `failed` unbound
     if not args.skip_briefs:
         m3 = ROOT / "reports" / f"{args.tag}-m3x"
         m3.mkdir(parents=True, exist_ok=True)
