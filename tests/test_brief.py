@@ -616,7 +616,9 @@ def test_register_cells_are_linted_by_their_tests(sub):
     g["features"].append(low)
     # D-070 (the ninth control): the largest parent is named with its count under a third too — "none
     # holds a third" was a threshold read aloud on five registry rows whose sheet said src/utils
-    assert "x/y 2 of its 5 (under a third of the feature's rooms)" in render_register(_at_floor(g, feat["feature"]))
+    assert "x/y 2 of its 5 (tied) (under a third of the feature's rooms)" in render_register(_at_floor(g, feat["feature"]))  # D-071: the tie renders under a third too
+    low["dominant_dir"]["tied_with"] = [{"dir": "x/z", "n": 2, "population": 9}]
+    assert "x/y 2 of its 5 (tied with x/z 2 of its 9) (under a third of the feature's rooms)" in render_register(_at_floor(g, feat["feature"]))
     assert "none holds a third" not in render_register(_at_floor(g, feat["feature"]))
     assert (
         "distinct sets of rooms" in table
@@ -2503,3 +2505,39 @@ def test_d070_the_blame_ignore_convention_is_present_or_absent_on_the_substrate(
     row = _row(_b.render_register(f), "dark_room")
     assert "the tree has no .git-blame-ignore-revs" not in row
     assert f"({dr['caveat_case_count']} of {dr['count']} here were last touched by a commit" in row or dr["count"] == 0
+
+
+def test_d071_the_tenth_round(sub):
+    """D-071 (the tenth unpointed round: the transport maintainer on mcp-secure-server 0.36.0; the skimmer
+    on registry 0.36.0). Both readers found the same cell: the under-a-third parent D-070 added rendered
+    without the tie the sheet records (package_entry's "largest parent" was a 16-way tie). The control:
+    a blend's cutoff stated to five places with its inputs and weights nowhere on the page."""
+    import repo_substrate.brief as _b
+
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    reg = _b.render_register(f)
+    # 1. the blends any feature reads are on the sheet with the tuned weights, and the legend states them
+    iw = f["index_weights"]
+    assert "load_index" in iw and abs(sum(iw["load_index"].values()) - 1.0) < 1e-9
+    assert list(iw["load_index"].values()) == sorted(iw["load_index"].values(), reverse=True)  # heaviest first
+    assert iw["load_index"] == sub["repo"]["effective_config"]["weights"]["load_index"]
+    for idx, w in iw.items():
+        line = next(l for l in reg.splitlines() if l.startswith(f"- **{idx}** — a blend"))
+        for k, v in w.items():
+            assert f"{v:g} × {_b.INDEX_INPUT_WORDS[k]}" in line, (idx, k)
+        assert "each input a rank in this repository's own population" in line
+    assert set(iw) <= {"load_index", "bug_pressure_index", "change_pressure_index", "neglect_index", "complexity_proxy_index"}
+    assert _b._index_legend_lines({"index_weights": {}}) == ""
+    # 2. a long tie under a third is counted, not listed
+    feat = next(x for x in f["features"] if x["count"] >= 6 and (x.get("dominant_dir") or {}).get("placeable"))
+    g = json.loads(json.dumps(f))
+    x = next(x for x in g["features"] if x["feature"] == feat["feature"] and x["profile"] == feat["profile"])
+    x["dominant_dir"] = {"dir": "a/b", "n": 1, "population": 8, "placeable": True, "holds_third": False, "tied": True, "tied_with": [{"dir": f"c/d{i}", "n": 1, "population": 3} for i in range(15)]}
+    row = _row(_b.render_register(g), feat["feature"], feat["decorative"], profile=feat["profile"])
+    assert "a/b 1 of its 8 (tied with 15 other parents, each holding 1) (under a third of the feature's rooms)" in row
+    x["dominant_dir"]["tied_with"] = x["dominant_dir"]["tied_with"][:2]
+    row = _row(_b.render_register(g), feat["feature"], feat["decorative"], profile=feat["profile"])
+    assert "a/b 1 of its 8 (tied with c/d0 1 of its 3, c/d1 1 of its 3) (under a third of the feature's rooms)" in row
+    # 3. the sheet's unit text no longer says the cell is withheld under a third
+    assert "shown only" not in f["units"]["dominant_dir"] and "shown either way" in f["units"]["dominant_dir"]
