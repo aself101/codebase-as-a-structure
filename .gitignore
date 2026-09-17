@@ -6,3 +6,4 @@ logs/
 node_modules/
 out/
 reference/
+.mcp.json

@@ -1,0 +1,27 @@
+{
+  "_comment": "Copy to .mcp.json (gitignored) and fill ULUOPS_API_KEY (Claude Code expands ${VAR} from the shell at launch; a literal key in its place also works). The tracker project `codebase-as-structure` lives in the PERSONAL org of Alex's personal key — no ULUOPS_ORG_SLUG on the tracker entry; the ulu-labs work key does not see it (2026-09-16).",
+  "mcpServers": {
+    "uluops-tracker": {
+      "command": "node",
+      "args": [
+        "/Users/aself/.nvm/versions/node/v24.14.1/lib/node_modules/@uluops/ops-mcp/dist/index.js"
+      ],
+      "env": {
+        "ULUOPS_BASE_URL": "https://api.uluops.ai/api/v1",
+        "ULUOPS_API_KEY": "${ULUOPS_API_KEY}"
+      }
+    },
+    "uluops-registry": {
+      "command": "node",
+      "args": [
+        "/Users/aself/uluops/uluops-registry-mcp/dist/index.js"
+      ],
+      "env": {
+        "ULUOPS_API_KEY": "${ULUOPS_API_KEY}",
+        "ULUOPS_ORG_SLUG": "ulu-labs",
+        "TOOL_POLICIES_PATH": "/Users/aself/uluops/uluops-registry-mcp/tool-policies.json",
+        "WORKSPACE_DIR": "/Users/aself/uluops"
+      }
+    }
+  }
+}

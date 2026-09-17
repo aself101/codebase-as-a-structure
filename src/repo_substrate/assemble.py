@@ -66,21 +66,22 @@ def _gini(counts: list[int]) -> float:
     return (2.0 * cum) / (n * sum(xs)) - (n + 1.0) / n
 
 
-def _blame_ignore_revs(repo: Path, rev: str) -> set[str]:
-    """D-069: the full shas listed in `.git-blame-ignore-revs` at `rev` (comments and blanks
-    skipped); empty when the file is absent. eslint's lists the repository-wide Prettier commit
-    that 77 of its 79 dark rooms were last touched by."""
+def _blame_ignore_revs(repo: Path, rev: str, filename: str = ".git-blame-ignore-revs") -> set[str] | None:
+    """D-069: the full shas listed in the blame-ignore file at `rev` (comments and blanks skipped).
+    eslint's lists the repository-wide Prettier commit that 77 of its 79 dark rooms were last
+    touched by. D-070: None when the tree has no such file — the ninth control read "0 of 34 here"
+    on the registry, which has nothing to read, as a count; absent and empty are different facts."""
     import subprocess
 
     proc = subprocess.run(
-        ["git", "-C", str(repo), "show", f"{rev}:.git-blame-ignore-revs"],
+        ["git", "-C", str(repo), "show", f"{rev}:{filename}"],
         capture_output=True,
         text=True,
         check=False,
         timeout=60,
     )
     if proc.returncode != 0:
-        return set()
+        return None
     out: set[str] = set()
     for line in proc.stdout.splitlines():
         line = line.split("#", 1)[0].strip()
@@ -143,7 +144,8 @@ def extract(
     # D-069: the repository's own list of commits blame should ignore (`.git-blame-ignore-revs`, a
     # tree-declared convention like tsconfig paths and package names) — the clock reads a touch,
     # whatever the commit did; the flag says when the last touch is one the repository disowns
-    blame_ignored = _blame_ignore_revs(repo, rev)
+    blame_ignored_listed = _blame_ignore_revs(repo, rev, cfg.blame_ignore_revs_file)
+    blame_ignored = blame_ignored_listed or set()
 
     # --- §5 node-set invariant: nodes = rev inventory; attach history; count orphans
     paths = sorted(node_paths)
@@ -321,6 +323,9 @@ def extract(
         "tsconfig_aliases": dep.tsconfig_aliases,
         "package_name_imports": dep.package_name_imports,
         "package_names": sorted(package_entries),  # D-068: the names a bare specifier resolves through
+        # D-070: whether the tree declares the blame-ignore convention at all, and how many commits it
+        # lists; the flag `last_touch_blame_ignored` is constant-false when `present` is false
+        "blame_ignore_revs": {"present": blame_ignored_listed is not None, "listed": len(blame_ignored_listed or ())},
         # D-067: kinds over the non-test nodes, so a page can say how many rooms a ruleset's exclusion removes
         "file_kinds": {k: sum(1 for n in static_nodes if not n.is_test and n.file_kind == k) for k in ("config", "migration", "placeholder")},
         "total_loc": total_loc,

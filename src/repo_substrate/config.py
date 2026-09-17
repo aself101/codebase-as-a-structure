@@ -154,6 +154,11 @@ class SubstrateConfig:
     # placeholder: nothing but an empty export once comments are stripped
     placeholder_content_regex: str = r"^\s*(export\s*\{\s*\}\s*;?\s*|module\.exports\s*=\s*\{\s*\}\s*;?\s*)?$"
     rounding_dp: int = 4
+    # D-070: the file a repository uses to list the commits `git blame` should skip; the clock flag
+    # `last_touch_blame_ignored` reads it (D-069). Its name is the declared convention, so it is
+    # configuration and feeds the fingerprint; the substrate summary says whether the tree has it,
+    # so a page can tell "0 disowned" from "nothing to read" (the ninth control, on the registry).
+    blame_ignore_revs_file: str = ".git-blame-ignore-revs"
     # --- history (§5, §7)
     fix_subject_regex: str = r"\b(bug|hotfix|patch)\b"
     cochange_min: int = 2

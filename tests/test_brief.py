@@ -61,10 +61,12 @@ def test_facts_sheet_is_the_closed_set(sub):
 
 def _row(table: str, feature: str, decorative: bool = False, profile: str | None = None) -> str:
     """D-060: the position is the first column; a row is found by its feature cell."""
-    cell = f"| {'◌ ' if decorative else ''}{feature} |" + (f" {profile}" if profile else "")  # D-063: a profile cell may name two profiles
+    # D-070: an excluded row's feature cell reads "◌ name (excluded)" — the word travels with the glyph
+    fcell = f"| ◌ {feature} (excluded) |" if decorative else f"| {feature} |"
+    cell = fcell + (f" {profile}" if profile else "")  # D-063: a profile cell may name two profiles
     rows = [line for line in table.splitlines() if line.startswith("| ") and cell in line]
     if not rows and profile:  # D-063: a feature under two profiles with one predicate is one row, listed under the base profile
-        rows = [line for line in table.splitlines() if line.startswith("| ") and f"| {'◌ ' if decorative else ''}{feature} |" in line and "(one predicate, two profiles)" in line]
+        rows = [line for line in table.splitlines() if line.startswith("| ") and fcell in line and "(one predicate, two profiles)" in line]
     return rows[0]
 
 
@@ -612,7 +614,10 @@ def test_register_cells_are_linted_by_their_tests(sub):
         }
     )
     g["features"].append(low)
-    assert "none holds a third" in render_register(_at_floor(g, feat["feature"]))
+    # D-070 (the ninth control): the largest parent is named with its count under a third too — "none
+    # holds a third" was a threshold read aloud on five registry rows whose sheet said src/utils
+    assert "x/y 2 of its 5 (under a third of the feature's rooms)" in render_register(_at_floor(g, feat["feature"]))
+    assert "none holds a third" not in render_register(_at_floor(g, feat["feature"]))
     assert (
         "distinct sets of rooms" in table
         and "rooms twice" in table
@@ -1690,7 +1695,7 @@ def test_a_tier_orders_by_path_and_the_scope_count_is_over_the_population(sub, t
     assert "zero to fix history" in rs.signal_reasons["bug_pressure_index"]
     page = run_brief(sk, sub)["markdown"]
     rows = [line for line in page.splitlines() if line.startswith("| ") and "| ◌ " in line]
-    assert rows and any("| ◌ crack |" in r for r in rows)  # crack fires on the fixture
+    assert rows and any("| ◌ crack (excluded) |" in r for r in rows)  # crack fires on the fixture; D-070: the word beside the glyph
     assert all("zero to fix history" in r for r in rows)
     assert page.count("zero to fix history") == len(rows)  # every decorative row; D-062: the section no longer repeats it
     assert "excluded from the diagnosis: the signal they read (bug_pressure_index) is unvalidated; each row carries the reason." in page  # D-062: the section is one line; the reason is on the rows
@@ -2259,7 +2264,11 @@ def test_the_population_sentence_counts_the_kinds_the_ruleset_excludes(sub):
     f = facts(sk, sub)
     assert f["excluded_kinds"] == ["config", "migration", "placeholder"]  # the shipped rulesets
     reg = _b.render_register(f)
-    assert "and not a config or migration or placeholder file (kinds the ruleset does not count as rooms)" in reg
+    # D-070 (the ninth control): the rule states what each kind's convention reads — "config" had been a
+    # word on the page and a regex in the instrument (knexfile.ts is a room by it)
+    assert "and not a config or migration or placeholder file (kinds the ruleset does not count as rooms, each read by a declared convention and nothing else — config: a tool's configuration by basename — `*rc.*`, `*.config.*` or `*.conf.*` — at its package's root; migration: any file under a `migration/` or `migrations/` directory; placeholder: a file that is an empty export once comments are stripped)" in reg
+    assert f["kind_conventions"] and set(f["kind_conventions"]) == {"config_file_regex", "migration_dir_regex", "placeholder_content_regex"}
+    assert _b._kinds_rule_text({"excluded_kinds": ["config"]}) == ", and not a config file (kinds the ruleset does not count as rooms)"  # a sheet without the conventions (pre-0.36.0) keeps the short form
     assert _b._kinds_count_text({"excluded_kinds": ["config"], "excluded_by_kind": {"config": 14, "placeholder": 3}}) == "; the 17 files of a kind the ruleset does not count (config 14, placeholder 3) are in the graph and not a room"
     assert _b._kinds_count_text({"excluded_kinds": ["config"], "excluded_by_kind": {"config": 1}}) == "; the 1 file of a kind the ruleset does not count (config 1) is in the graph and not a room"
     assert _b._kinds_count_text({"excluded_kinds": ["config"], "excluded_by_kind": {"config": 0}}) == "; no file of a kind the ruleset does not count is in the tree"
@@ -2364,3 +2373,133 @@ def test_the_eighth_round_ties_on_conjunctive_terms_concentration_gap_and_the_cl
     assert "— caveat: reads a floor on the load blend" in _row(reg, "flooded_basement") and "— caveat: reads the newest commit that touched the file" in _row(reg, "flooded_basement")
     # the parent cell reads "n of its N"
     assert " of its " in reg or all(not x.get("dominant_dir") for x in f["features"])
+
+
+def test_d070_the_ninth_round(sub):
+    """D-070 (the ninth unpointed round: the src/utils author on registry 0.35.0; the skimmer on eslint
+    0.35.0). Control: the clock caveat's case read "0 of 34 here" on a tree with no .git-blame-ignore-revs;
+    the stance was generic where the system spec names the case and the page's one tier room is it;
+    "config" was a word wider than its regex; the largest parent was withheld under a third; a containee
+    drawing one set was two entries; "line count" is non-blank. Skimmer: the ◌ glyph carried the exclusion
+    alone in the columns it reads; the importer share without the top room; the clock caveat's direction;
+    the far boundary's commit breadth. Parent's recount: the test-graph clause was the population's
+    complement on the unreinforced rows."""
+    import re
+
+    import repo_substrate.brief as _b
+
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    reg = _b.render_register(f)
+    # 1. the sheet says whether the tree declares the blame-ignore convention (substrate 0.10.0); the
+    #    scripted repo has no such file, so the case says "nothing to read" and never "0 of N here"
+    assert sub["summary"]["blame_ignore_revs"] == {"present": False, "listed": 0}
+    assert f["blame_ignore_revs"] == {"present": False, "listed": 0}
+    dr = next(x for x in f["features"] if x["feature"] == "dark_room")
+    row = _row(reg, "dark_room")
+    assert f"(none of the {dr['count']} — the tree has no .git-blame-ignore-revs at this commit — were last touched by a commit the repository's .git-blame-ignore-revs disowns)" in row
+    assert re.search(r"\(0 of \d+ here were last touched", row) is None
+    assert _b._case_count_text("last_touch_blame_ignored == 1", 0, 34, {"blame_ignore_revs": {"present": True, "listed": 2}}) == "0 of 34 here"
+    assert _b._case_count_text("fan_in == 0", 0, 34, {"blame_ignore_revs": {"present": False, "listed": 0}}) == "0 of 34 here"  # another case is untouched
+    assert _b._case_count_text("last_touch_blame_ignored == 1", 0, 34, {}) == "0 of 34 here"  # a pre-0.10.0 sheet keeps the count
+    # 2. the kind conventions' words match the regexes on the sheet (a fixed text tested against the computation it labels)
+    conv = f["kind_conventions"]
+    cfg_re = re.compile(conv["config_file_regex"])
+    for name in (".eslintrc.js", "vitest.config.ts", "karma.conf.js", "tsup.config.mjs"):
+        assert cfg_re.match(name), name
+    assert not cfg_re.match("knexfile.ts") and not cfg_re.match("singleton.ts")  # the registry's root room is a room by the convention
+    mig_re = re.compile(conv["migration_dir_regex"])
+    assert mig_re.search("src/db/migrations/001.ts") and mig_re.search("migration/x.ts") and not mig_re.search("src/migrate.ts")
+    ph_re = re.compile(conv["placeholder_content_regex"])
+    assert ph_re.match("export {};\n") and not ph_re.match("export const x = 1;\n")
+    assert set(_b.KIND_CONVENTION_WORDS) == {"config", "migration", "placeholder"}
+    # 3. the stance names its case with this page's rooms at it
+    sc = f["stance_case"]
+    assert sc and sc["untouched"] == "dark_room" and sc["loaded"] == "foundation"
+    both = set(dr["rooms"]) & set(next(x for x in f["features"] if x["feature"] == "foundation" and x["profile"] == "maintainability")["rooms"])
+    assert [r["room"] for r in sc["rooms"]] == sorted(both)
+    txt = _b._stance_case_text(f)
+    assert "long-untouched and high-load at once, here dark_room and foundation" in txt
+    if both:
+        r0 = sc["rooms"][0]
+        assert f"{r0['room']} ({r0['lines']} lines, {r0['fan_in']} importers, {r0['test_fan_in']} from test files)" in txt and "places and does not judge" in txt
+    else:
+        assert "no room on this page is in both" in txt
+    assert _b._stance_case_text({"stance_case": None}) == ""
+    # 4. the largest parent is named with its count under a third (the test above covers the cell text)
+    for x in f["features"]:
+        dd = x.get("dominant_dir") or {}
+        if dd.get("placeable") and x["count"] and not dd.get("holds_third"):
+            assert f"{dd['dir']} {dd['n']} of its {dd['population']} (under a third of the feature's rooms)" in _row(reg, x["feature"], x["decorative"], profile=x["profile"])
+    # 5. a containee drawing one set is one entry (foundation under two profiles inside scaffolding)
+    sc_row = _row(reg, "scaffolding")
+    assert sc_row.count("foundation") <= 2 or "maintainability/foundation = onboarding/foundation" in sc_row
+    # 6. the tier gloss and the parent header
+    g = json.loads(json.dumps(f))
+    g["top_tier"] = {"rooms": [{"room": "src/f0.js", "lines": 2, "fan_in": 1, "test_fan_in": 0, "features": ["dark_room"]}], "sets": 1}
+    assert "Size is the room's non-blank line count" in _b.render_most_marked(g) and "largest parent directory (n of the parent's rooms)" in reg
+    # 7. an excluded row's feature cell carries the word
+    assert "| ◌ crack (excluded) |" in reg
+    # 8. the importer share without the top room
+    for x in f["features"]:
+        imp = x.get("importers") or {}
+        if imp.get("top") and imp["total"] - imp["top"]["fan_in"] > 0:
+            rest = imp["total"] - imp["top"]["fan_in"]
+            rest_t = imp["from_tests"] - imp["top"]["from_tests"]
+            assert f"; without it {rest_t} of {rest}, {100.0 * rest_t / rest:.0f}%)" in _row(reg, x["feature"], x["decorative"], profile=x["profile"])
+    # 9. the clock caveats say which way they cut (maintainability 0.3.3)
+    assert "at least as old as the clock reads and never younger" in dr["caveat"]
+    lit = next(x for x in f["features"] if x["feature"] == "lit_room")
+    assert "can read as recently touched on a chore alone" in lit["caveat"]
+    fb = next(x for x in f["features"] if x["feature"] == "flooded_basement")
+    assert "never younger" in fb["extra_caveats"][0]["text"]
+    # 10. the far boundary's breadth when the rooms at it are one commit
+    cl = {r: {"metrics": {"last_touched_days": 533.966}} for r in ("a", "b")}
+    cl["c"] = {"metrics": {"last_touched_days": 524.98, "last_touch_commit_files": 300}}
+    cl["d"] = {"metrics": {"last_touched_days": 524.98, "last_touch_commit_files": 300}}
+    cl["e"] = {"metrics": {"last_touched_days": 10.0, "last_touch_commit_files": 1}}
+    e = {"predicate": "last_touched_days >= p90", "rooms": ["a", "b"], "thresholds": {"last_touched_days >= p90": 533.966}}
+    b = _b._rooms_beyond_cutoff(e, cl, set(cl))
+    assert b["count"] == 2 and b["touch_files"] == 300
+    assert "the next value below the cutoff holds 2 rooms (one commit of 300 files), 8.986 days under it" in _b._share_by_construction("last_touched_days >= p90", 2, 5, e["thresholds"], 2, b, None)
+    cl["d"]["metrics"]["last_touch_commit_files"] = 7
+    assert "touch_files" not in _b._rooms_beyond_cutoff(e, cl, set(cl))
+    # 11. the test-graph clause counts a row's own rooms on the unreinforced side
+    nodes = {"a": {"metrics": {"test_fan_in": 0}}, "b": {"metrics": {"test_fan_in": 0}}, "c": {"metrics": {"test_fan_in": 2}}}
+    edges = {"edges": [{"from": "c", "to": "a"}]}
+    v_own = _b._via_importer({"rooms": ["a", "b"]}, nodes, set(nodes), edges)
+    assert v_own == {"without": 2, "reached": 1, "side": "own", "own_reached": 1}
+    v_comp = _b._via_importer({"rooms": ["c"]}, nodes, set(nodes), edges)
+    assert v_comp["side"] == "complement" and v_comp["own_reached"] == 0
+    tw = next((x for x in f["features"] if x["feature"] == "toothpick_wing"), None)
+    if tw and tw["count"] and tw.get("via_importer"):
+        assert tw["via_importer"]["side"] == "own"
+        assert f"({tw['via_importer']['own_reached']} of these {tw['count']} {'is' if tw['count'] == 1 else 'are'} imported by a room that has a test importer)" in _row(reg, "toothpick_wing", decorative=True)
+        assert "of the " + str(tw["via_importer"]["without"]) + " rooms without a test importer" not in _row(reg, "toothpick_wing", decorative=True)
+
+
+def test_d070_the_blame_ignore_convention_is_present_or_absent_on_the_substrate(scripted_repo, small_cfg, tmp_path):
+    """D-070: absent and empty are different facts — the summary says whether the tree declares the
+    convention file (its name is configuration and feeds the fingerprint), and the case count reads
+    "0 of N here" only where there is a file to read."""
+    import repo_substrate.brief as _b
+    from repo_substrate.assemble import _blame_ignore_revs
+    from repo_substrate.config import SubstrateConfig
+
+    repo, shas = scripted_repo
+    assert _blame_ignore_revs(repo.path, "HEAD") is None
+    repo.write(".git-blame-ignore-revs", f"# formatter\n{shas[0]}\n\n{shas[1]}  # chore\n")
+    sha = repo.commit("chore: blame-ignore list")
+    assert _blame_ignore_revs(repo.path, "HEAD") == {shas[0], shas[1]}
+    assert _blame_ignore_revs(repo.path, "HEAD", "other-name") is None
+    doc = run_extract(repo, small_cfg, tmp_path)
+    assert doc["summary"]["blame_ignore_revs"] == {"present": True, "listed": 2}
+    assert doc["repo"]["effective_config"]["blame_ignore_revs_file"] == ".git-blame-ignore-revs"
+    assert SubstrateConfig().fingerprint({}) != SubstrateConfig(blame_ignore_revs_file="x").fingerprint({})
+    sk = _skeleton({**doc, "repo": {**doc["repo"], "config_fingerprint": TEST_FP}})
+    f = facts(sk, doc)
+    assert f["blame_ignore_revs"] == {"present": True, "listed": 2}
+    dr = next(x for x in f["features"] if x["feature"] == "dark_room")
+    row = _row(_b.render_register(f), "dark_room")
+    assert "the tree has no .git-blame-ignore-revs" not in row
+    assert f"({dr['caveat_case_count']} of {dr['count']} here were last touched by a commit" in row or dr["count"] == 0
