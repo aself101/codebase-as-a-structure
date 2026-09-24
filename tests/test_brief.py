@@ -2809,3 +2809,49 @@ def test_d078_the_page_says_what_the_example_exclusion_removes_and_what_it_leave
     reg = _b.render_register(f)
     if f.get("index_weights"):
         assert f"each input a rank among this repository's {rp['files']} non-test files" in reg
+
+
+def test_d079_rooms_in_a_closed_import_cycle_are_counted_where_centrality_is_read(sub):
+    """D-079 (the re-seat of mcp-secure-server after D-078: the src/security/config maintainer). PageRank
+    keeps the rank that enters a set of rooms importing one another and nothing outside (a rank sink);
+    three config rooms were such a set, and the legend credited one's hub status to "1 well-placed
+    importer" — itself in the cycle, and asserted by no test. A row reading centrality counts its rooms
+    in a closed cycle; the legend's example says when its hub sits in one and no longer grades the importer.
+    The skimmer: "20 of them example files" overlapped "4 test files" — example importers are counted
+    outside the test convention."""
+    import repo_substrate.brief as _b
+
+    # closed cycles: a strongly connected set of two or more that no edge leaves
+    edges = [("a", "b"), ("b", "c"), ("c", "a"), ("d", "a"), ("e", "f"), ("f", "e"), ("f", "g"), ("h", "h")]
+    got = _b._closed_cycles(["a", "b", "c", "d", "e", "f", "g", "h"], edges)
+    assert got == [{"a", "b", "c"}]  # e<->f leaves to g; a self-loop is not a cycle of rooms
+    assert _b._closed_cycles(["x"], []) == []
+    assert _b._reads_centrality("centrality >= p90") and _b._reads_centrality("centrality >= p90 and fan_out >= p50")
+    assert _b._reads_centrality("load_index >= p90") and not _b._reads_centrality("last_touched_days >= p90")
+    assert _b._cycle_rooms_text(3, 7) == " (3 of these 7 sit in a closed import cycle — rooms that import one another and nothing outside, whose PageRank the cycle keeps)"
+    assert _b._cycle_rooms_text(0, 7) == ""
+    assert _b._cycle_rooms_text(1, 1) == " (1 of these 1 sits in a closed import cycle — rooms that import one another and nothing outside, whose PageRank the cycle keeps)"
+    # the legend's example no longer grades the importer, and names the cycle when its hub sits in one
+    ill = {"hub_room": "c.ts", "hub_fan_in": 1, "other_room": "i.ts", "other_fan_in": 21, "feature": "hub", "hub_in_cycle": True}
+    t = _b._centrality_illustration_text({"centrality_illustration": ill})
+    assert "well-placed" not in t
+    assert t == ", so a room with 1 importer can outrank one with 21 (here c.ts at 1 is a hub and i.ts at 21 is not; c.ts sits in a closed import cycle, which keeps the rank that enters it)"
+    assert t.split(";")[0] + ")" == _b._centrality_illustration_text({"centrality_illustration": {**ill, "hub_in_cycle": False}})
+    # example importers are counted outside the test convention, so the counts are disjoint
+    nodes = {"src/i.ts": {"metrics": {}}, "cookbook/a.ts": {"metrics": {"is_example": True}}, "cookbook/a.test.ts": {"metrics": {"is_example": True, "is_test": True}}}
+    got = _b._importer_files(["src/i.ts"], nodes, {"edges": [{"from": "cookbook/a.ts", "to": "src/i.ts"}, {"from": "cookbook/a.test.ts", "to": "src/i.ts"}]})
+    assert (got["files"], got["test_files"], got["example_files"]) == (2, 1, 1)
+    # on the fixture sheet every centrality-reading feature carries its cycle count, and the row prints it when nonzero
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    reg = _b.render_register(f)
+    for x in f["features"]:
+        if _b._reads_centrality(x["predicate"]):
+            assert "cycle_rooms" in x
+            if x["cycle_rooms"]:
+                assert _b._cycle_rooms_text(x["cycle_rooms"], x["count"]) in _row(reg, x["feature"], x["decorative"], profile=x["profile"])
+    # the render branch, exercised: the fixture holds no closed cycle, so a count is set on the sheet
+    x = next(x for x in f["features"] if _b._reads_centrality(x["predicate"]) and x["count"])
+    x["cycle_rooms"] = 1
+    row = _row(_b.render_register(f), x["feature"], x["decorative"], profile=x["profile"])
+    assert _b._cycle_rooms_text(1, x["count"]) in row.split("|")[4]
