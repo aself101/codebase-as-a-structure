@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.38.0"  # D-072: the stance states the system spec's case in the spec's words (one condition, the long-untouched position, counted) and labels the long-untouched ∩ high-load intersection as the page's own narrowing (D-070) — the eleventh control found the paraphrase credited to the spec named 6 of typeorm's 70; the most-positions table says how many of its rooms sit at the stance's case (eslint: 11 of 12, the eleventh skimmer); a position cell whose quantile word resolved to a value more than twice its nominal share reaches says what it resolved to (eslint: p75 on fan_out is 1, 270 of 467); the sheet carries term_reach and stance_case.untouched_count. D-071: the legend states every blend the page reads — its inputs as ranks and the tuned weights (mcp's `load_index >= p90 (here 0.77128)` had no expansion anywhere on the page; the expansion rule fired only in a relation cell that shares a signal); the under-a-third parent carries its tie (both readers of the tenth round found the D-070 branch dropped it — registry's lit_room three-way, mcp's package_entry sixteen-way), a tie past three partners counted not listed; the sheet's dominant_dir unit says the cell shows either way. D-070: a caveat case whose input file the tree does not declare says "nothing to read" instead of "0 of N here" (substrate 0.10.0: summary.blame_ignore_revs; the registry's clock rows); the population rule states what each excluded kind's convention reads (config = a tool-config basename at the package root — knexfile.ts is a room by it); the stance names the disclosure's case (long-untouched and high-load at once) and this page's rooms at it with size and importers; the largest parent is named with its count under a third too; a containee drawing one set is one entry; the tier gloss says non-blank lines and the parent header says whose rooms; an excluded row's feature cell says "(excluded)" beside ◌; an importer sum with a named top room states the share without it; the test-graph clause counts a row's own rooms on the unreinforced side; a clock far boundary states its commit breadth; the clock caveats say which way they cut (maintainability 0.3.3). D-069: a ranked term inside a conjunction states the population's tie at its cutoff (eslint: p75 on fan_in is 2 with 330 of 467 rooms at it — the rules' index+test constant); a tied clock row states the breadth of the commit the tie is (77 tied — one commit of 1060 files); an importer sum names the room holding a third or more of it; a far-boundary gap never renders in exponent notation; a test-graph row counts the rooms without a test importer that a test-imported room imports; the parent cell reads "33 of its 61"; the clock rows carry a caveat with a counted case (maintainability 0.3.2, substrate 0.9.0: last_touch_blame_ignored, last_touch_commit_files). D-068: the legend's cross-scope and package-name counts carry their test-file split; a wing's scopes are named where two or fewer hold the feature; the centrality illustration is this sheet's pair, not a literal; the test convention is stated from the substrate's effective config; a caveat's case count sits in the rooms column; "excluded" means one thing (◌ marks) and a kind the ruleset does not count says so; the reinforcement caveats name the run-time mechanism (maintainability 0.3.1). D-067: the population sentence counts the files a ruleset's kind exclusion removed (config / migration / placeholder — substrate 0.7.0's G1 flags; Alex's call). D-066: a ranked row states the next value beyond its cutoff and how many rooms sit there (a batch commit divides at the cutoff; the tie count closed one side); a by-wing count on a wing of many package scopes says how many scopes hold the feature; the population sentence says node_count is the files with a source extension, not the tree; the legend counts the imports that name this repository's own package; a caveat carries its case count beside the clause it counts (`{case}`). D-065: the legend states the resolver's alias state beside the unresolved count — how many tsconfig `paths` patterns it was handed, or that the tsconfig could not be read and why (the caveat the substrate had carried since 0.4.1 and the page never rendered; substrate 0.5.0 fixed the loader that made it fire). D-064: the unresolved imports are counted by kind (from test files; alias-shaped) so the test-graph cells they bias are said to be lower bounds; a set drawn twice says so in the rooms column; a tier lists one name per set. D-063: every ranked term states its cutoff (the corridor's median fan-out is 1 on registry); the tie count sits in the rooms column; two profiles on one predicate are one row; centrality is defined; column headers carry their own legend. D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
+BRIEF_VERSION = "0.39.0"  # D-073: an import-graph row counts distinct importing files and the test files among them, the edge sum beside it and named as one (registry's foundation read "importers of these rooms: 466" on a graph of 456 files — 234 files, 91 test files); the top room is a third of the files; the via-importer clause names its most test-imported importer (typeorm toothpick_wing: src/index.ts, 1588). D-072: the stance states the system spec's case in the spec's words (one condition, the long-untouched position, counted) and labels the long-untouched ∩ high-load intersection as the page's own narrowing (D-070) — the eleventh control found the paraphrase credited to the spec named 6 of typeorm's 70; the most-positions table says how many of its rooms sit at the stance's case (eslint: 11 of 12, the eleventh skimmer); a position cell whose quantile word resolved to a value more than twice its nominal share reaches says what it resolved to (eslint: p75 on fan_out is 1, 270 of 467); the sheet carries term_reach and stance_case.untouched_count. D-071: the legend states every blend the page reads — its inputs as ranks and the tuned weights (mcp's `load_index >= p90 (here 0.77128)` had no expansion anywhere on the page; the expansion rule fired only in a relation cell that shares a signal); the under-a-third parent carries its tie (both readers of the tenth round found the D-070 branch dropped it — registry's lit_room three-way, mcp's package_entry sixteen-way), a tie past three partners counted not listed; the sheet's dominant_dir unit says the cell shows either way. D-070: a caveat case whose input file the tree does not declare says "nothing to read" instead of "0 of N here" (substrate 0.10.0: summary.blame_ignore_revs; the registry's clock rows); the population rule states what each excluded kind's convention reads (config = a tool-config basename at the package root — knexfile.ts is a room by it); the stance names the disclosure's case (long-untouched and high-load at once) and this page's rooms at it with size and importers; the largest parent is named with its count under a third too; a containee drawing one set is one entry; the tier gloss says non-blank lines and the parent header says whose rooms; an excluded row's feature cell says "(excluded)" beside ◌; an importer sum with a named top room states the share without it; the test-graph clause counts a row's own rooms on the unreinforced side; a clock far boundary states its commit breadth; the clock caveats say which way they cut (maintainability 0.3.3). D-069: a ranked term inside a conjunction states the population's tie at its cutoff (eslint: p75 on fan_in is 2 with 330 of 467 rooms at it — the rules' index+test constant); a tied clock row states the breadth of the commit the tie is (77 tied — one commit of 1060 files); an importer sum names the room holding a third or more of it; a far-boundary gap never renders in exponent notation; a test-graph row counts the rooms without a test importer that a test-imported room imports; the parent cell reads "33 of its 61"; the clock rows carry a caveat with a counted case (maintainability 0.3.2, substrate 0.9.0: last_touch_blame_ignored, last_touch_commit_files). D-068: the legend's cross-scope and package-name counts carry their test-file split; a wing's scopes are named where two or fewer hold the feature; the centrality illustration is this sheet's pair, not a literal; the test convention is stated from the substrate's effective config; a caveat's case count sits in the rooms column; "excluded" means one thing (◌ marks) and a kind the ruleset does not count says so; the reinforcement caveats name the run-time mechanism (maintainability 0.3.1). D-067: the population sentence counts the files a ruleset's kind exclusion removed (config / migration / placeholder — substrate 0.7.0's G1 flags; Alex's call). D-066: a ranked row states the next value beyond its cutoff and how many rooms sit there (a batch commit divides at the cutoff; the tie count closed one side); a by-wing count on a wing of many package scopes says how many scopes hold the feature; the population sentence says node_count is the files with a source extension, not the tree; the legend counts the imports that name this repository's own package; a caveat carries its case count beside the clause it counts (`{case}`). D-065: the legend states the resolver's alias state beside the unresolved count — how many tsconfig `paths` patterns it was handed, or that the tsconfig could not be read and why (the caveat the substrate had carried since 0.4.1 and the page never rendered; substrate 0.5.0 fixed the loader that made it fire). D-064: the unresolved imports are counted by kind (from test files; alias-shaped) so the test-graph cells they bias are said to be lower bounds; a set drawn twice says so in the rooms column; a tier lists one name per set. D-063: every ranked term states its cutoff (the corridor's median fan-out is 1 on registry); the tie count sits in the rooms column; two profiles on one predicate are one row; centrality is defined; column headers carry their own legend. D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -119,13 +119,10 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
             fi = sum(int(((nodes.get(r) or {}).get("metrics") or {}).get("fan_in", 0) or 0) for r in e["rooms"])
             tf = sum(int(((nodes.get(r) or {}).get("metrics") or {}).get("test_fan_in", 0) or 0) for r in e["rooms"])
             e["importers"] = {"total": fi, "from_tests": tf}
-            # D-069: a sum with a split does not show concentration — on eslint rule-tester.js holds 293 of
-            # foundation's 710 importers (292 from tests); the room holding a third or more is named
-            if fi and e["rooms"]:
-                top = max(e["rooms"], key=lambda r: int(((nodes.get(r) or {}).get("metrics") or {}).get("fan_in", 0) or 0))
-                tfi = int(((nodes.get(top) or {}).get("metrics") or {}).get("fan_in", 0) or 0)
-                if tfi * 3 >= fi:
-                    e["importers"]["top"] = {"room": top, "fan_in": tfi, "from_tests": int(((nodes.get(top) or {}).get("metrics") or {}).get("test_fan_in", 0) or 0)}
+            # D-069 named the room holding a third of the sum; D-073: the sum is edges, and the page reads
+            # files — distinct importing files, the test files among them, the top room by its files
+            if substrate is not None:
+                e["importers"].update(_importer_files(e["rooms"], nodes, substrate))
         # D-069 (the eighth skimmer): "test-imported 162" leaves the page as "412 untested" while the test
         # suite reaches src through a barrel; the rooms without a test importer that a test-imported room
         # imports are counted beside the count
@@ -2234,6 +2231,35 @@ def _stance_case(feats: dict[str, Any], nodes: dict[str, Any]) -> dict[str, Any]
     }
 
 
+def _importer_files(rooms: list[str], nodes: dict[str, Any], substrate: dict[str, Any]) -> dict[str, Any]:
+    """D-073 (the twelfth control): "importers of these rooms: 466" was Σ fan_in — import edges — on a page
+    whose graph holds 456 files. The distinct files importing any of the rooms, the test files among them,
+    and, where one room's importers are a third or more of those files, that room and the files without it."""
+    R = set(rooms)
+    by_room: dict[str, set[str]] = {}
+    for ed in substrate.get("edges") or []:
+        if ed["to"] in R:
+            by_room.setdefault(ed["to"], set()).add(ed["from"])
+    files = set().union(*by_room.values()) if by_room else set()
+
+    def is_test(f: str) -> bool:
+        return bool(((nodes.get(f) or {}).get("metrics") or {}).get("is_test"))
+
+    out: dict[str, Any] = {"files": len(files), "test_files": sum(1 for f in files if is_test(f))}
+    if files:
+        top = max(sorted(by_room), key=lambda r: len(by_room[r]))
+        if len(by_room[top]) * 3 >= len(files):
+            rest = files - by_room[top]
+            out["top"] = {
+                "room": top,
+                "files": len(by_room[top]),
+                "test_files": sum(1 for f in by_room[top] if is_test(f)),
+                "rest": len(rest),
+                "rest_tests": sum(1 for f in rest if is_test(f)),
+            }
+    return out
+
+
 def _via_importer(e: dict[str, Any], nodes: dict[str, Any], population_ids: set[str], substrate: dict[str, Any]) -> dict[str, int]:
     """D-069: rooms with no test importer, and how many of those a room with one imports (one hop)."""
     importers: dict[str, set[str]] = {}
@@ -2252,7 +2278,22 @@ def _via_importer(e: dict[str, Any], nodes: dict[str, Any], population_ids: set[
     own = [r for r in e["rooms"] if tfi(r) == 0]
     side = "own" if e["rooms"] and len(own) == len(e["rooms"]) else ("complement" if not own else "mixed")
     own_via = sum(1 for r in own if any(tfi(i) > 0 for i in importers.get(r, ()) if i in population_ids))
-    return {"without": len(none), "reached": via, "side": side, "own_reached": own_via}
+    out: dict[str, Any] = {"without": len(none), "reached": via, "side": side, "own_reached": own_via}
+    # D-073 (the twelfth skimmer): typeorm's toothpick_wing read "0 from test files" beside "imported by a
+    # room that has a test importer" without the room — src/index.ts, 1588 test importers, the barrel the
+    # suite enters through; the most test-imported importer the clause counts is named
+    reached_from = own if side == "own" else none
+    cands = {i for r in reached_from for i in importers.get(r, ()) if i in population_ids and tfi(i) > 0}
+    if cands:
+        best = max(sorted(cands), key=tfi)
+        out["via_room"] = {"room": best, "test_fan_in": tfi(best)}
+    return out
+
+
+def _via_room_text(v: dict[str, Any]) -> str:
+    """D-073: the most test-imported importer the via-importer clause counts."""
+    r = v.get("via_room")
+    return f" — the most test-imported of them {r['room']}, {r['test_fan_in']} test importer{'s' if r['test_fan_in'] != 1 else ''}" if r else ""
 
 
 def _gap(x: float, unit: str) -> str:
@@ -2638,16 +2679,18 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         if f.get("importers") and f["importers"]["total"]:
             # D-062: the import-graph positions are read from a graph that holds the test files; the row says how much of its importing is theirs
             imp = f["importers"]
-            what += f" — importers of these rooms: {imp['total']}, {imp['from_tests']} ({100.0 * imp['from_tests'] / imp['total']:.0f}%) from test files"
-            if imp.get("top"):  # D-069: the room holding a third or more of the sum is named
-                what += f" ({imp['top']['fan_in']} of them import {imp['top']['room']}, {imp['top']['from_tests']} from test files"
-                # D-070 (the ninth skimmer): "52% from test files" left the page as coverage of the core while
-                # 292 of the 371 were one room's; the share without that room is stated beside the share
-                rest = imp["total"] - imp["top"]["fan_in"]
-                rest_t = imp["from_tests"] - imp["top"]["from_tests"]
-                if rest > 0:
-                    what += f"; without it {rest_t} of {rest}, {100.0 * rest_t / rest:.0f}%"
-                what += ")"
+            if "files" in imp:
+                # D-073: files first, the edge sum beside it and said to be one
+                nf = imp["files"]
+                what += f" — imported by {nf} file{'s' if nf != 1 else ''}, {imp['test_files']} ({100.0 * imp['test_files'] / nf if nf else 0:.0f}%) of them test files ({imp['total']} import edges; a file importing several of these rooms is one file here)"
+                if imp.get("top"):
+                    t = imp["top"]
+                    what += f" ({t['files']} of these files import {t['room']}, {t['test_files']} of them test files"
+                    if t["rest"] > 0:
+                        what += f"; without it {t['rest_tests']} of {t['rest']}, {100.0 * t['rest_tests'] / t['rest']:.0f}%"
+                    what += ")"
+            else:  # a sheet before 0.39.0 carries only the sum
+                what += f" — importers of these rooms: {imp['total']}, {imp['from_tests']} ({100.0 * imp['from_tests'] / imp['total']:.0f}%) from test files"
         if f.get("caveat"):
             cav = str(f["caveat"])
             if f.get("caveat_case_count") is not None:
@@ -2685,9 +2728,9 @@ def render_register(facts_doc: dict[str, Any]) -> str:
             # D-070: the clause is the complement on the test-imported side and the row's own rooms on the
             # unreinforced side (toothpick_wing had carried the population's complement beside a count of 1)
             if v.get("side") == "own":
-                tie += f" ({v.get('own_reached', 0)} of these {f['count']} {'is' if f['count'] == 1 else 'are'} imported by a room that has a test importer)"
+                tie += f" ({v.get('own_reached', 0)} of these {f['count']} {'is' if f['count'] == 1 else 'are'} imported by a room that has a test importer{_via_room_text(v)})"
             elif v.get("side", "complement") == "complement":
-                tie += f" (of the {v['without']} rooms without a test importer, {v['reached']} are imported by a room that has one)"
+                tie += f" (of the {v['without']} rooms without a test importer, {v['reached']} are imported by a room that has one{_via_room_text(v)})"
         # D-064 (the fifth skimmer): dark_room 70 and flooded_basement 70 summed to 140; a set drawn twice says so where the count is read
         twins = [ov["b"] if ov["a"] == key else ov["a"] for ov in facts_doc.get("overlaps") or [] if ov["relation"] == "identical" and not ov.get("shared_predicate") and key in (ov["a"], ov["b"])]
         if twins:
@@ -2724,7 +2767,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         # D-060: the skimmer read the table and skipped the note whole; the one rule the page rests on
         # stands first, bold, outside the italic — and the calibration fact the numbers depend on beside it
         + "**A position names where a room sits in a record — the import graph, the clock, the test graph, the edit record, size — and is not a claim about the room's condition (D-004 Q3). "
-        + f"Every pNN ranks this repository's own {facts_doc['population']} rooms, so a `>= p90` row holds a tenth of them — or more where rooms tie at the cutoff, and the rooms column says how many are tied; a single-rank row states its share, and every ranked term states the value its rank resolved to here — and no count on this page compares across repositories."
+        + f"Every pNN ranks this repository's own {facts_doc['population']} rooms, so a `>= p90` row holds a tenth of them — or more where rooms tie at the cutoff, and the rooms column says how many are tied; a single-rank row states its share, and every ranked term states the value its rank resolved to here — and no count on this page compares across repositories, or across snapshots of this one: a ranked row holds its share of whatever rooms the repository has, so working its rooms down moves the cutoff, not the count (D-073)."
         + (
             f" A room is a source file outside the test convention{_test_convention_text(facts_doc)} with computed signals{_kinds_rule_text(facts_doc)}: {facts_doc['population']} of the {facts_doc['node_count']} files with a source extension the substrate reads (manifests, documents and the rest of the tree are not counted); the {facts_doc['test_nodes']} test files are nodes of the import graph and not rooms{_kinds_count_text(facts_doc)}"
             + (f", and {facts_doc['unindexed_nodes']} file{'s' if facts_doc['unindexed_nodes'] != 1 else ''} with no computed signals {'are' if facts_doc['unindexed_nodes'] != 1 else 'is'} not a room either" if facts_doc.get("unindexed_nodes") else "")
@@ -2753,7 +2796,7 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         + "- **◌** — a feature excluded from the diagnosis (the ruleset's word is decorative): computed and counted, not claimed, because a signal it reads is unvalidated. 'Excluded' on this page means this and nothing else; a file kind the ruleset does not count as a room is said in those words." + NL
         + f"- **largest parent directory** — the immediate parent (non-recursive) holding the most of a feature's rooms, with how many of the parent's own rooms that is; the cell says when it holds under a {DIRECTORY_SHARE}rd of the feature's rooms, and a feature under {DIRECTORY_MIN_ROOMS} rooms is not placed; a parent that shares a wing's name is marked as the parent." + NL
         + f"- **relation to** — identity and containment, and only those, between features, diagnostic or decorative, with {RELATION_MIN_ROOMS} or more rooms — and a containment the predicates guarantee at any count; two sets that overlap without one containing the other are not related here, and 'no identity or containment' says exactly that. 'By its predicate': the inner predicate conjoins every term of the outer. Otherwise the cell says which raw signals the two predicates read in common (a blend or index expanded through its declared inputs), or 'no raw signal in common' — a signal, not an instrument." + NL
-        + "- **the import graph and the test graph** — one edge set read twice: a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone; an import-graph row says how many of its rooms' importers are test files. Centrality is PageRank over that graph: a room's rank rises with the rank of its importers, not only with their number" + _centrality_illustration_text(facts_doc) + "."
+        + "- **the import graph and the test graph** — one edge set read twice: a test file is a node whose imports count in fan_in and centrality, and test_fan_in counts those importers alone; an import-graph row says how many distinct files import its rooms and how many of those are test files, with the import edges beside them (a file importing several of the rooms is one file and several edges). Centrality is PageRank over that graph: a room's rank rises with the rank of its importers, not only with their number" + _centrality_illustration_text(facts_doc) + "."
         + (f" The graph is resolved statically: {facts_doc['unresolved_imports']} imports in the tree did not resolve to a file{_unresolved_text(facts_doc)}, and {facts_doc['external_imports']} are external packages; an import the resolver did not place, or one computed at run time, is not an edge, so a room reached only that way reads as unimported there.{_alias_state_text(facts_doc)}{_package_name_text(facts_doc)}" if facts_doc.get("unresolved_imports") is not None else "")
         + NL
         + _index_legend_lines(facts_doc)

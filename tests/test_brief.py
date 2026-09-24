@@ -2045,10 +2045,10 @@ def test_instance_counts_where_a_mechanism_dominates_and_the_note_is_a_legend(su
     nodes = {n["id"]: n for n in sub["nodes"]}
     for x in f["features"]:
         if x.get("importers"):
-            assert x["importers"]["total"] == sum(nodes[r]["metrics"]["fan_in"] for r in x["rooms"])
+            assert x["importers"]["total"] == sum(nodes[r]["metrics"]["fan_in"] for r in x["rooms"])  # the edge sum stays on the sheet (D-073)
             assert x["importers"]["from_tests"] == sum(nodes[r]["metrics"]["test_fan_in"] for r in x["rooms"])
             if x["importers"]["total"]:
-                assert f"importers of these rooms: {x['importers']['total']}, {x['importers']['from_tests']} (" in _row(reg, x["feature"], decorative=x["decorative"], profile=x["profile"])
+                assert f"imported by {x['importers']['files']} file" in _row(reg, x["feature"], decorative=x["decorative"], profile=x["profile"])
         elif x["count"] and _b._signals_read(x["predicate"]) & {"fan_in", "centrality"}:
             raise AssertionError(x["feature"])
     # cross-scope edges are counted; the sentence appears only on a multi-scope page
@@ -2359,8 +2359,8 @@ def test_the_eighth_round_ties_on_conjunctive_terms_concentration_gap_and_the_cl
     for e2 in f["features"]:
         imp = e2.get("importers") or {}
         if imp.get("top"):
-            assert imp["top"]["fan_in"] * 3 >= imp["total"]
-            assert f"({imp['top']['fan_in']} of them import {imp['top']['room']}, {imp['top']['from_tests']} from test files)" in _row(reg, e2["feature"], e2["decorative"], profile=e2["profile"])
+            assert imp["top"]["files"] * 3 >= imp["files"]  # D-073: a third of the files, not of the edge sum
+            assert f"({imp['top']['files']} of these files import {imp['top']['room']}, {imp['top']['test_files']} of them test files" in _row(reg, e2["feature"], e2["decorative"], profile=e2["profile"])
     # the rooms without a test importer that a test-imported room imports, beside the count
     sc = next(x for x in f["features"] if x["feature"] == "scaffolding")
     v = sc.get("via_importer")
@@ -2445,9 +2445,9 @@ def test_d070_the_ninth_round(sub):
     # 8. the importer share without the top room
     for x in f["features"]:
         imp = x.get("importers") or {}
-        if imp.get("top") and imp["total"] - imp["top"]["fan_in"] > 0:
-            rest = imp["total"] - imp["top"]["fan_in"]
-            rest_t = imp["from_tests"] - imp["top"]["from_tests"]
+        if imp.get("top") and imp["top"]["rest"] > 0:
+            rest = imp["top"]["rest"]
+            rest_t = imp["top"]["rest_tests"]
             assert f"; without it {rest_t} of {rest}, {100.0 * rest_t / rest:.0f}%)" in _row(reg, x["feature"], x["decorative"], profile=x["profile"])
     # 9. the clock caveats say which way they cut (maintainability 0.3.3)
     assert "at least as old as the clock reads and never younger" in dr["caveat"]
@@ -2470,7 +2470,7 @@ def test_d070_the_ninth_round(sub):
     nodes = {"a": {"metrics": {"test_fan_in": 0}}, "b": {"metrics": {"test_fan_in": 0}}, "c": {"metrics": {"test_fan_in": 2}}}
     edges = {"edges": [{"from": "c", "to": "a"}]}
     v_own = _b._via_importer({"rooms": ["a", "b"]}, nodes, set(nodes), edges)
-    assert v_own == {"without": 2, "reached": 1, "side": "own", "own_reached": 1}
+    assert v_own == {"without": 2, "reached": 1, "side": "own", "own_reached": 1, "via_room": {"room": "c", "test_fan_in": 2}}  # D-073 names the importer
     v_comp = _b._via_importer({"rooms": ["c"]}, nodes, set(nodes), edges)
     assert v_comp["side"] == "complement" and v_comp["own_reached"] == 0
     tw = next((x for x in f["features"] if x["feature"] == "toothpick_wing"), None)
@@ -2601,3 +2601,43 @@ def test_d072_the_eleventh_round(sub):
     doc["top_tier"] = {"sets": 6, "rooms": tier["rooms"][1:]}
     assert "known false positive" not in _b.render_most_marked(doc)
     assert "known false positive" not in _b.render_most_marked({"top_tier": tier, "co_located_rooms": 3})  # no case, no sentence
+
+
+def test_d073_the_twelfth_round(sub):
+    """D-073 (the twelfth unpointed round: the src/db/repository maintainer on registry 0.38.0; the
+    plain skimmer on typeorm 0.38.0). Control: "importers of these rooms: 466" was a sum of fan_in —
+    import edges — while the page's own node count was 456; 234 distinct files import foundation's
+    rooms, 91 of them test files. Skimmer: toothpick_wing's "0 from test files" beside a clause that
+    said a test-imported room imports these rooms without saying which — src/index.ts, 1588 test importers."""
+    import repo_substrate.brief as _b
+
+    # 1. distinct importing files, beside the edge sum
+    nodes = {r: {"metrics": {"is_test": r.startswith("t")}} for r in ("a", "b", "t1", "x", "y")}
+    sub_ = {"edges": [{"from": "t1", "to": "a"}, {"from": "t1", "to": "b"}, {"from": "x", "to": "a"}, {"from": "y", "to": "b"}, {"from": "a", "to": "b"}]}
+    got = _b._importer_files(["a", "b"], nodes, sub_)
+    assert (got["files"], got["test_files"]) == (4, 1)  # t1 once, not twice; a (inside the set) is an importer of b
+    assert got["top"] == {"room": "b", "files": 3, "test_files": 1, "rest": 1, "rest_tests": 0}  # b: t1, y, a; without it: x
+    assert _b._importer_files(["a"], nodes, {"edges": []}) == {"files": 0, "test_files": 0}
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    reg = _b.render_register(f)
+    for x in f["features"]:
+        imp = x.get("importers") or {}
+        if imp.get("total"):
+            row = _row(reg, x["feature"], x["decorative"], profile=x["profile"])
+            assert f"imported by {imp['files']} file{'s' if imp['files'] != 1 else ''}, {imp['test_files']} (" in row
+            assert f"({imp['total']} import edges; a file importing several of these rooms is one file here)" in row
+            assert "importers of these rooms:" not in row
+            assert imp["files"] <= f["node_count"]
+            if imp.get("top"):
+                assert imp["top"]["files"] * 3 >= imp["files"]
+    # 2. the test-graph clause names the most test-imported importer it counts
+    for x in f["features"]:
+        v = x.get("via_importer") or {}
+        if v.get("via_room"):
+            row = _row(reg, x["feature"], x["decorative"], profile=x["profile"])
+            assert f"the most test-imported of them {v['via_room']['room']}, {v['via_room']['test_fan_in']} test importer" in row
+    assert _b._via_room_text({"via_room": {"room": "x", "test_fan_in": 1}}).endswith("1 test importer")
+    assert "how many distinct files import its rooms" in reg
+    # 3. a self-relative count is not a baseline over time (the skimmer's D6); a fixed text with its test
+    assert "no count on this page compares across repositories, or across snapshots of this one: a ranked row holds its share of whatever rooms the repository has, so working its rooms down moves the cutoff, not the count (D-073)." in reg
