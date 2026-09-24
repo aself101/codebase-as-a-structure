@@ -1384,7 +1384,7 @@ def test_the_page_is_rendered_by_code_and_its_fixed_texts_match_their_fields(sub
     if dec:
         assert str(f["decorative"]["count"]) in dis and "excluded from the diagnosis" in dis  # D-062: one line
         for x in dec:
-            assert f"◌ {x['feature']} {x['count']}" in dis  # D-062: one line — each ◌ feature with its count; the position and reason are on the row
+            assert f"◌ {_b._paired(x['feature'], f)} {x['count']}" in dis  # D-075: paired. D-062: one line — each ◌ feature with its count; the position and reason are on the row
             for sig in re.findall(r"[a-z_]+_index", x.get("decorative_reason") or ""):
                 assert sig in dis
     else:
@@ -1670,10 +1670,10 @@ def test_a_tier_orders_by_path_and_the_scope_count_is_over_the_population(sub, t
     sk2["overlays"] = []
     g = facts(sk2, sub2)
     dd = next(x for x in g["features"] if x["feature"] == "tie")["dominant_dir"]
-    assert dd["tied"] and dd["dir"] == "pkg" and dd["tied_with"] == [{"dir": "lib", "n": 3, "population": 4}]
+    assert dd["tied"] and dd["dir"] == "lib" and dd["tied_with"] == [{"dir": "pkg", "n": 3, "population": 3}]  # D-075: the lead is the first by path
     cell = _b.render_register(g)
     m = re.search(r"\| [^|]*\(tied with[^|]*\|", cell)
-    assert m and m.group(0) == "| pkg (as parent, not the wing) 3 of its 3 (tied with lib (as parent, not the wing) 3 of its 4) |", m.group(0) if m else cell  # D-069: "33 / 61" was read as 33 of the feature's rooms
+    assert m and m.group(0) == "| lib (as parent, not the wing) 3 of its 4 (tied with pkg (as parent, not the wing) 3 of its 3) |", m.group(0) if m else cell  # D-069: "33 / 61" was read as 33 of the feature's rooms
     # (3) equal sets, unequal marks: path orders the tier
     def feat(name, rooms, profile="p", predicate="x >= p90"):
         return {"feature": name, "profile": profile, "diagnostic": True, "decorative": False, "rooms": rooms, "predicate": predicate}
@@ -1857,7 +1857,7 @@ def test_a_feature_that_fired_on_nothing_keeps_its_row_and_the_marker_is_defined
     dec0 = [x for x in zero if x["decorative"]]
     if dec0:
         dis = _b.render_disclosure(f)
-        assert all(f"◌ {x['feature']} 0" in dis for x in dec0)  # D-062: the zero is in the one-line legend
+        assert all(f"◌ {_b._paired(x['feature'], f)} 0" in dis for x in dec0)  # D-062: the zero is in the one-line legend
         assert f"{dec0[0]['feature']} 0" in reg  # the header's decorative list carries the count
     # (2) the marker's values are defined on the page; the grounding expansion
     assert "Otherwise the cell says which raw signals the two predicates read in common (a blend or index expanded through its declared inputs), or 'no raw signal in common' — a signal, not an instrument." in reg
@@ -2079,7 +2079,7 @@ def test_instance_counts_where_a_mechanism_dominates_and_the_note_is_a_legend(su
     mm = _b.render_most_marked({"top_tier": {"sets": 2, "rooms": [{"room": "a", "lines": 3, "fan_in": 9, "test_fan_in": 4, "features": ["x", "y"]}]}})
     assert "| a | 3 | 9 (4) | x, y |" in mm and "| room | lines | importers (from test files) |" in mm
     dis = _b.render_disclosure(f)
-    assert dis.count("\n") == 0 and all(f"◌ {x['feature']} {x['count']}" in dis for x in f["features"] if x["decorative"])
+    assert dis.count("\n") == 0 and all(f"◌ {_b._paired(x['feature'], f)} {x['count']}" in dis for x in f["features"] if x["decorative"])
     # hub and lit_room name their position (maintainability 0.2.9)
     assert _row(reg, "hub").startswith("| high-centrality node (import graph) |") and _row(reg, "lit_room").startswith("| recently-touched room (clock) |")
     assert "no consequence word in the name (lexicon)" not in reg
@@ -2671,3 +2671,55 @@ def test_d074_a_consequence_name_travels_with_its_position(sub):
     doc = {"features": [{"feature": "foundation", "name_implies_consequence": True, "position_name": "high-load node"}, {"feature": "hub", "name_implies_consequence": False, "position_name": "high-centrality node"}],
            "top_tier": {"sets": 2, "rooms": [{"room": "a.js", "lines": 5, "fan_in": 9, "test_fan_in": 1, "features": ["foundation (2 profiles)", "hub"]}]}, "co_located_rooms": 1}
     assert "| foundation · high-load node (2 profiles), hub |" in _b.render_most_marked(doc)
+
+
+def test_d075_the_thirteenth_round(sub):
+    """D-075 (the thirteenth round: the src/security/utils maintainer on mcp-secure-server 0.40.0 returned
+    STEELMAN_RESILIENT; the plain skimmer on eslint 0.40.0 ALIGNED with no CERTAIN drift). Skimmer: a
+    one-room feature never named its room (eslint's toothpick_wing read as lib/cli.js, the importer D-073
+    named); the exclusion reason says fix history is weighted zero and the legend listed only the weighted
+    inputs; the far boundary of a clock row had no disowned-commit count. Control: a tie's lead parent was
+    the last by path while its partners were listed first by path; the ◌ line printed bare names."""
+    import repo_substrate.brief as _b
+
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    reg = _b.render_register(f)
+    # 1. a feature too small to place names its rooms (up to three) in the parent cell
+    for x in f["features"]:
+        dd = x.get("dominant_dir") or {}
+        if x["count"] and not dd.get("placeable"):
+            cell = _row(reg, x["feature"], x["decorative"], profile=x["profile"]).split("|")[6].strip()
+            if x["count"] <= 3:
+                assert cell == f"too few rooms to place ({x['count']}): " + "; ".join(sorted(x["rooms"])), cell
+            else:
+                assert cell == f"too few rooms to place ({x['count']})", cell
+    nodes = {r: {"metrics": {"is_test": r.startswith("t")}} for r in ("a", "t1", "x")}
+    one = _b._importer_files(["a"], nodes, {"edges": [{"from": "t1", "to": "a"}, {"from": "x", "to": "a"}]})
+    assert one == {"files": 2, "test_files": 1}  # one room: naming it as its own top room says nothing
+    # 2. the legend states the inputs the tuning weighted zero
+    z = _b._index_zeroed({"bug_pressure_index": {"commit_count": 0.5, "revert_count": 0.3, "recency": 0.2}})
+    assert z == {"bug_pressure_index": ["fix_count", "fix_count_nonzero", "fix_ratio"]}
+    doc = {"index_weights": {"bug_pressure_index": {"commit_count": 0.5, "revert_count": 0.3, "recency": 0.2}}, "index_zeroed": z}
+    line = _b._index_legend_lines(doc)
+    assert "the tuning weighted 0: fix count's rank, fix count's rank among the rooms with a fix, the share of commits that are fixes" in line
+    assert f.get("index_zeroed") == _b._index_zeroed(f.get("index_weights") or {})
+    # 3. a tie's lead is the first by path, as its partners are listed
+    for x in f["features"]:
+        dd = x.get("dominant_dir") or {}
+        if dd.get("tied"):
+            assert all(dd["dir"] < t["dir"] for t in dd["tied_with"]), (x["feature"], dd)
+    # 4. the ◌ line pairs a flagged name
+    dis = _b.render_disclosure(f)
+    for x in f["features"]:
+        if x["decorative"]:
+            assert f"◌ {_b._paired(x['feature'], f)} {x['count']}" in dis
+    # 5. a clock row's far boundary counts the rooms a disowned commit last touched there
+    cl = {r: {"metrics": {"last_touched_days": v, "last_touch_commit_files": 300, "last_touch_blame_ignored": int(r in "ab")}} for r, v in {"a": 525.0, "b": 525.0, "c": 525.0, "d": 534.0}.items()}
+    b = _b._rooms_beyond_cutoff({"predicate": "last_touched_days >= p90", "rooms": ["d"], "thresholds": {"last_touched_days >= p90": 534.0}}, cl, set(cl))
+    assert b["count"] == 3 and b["blame_ignored"] == 2
+    txt = _b._share_by_construction("last_touched_days >= p90", 1, 4, {"last_touched_days >= p90": 534.0}, 1, b, None, blame_present=True)
+    assert "holds 3 rooms (one commit of 300 files; 2 of them last touched by a commit the repository's .git-blame-ignore-revs disowns)" in txt
+    assert "disowns)" not in _b._share_by_construction("last_touched_days >= p90", 1, 4, {"last_touched_days >= p90": 534.0}, 1, b, None, blame_present=False)
+    b0 = dict(b, blame_ignored=0)
+    assert "(one commit of 300 files; none of them last touched by a commit" in _b._share_by_construction("last_touched_days >= p90", 1, 4, {"last_touched_days >= p90": 534.0}, 1, b0, None, blame_present=True)

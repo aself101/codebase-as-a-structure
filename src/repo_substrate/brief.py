@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-BRIEF_VERSION = "0.40.0"  # D-074 (Alex: pair): a feature name the ruleset flags as implying a consequence is paired with its position name in the register's feature cell and the most-positions table ("dark_room · long-untouched room", "◌ crack (excluded) · high edit-pressure node"), so a pasted row carries the position. D-073: an import-graph row counts distinct importing files and the test files among them, the edge sum beside it and named as one (registry's foundation read "importers of these rooms: 466" on a graph of 456 files — 234 files, 91 test files); the top room is a third of the files; the via-importer clause names its most test-imported importer (typeorm toothpick_wing: src/index.ts, 1588). D-072: the stance states the system spec's case in the spec's words (one condition, the long-untouched position, counted) and labels the long-untouched ∩ high-load intersection as the page's own narrowing (D-070) — the eleventh control found the paraphrase credited to the spec named 6 of typeorm's 70; the most-positions table says how many of its rooms sit at the stance's case (eslint: 11 of 12, the eleventh skimmer); a position cell whose quantile word resolved to a value more than twice its nominal share reaches says what it resolved to (eslint: p75 on fan_out is 1, 270 of 467); the sheet carries term_reach and stance_case.untouched_count. D-071: the legend states every blend the page reads — its inputs as ranks and the tuned weights (mcp's `load_index >= p90 (here 0.77128)` had no expansion anywhere on the page; the expansion rule fired only in a relation cell that shares a signal); the under-a-third parent carries its tie (both readers of the tenth round found the D-070 branch dropped it — registry's lit_room three-way, mcp's package_entry sixteen-way), a tie past three partners counted not listed; the sheet's dominant_dir unit says the cell shows either way. D-070: a caveat case whose input file the tree does not declare says "nothing to read" instead of "0 of N here" (substrate 0.10.0: summary.blame_ignore_revs; the registry's clock rows); the population rule states what each excluded kind's convention reads (config = a tool-config basename at the package root — knexfile.ts is a room by it); the stance names the disclosure's case (long-untouched and high-load at once) and this page's rooms at it with size and importers; the largest parent is named with its count under a third too; a containee drawing one set is one entry; the tier gloss says non-blank lines and the parent header says whose rooms; an excluded row's feature cell says "(excluded)" beside ◌; an importer sum with a named top room states the share without it; the test-graph clause counts a row's own rooms on the unreinforced side; a clock far boundary states its commit breadth; the clock caveats say which way they cut (maintainability 0.3.3). D-069: a ranked term inside a conjunction states the population's tie at its cutoff (eslint: p75 on fan_in is 2 with 330 of 467 rooms at it — the rules' index+test constant); a tied clock row states the breadth of the commit the tie is (77 tied — one commit of 1060 files); an importer sum names the room holding a third or more of it; a far-boundary gap never renders in exponent notation; a test-graph row counts the rooms without a test importer that a test-imported room imports; the parent cell reads "33 of its 61"; the clock rows carry a caveat with a counted case (maintainability 0.3.2, substrate 0.9.0: last_touch_blame_ignored, last_touch_commit_files). D-068: the legend's cross-scope and package-name counts carry their test-file split; a wing's scopes are named where two or fewer hold the feature; the centrality illustration is this sheet's pair, not a literal; the test convention is stated from the substrate's effective config; a caveat's case count sits in the rooms column; "excluded" means one thing (◌ marks) and a kind the ruleset does not count says so; the reinforcement caveats name the run-time mechanism (maintainability 0.3.1). D-067: the population sentence counts the files a ruleset's kind exclusion removed (config / migration / placeholder — substrate 0.7.0's G1 flags; Alex's call). D-066: a ranked row states the next value beyond its cutoff and how many rooms sit there (a batch commit divides at the cutoff; the tie count closed one side); a by-wing count on a wing of many package scopes says how many scopes hold the feature; the population sentence says node_count is the files with a source extension, not the tree; the legend counts the imports that name this repository's own package; a caveat carries its case count beside the clause it counts (`{case}`). D-065: the legend states the resolver's alias state beside the unresolved count — how many tsconfig `paths` patterns it was handed, or that the tsconfig could not be read and why (the caveat the substrate had carried since 0.4.1 and the page never rendered; substrate 0.5.0 fixed the loader that made it fire). D-064: the unresolved imports are counted by kind (from test files; alias-shaped) so the test-graph cells they bias are said to be lower bounds; a set drawn twice says so in the rooms column; a tier lists one name per set. D-063: every ranked term states its cutoff (the corridor's median fan-out is 1 on registry); the tie count sits in the rooms column; two profiles on one predicate are one row; centrality is defined; column headers carry their own legend. D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
+BRIEF_VERSION = "0.41.0"  # D-075: a feature too small to place names up to three rooms in the parent cell (eslint toothpick_wing read as lib/cli.js); one imported room is not its own top room; the legend states the inputs a blend's tuning weighted zero (index_zeroed); a tie's lead parent is the first by path; the ◌ line pairs its names; a clock row's far boundary counts its disowned-commit rooms. D-074 (Alex: pair): a feature name the ruleset flags as implying a consequence is paired with its position name in the register's feature cell and the most-positions table ("dark_room · long-untouched room", "◌ crack (excluded) · high edit-pressure node"), so a pasted row carries the position. D-073: an import-graph row counts distinct importing files and the test files among them, the edge sum beside it and named as one (registry's foundation read "importers of these rooms: 466" on a graph of 456 files — 234 files, 91 test files); the top room is a third of the files; the via-importer clause names its most test-imported importer (typeorm toothpick_wing: src/index.ts, 1588). D-072: the stance states the system spec's case in the spec's words (one condition, the long-untouched position, counted) and labels the long-untouched ∩ high-load intersection as the page's own narrowing (D-070) — the eleventh control found the paraphrase credited to the spec named 6 of typeorm's 70; the most-positions table says how many of its rooms sit at the stance's case (eslint: 11 of 12, the eleventh skimmer); a position cell whose quantile word resolved to a value more than twice its nominal share reaches says what it resolved to (eslint: p75 on fan_out is 1, 270 of 467); the sheet carries term_reach and stance_case.untouched_count. D-071: the legend states every blend the page reads — its inputs as ranks and the tuned weights (mcp's `load_index >= p90 (here 0.77128)` had no expansion anywhere on the page; the expansion rule fired only in a relation cell that shares a signal); the under-a-third parent carries its tie (both readers of the tenth round found the D-070 branch dropped it — registry's lit_room three-way, mcp's package_entry sixteen-way), a tie past three partners counted not listed; the sheet's dominant_dir unit says the cell shows either way. D-070: a caveat case whose input file the tree does not declare says "nothing to read" instead of "0 of N here" (substrate 0.10.0: summary.blame_ignore_revs; the registry's clock rows); the population rule states what each excluded kind's convention reads (config = a tool-config basename at the package root — knexfile.ts is a room by it); the stance names the disclosure's case (long-untouched and high-load at once) and this page's rooms at it with size and importers; the largest parent is named with its count under a third too; a containee drawing one set is one entry; the tier gloss says non-blank lines and the parent header says whose rooms; an excluded row's feature cell says "(excluded)" beside ◌; an importer sum with a named top room states the share without it; the test-graph clause counts a row's own rooms on the unreinforced side; a clock far boundary states its commit breadth; the clock caveats say which way they cut (maintainability 0.3.3). D-069: a ranked term inside a conjunction states the population's tie at its cutoff (eslint: p75 on fan_in is 2 with 330 of 467 rooms at it — the rules' index+test constant); a tied clock row states the breadth of the commit the tie is (77 tied — one commit of 1060 files); an importer sum names the room holding a third or more of it; a far-boundary gap never renders in exponent notation; a test-graph row counts the rooms without a test importer that a test-imported room imports; the parent cell reads "33 of its 61"; the clock rows carry a caveat with a counted case (maintainability 0.3.2, substrate 0.9.0: last_touch_blame_ignored, last_touch_commit_files). D-068: the legend's cross-scope and package-name counts carry their test-file split; a wing's scopes are named where two or fewer hold the feature; the centrality illustration is this sheet's pair, not a literal; the test convention is stated from the substrate's effective config; a caveat's case count sits in the rooms column; "excluded" means one thing (◌ marks) and a kind the ruleset does not count says so; the reinforcement caveats name the run-time mechanism (maintainability 0.3.1). D-067: the population sentence counts the files a ruleset's kind exclusion removed (config / migration / placeholder — substrate 0.7.0's G1 flags; Alex's call). D-066: a ranked row states the next value beyond its cutoff and how many rooms sit there (a batch commit divides at the cutoff; the tie count closed one side); a by-wing count on a wing of many package scopes says how many scopes hold the feature; the population sentence says node_count is the files with a source extension, not the tree; the legend counts the imports that name this repository's own package; a caveat carries its case count beside the clause it counts (`{case}`). D-065: the legend states the resolver's alias state beside the unresolved count — how many tsconfig `paths` patterns it was handed, or that the tsconfig could not be read and why (the caveat the substrate had carried since 0.4.1 and the page never rendered; substrate 0.5.0 fixed the loader that made it fire). D-064: the unresolved imports are counted by kind (from test files; alias-shaped) so the test-graph cells they bias are said to be lower bounds; a set drawn twice says so in the rooms column; a tier lists one name per set. D-063: every ranked term states its cutoff (the corridor's median fan-out is 1 on registry); the tie count sits in the rooms column; two profiles on one predicate are one row; centrality is defined; column headers carry their own legend. D-062: instance counts where a general mechanism dominates (ties at the cutoff; importers from tests per import-graph row and per tier room; cross-scope edges); the note is a legend and loses its repetitions; one measurement is one matrix row; ◌ rows last. D-061: a row states its realized share and cutoff (ties broke "a tenth by construction"); the tier table is every room at the top count, by path, with size; the population rule, the resolver's limit and the tier gloss say what they are. D-060: the defence moves to the cell it defends (position first; a bold rule at the top of the note and over the tier table; ◌ = excluded); the page carries its snapshot, the tier names' meaning, a caveat's case count, a tier's unlisted rooms, a single-pNN row's share by construction. D-057: a feature that fired on nothing has a row; the marker's values are defined on the page and a derived index expands through its grounding; the import graph and the test graph are one edge set, said; ruleset versions in the header
 
 # ---------------------------------------------------------------- 1. the facts sheet
 
@@ -155,7 +155,9 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         for r in e["rooms"]:
             d = r.rsplit("/", 1)[0] if "/" in r else "(root)"
             bd[d] = bd.get(d, 0) + 1
-        top = max(bd.items(), key=lambda kv: (kv[1], kv[0])) if bd else ("(root)", 0)
+        # D-075 (the thirteenth control): the lead of a tie was the last by path while its partners were
+        # listed first by path; the lead is the first by path, as the partners are
+        top = min(bd.items(), key=lambda kv: (-kv[1], kv[0])) if bd else ("(root)", 0)
         tied = (
             sum(1 for v in bd.values() if v == top[1]) > 1
         )  # D-040: a silent tie-break is a claim
@@ -363,6 +365,7 @@ def facts(skeleton: dict[str, Any], substrate: dict[str, Any] | None = None) -> 
         # expands a blend only inside a relation cell that shares a signal and this page had none. The
         # blends any feature reads travel with the sheet, with the tuned weights they were computed under.
         "index_weights": _index_weights(feats, substrate),
+        "index_zeroed": _index_zeroed(_index_weights(feats, substrate)),
         "centrality_illustration": _centrality_illustration(feats, nodes, population_ids),
         # D-064 (the security reviewer): 34 of mcp-secure-server's 34 unresolved imports are test files
         # importing src/security through a tsconfig alias — static, not run-time — so test_fan_in on
@@ -2144,6 +2147,7 @@ INDEX_INPUT_WORDS = {
     "recency": "(1 − last_touched_days' rank)",
     "revert_count": "revert count's rank",
     "churn_lines": "churned lines' rank",
+    "fix_count": "fix count's rank",
     "fix_count_nonzero": "fix count's rank among the rooms with a fix",
     "fix_ratio": "the share of commits that are fixes",
     "age_days": "age's rank",
@@ -2168,12 +2172,28 @@ def _index_weights(feats: dict[str, Any], substrate: dict[str, Any] | None) -> d
     return dict(sorted(out.items()))
 
 
+def _index_zeroed(index_weights: dict[str, dict[str, float]]) -> dict[str, list[str]]:
+    """D-075 (the thirteenth skimmer): bug_pressure_index's exclusion reason says its tuned weights give
+    fix history zero, and the legend listed only the weighted inputs; the inputs a blend allows
+    (config.ALLOWED_INPUTS) that the tuning weighted zero or dropped."""
+    from .config import ALLOWED_INPUTS
+
+    out: dict[str, list[str]] = {}
+    for idx, w in index_weights.items():
+        z = sorted(k for k in ALLOWED_INPUTS.get(idx, ()) if not w.get(k))
+        if z:
+            out[idx] = z
+    return out
+
+
 def _index_legend_lines(facts_doc: dict[str, Any]) -> str:
     """D-071: a legend line per blend the page reads — its inputs, in rank words, and the weights."""
     out = ""
     for idx, w in (facts_doc.get("index_weights") or {}).items():
         terms = " + ".join(f"{v:g} × {INDEX_INPUT_WORDS.get(k, k)}" for k, v in w.items())
-        out += f"- **{idx}** — a blend the ruleset reads as one signal, each input a rank in this repository's own population: {terms} (the tuned weights, D-009; the substrate's effective config)." + NL
+        zeroed = (facts_doc.get("index_zeroed") or {}).get(idx) or []
+        zero_text = f"; the tuning weighted 0: {', '.join(INDEX_INPUT_WORDS.get(k, k) for k in zeroed)}" if zeroed else ""
+        out += f"- **{idx}** — a blend the ruleset reads as one signal, each input a rank in this repository's own population: {terms} (the tuned weights, D-009; the substrate's effective config){zero_text}." + NL
     return out
 
 
@@ -2246,7 +2266,7 @@ def _importer_files(rooms: list[str], nodes: dict[str, Any], substrate: dict[str
         return bool(((nodes.get(f) or {}).get("metrics") or {}).get("is_test"))
 
     out: dict[str, Any] = {"files": len(files), "test_files": sum(1 for f in files if is_test(f))}
-    if files:
+    if files and len(by_room) > 1:  # D-075: one room imported is its own top room, and says nothing
         top = max(sorted(by_room), key=lambda r: len(by_room[r]))
         if len(by_room[top]) * 3 >= len(files):
             rest = files - by_room[top]
@@ -2377,6 +2397,13 @@ def _rooms_beyond_cutoff(e: dict[str, Any], nodes: dict[str, Any], population_id
     if best is None:
         return None
     out: dict[str, Any] = {"value": best, "count": n, "gap": abs(float(cut) - best), "side": "below" if above else "above"}
+    # D-075 (the thirteenth skimmer): eslint's cutoff tie carried its disowned-commit count and the 82
+    # rooms 9 days under it did not, so the page could not say whether the far side is a chore too
+    if sig == "last_touched_days":
+        at = [r for r in population_ids - members if abs(float(((nodes.get(r) or {}).get("metrics") or {}).get(sig, float("nan"))) - best) < 1e-9]
+        flags = [((nodes.get(r) or {}).get("metrics") or {}).get("last_touch_blame_ignored") for r in at]
+        if any(v is not None for v in flags):
+            out["blame_ignored"] = sum(1 for v in flags if v)
     # D-070 (the ninth skimmer, D-069's queue): on eslint the 82 rooms at the far value are one 300-file
     # chore; when the far value is a clock value and every room at it was last touched by a commit of one
     # breadth, the breadth is stated as the tie's is (tie_touch_files)
@@ -2393,7 +2420,7 @@ def _rooms_beyond_cutoff(e: dict[str, Any], nodes: dict[str, Any], population_id
     return out
 
 
-def _share_by_construction(predicate: str, count: int | None = None, population: int | None = None, thresholds: dict[str, Any] | None = None, at_cutoff: int | None = None, beyond: dict[str, Any] | None = None, term_ties: dict[str, int] | None = None) -> str:
+def _share_by_construction(predicate: str, count: int | None = None, population: int | None = None, thresholds: dict[str, Any] | None = None, at_cutoff: int | None = None, beyond: dict[str, Any] | None = None, term_ties: dict[str, int] | None = None, blame_present: bool = False) -> str:
     """D-060 said a single-pNN row is "the top 10% … by construction"; D-061 (the eslint control):
     beside dark_room 83 of 473 — 80 rooms tie at the p90 cutoff. The rank fixes which rooms, not
     how many; the row states the share it realized and the cutoff this population resolved to."""
@@ -2429,7 +2456,14 @@ def _share_by_construction(predicate: str, count: int | None = None, population:
     text = f" — rooms {side} this repository's p{t.percentile} on {t.signal} (here {cut_text}): {count} of {population}, {share:.1f}%"
     if beyond:
         # D-066: the rank's other boundary — the next value beyond the cutoff and the rooms at it
-        text += f"; the next value {beyond['side']} the cutoff holds {beyond['count']} room{'s' if beyond['count'] != 1 else ''}{f' (one commit of {beyond['touch_files']} files)' if beyond.get('touch_files') else ''}, {_gap(beyond['gap'], unit)} {'under' if beyond['side'] == 'below' else 'over'} it"
+        notes = []
+        if beyond.get("touch_files"):
+            notes.append(f"one commit of {beyond['touch_files']} files")
+        if blame_present and beyond.get("blame_ignored") is not None:  # D-075: where the file exists, a zero answers the question
+            k = beyond["blame_ignored"]
+            notes.append(f"{k if k else 'none'} of them last touched by a commit the repository's .git-blame-ignore-revs disowns")
+        paren = f" ({'; '.join(notes)})" if notes else ""
+        text += f"; the next value {beyond['side']} the cutoff holds {beyond['count']} room{'s' if beyond['count'] != 1 else ''}{paren}, {_gap(beyond['gap'], unit)} {'under' if beyond['side'] == 'below' else 'over'} it"
     return text
 
 
@@ -2656,7 +2690,9 @@ def render_register(facts_doc: dict[str, Any]) -> str:
         if not dd or f["count"] == 0:
             dom = "no rooms"
         elif not dd.get("placeable", True):
-            dom = f"too few rooms to place ({f['count']})"
+            # D-075 (the thirteenth skimmer): eslint's one-room toothpick_wing never named its room, and
+            # the via-importer clause's importer read as it; up to three rooms are named here
+            dom = f"too few rooms to place ({f['count']})" + (": " + "; ".join(sorted(f["rooms"])) if f["count"] <= 3 else "")
         elif dd.get("holds_third"):
             as_parent = " (as parent, not the wing)" if dd["dir"] in facts_doc["wings"] else ""
             partners = ", ".join(
@@ -2688,9 +2724,9 @@ def render_register(facts_doc: dict[str, Any]) -> str:
             # D-055: the predicate is on the row — "the fragility half" of a reason was unresolvable
             # from a row that printed the reason and not the conjunction it is half of.
             # D-060: "decorative" read as cosmetic by the skimmer; the row says what the mark is
-            what = f"`{f['predicate']}`" + _share_by_construction(f["predicate"], f["count"], facts_doc["population"], f.get("thresholds"), f.get("at_cutoff"), f.get("beyond_cutoff"), f.get("term_ties")) + f" — ◌ excluded from the diagnosis: {f.get('decorative_reason') or ''}".rstrip()
+            what = f"`{f['predicate']}`" + _share_by_construction(f["predicate"], f["count"], facts_doc["population"], f.get("thresholds"), f.get("at_cutoff"), f.get("beyond_cutoff"), f.get("term_ties"), bool((facts_doc.get("blame_ignore_revs") or {}).get("present"))) + f" — ◌ excluded from the diagnosis: {f.get('decorative_reason') or ''}".rstrip()
         else:
-            what = f"`{f['predicate']}`" + _share_by_construction(f["predicate"], f["count"], facts_doc["population"], f.get("thresholds"), f.get("at_cutoff"), f.get("beyond_cutoff"), f.get("term_ties"))
+            what = f"`{f['predicate']}`" + _share_by_construction(f["predicate"], f["count"], facts_doc["population"], f.get("thresholds"), f.get("at_cutoff"), f.get("beyond_cutoff"), f.get("term_ties"), bool((facts_doc.get("blame_ignore_revs") or {}).get("present")))
         if f.get("importers") and f["importers"]["total"]:
             # D-062: the import-graph positions are read from a graph that holds the test files; the row says how much of its importing is theirs
             imp = f["importers"]
@@ -3021,7 +3057,7 @@ def render_disclosure(facts_doc: dict[str, Any]) -> str:
     # carries it — and the section repeated three cells. One line: the names with counts, what ◌
     # means, which signal, and where the reason is. The heading stays as the ◌ legend the skimmer
     # (D-060) looked for below the table.
-    listed = " · ".join(f"◌ {f['feature']} {f['count']}" for f in dec)
+    listed = "; ".join(f"◌ {_paired(f['feature'], facts_doc)} {f['count']}" for f in dec)  # D-075: paired, as the row is
     where = f"the signal {'they read' if len(dec) != 1 else 'it reads'} ({', '.join(sigs)}) is unvalidated" if sigs else "a signal is unvalidated"
     return (
         f"{listed} — {n} mark{'s' if n != 1 else ''} computed and counted, excluded from the diagnosis: {where}; "
