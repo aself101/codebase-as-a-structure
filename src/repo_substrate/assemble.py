@@ -55,14 +55,18 @@ def _round(v: Any, dp: int) -> Any:
     return v
 
 
-def _example_dirs(paths: list[str], edges: list[tuple[str, str]], regex: str) -> list[dict[str, Any]]:
+def _example_dirs(paths: list[str], tests: set[str], edges: list[tuple[str, str]], regex: str) -> list[dict[str, Any]]:
     """D-078 (example-role-spec.md; the Foucault review): the example kind is a declared proxy for a
     relation — a consumer of the rest of the repository. Per directory the convention matched (the path up
     to and including the matched segment), its non-test files, the imports from it into the rest of the
-    repository, and the imports from the rest into it: a consumer imports out and is not imported back."""
+    repository, and the imports from the rest into it: a consumer imports out and is not imported back.
+    Test files are neither side (0.11.1: the first build counted 49 test files importing mcp's cookbook as
+    "the rest" importing it back, and left the cookbook's own tests out of its imports out)."""
     rx = re.compile(regex)
     dirs: dict[str, set[str]] = {}
     for p in paths:
+        if p in tests:
+            continue
         m = rx.search(p)
         if m:
             dirs.setdefault(p[: m.end() - 1], set()).add(p)
@@ -73,8 +77,8 @@ def _example_dirs(paths: list[str], edges: list[tuple[str, str]], regex: str) ->
             {
                 "dir": d,
                 "files": len(members),
-                "imports_out": sum(1 for a, b in edges if a in members and b not in members),
-                "imported_back": sum(1 for a, b in edges if a not in members and b in members),
+                "imports_out": sum(1 for a, b in edges if a in members and b not in members and b not in tests),
+                "imported_back": sum(1 for a, b in edges if b in members and a not in members and a not in tests),
             }
         )
     return out
@@ -355,7 +359,7 @@ def extract(
         # D-067: kinds over the non-test nodes, so a page can say how many rooms a ruleset's exclusion removes
         "file_kinds": {k: sum(1 for n in static_nodes if not n.is_test and n.file_kind == k) for k in FILE_KINDS},
         # D-078 (the Foucault review): the relation the example convention stands in for, per matched directory
-        "example_dirs": _example_dirs([n.path for n in static_nodes if not n.is_test], dep.edges, cfg.example_dir_regex),
+        "example_dirs": _example_dirs([n.path for n in static_nodes], {n.path for n in static_nodes if n.is_test}, dep.edges, cfg.example_dir_regex),
         "total_loc": total_loc,
         "repo_age_days": repo_age_days,
         "commit_count": n_commits,

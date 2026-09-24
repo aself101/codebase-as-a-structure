@@ -483,3 +483,12 @@ def test_d078_the_example_kind_is_a_declared_directory_convention_with_its_relat
     ed = sub["summary"]["example_dirs"]
     assert [d["dir"] for d in ed] == ["cookbook"]
     assert ed[0]["files"] == 1 and "imports_out" in ed[0] and ed[0]["imported_back"] == 0
+    # the relation counts the product's files only: a test file is neither the consumer nor the product
+    # (D-078 addendum: mcp's page read "49 imports into it from the rest" — every one a test file)
+    from repo_substrate.assemble import _example_dirs
+
+    paths = ["src/index.ts", "cookbook/a/main.ts", "cookbook/a/main.test.ts", "tests/cookbook.test.ts"]
+    tests = {"cookbook/a/main.test.ts", "tests/cookbook.test.ts"}
+    edges = [("cookbook/a/main.ts", "src/index.ts"), ("cookbook/a/main.test.ts", "src/index.ts"), ("tests/cookbook.test.ts", "cookbook/a/main.ts"), ("cookbook/a/main.test.ts", "cookbook/a/main.ts")]
+    got = _example_dirs(paths, tests, edges, cfg.example_dir_regex)
+    assert got == [{"dir": "cookbook", "files": 1, "imports_out": 1, "imported_back": 0}]
