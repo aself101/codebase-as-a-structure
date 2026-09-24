@@ -1,0 +1,409 @@
+{
+ "after": {
+  "geometry": "age",
+  "repo": {
+   "head_sha": "5348b3ef614d0da5912a56ee11f86fc5888a916b",
+   "name": "mcp-secure-server"
+  },
+  "skeleton_hash": "cbc4c3e7c1af573a2f904d12769048d185b6eaf34d30d6d82cec7ffef9497c86"
+ },
+ "before": {
+  "geometry": "age",
+  "repo": {
+   "head_sha": "4c99da71468c29bb285a3f0d3ad644ef8b4abe7d",
+   "name": "mcp-secure-server"
+  },
+  "skeleton_hash": "a9fe3934534d86474794b09ade516bfd58d2f483392b8074fd24f370350d03f0"
+ },
+ "born": 1,
+ "budget": {
+  "feature_churn_max": 0.05,
+  "k": 25,
+  "max_k": 50,
+  "max_touched_frac": 0.5,
+  "min_jitter_union": 20,
+  "min_untouched_n": 30,
+  "operand": "jitter: rank + mixed feature churn, and strata moves, over untouched rooms",
+  "pinned_k": 25,
+  "reason": null,
+  "strata_moved_max": 0.05,
+  "verdict": "over_budget"
+ },
+ "commits_between": 25,
+ "common_nodes": 64,
+ "deleted": 0,
+ "feature_churn": 0.25773195876288657,
+ "kinds": {
+  "maintainability/crack": "rank",
+  "maintainability/dark_room": "clock",
+  "maintainability/flooded_basement": "mixed",
+  "maintainability/foundation": "rank",
+  "maintainability/hub": "rank",
+  "maintainability/lit_room": "clock",
+  "maintainability/scaffolding": "rank",
+  "onboarding/corridor": "rank",
+  "onboarding/foundation": "rank",
+  "onboarding/leaf_utility": "rank",
+  "onboarding/package_entry": "rank"
+ },
+ "per_feature": {
+  "maintainability/dark_room": {
+   "added": [],
+   "after": 7,
+   "before": 7,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "clock",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/flooded_basement": {
+   "added": [],
+   "after": 7,
+   "before": 7,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "mixed",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "maintainability/foundation": {
+   "added": [
+    "src/security/layers/layer-utils/content/patterns/injection.ts"
+   ],
+   "after": 7,
+   "before": 7,
+   "evidence": {
+    "src/security/layers/layer-utils/content/patterns/injection.ts": {
+     "after": {
+      "load_index": 0.8616
+     },
+     "before": null
+    },
+    "src/types/index.ts": {
+     "after": null,
+     "before": {
+      "load_index": 0.8434
+     }
+    }
+   },
+   "jaccard": 0.75,
+   "kind": "rank",
+   "removed": [
+    "src/types/index.ts"
+   ],
+   "untouched_changes": 1
+  },
+  "maintainability/hub": {
+   "added": [
+    "src/security/layers/layer-utils/content/patterns/injection.ts",
+    "src/types/server.ts"
+   ],
+   "after": 7,
+   "before": 7,
+   "evidence": {
+    "src/index.ts": {
+     "after": null,
+     "before": {
+      "centrality": 0.0134
+     }
+    },
+    "src/security/layers/layer-utils/content/patterns/injection.ts": {
+     "after": {
+      "centrality": 0.0163
+     },
+     "before": null
+    },
+    "src/security/utils/error-sanitizer.ts": {
+     "after": null,
+     "before": {
+      "centrality": 0.013
+     }
+    },
+    "src/types/server.ts": {
+     "after": {
+      "centrality": 0.0159
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.5555555555555556,
+   "kind": "rank",
+   "removed": [
+    "src/index.ts",
+    "src/security/utils/error-sanitizer.ts"
+   ],
+   "untouched_changes": 1
+  },
+  "maintainability/lit_room": {
+   "added": [
+    "src/security/layers/layer-utils/content/patterns/overflow-validation.ts",
+    "src/security/transport/http-server-types.ts",
+    "src/security/transport/secure-transport.ts",
+    "src/security/transport/transport-validator.ts",
+    "src/security/utils/error-sanitizer.ts",
+    "src/security/utils/response-validator.ts"
+   ],
+   "after": 10,
+   "before": 9,
+   "evidence": {
+    "src/security/layers/layer-utils/content/patterns/overflow-validation.ts": {
+     "after": {
+      "last_touched_days": 0.0188
+     },
+     "before": null
+    },
+    "src/security/layers/layer-utils/content/utils/hash-utils.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 16.6122
+     }
+    },
+    "src/security/layers/layer-utils/content/utils/structural-analysis.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 16.6122
+     }
+    },
+    "src/security/layers/layer-utils/content/utils/text-decoding.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 16.6122
+     }
+    },
+    "src/security/layers/layer3-behavior.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 16.643
+     }
+    },
+    "src/security/layers/layer5-contextual-types.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 16.6351
+     }
+    },
+    "src/security/transport/http-server-types.ts": {
+     "after": {
+      "last_touched_days": 0.0188
+     },
+     "before": null
+    },
+    "src/security/transport/secure-transport.ts": {
+     "after": {
+      "last_touched_days": 0.0188
+     },
+     "before": null
+    },
+    "src/security/transport/transport-validator.ts": {
+     "after": {
+      "last_touched_days": 0.0188
+     },
+     "before": null
+    },
+    "src/security/utils/error-sanitizer.ts": {
+     "after": {
+      "last_touched_days": 0.0188
+     },
+     "before": null
+    },
+    "src/security/utils/response-validator.ts": {
+     "after": {
+      "last_touched_days": 0.0188
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.26666666666666666,
+   "kind": "clock",
+   "removed": [
+    "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+    "src/security/layers/layer-utils/content/utils/structural-analysis.ts",
+    "src/security/layers/layer-utils/content/utils/text-decoding.ts",
+    "src/security/layers/layer3-behavior.ts",
+    "src/security/layers/layer5-contextual-types.ts"
+   ],
+   "untouched_changes": 4
+  },
+  "maintainability/scaffolding": {
+   "added": [
+    "src/security/layers/layer-utils/content/patterns/overflow-validation.ts",
+    "src/security/layers/layer2-validators/pattern-detection.ts",
+    "src/security/transport/transport-validator.ts",
+    "src/security/utils/pipeline-factory.ts"
+   ],
+   "after": 35,
+   "before": 31,
+   "evidence": {
+    "src/security/layers/layer-utils/content/patterns/overflow-validation.ts": {
+     "after": {
+      "reinforcement_index": 0.6597
+     },
+     "before": null
+    },
+    "src/security/layers/layer2-validators/pattern-detection.ts": {
+     "after": {
+      "reinforcement_index": 0.6597
+     },
+     "before": null
+    },
+    "src/security/transport/transport-validator.ts": {
+     "after": {
+      "reinforcement_index": 0.6597
+     },
+     "before": null
+    },
+    "src/security/utils/pipeline-factory.ts": {
+     "after": {
+      "reinforcement_index": 0.6597
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.8857142857142857,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/corridor": {
+   "added": [
+    "src/types/server.ts"
+   ],
+   "after": 3,
+   "before": 3,
+   "evidence": {
+    "src/index.ts": {
+     "after": null,
+     "before": {
+      "centrality": 0.0134,
+      "fan_out": 2
+     }
+    },
+    "src/types/server.ts": {
+     "after": {
+      "centrality": 0.0159,
+      "fan_out": 6
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.5,
+   "kind": "rank",
+   "removed": [
+    "src/index.ts"
+   ],
+   "untouched_changes": 1
+  },
+  "onboarding/foundation": {
+   "added": [
+    "src/security/layers/layer-utils/content/patterns/injection.ts"
+   ],
+   "after": 7,
+   "before": 7,
+   "evidence": {
+    "src/security/layers/layer-utils/content/patterns/injection.ts": {
+     "after": {
+      "load_index": 0.8616
+     },
+     "before": null
+    },
+    "src/types/index.ts": {
+     "after": null,
+     "before": {
+      "load_index": 0.8434
+     }
+    }
+   },
+   "jaccard": 0.75,
+   "kind": "rank",
+   "removed": [
+    "src/types/index.ts"
+   ],
+   "untouched_changes": 1
+  },
+  "onboarding/leaf_utility": {
+   "added": [],
+   "after": 1,
+   "before": 1,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  },
+  "onboarding/package_entry": {
+   "added": [],
+   "after": 3,
+   "before": 3,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "untouched_changes": 0
+  }
+ },
+ "strata_moved": [],
+ "strata_moved_frac": 0.0,
+ "touched": {
+  "frac": 0.453125,
+  "n": 29,
+  "nodes": [
+   "src/security/config/tool-policies-config.ts",
+   "src/security/config/tool-policies.ts",
+   "src/security/constants.ts",
+   "src/security/layers/builtin-validators.ts",
+   "src/security/layers/layer-utils/content/patterns/injection.ts",
+   "src/security/layers/layer-utils/content/patterns/overflow-validation.ts",
+   "src/security/layers/layer-utils/content/patterns/path-traversal.ts",
+   "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+   "src/security/layers/layer1-structure.ts",
+   "src/security/layers/layer2-content.ts",
+   "src/security/layers/layer2-validators/data-semantics.ts",
+   "src/security/layers/layer2-validators/pattern-detection.ts",
+   "src/security/layers/layer5-contextual.ts",
+   "src/security/layers/validation-layer-base.ts",
+   "src/security/mcp-secure-server.ts",
+   "src/security/presets.ts",
+   "src/security/transport/http-server-types.ts",
+   "src/security/transport/http-server.ts",
+   "src/security/transport/secure-transport.ts",
+   "src/security/transport/transport-validator.ts",
+   "src/security/utils/error-sanitizer.ts",
+   "src/security/utils/log-formatters.ts",
+   "src/security/utils/pipeline-factory.ts",
+   "src/security/utils/response-validator.ts",
+   "src/security/utils/security-logger-types.ts",
+   "src/security/utils/security-logger.ts",
+   "src/security/utils/validation-pipeline.ts",
+   "src/types/layers.ts",
+   "src/types/server.ts"
+  ]
+ },
+ "untouched": {
+  "by_kind": {
+   "clock": {
+    "changes": 4,
+    "churn": 0.36363636363636365,
+    "union": 11
+   },
+   "mixed": {
+    "changes": 0,
+    "churn": 0.0,
+    "union": 7
+   },
+   "rank": {
+    "changes": 4,
+    "churn": 0.14285714285714285,
+    "union": 28
+   }
+  },
+  "clock_churn": 0.36363636363636365,
+  "decorative_changes": 2,
+  "decorative_churn": 1.0,
+  "feature_churn": 0.17391304347826086,
+  "jitter_churn": 0.11428571428571428,
+  "n": 35,
+  "strata_moved": [],
+  "strata_moved_frac": 0.0
+ }
+}
