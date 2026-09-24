@@ -2265,12 +2265,12 @@ def test_the_population_sentence_counts_the_kinds_the_ruleset_excludes(sub):
 
     sk = _skeleton(sub)
     f = facts(sk, sub)
-    assert f["excluded_kinds"] == ["config", "migration", "placeholder"]  # the shipped rulesets
+    assert f["excluded_kinds"] == ["config", "example", "migration", "placeholder"]  # the shipped rulesets (D-078: example)
     reg = _b.render_register(f)
     # D-070 (the ninth control): the rule states what each kind's convention reads — "config" had been a
     # word on the page and a regex in the instrument (knexfile.ts is a room by it)
-    assert "and not a config or migration or placeholder file (kinds the ruleset does not count as rooms, each read by a declared convention and nothing else — config: a tool's configuration by basename — `*rc.*`, `*.config.*` or `*.conf.*` — at its package's root; migration: any file under a `migration/` or `migrations/` directory; placeholder: a file that is an empty export once comments are stripped)" in reg
-    assert f["kind_conventions"] and set(f["kind_conventions"]) == {"config_file_regex", "migration_dir_regex", "placeholder_content_regex"}
+    assert "and not a config or example or migration or placeholder file (kinds the ruleset does not count as rooms, each read by a declared convention and nothing else — config: a tool's configuration by basename — `*rc.*`, `*.config.*` or `*.conf.*` — at its package's root; example: " + _b.KIND_CONVENTION_WORDS["example"] + "; migration: any file under a `migration/` or `migrations/` directory; placeholder: a file that is an empty export once comments are stripped)" in reg
+    assert f["kind_conventions"] and set(f["kind_conventions"]) == {"config_file_regex", "migration_dir_regex", "placeholder_content_regex", "example_dir_regex"}
     assert _b._kinds_rule_text({"excluded_kinds": ["config"]}) == ", and not a config file (kinds the ruleset does not count as rooms)"  # a sheet without the conventions (pre-0.36.0) keeps the short form
     assert _b._kinds_count_text({"excluded_kinds": ["config"], "excluded_by_kind": {"config": 14, "placeholder": 3}}) == "; the 17 files of a kind the ruleset does not count (config 14, placeholder 3) are in the graph and not a room"
     assert _b._kinds_count_text({"excluded_kinds": ["config"], "excluded_by_kind": {"config": 1}}) == "; the 1 file of a kind the ruleset does not count (config 1) is in the graph and not a room"
@@ -2415,7 +2415,9 @@ def test_d070_the_ninth_round(sub):
     assert mig_re.search("src/db/migrations/001.ts") and mig_re.search("migration/x.ts") and not mig_re.search("src/migrate.ts")
     ph_re = re.compile(conv["placeholder_content_regex"])
     assert ph_re.match("export {};\n") and not ph_re.match("export const x = 1;\n")
-    assert set(_b.KIND_CONVENTION_WORDS) == {"config", "migration", "placeholder"}
+    assert set(_b.KIND_CONVENTION_WORDS) == {"config", "migration", "placeholder", "example"}
+    ex_re = re.compile(conv["example_dir_regex"])  # D-078: the words match the regex on the sheet
+    assert ex_re.search("cookbook/a/src/x.ts") and ex_re.search("docs/_examples/t/r.js") and ex_re.search("playground/a.ts") and not ex_re.search("src/examplesx/a.ts")
     # 3. the stance names its case with this page's rooms at it
     sc = f["stance_case"]
     assert sc and sc["untouched"] == "dark_room" and sc["loaded"] == "foundation"
@@ -2527,7 +2529,7 @@ def test_d071_the_tenth_round(sub):
         line = next(l for l in reg.splitlines() if l.startswith(f"- **{idx}** — a blend"))
         for k, v in w.items():
             assert f"{v:g} × {_b.INDEX_INPUT_WORDS[k]}" in line, (idx, k)
-        assert "each input a rank in this repository's own population" in line
+        assert "each input a rank among this repository's" in line  # D-078: the rank population is stated
     assert set(iw) <= {"load_index", "bug_pressure_index", "change_pressure_index", "neglect_index", "complexity_proxy_index"}
     assert _b._index_legend_lines({"index_weights": {}}) == ""
     # 2. a long tie under a third is counted, not listed
@@ -2618,7 +2620,7 @@ def test_d073_the_twelfth_round(sub):
     got = _b._importer_files(["a", "b"], nodes, sub_)
     assert (got["files"], got["test_files"]) == (4, 1)  # t1 once, not twice; a (inside the set) is an importer of b
     assert got["top"] == {"room": "b", "files": 3, "test_files": 1, "rest": 1, "rest_tests": 0}  # b: t1, y, a; without it: x
-    assert _b._importer_files(["a"], nodes, {"edges": []}) == {"files": 0, "test_files": 0}
+    assert _b._importer_files(["a"], nodes, {"edges": []}) == {"files": 0, "test_files": 0, "example_files": 0}
     sk = _skeleton(sub)
     f = facts(sk, sub)
     reg = _b.render_register(f)
@@ -2696,7 +2698,7 @@ def test_d075_the_thirteenth_round(sub):
                 assert cell == f"too few rooms to place ({x['count']})", cell
     nodes = {r: {"metrics": {"is_test": r.startswith("t")}} for r in ("a", "t1", "x")}
     one = _b._importer_files(["a"], nodes, {"edges": [{"from": "t1", "to": "a"}, {"from": "x", "to": "a"}]})
-    assert one == {"files": 2, "test_files": 1}  # one room: naming it as its own top room says nothing
+    assert one == {"files": 2, "test_files": 1, "example_files": 0}  # one room: naming it as its own top room says nothing
     # 2. the legend states the inputs the tuning weighted zero
     z = _b._index_zeroed({"bug_pressure_index": {"commit_count": 0.5, "revert_count": 0.3, "recency": 0.2}})
     assert z == {"bug_pressure_index": ["fix_count", "fix_count_nonzero", "fix_ratio"]}
@@ -2773,3 +2775,37 @@ def test_d077_a_pooled_scope_holding_a_lopsided_share_of_a_feature_is_counted(su
     x["scope_composition"] = [{"scope": "package.json", "n": x["count"], "scope_rooms": 30}]
     row = _row(_b.render_register(g), x["feature"], x["decorative"], profile=x["profile"])
     assert f"; pooled scopes: {x['count']} of these {x['count']} in package.json, which holds 30 of the {g['population']} rooms" in row.split("|")[5]
+
+
+
+def test_d078_the_page_says_what_the_example_exclusion_removes_and_what_it_leaves(sub):
+    """D-078 (example-role-spec.md, two reviews): the example kind leaves the population and stays in the
+    graph and in the substrate's rank population. The page names the example directories with the
+    relation the convention stands in for, states the blends' rank population, and counts example files
+    among a row's importers (mcp-secure-server: 20 of src/index.ts's 21 importers are cookbook files)."""
+    import repo_substrate.brief as _b
+
+    # the example directories with their relation, in the population sentence
+    doc = {"excluded_kinds": ["example"], "excluded_by_kind": {"example": 122}, "example_dirs": [{"dir": "cookbook", "files": 136, "imports_out": 20, "imported_back": 0}]}
+    assert _b._example_dirs_text(doc) == "; example directories: cookbook (136 files; 20 imports from it into the rest of the repository, 0 into it from the rest)"
+    assert _b._example_dirs_text({"excluded_kinds": ["config"], "example_dirs": doc["example_dirs"]}) == ""  # not excluded: not said
+    assert _b._example_dirs_text({"excluded_kinds": ["example"], "example_dirs": []}) == ""
+    # the blends' rank population, in the legend
+    lines = _b._index_legend_lines({"index_weights": {"load_index": {"fan_in_nonzero": 0.5}}, "rank_population": {"files": 203, "excluded_kind": 136}})
+    assert "each input a rank among this repository's 203 non-test files, 136 of them of a kind the ruleset does not count as rooms" in lines
+    assert "each input a rank in this repository's own population" in _b._index_legend_lines({"index_weights": {"load_index": {"fan_in_nonzero": 0.5}}})  # an older sheet
+    # example importers are counted and named
+    nodes = {"src/i.ts": {"metrics": {}}, "cookbook/a.ts": {"metrics": {"is_example": True}}, "cookbook/b.ts": {"metrics": {"is_example": True}}, "t.test.ts": {"metrics": {"is_test": True}}}
+    got = _b._importer_files(["src/i.ts"], nodes, {"edges": [{"from": "cookbook/a.ts", "to": "src/i.ts"}, {"from": "cookbook/b.ts", "to": "src/i.ts"}, {"from": "t.test.ts", "to": "src/i.ts"}]})
+    assert (got["files"], got["test_files"], got["example_files"]) == (3, 1, 2)
+    assert _b._example_importers_text({"files": 3, "example_files": 2}) == ", 2 of them example files"
+    assert _b._example_importers_text({"files": 3, "example_files": 0}) == ""
+    # on the fixture sheet the fields are present, and the legend line reads the sheet's rank population
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    rp = f["rank_population"]
+    assert rp["files"] >= f["population"] and rp["excluded_kind"] >= 0
+    assert "example_dirs" in f
+    reg = _b.render_register(f)
+    if f.get("index_weights"):
+        assert f"each input a rank among this repository's {rp['files']} non-test files" in reg

@@ -107,6 +107,14 @@ GROUNDING: dict[str, dict[str, Any]] = {
         "heuristic": "nothing but an empty export (`export {}` / `module.exports = {}`)",
         "flag": True,
     },
+    # D-078: the example kind — a declared directory convention standing in for a consumer of the product
+    "is_example": {
+        "ripple": "own",
+        "class": "G1",
+        "instrument": "path regex (example_dir_regex)",
+        "heuristic": "a directory segment named examples/samples/demos/cookbook/playground (an optional leading underscore) above the file",
+        "flag": True,
+    },
     # D-069: the clock's last touch, qualified — how broad the last-touching commit was, and whether the
     # repository's `.git-blame-ignore-revs` disowns it. The clock predicates' caveat case reads the flag.
     "last_touch_commit_files": {
@@ -258,6 +266,7 @@ SPEC_G1: frozenset[str] = frozenset(
         "is_config",  # flag (D-067)
         "is_migration",  # flag (D-067)
         "is_placeholder",  # flag (D-067)
+        "is_example",  # flag (D-078)
         "last_touch_commit_files",  # D-069
         "last_touch_blame_ignored",  # flag (D-069)
     }

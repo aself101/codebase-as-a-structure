@@ -313,8 +313,8 @@ def load_ruleset(path: Path) -> Ruleset:
         if not wing_depth_ok:
             raise RulesetError("[ruleset] wing_depth must be an integer >= 1")
         ek = hdr.get("exclude_kinds", [])
-        if not isinstance(ek, list) or any(k not in ("config", "migration", "placeholder") for k in ek):
-            raise RulesetError("[ruleset] exclude_kinds must be a list drawn from config, migration, placeholder (D-067)")
+        if not isinstance(ek, list) or any(k not in ("config", "migration", "placeholder", "example") for k in ek):
+            raise RulesetError("[ruleset] exclude_kinds must be a list drawn from config, migration, placeholder, example (D-067, D-078)")
         feats.append(
             Feature(
                 name=name,

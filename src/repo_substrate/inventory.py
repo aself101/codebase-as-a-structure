@@ -34,10 +34,10 @@ class StaticNode:
     is_package_entry: bool = (
         False  # declared entry of its package (package.json main/module/types/bin/exports) (D-029)
     )
-    file_kind: str = "source"  # source | config | migration | placeholder (D-067; declared conventions in SubstrateConfig)
+    file_kind: str = "source"  # source | config | migration | placeholder | example (D-067, D-078; declared conventions in SubstrateConfig)
 
 
-FILE_KINDS = ("config", "migration", "placeholder")
+FILE_KINDS = ("config", "migration", "placeholder", "example")  # D-078: example
 
 
 def file_kind(path: str, data: bytes, package_dir: str, cfg: SubstrateConfig) -> str:
@@ -56,6 +56,8 @@ def file_kind(path: str, data: bytes, package_dir: str, cfg: SubstrateConfig) ->
     text = re.sub(r"(^|[^:\\\"'])//[^\n]*", r"\1", text)
     if re.match(cfg.placeholder_content_regex, text):
         return "placeholder"
+    if re.search(cfg.example_dir_regex, path):  # D-078: after placeholder, so an example's config stays config
+        return "example"
     return "source"
 
 

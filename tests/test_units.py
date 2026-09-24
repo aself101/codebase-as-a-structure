@@ -448,4 +448,38 @@ def test_file_kinds_are_declared_conventions(make_repo, small_cfg, tmp_path):
     assert m["vitest.config.ts"]["file_kind"] == "config" and m["vitest.config.ts"]["is_config"] and not m["vitest.config.ts"]["is_migration"]
     assert m["src/db/migrations/001.ts"]["is_migration"] and m["src/stub.ts"]["is_placeholder"]
     assert m["src/index.ts"]["file_kind"] == "source" and not m["src/index.ts"]["is_config"]
-    assert sub["summary"]["file_kinds"] == {"config": 1, "migration": 1, "placeholder": 1}
+    assert sub["summary"]["file_kinds"] == {"config": 1, "migration": 1, "placeholder": 1, "example": 0}
+
+
+
+def test_d078_the_example_kind_is_a_declared_directory_convention_with_its_relation_recorded(small_cfg, make_repo, tmp_path):
+    """D-078 (example-role-spec.md, reviewed): a file under an examples/samples/demos/cookbook/playground
+    directory (an optional leading underscore: eslint's docs/_examples/) is of the kind `example`, after
+    config, migration and placeholder in precedence; the relation the convention stands in for — a
+    consumer of the rest of the repository — is recorded beside it per matched directory."""
+    from repo_substrate.assemble import ExtractOptions, extract
+    from repo_substrate.inventory import FILE_KINDS, file_kind
+
+    cfg = small_cfg
+    assert "example" in FILE_KINDS
+    assert file_kind("cookbook/a-server/src/index.ts", b"export const s = 1;", "cookbook/a-server", cfg) == "example"
+    assert file_kind("docs/_examples/tutorial/rule.js", b"module.exports = 1;", "docs/_examples/tutorial", cfg) == "example"
+    assert file_kind("playground/src/app.ts", b"x", "playground", cfg) == "example"
+    assert file_kind("src/examples/x.ts", b"x", "", cfg) == "example" and file_kind("samples/y.ts", b"y", "", cfg) == "example"
+    assert file_kind("src/examplesx/x.ts", b"x", "", cfg) == "source"  # a word inside a name is not the convention
+    assert file_kind("src/example.ts", b"x", "", cfg) == "source"  # a file named example is not under a directory
+    assert file_kind("cookbook/a/vitest.config.ts", b"x", "cookbook/a", cfg) == "config"  # precedence: config first
+    assert file_kind("cookbook/a/src/stub.ts", b"export {};", "cookbook/a", cfg) == "placeholder"
+    r = make_repo()
+    r.write("package.json", '{"name": "k", "main": "./src/index.ts"}')
+    r.write("src/index.ts", "export const a = 1;\n")
+    r.write("cookbook/one/main.ts", "import { a } from '../../src/index';\nexport const b = a;\n")
+    r.commit("feat: a consumer")
+    sub = extract(r.path, cfg, ExtractOptions(scratch_dir=tmp_path, blame_workers=1), extractor=None)
+    m = {n["id"]: n["metrics"] for n in sub["nodes"]}
+    assert m["cookbook/one/main.ts"]["file_kind"] == "example" and m["cookbook/one/main.ts"]["is_example"]
+    assert not m["src/index.ts"]["is_example"]
+    assert sub["summary"]["file_kinds"]["example"] == 1
+    ed = sub["summary"]["example_dirs"]
+    assert [d["dir"] for d in ed] == ["cookbook"]
+    assert ed[0]["files"] == 1 and "imports_out" in ed[0] and ed[0]["imported_back"] == 0

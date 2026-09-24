@@ -660,5 +660,5 @@ def test_a_ruleset_excludes_kinds_from_its_population_and_the_overlay_must_agree
 
     m = load_ruleset(Path("rulesets/maintainability.toml"))
     o = load_ruleset(Path("rulesets/onboarding.toml"))
-    assert m.exclude_kinds == o.exclude_kinds == ("config", "migration", "placeholder")
-    assert all(GROUNDING[k].get("flag") is True and GROUNDING[k]["class"] == "G1" for k in ("is_config", "is_migration", "is_placeholder"))
+    assert m.exclude_kinds == o.exclude_kinds == ("config", "example", "migration", "placeholder")  # D-078: example
+    assert all(GROUNDING[k].get("flag") is True and GROUNDING[k]["class"] == "G1" for k in ("is_config", "is_migration", "is_placeholder", "is_example"))

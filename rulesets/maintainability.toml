@@ -14,7 +14,7 @@
 
 [ruleset]
 name = "maintainability"
-version = "0.3.3"  # D-070: the clock caveats say which way the chore-touch limit cuts (dark_room / flooded_basement: older, never younger; lit_room: a chore alone can light a room)
+version = "0.3.4"  # D-078: excludes the example kind (a consumer of the product: mcp-secure-server's cookbook, 122 rooms of 187). D-070: the clock caveats say which way the chore-touch limit cuts (dark_room / flooded_basement: older, never younger; lit_room: a chore alone can light a room)
 profile = "maintainability"
 description = "v0 maintainability lens: load, neglect, reinforcement, activity — over asserted signals only; the two pressure indices are unvalidated (D-015) and appear only as decorative features."
 wing_depth = 1
@@ -23,7 +23,12 @@ wing_depth = 1
 # configs and two `export {}` barrels were the whole of flooded_basement's fan_in-0 case (D-064, D-066);
 # on the registry eleven migrations were the largest parent of the dark rooms. The kinds are the
 # substrate's G1 flags; this ruleset does not count them as rooms, and the page says how many it removed.
-exclude_kinds = ["config", "migration", "placeholder"]
+# D-078 (Alex): and the example kind — a file under an examples/samples/demos/cookbook/playground directory,
+# the declared proxy for a consumer of the repository's product. On mcp-secure-server fourteen client
+# servers were 122 of 187 rooms and set the cutoffs the library was ranked against; a maintenance norm for
+# the library has no visit for them. They stay graph nodes and stay in the substrate's rank population —
+# the page says both (example-role-spec.md).
+exclude_kinds = ["config", "migration", "placeholder", "example"]
 
 # D-054 (fifteenth seating): a reason about a signal is written once, here, and composed into
 # every decorative feature that reads the signal — crack's row said "unvalidated" and

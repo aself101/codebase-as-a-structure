@@ -10,12 +10,13 @@
 
 [ruleset]
 name = "onboarding"
-version = "0.3.0"
+version = "0.3.1"  # D-078: excludes the example kind, as the base does
 profile = "onboarding"
 description = "Where to start reading: package entries (declared in package.json), import-graph roots (import much, imported by nothing), corridors (high centrality and high fan-out — everything routes through), foundations. Position names throughout."
 # D-067: the same three kinds as the base — an overlay shares the base's population (mapper §6), and a
 # newcomer is not shown a vitest config as an import-graph root or a migration as a leaf utility.
-exclude_kinds = ["config", "migration", "placeholder"]
+# D-078: nor an example server as an import-graph root (mcp-secure-server's 15 roots were all cookbook).
+exclude_kinds = ["config", "migration", "placeholder", "example"]
 
 [[feature]]
 name = "package_entry"

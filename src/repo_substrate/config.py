@@ -153,6 +153,11 @@ class SubstrateConfig:
     migration_dir_regex: str = r"(^|/)migrations?/"
     # placeholder: nothing but an empty export once comments are stripped
     placeholder_content_regex: str = r"^\s*(export\s*\{\s*\}\s*;?\s*|module\.exports\s*=\s*\{\s*\}\s*;?\s*)?$"
+    # example (D-078, Alex; example-role-spec.md): a directory named examples/samples/demos/cookbook/playground
+    # (an optional leading underscore: eslint's docs/_examples/) above the file — the declared proxy for a
+    # consumer of the repository's product; the relation itself is recorded in summary.example_dirs.
+    # Precedence config > migration > placeholder > example.
+    example_dir_regex: str = r"(^|/)_?(examples?|samples?|demos?|cookbook|playground)/"
     rounding_dp: int = 4
     # D-070: the file a repository uses to list the commits `git blame` should skip; the clock flag
     # `last_touch_blame_ignored` reads it (D-069). Its name is the declared convention, so it is
