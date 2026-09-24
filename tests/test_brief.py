@@ -2723,3 +2723,53 @@ def test_d075_the_thirteenth_round(sub):
     assert "disowns)" not in _b._share_by_construction("last_touched_days >= p90", 1, 4, {"last_touched_days >= p90": 534.0}, 1, b, None, blame_present=False)
     b0 = dict(b, blame_ignored=0)
     assert "(one commit of 300 files; none of them last touched by a commit" in _b._share_by_construction("last_touched_days >= p90", 1, 4, {"last_touched_days >= p90": 534.0}, 1, b0, None, blame_present=True)
+
+
+def test_d077_a_pooled_scope_holding_a_lopsided_share_of_a_feature_is_counted(sub):
+    """D-077 (scope-calibration-spec.md, after two reviews): pooling's effect is stated as composition —
+    a feature's rooms in a scope against that scope's share of the population — where a scope of 30 or more
+    rooms holds over twice or under half its share; never as a counterfactual count (the data-science
+    review: a kept count under a split is quota arithmetic). mcp-secure-server's library, 65 of 187 rooms,
+    holds all 27 lit rooms."""
+    import repo_substrate.brief as _b
+
+    # mcp-secure-server's shape: the library's 65 rooms and fourteen example scopes, none of 30 rooms
+    sizes = {"package.json": 65, **{f"cookbook/{c}/package.json": v for c, v in zip("abcdefg", (17, 17, 17, 17, 18, 18, 18))}}
+    rooms = [f"src/r{i}.ts" for i in range(27)]
+    scope = lambda r: "package.json" if r.startswith("src/") else "cookbook/a/package.json"
+    got = _b._scope_composition(rooms, scope, sizes, 187)
+    assert got == [{"scope": "package.json", "n": 27, "scope_rooms": 65}]  # 100% of the feature from 35% of the rooms
+    # under half its share fires too: 0 of 15 import roots in the library
+    got0 = _b._scope_composition([f"cookbook/b/x{i}.ts" for i in range(15)], lambda r: "cookbook/b/package.json", sizes, 187)
+    assert {"scope": "package.json", "n": 0, "scope_rooms": 65} in got0
+    # a scope under the floor is never named on its own; a proportionate scope is not named; small features are not
+    assert all(g["scope_rooms"] >= 30 for g in got0)
+    even = [f"src/r{i}.ts" for i in range(4)] + [f"cookbook/b/x{i}.ts" for i in range(6)]
+    assert _b._scope_composition(even, lambda r: "package.json" if r.startswith("src/") else "cookbook/b/package.json", sizes, 187) == []
+    assert _b._scope_composition(rooms[:5], scope, sizes, 187) == []  # under the placement floor (6)
+    assert _b._scope_composition(rooms, scope, {"package.json": 187}, 187) == []  # one scope: nothing pooled
+    txt = _b._scope_composition_text([{"scope": "package.json", "n": 27, "scope_rooms": 65}], 27, 187)
+    assert txt == "; pooled scopes: 27 of these 27 in package.json, which holds 65 of the 187 rooms"
+    # on the fixture sheet the field is present on every feature and the cell carries exactly what it lists
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    reg = _b.render_register(f)
+    for x in f["features"]:
+        assert "scope_composition" in x
+        t = _b._scope_composition_text(x["scope_composition"], x["count"], f["population"])
+        if t:
+            assert t in _row(reg, x["feature"], x["decorative"], profile=x["profile"])
+    # the legend sentence rides with the pooling statement, on a page that pools scopes (the fixture has one)
+    sub2 = json.loads(json.dumps(sub))
+    for nd in sub2["nodes"]:
+        if nd["id"] in set(sk["strata"]["by_node"]):
+            nd.setdefault("metrics", {})["package"] = "pkg/a" if nd["id"] < "src/m" else ""
+    g = facts(sk, sub2)
+    assert g["packages"] > 1
+    reg2 = _b.render_register(g)
+    assert "pooled, a scope's share of a feature is not its own top tenth, and the by-wing cell names a scope of 30 or more rooms" in reg2
+    # the render branch, exercised: a feature carrying a composition prints it in its by-wing cell
+    x = next(x for x in g["features"] if x["count"])
+    x["scope_composition"] = [{"scope": "package.json", "n": x["count"], "scope_rooms": 30}]
+    row = _row(_b.render_register(g), x["feature"], x["decorative"], profile=x["profile"])
+    assert f"; pooled scopes: {x['count']} of these {x['count']} in package.json, which holds 30 of the {g['population']} rooms" in row.split("|")[5]
