@@ -62,11 +62,12 @@ def test_facts_sheet_is_the_closed_set(sub):
 def _row(table: str, feature: str, decorative: bool = False, profile: str | None = None) -> str:
     """D-060: the position is the first column; a row is found by its feature cell."""
     # D-070: an excluded row's feature cell reads "◌ name (excluded)" — the word travels with the glyph
-    fcell = f"| ◌ {feature} (excluded) |" if decorative else f"| {feature} |"
-    cell = fcell + (f" {profile}" if profile else "")  # D-063: a profile cell may name two profiles
-    rows = [line for line in table.splitlines() if line.startswith("| ") and cell in line]
+    # D-074: a consequence-implying name is paired with its position ("dark_room · long-untouched room")
+    fcell = re.escape(f"| ◌ {feature} (excluded)" if decorative else f"| {feature}") + r"(?: · [^|]*)? \|"
+    cell = fcell + (re.escape(f" {profile}") if profile else "")  # D-063: a profile cell may name two profiles
+    rows = [line for line in table.splitlines() if line.startswith("| ") and re.search(cell, line)]
     if not rows and profile:  # D-063: a feature under two profiles with one predicate is one row, listed under the base profile
-        rows = [line for line in table.splitlines() if line.startswith("| ") and fcell in line and "(one predicate, two profiles)" in line]
+        rows = [line for line in table.splitlines() if line.startswith("| ") and re.search(fcell, line) and "(one predicate, two profiles)" in line]
     return rows[0]
 
 
@@ -1697,7 +1698,7 @@ def test_a_tier_orders_by_path_and_the_scope_count_is_over_the_population(sub, t
     assert "zero to fix history" in rs.signal_reasons["bug_pressure_index"]
     page = run_brief(sk, sub)["markdown"]
     rows = [line for line in page.splitlines() if line.startswith("| ") and "| ◌ " in line]
-    assert rows and any("| ◌ crack (excluded) |" in r for r in rows)  # crack fires on the fixture; D-070: the word beside the glyph
+    assert rows and any("| ◌ crack (excluded) · " in r for r in rows)  # D-074: paired with its position  # crack fires on the fixture; D-070: the word beside the glyph
     assert all("zero to fix history" in r for r in rows)
     assert page.count("zero to fix history") == len(rows)  # every decorative row; D-062: the section no longer repeats it
     assert "excluded from the diagnosis: the signal they read (bug_pressure_index) is unvalidated; each row carries the reason." in page  # D-062: the section is one line; the reason is on the rows
@@ -2112,7 +2113,7 @@ def test_every_ranked_term_states_its_cutoff_and_two_profiles_on_one_predicate_a
     table = reg.split("### Rooms at the most positions", 1)[0]
     for o in ident:
         name = o["a"].split("/")[-1]
-        rows = [line for line in table.splitlines() if f"| {name} |" in line]
+        rows = [line for line in table.splitlines() if re.search(re.escape(f"| {name}") + r"(?: · [^|]*)? \|", line)]  # D-074: the cell may carry its position
         assert len(rows) == 1 and "(one predicate, two profiles)" in rows[0] and " + " in rows[0]
         assert "same predicate, two profiles" not in reg
     # centrality is defined; the column headers carry their legend
@@ -2441,7 +2442,7 @@ def test_d070_the_ninth_round(sub):
     g["top_tier"] = {"rooms": [{"room": "src/f0.js", "lines": 2, "fan_in": 1, "test_fan_in": 0, "features": ["dark_room"]}], "sets": 1}
     assert "Size is the room's non-blank line count" in _b.render_most_marked(g) and "largest parent directory (n of the parent's rooms)" in reg
     # 7. an excluded row's feature cell carries the word
-    assert "| ◌ crack (excluded) |" in reg
+    assert "| ◌ crack (excluded) · " in reg
     # 8. the importer share without the top room
     for x in f["features"]:
         imp = x.get("importers") or {}
@@ -2641,3 +2642,32 @@ def test_d073_the_twelfth_round(sub):
     assert "how many distinct files import its rooms" in reg
     # 3. a self-relative count is not a baseline over time (the skimmer's D6); a fixed text with its test
     assert "no count on this page compares across repositories, or across snapshots of this one: a ranked row holds its share of whatever rooms the repository has, so working its rooms down moves the cutoff, not the count (D-073)." in reg
+
+
+
+def test_d074_a_consequence_name_travels_with_its_position(sub):
+    """D-074 (Alex, 2026-09-24: pair). The twelfth skimmer's CERTAIN drift: a pasted row carries
+    flooded_basement or crack and leaves the register behind. Every name the ruleset flags as implying a
+    consequence is paired with its position name where it is read as a label — the register's feature
+    cell and the most-positions table; a name without the flag stands alone."""
+    import repo_substrate.brief as _b
+
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    reg = _b.render_register(f)
+    table = reg.split("### Rooms at the most positions", 1)[0]
+    for x in f["features"]:
+        row = _row(reg, x["feature"], x["decorative"], profile=x["profile"])
+        fc = row.split("|")[2].strip()
+        base = f"◌ {x['feature']} (excluded)" if x["decorative"] else x["feature"]
+        if x.get("name_implies_consequence") and x.get("position_name"):
+            assert fc == f"{base} · {x['position_name']}", fc
+        else:
+            assert fc == base, fc
+    assert _b._paired("dark_room", {"features": [{"feature": "dark_room", "name_implies_consequence": True, "position_name": "long-untouched room"}]}) == "dark_room · long-untouched room"
+    assert _b._paired("hub", {"features": [{"feature": "hub", "name_implies_consequence": False, "position_name": "high-centrality node"}]}) == "hub"
+    assert _b._paired("x", {"features": []}) == "x"
+    # the most-positions table pairs each entry, keeping its profile note
+    doc = {"features": [{"feature": "foundation", "name_implies_consequence": True, "position_name": "high-load node"}, {"feature": "hub", "name_implies_consequence": False, "position_name": "high-centrality node"}],
+           "top_tier": {"sets": 2, "rooms": [{"room": "a.js", "lines": 5, "fan_in": 9, "test_fan_in": 1, "features": ["foundation (2 profiles)", "hub"]}]}, "co_located_rooms": 1}
+    assert "| foundation · high-load node (2 profiles), hub |" in _b.render_most_marked(doc)
