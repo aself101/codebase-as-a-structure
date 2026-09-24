@@ -1,0 +1,2816 @@
+{
+ "as_of": "2026-09-13T12:47:53-10:00",
+ "blame_ignore_revs": {
+  "listed": 0,
+  "present": false
+ },
+ "brief_version": "0.38.0",
+ "by_package": [
+  {
+   "rooms": 206,
+   "scope": "package.json"
+  }
+ ],
+ "calibration": "in-repo, self-relative (system spec §5.3); one frame",
+ "centrality_illustration": {
+  "feature": "hub",
+  "hub_fan_in": 4,
+  "hub_room": "src/config/database.ts",
+  "other_fan_in": 16,
+  "other_room": "src/utils/async-handler.ts"
+ },
+ "co_located_rooms": 76,
+ "cross_scope_edges": 0,
+ "cross_scope_from_tests": 0,
+ "decorative": {
+  "count": 21,
+  "counts": {
+   "crack": 21,
+   "toothpick_wing": 0
+  },
+  "features": [
+   "crack",
+   "toothpick_wing"
+  ]
+ },
+ "diagnostic_count": 319,
+ "diagnostic_count_base": 263,
+ "diagnostic_features": 11,
+ "distinct_room_sets": 10,
+ "edge_count": 1073,
+ "excluded_by_kind": {
+  "config": 6,
+  "migration": 55,
+  "placeholder": 0
+ },
+ "excluded_kinds": [
+  "config",
+  "migration",
+  "placeholder"
+ ],
+ "external_imports": 565,
+ "facts_hash": "4e7b8b5ec9747a330b65e6e6b018888b492a6860fa16ef3f12ac8c00d1ef1a38",
+ "features": [
+  {
+   "at_cutoff": 0,
+   "beyond_cutoff": {
+    "count": 1,
+    "gap": 0.0020499999999999963,
+    "side": "below",
+    "value": 0.7689
+   },
+   "by_scope": {
+    "package.json": 21
+   },
+   "by_wing": {
+    "src": 21
+   },
+   "by_wing_scope_counts": {
+    "src": {
+     "package.json": 21
+    }
+   },
+   "by_wing_scopes": {
+    "src": 1
+   },
+   "caveat": null,
+   "caveat_case": null,
+   "count": 21,
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated on the pre-registered test set (D-015): its tuned weights assign zero to fix history and it does not beat busyness by the margin.",
+   "decorative_signal_reasons": {
+    "bug_pressure_index": "unvalidated on the pre-registered test set (D-015): its tuned weights assign zero to fix history and it does not beat busyness by the margin"
+   },
+   "diagnostic": false,
+   "dominant_dir": {
+    "dir": "src/services/definition",
+    "holds_third": false,
+    "n": 3,
+    "placeable": true,
+    "population": 7,
+    "tied": true,
+    "tied_with": [
+     {
+      "dir": "src/routes/v1",
+      "n": 3,
+      "population": 13
+     }
+    ]
+   },
+   "extra_caveats": [],
+   "feature": "crack",
+   "name_implies_consequence": true,
+   "position_name": "high edit-pressure node",
+   "predicate": "bug_pressure_index >= p90",
+   "profile": "maintainability",
+   "rooms": [
+    "src/config/index.ts",
+    "src/controllers/definition-controller.ts",
+    "src/controllers/fork-controller.ts",
+    "src/db/connection.ts",
+    "src/db/repository/definition-repository.ts",
+    "src/db/repository/version-repository.ts",
+    "src/index.ts",
+    "src/routes/v1/definitions.ts",
+    "src/routes/v1/index.ts",
+    "src/routes/v1/schemas.ts",
+    "src/schemas/enums.ts",
+    "src/services/analytics/analytics-service.ts",
+    "src/services/analytics/health.ts",
+    "src/services/definition/lifecycle.ts",
+    "src/services/definition/mutations.ts",
+    "src/services/definition/queries.ts",
+    "src/services/dependency/index.ts",
+    "src/services/fork/index.ts",
+    "src/services/model/index.ts",
+    "src/services/translation/index.ts",
+    "src/services/version-service.ts"
+   ],
+   "term_reach": {
+    "bug_pressure_index >= p90": 21
+   },
+   "term_ties": {},
+   "thresholds": {
+    "bug_pressure_index >= p90": 0.77095
+   },
+   "tie_touch_files": null,
+   "validation_status": "unvalidated"
+  },
+  {
+   "at_cutoff": 18,
+   "beyond_cutoff": {
+    "count": 1,
+    "gap": 1.664100000000019,
+    "side": "below",
+    "value": 188.1274
+   },
+   "by_scope": {
+    "package.json": 34
+   },
+   "by_wing": {
+    "scripts": 1,
+    "src": 33
+   },
+   "by_wing_scope_counts": {
+    "scripts": {
+     "package.json": 1
+    },
+    "src": {
+     "package.json": 33
+    }
+   },
+   "by_wing_scopes": {
+    "scripts": 1,
+    "src": 1
+   },
+   "caveat": "reads the newest commit that touched the file, whatever the commit did (D-069): a repository-wide formatting or chore commit is a touch, so a room's last substantive edit is at least as old as the clock reads and never younger ({case} were last touched by a commit the repository's .git-blame-ignore-revs disowns)",
+   "caveat_case": "last_touch_blame_ignored == 1",
+   "caveat_case_count": 0,
+   "count": 34,
+   "decorative": false,
+   "decorative_reason": null,
+   "decorative_signal_reasons": {},
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "src/utils",
+    "holds_third": false,
+    "n": 5,
+    "placeable": true,
+    "population": 22,
+    "tied": false,
+    "tied_with": []
+   },
+   "extra_caveats": [],
+   "feature": "dark_room",
+   "name_implies_consequence": true,
+   "position_name": "long-untouched room",
+   "predicate": "last_touched_days >= p90",
+   "profile": "maintainability",
+   "rooms": [
+    "scripts/run-seed.ts",
+    "src/middleware/type-guard.ts",
+    "src/routes/index.ts",
+    "src/routes/v1/render.ts",
+    "src/schemas/cdl/index.ts",
+    "src/schemas/definition/types.ts",
+    "src/schemas/fork/index.ts",
+    "src/schemas/fork/types.ts",
+    "src/schemas/model/index.ts",
+    "src/schemas/model/types.ts",
+    "src/schemas/reference/index.ts",
+    "src/schemas/reference/schema.ts",
+    "src/schemas/reference/transforms.ts",
+    "src/schemas/reference/types.ts",
+    "src/schemas/user/index.ts",
+    "src/schemas/validation/index.ts",
+    "src/schemas/validation/types.ts",
+    "src/schemas/version/index.ts",
+    "src/schemas/version/types.ts",
+    "src/schemas/wdl/context.ts",
+    "src/schemas/wdl/index.ts",
+    "src/terminal/banner.ts",
+    "src/terminal/index.ts",
+    "src/terminal/sections/database.ts",
+    "src/terminal/sections/environment.ts",
+    "src/terminal/sections/index.ts",
+    "src/terminal/sections/server.ts",
+    "src/terminal/startup.ts",
+    "src/terminal/styles.ts",
+    "src/utils/async-handler.ts",
+    "src/utils/cycle-detection.ts",
+    "src/utils/format-definition-id.ts",
+    "src/utils/retry.ts",
+    "src/utils/singleton.ts"
+   ],
+   "term_reach": {
+    "last_touched_days >= p90": 34
+   },
+   "term_ties": {},
+   "thresholds": {
+    "last_touched_days >= p90": 189.7915
+   },
+   "tie_touch_files": 131,
+   "validation_status": "asserted"
+  },
+  {
+   "at_cutoff": null,
+   "beyond_cutoff": null,
+   "by_scope": {
+    "package.json": 33
+   },
+   "by_wing": {
+    "scripts": 1,
+    "src": 32
+   },
+   "by_wing_scope_counts": {
+    "scripts": {
+     "package.json": 1
+    },
+    "src": {
+     "package.json": 32
+    }
+   },
+   "by_wing_scopes": {
+    "scripts": 1,
+    "src": 1
+   },
+   "caveat": "reads a floor on the load blend, not an importer (D-048): a room that nothing imports can clear the floor on inverse fan-out and size alone ({case} have no importer)",
+   "caveat_case": "fan_in == 0",
+   "caveat_case_count": 1,
+   "count": 33,
+   "decorative": false,
+   "decorative_reason": null,
+   "decorative_signal_reasons": {},
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "src/utils",
+    "holds_third": false,
+    "n": 5,
+    "placeable": true,
+    "population": 22,
+    "tied": false,
+    "tied_with": []
+   },
+   "extra_caveats": [
+    {
+     "case": "last_touch_blame_ignored == 1",
+     "case_count": 0,
+     "text": "reads the newest commit that touched the file, whatever the commit did (D-069): a repository-wide formatting or chore commit is a touch, so a room's last substantive edit is at least as old as the clock reads and never younger ({case} were last touched by a commit the repository's .git-blame-ignore-revs disowns)"
+    }
+   ],
+   "feature": "flooded_basement",
+   "importers": {
+    "from_tests": 25,
+    "total": 138
+   },
+   "name_implies_consequence": true,
+   "position_name": "long-untouched room above the load floor",
+   "predicate": "last_touched_days >= p90 and load_index >= 0.10",
+   "profile": "maintainability",
+   "rooms": [
+    "scripts/run-seed.ts",
+    "src/middleware/type-guard.ts",
+    "src/routes/index.ts",
+    "src/routes/v1/render.ts",
+    "src/schemas/cdl/index.ts",
+    "src/schemas/definition/types.ts",
+    "src/schemas/fork/index.ts",
+    "src/schemas/fork/types.ts",
+    "src/schemas/model/index.ts",
+    "src/schemas/model/types.ts",
+    "src/schemas/reference/index.ts",
+    "src/schemas/reference/schema.ts",
+    "src/schemas/reference/transforms.ts",
+    "src/schemas/reference/types.ts",
+    "src/schemas/user/index.ts",
+    "src/schemas/validation/index.ts",
+    "src/schemas/validation/types.ts",
+    "src/schemas/version/index.ts",
+    "src/schemas/version/types.ts",
+    "src/schemas/wdl/context.ts",
+    "src/schemas/wdl/index.ts",
+    "src/terminal/banner.ts",
+    "src/terminal/index.ts",
+    "src/terminal/sections/database.ts",
+    "src/terminal/sections/environment.ts",
+    "src/terminal/sections/server.ts",
+    "src/terminal/startup.ts",
+    "src/terminal/styles.ts",
+    "src/utils/async-handler.ts",
+    "src/utils/cycle-detection.ts",
+    "src/utils/format-definition-id.ts",
+    "src/utils/retry.ts",
+    "src/utils/singleton.ts"
+   ],
+   "term_reach": {
+    "last_touched_days >= p90": 34
+   },
+   "term_ties": {
+    "last_touched_days >= p90": 18
+   },
+   "thresholds": {
+    "last_touched_days >= p90": 189.7915,
+    "load_index >= 0.1": 0.1
+   },
+   "tie_touch_files": null,
+   "validation_status": "asserted"
+  },
+  {
+   "at_cutoff": 0,
+   "beyond_cutoff": {
+    "count": 1,
+    "gap": 0.00019999999999997797,
+    "side": "below",
+    "value": 0.8106
+   },
+   "by_scope": {
+    "package.json": 21
+   },
+   "by_wing": {
+    "src": 21
+   },
+   "by_wing_scope_counts": {
+    "src": {
+     "package.json": 21
+    }
+   },
+   "by_wing_scopes": {
+    "src": 1
+   },
+   "caveat": null,
+   "caveat_case": null,
+   "count": 21,
+   "decorative": false,
+   "decorative_reason": null,
+   "decorative_signal_reasons": {},
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "src/utils",
+    "holds_third": false,
+    "n": 6,
+    "placeable": true,
+    "population": 22,
+    "tied": false,
+    "tied_with": []
+   },
+   "extra_caveats": [],
+   "feature": "foundation",
+   "importers": {
+    "from_tests": 119,
+    "total": 466
+   },
+   "name_implies_consequence": true,
+   "position_name": "high-load node",
+   "predicate": "load_index >= p90",
+   "profile": "maintainability",
+   "rooms": [
+    "src/config/index.ts",
+    "src/db/connection.ts",
+    "src/db/repository/base-repository.ts",
+    "src/middleware/auth.ts",
+    "src/middleware/rate-limit.ts",
+    "src/routes/v1/schemas.ts",
+    "src/schemas/definition/provenance.ts",
+    "src/schemas/enums.ts",
+    "src/schemas/user/schema.ts",
+    "src/services/definition-renderer/index.ts",
+    "src/services/safety/analyzer-version.ts",
+    "src/services/safety/deep-analysis-queue.ts",
+    "src/services/safety/definition-scanner.ts",
+    "src/services/safety/types.ts",
+    "src/services/safety/yaml-walker.ts",
+    "src/utils/async-handler.ts",
+    "src/utils/errors.ts",
+    "src/utils/logger.ts",
+    "src/utils/singleton.ts",
+    "src/utils/uuid.ts",
+    "src/utils/validated-request.ts"
+   ],
+   "term_reach": {
+    "load_index >= p90": 21
+   },
+   "term_ties": {},
+   "thresholds": {
+    "load_index >= p90": 0.8108
+   },
+   "tie_touch_files": null,
+   "validation_status": "asserted"
+  },
+  {
+   "at_cutoff": 0,
+   "beyond_cutoff": {
+    "count": 1,
+    "gap": 4.99999999999997e-05,
+    "side": "below",
+    "value": 0.0052
+   },
+   "by_scope": {
+    "package.json": 21
+   },
+   "by_wing": {
+    "src": 21
+   },
+   "by_wing_scope_counts": {
+    "src": {
+     "package.json": 21
+    }
+   },
+   "by_wing_scopes": {
+    "src": 1
+   },
+   "caveat": null,
+   "caveat_case": null,
+   "count": 21,
+   "decorative": false,
+   "decorative_reason": null,
+   "decorative_signal_reasons": {},
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "src/utils",
+    "holds_third": false,
+    "n": 5,
+    "placeable": true,
+    "population": 22,
+    "tied": false,
+    "tied_with": []
+   },
+   "extra_caveats": [],
+   "feature": "hub",
+   "importers": {
+    "from_tests": 114,
+    "total": 434
+   },
+   "name_implies_consequence": false,
+   "position_name": "high-centrality node",
+   "predicate": "centrality >= p90",
+   "profile": "maintainability",
+   "rooms": [
+    "src/config/database.ts",
+    "src/config/index.ts",
+    "src/db/connection.ts",
+    "src/db/repository/base-repository.ts",
+    "src/db/repository/index.ts",
+    "src/middleware/auth.ts",
+    "src/routes/v1/schemas.ts",
+    "src/schemas/definition/provenance.ts",
+    "src/schemas/definition/schema.ts",
+    "src/schemas/enums.ts",
+    "src/schemas/model/schema.ts",
+    "src/schemas/user/schema.ts",
+    "src/services/safety/definition-scanner.ts",
+    "src/services/safety/types.ts",
+    "src/services/safety/yaml-walker.ts",
+    "src/terminal/styles.ts",
+    "src/utils/errors.ts",
+    "src/utils/logger.ts",
+    "src/utils/request-context.ts",
+    "src/utils/singleton.ts",
+    "src/utils/uuid.ts"
+   ],
+   "term_reach": {
+    "centrality >= p90": 21
+   },
+   "term_ties": {},
+   "thresholds": {
+    "centrality >= p90": 0.0052499999999999995
+   },
+   "tie_touch_files": null,
+   "validation_status": "asserted"
+  },
+  {
+   "at_cutoff": 0,
+   "beyond_cutoff": {
+    "count": 1,
+    "gap": 0.04954999999999998,
+    "side": "above",
+    "value": 20.1756
+   },
+   "by_scope": {
+    "package.json": 21
+   },
+   "by_wing": {
+    "src": 21
+   },
+   "by_wing_scope_counts": {
+    "src": {
+     "package.json": 21
+    }
+   },
+   "by_wing_scopes": {
+    "src": 1
+   },
+   "caveat": "reads the newest commit that touched the file, whatever the commit did (D-069): a repository-wide formatting or chore commit is a touch, so a room can read as recently touched on a chore alone ({case} were last touched by a commit the repository's .git-blame-ignore-revs disowns)",
+   "caveat_case": "last_touch_blame_ignored == 1",
+   "caveat_case_count": 0,
+   "count": 21,
+   "decorative": false,
+   "decorative_reason": null,
+   "decorative_signal_reasons": {},
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "src/services/safety",
+    "holds_third": false,
+    "n": 3,
+    "placeable": true,
+    "population": 14,
+    "tied": true,
+    "tied_with": [
+     {
+      "dir": "src/services/analytics",
+      "n": 3,
+      "population": 6
+     },
+     {
+      "dir": "src/services/definition",
+      "n": 3,
+      "population": 7
+     }
+    ]
+   },
+   "extra_caveats": [],
+   "feature": "lit_room",
+   "name_implies_consequence": false,
+   "position_name": "recently-touched room",
+   "predicate": "last_touched_days <= p10",
+   "profile": "maintainability",
+   "rooms": [
+    "src/controllers/definition-controller.ts",
+    "src/controllers/dependency-controller.ts",
+    "src/db/connection.ts",
+    "src/db/repository/definition-repository.ts",
+    "src/db/repository/lineage-repository.ts",
+    "src/index.ts",
+    "src/middleware/validate.ts",
+    "src/routes/v1/definitions.ts",
+    "src/schemas/enums.ts",
+    "src/services/analytics/analytics-service.ts",
+    "src/services/analytics/health.ts",
+    "src/services/analytics/types.ts",
+    "src/services/definition/lifecycle.ts",
+    "src/services/definition/queries.ts",
+    "src/services/definition/quota.ts",
+    "src/services/dependency/index.ts",
+    "src/services/safety/capabilities.ts",
+    "src/services/safety/deep-analysis-queue.ts",
+    "src/services/safety/publish-gate.ts",
+    "src/services/translation/translator.ts",
+    "src/utils/definition-response.ts"
+   ],
+   "term_reach": {
+    "last_touched_days <= p10": 21
+   },
+   "term_ties": {},
+   "thresholds": {
+    "last_touched_days <= p10": 20.12605
+   },
+   "tie_touch_files": null,
+   "validation_status": "asserted"
+  },
+  {
+   "at_cutoff": null,
+   "beyond_cutoff": null,
+   "by_scope": {
+    "package.json": 133
+   },
+   "by_wing": {
+    "src": 133
+   },
+   "by_wing_scope_counts": {
+    "src": {
+     "package.json": 133
+    }
+   },
+   "by_wing_scopes": {
+    "src": 1
+   },
+   "caveat": "reads whether any file under the test convention imports the room (test_fan_in > 0, D-011): the index is 0 with no test importer and 0.5 or more with one, so 0.5 is its floor, not a midpoint; a helper or fixture under the test paths counts as a test importer, and one import suffices; a room that tests reach only through a re-exporting barrel, or load by a path computed at run time, has no test importer of its own",
+   "caveat_case": null,
+   "count": 133,
+   "decorative": false,
+   "decorative_reason": null,
+   "decorative_signal_reasons": {},
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "src/utils",
+    "holds_third": false,
+    "n": 20,
+    "placeable": true,
+    "population": 22,
+    "tied": false,
+    "tied_with": []
+   },
+   "extra_caveats": [],
+   "feature": "scaffolding",
+   "name_implies_consequence": true,
+   "position_name": "test-imported room",
+   "predicate": "reinforcement_index >= 0.5",
+   "profile": "maintainability",
+   "rooms": [
+    "src/config/database.ts",
+    "src/config/index.ts",
+    "src/controllers/analytics-controller.ts",
+    "src/controllers/definition-analytics-controller.ts",
+    "src/controllers/definition-controller.ts",
+    "src/controllers/dependency-controller.ts",
+    "src/controllers/execution-controller.ts",
+    "src/controllers/fork-controller.ts",
+    "src/controllers/model-controller.ts",
+    "src/controllers/org-controller.ts",
+    "src/controllers/org-profile-controller.ts",
+    "src/controllers/star-controller.ts",
+    "src/controllers/translation-controller.ts",
+    "src/controllers/user-controller.ts",
+    "src/controllers/validation-controller.ts",
+    "src/controllers/version-controller.ts",
+    "src/controllers/webhook-controller.ts",
+    "src/db/connection.ts",
+    "src/db/repository/alias-repository.ts",
+    "src/db/repository/analytics-repository.ts",
+    "src/db/repository/base-repository.ts",
+    "src/db/repository/definition-repository.ts",
+    "src/db/repository/fork-repository.ts",
+    "src/db/repository/index.ts",
+    "src/db/repository/model-repository.ts",
+    "src/db/repository/provider-repository.ts",
+    "src/db/repository/reference-repository.ts",
+    "src/db/repository/tracker-repository.ts",
+    "src/db/repository/user-repository.ts",
+    "src/db/repository/version-repository.ts",
+    "src/index.ts",
+    "src/middleware/auth.ts",
+    "src/middleware/correlation-id.ts",
+    "src/middleware/degradation-header.ts",
+    "src/middleware/error-handler.ts",
+    "src/middleware/index.ts",
+    "src/middleware/metrics.ts",
+    "src/middleware/parse-version.ts",
+    "src/middleware/pool-pressure.ts",
+    "src/middleware/rate-limit.ts",
+    "src/middleware/request-logger.ts",
+    "src/middleware/service-key.ts",
+    "src/middleware/tier-gate.ts",
+    "src/middleware/type-guard.ts",
+    "src/middleware/username-gate.ts",
+    "src/middleware/validate.ts",
+    "src/routes/v1/definitions.ts",
+    "src/routes/v1/index.ts",
+    "src/routes/v1/models.ts",
+    "src/routes/v1/render.ts",
+    "src/routes/v1/schemas.ts",
+    "src/schemas/cdl/types.ts",
+    "src/schemas/definition/provenance.ts",
+    "src/schemas/definition/schema.ts",
+    "src/schemas/definition/transforms.ts",
+    "src/schemas/definition/types.ts",
+    "src/schemas/enums.ts",
+    "src/schemas/fork/schema.ts",
+    "src/schemas/fork/transforms.ts",
+    "src/schemas/fork/types.ts",
+    "src/schemas/model/schema.ts",
+    "src/schemas/model/transforms.ts",
+    "src/schemas/model/types.ts",
+    "src/schemas/reference/schema.ts",
+    "src/schemas/reference/transforms.ts",
+    "src/schemas/reference/types.ts",
+    "src/schemas/user/index.ts",
+    "src/schemas/user/schema.ts",
+    "src/schemas/user/transforms.ts",
+    "src/schemas/validation/schema.ts",
+    "src/schemas/validation/types.ts",
+    "src/schemas/version/schema.ts",
+    "src/schemas/version/transforms.ts",
+    "src/schemas/version/types.ts",
+    "src/schemas/wdl/types.ts",
+    "src/services/analytics/analytics-service.ts",
+    "src/services/analytics/composition-lift.ts",
+    "src/services/analytics/definition-analytics-service.ts",
+    "src/services/analytics/health.ts",
+    "src/services/analytics/recomputation-service.ts",
+    "src/services/analytics/types.ts",
+    "src/services/definition-renderer/index.ts",
+    "src/services/definition/index.ts",
+    "src/services/definition/lifecycle.ts",
+    "src/services/definition/mutations.ts",
+    "src/services/definition/queries.ts",
+    "src/services/definition/quota.ts",
+    "src/services/definition/status-machine.ts",
+    "src/services/dependency/index.ts",
+    "src/services/executions/index.ts",
+    "src/services/fork/index.ts",
+    "src/services/model/index.ts",
+    "src/services/safety/analyzer-version.ts",
+    "src/services/safety/capabilities.ts",
+    "src/services/safety/decode.ts",
+    "src/services/safety/deep-analysis-queue.ts",
+    "src/services/safety/deep-analysis-worker.ts",
+    "src/services/safety/definition-scanner.ts",
+    "src/services/safety/fork-diff.ts",
+    "src/services/safety/index.ts",
+    "src/services/safety/publish-gate.ts",
+    "src/services/safety/risk-calculator.ts",
+    "src/services/safety/section-classifier.ts",
+    "src/services/safety/signals.ts",
+    "src/services/safety/types.ts",
+    "src/services/safety/yaml-walker.ts",
+    "src/services/star/index.ts",
+    "src/services/translation/index.ts",
+    "src/services/translation/translator.ts",
+    "src/services/validation/index.ts",
+    "src/services/validation/reference-validator.ts",
+    "src/services/version-service.ts",
+    "src/shutdown.ts",
+    "src/utils/analytics-helpers.ts",
+    "src/utils/async-handler.ts",
+    "src/utils/circuit-breaker.ts",
+    "src/utils/cycle-detection.ts",
+    "src/utils/definition-metadata.ts",
+    "src/utils/definition-response.ts",
+    "src/utils/errors.ts",
+    "src/utils/fork-identity.ts",
+    "src/utils/format-definition-id.ts",
+    "src/utils/hash.ts",
+    "src/utils/json.ts",
+    "src/utils/logger.ts",
+    "src/utils/platform-version-gate.ts",
+    "src/utils/read-through-cache.ts",
+    "src/utils/request-context.ts",
+    "src/utils/resolve-author.ts",
+    "src/utils/retry.ts",
+    "src/utils/singleton.ts",
+    "src/utils/uuid.ts",
+    "src/utils/validated-request.ts"
+   ],
+   "term_reach": {},
+   "term_ties": {},
+   "thresholds": {
+    "reinforcement_index >= 0.5": 0.5
+   },
+   "tie_touch_files": null,
+   "validation_status": "asserted",
+   "via_importer": {
+    "own_reached": 0,
+    "reached": 18,
+    "side": "complement",
+    "without": 73
+   }
+  },
+  {
+   "at_cutoff": null,
+   "beyond_cutoff": null,
+   "by_scope": {},
+   "by_wing": {},
+   "by_wing_scope_counts": {},
+   "by_wing_scopes": {},
+   "caveat": "reads test_fan_in == 0 as the graph resolved it (D-011): a room whose tests import it through an alias the resolver did not place, or only through a re-exporting barrel, or only by a path computed at run time, reads as unreinforced",
+   "caveat_case": null,
+   "count": 0,
+   "decorative": true,
+   "decorative_reason": "bug_pressure_index is unvalidated on the pre-registered test set (D-015): its tuned weights assign zero to fix history and it does not beat busyness by the margin. The fragility half of this feature has no forecast to stand on; it renders as decorative, counted, and excluded from diagnostic claims until a reference repo validates the index.",
+   "decorative_signal_reasons": {
+    "bug_pressure_index": "unvalidated on the pre-registered test set (D-015): its tuned weights assign zero to fix history and it does not beat busyness by the margin"
+   },
+   "diagnostic": false,
+   "dominant_dir": {
+    "dir": "(root)",
+    "holds_third": true,
+    "n": 0,
+    "placeable": false,
+    "population": 1,
+    "tied": false,
+    "tied_with": []
+   },
+   "extra_caveats": [],
+   "feature": "toothpick_wing",
+   "importers": {
+    "from_tests": 0,
+    "total": 0
+   },
+   "name_implies_consequence": true,
+   "position_name": "unreinforced high-load node with high edit pressure",
+   "predicate": "load_index >= p90 and bug_pressure_index >= p90 and reinforcement_index <= 0.0",
+   "profile": "maintainability",
+   "rooms": [],
+   "term_reach": {},
+   "term_ties": {},
+   "thresholds": {},
+   "tie_touch_files": null,
+   "validation_status": null,
+   "via_importer": {
+    "own_reached": 0,
+    "reached": 18,
+    "side": "complement",
+    "without": 73
+   }
+  },
+  {
+   "at_cutoff": null,
+   "beyond_cutoff": null,
+   "by_scope": {
+    "package.json": 8
+   },
+   "by_wing": {
+    "src": 8
+   },
+   "by_wing_scope_counts": {
+    "src": {
+     "package.json": 8
+    }
+   },
+   "by_wing_scopes": {
+    "src": 1
+   },
+   "caveat": null,
+   "caveat_case": null,
+   "count": 8,
+   "decorative": false,
+   "decorative_reason": null,
+   "decorative_signal_reasons": {},
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "src/db/repository",
+    "holds_third": false,
+    "n": 2,
+    "placeable": true,
+    "population": 15,
+    "tied": false,
+    "tied_with": []
+   },
+   "extra_caveats": [],
+   "feature": "corridor",
+   "importers": {
+    "from_tests": 44,
+    "total": 191
+   },
+   "name_implies_consequence": false,
+   "position_name": "high-centrality junction with fan-out at or above the median",
+   "predicate": "centrality >= p90 and fan_out >= p50",
+   "profile": "onboarding",
+   "rooms": [
+    "src/db/connection.ts",
+    "src/db/repository/base-repository.ts",
+    "src/db/repository/index.ts",
+    "src/middleware/auth.ts",
+    "src/routes/v1/schemas.ts",
+    "src/schemas/definition/schema.ts",
+    "src/services/safety/definition-scanner.ts",
+    "src/utils/logger.ts"
+   ],
+   "term_reach": {
+    "centrality >= p90": 21,
+    "fan_out >= p50": 124
+   },
+   "term_ties": {
+    "centrality >= p90": 0,
+    "fan_out >= p50": 26
+   },
+   "thresholds": {
+    "centrality >= p90": 0.0052499999999999995,
+    "fan_out >= p50": 2.0
+   },
+   "tie_touch_files": null,
+   "validation_status": "asserted"
+  },
+  {
+   "at_cutoff": 0,
+   "beyond_cutoff": {
+    "count": 1,
+    "gap": 0.00019999999999997797,
+    "side": "below",
+    "value": 0.8106
+   },
+   "by_scope": {
+    "package.json": 21
+   },
+   "by_wing": {
+    "src": 21
+   },
+   "by_wing_scope_counts": {
+    "src": {
+     "package.json": 21
+    }
+   },
+   "by_wing_scopes": {
+    "src": 1
+   },
+   "caveat": null,
+   "caveat_case": null,
+   "count": 21,
+   "decorative": false,
+   "decorative_reason": null,
+   "decorative_signal_reasons": {},
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "src/utils",
+    "holds_third": false,
+    "n": 6,
+    "placeable": true,
+    "population": 22,
+    "tied": false,
+    "tied_with": []
+   },
+   "extra_caveats": [],
+   "feature": "foundation",
+   "importers": {
+    "from_tests": 119,
+    "total": 466
+   },
+   "name_implies_consequence": true,
+   "position_name": "high-load node",
+   "predicate": "load_index >= p90",
+   "profile": "onboarding",
+   "rooms": [
+    "src/config/index.ts",
+    "src/db/connection.ts",
+    "src/db/repository/base-repository.ts",
+    "src/middleware/auth.ts",
+    "src/middleware/rate-limit.ts",
+    "src/routes/v1/schemas.ts",
+    "src/schemas/definition/provenance.ts",
+    "src/schemas/enums.ts",
+    "src/schemas/user/schema.ts",
+    "src/services/definition-renderer/index.ts",
+    "src/services/safety/analyzer-version.ts",
+    "src/services/safety/deep-analysis-queue.ts",
+    "src/services/safety/definition-scanner.ts",
+    "src/services/safety/types.ts",
+    "src/services/safety/yaml-walker.ts",
+    "src/utils/async-handler.ts",
+    "src/utils/errors.ts",
+    "src/utils/logger.ts",
+    "src/utils/singleton.ts",
+    "src/utils/uuid.ts",
+    "src/utils/validated-request.ts"
+   ],
+   "term_reach": {
+    "load_index >= p90": 21
+   },
+   "term_ties": {},
+   "thresholds": {
+    "load_index >= p90": 0.8108
+   },
+   "tie_touch_files": null,
+   "validation_status": "asserted"
+  },
+  {
+   "at_cutoff": null,
+   "beyond_cutoff": null,
+   "by_scope": {
+    "package.json": 10
+   },
+   "by_wing": {
+    "scripts": 7,
+    "src": 3
+   },
+   "by_wing_scope_counts": {
+    "scripts": {
+     "package.json": 7
+    },
+    "src": {
+     "package.json": 3
+    }
+   },
+   "by_wing_scopes": {
+    "scripts": 1,
+    "src": 1
+   },
+   "caveat": "reads no fan-in, not entrance (D-029): a package entry that anything imports — a room or a test file — cannot qualify, and one that nothing imports can ({case} are declared package entries)",
+   "caveat_case": "is_package_entry == 1",
+   "caveat_case_count": 0,
+   "count": 10,
+   "decorative": false,
+   "decorative_reason": null,
+   "decorative_signal_reasons": {},
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "scripts",
+    "holds_third": true,
+    "n": 7,
+    "placeable": true,
+    "population": 27,
+    "tied": false,
+    "tied_with": []
+   },
+   "extra_caveats": [],
+   "feature": "import_root",
+   "importers": {
+    "from_tests": 0,
+    "total": 0
+   },
+   "name_implies_consequence": false,
+   "position_name": "import-graph root with fan-out at or above the upper quartile",
+   "predicate": "fan_in == 0 and fan_out >= p75",
+   "profile": "onboarding",
+   "rooms": [
+    "scripts/backfill-fork-parents.ts",
+    "scripts/backfill-missing-risk-profiles.ts",
+    "scripts/backfill-stale-risk-profiles.ts",
+    "scripts/backfill-stale-runtime-md.ts",
+    "scripts/backfill-version-stamping.ts",
+    "scripts/calibration-gate.ts",
+    "scripts/run-deep-analysis.ts",
+    "src/controllers/index.ts",
+    "src/schemas/index.ts",
+    "src/services/index.ts"
+   ],
+   "term_reach": {
+    "fan_out >= p75": 61
+   },
+   "term_ties": {
+    "fan_out >= p75": 15
+   },
+   "thresholds": {
+    "fan_in == 0": 0.0,
+    "fan_out >= p75": 5.0
+   },
+   "tie_touch_files": null,
+   "validation_status": "asserted"
+  },
+  {
+   "at_cutoff": null,
+   "beyond_cutoff": null,
+   "by_scope": {
+    "package.json": 16
+   },
+   "by_wing": {
+    "src": 16
+   },
+   "by_wing_scope_counts": {
+    "src": {
+     "package.json": 16
+    }
+   },
+   "by_wing_scopes": {
+    "src": 1
+   },
+   "caveat": null,
+   "caveat_case": null,
+   "count": 16,
+   "decorative": false,
+   "decorative_reason": null,
+   "decorative_signal_reasons": {},
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "src/utils",
+    "holds_third": true,
+    "n": 9,
+    "placeable": true,
+    "population": 22,
+    "tied": false,
+    "tied_with": []
+   },
+   "extra_caveats": [],
+   "feature": "leaf_utility",
+   "importers": {
+    "from_tests": 76,
+    "total": 254
+   },
+   "name_implies_consequence": false,
+   "position_name": "imported leaf with fan-in at or above the upper quartile",
+   "predicate": "fan_out == 0 and fan_in >= p75",
+   "profile": "onboarding",
+   "rooms": [
+    "src/config/index.ts",
+    "src/schemas/definition/provenance.ts",
+    "src/schemas/user/schema.ts",
+    "src/services/safety/analyzer-version.ts",
+    "src/services/safety/types.ts",
+    "src/services/safety/yaml-walker.ts",
+    "src/terminal/styles.ts",
+    "src/utils/async-handler.ts",
+    "src/utils/errors.ts",
+    "src/utils/format-definition-id.ts",
+    "src/utils/hash.ts",
+    "src/utils/json.ts",
+    "src/utils/request-context.ts",
+    "src/utils/singleton.ts",
+    "src/utils/uuid.ts",
+    "src/utils/validated-request.ts"
+   ],
+   "term_reach": {
+    "fan_in >= p75": 59
+   },
+   "term_ties": {
+    "fan_in >= p75": 10
+   },
+   "thresholds": {
+    "fan_in >= p75": 5.0,
+    "fan_out == 0": 0.0
+   },
+   "tie_touch_files": null,
+   "validation_status": "asserted"
+  },
+  {
+   "at_cutoff": null,
+   "beyond_cutoff": null,
+   "by_scope": {
+    "package.json": 1
+   },
+   "by_wing": {
+    "src": 1
+   },
+   "by_wing_scope_counts": {
+    "src": {
+     "package.json": 1
+    }
+   },
+   "by_wing_scopes": {
+    "src": 1
+   },
+   "caveat": null,
+   "caveat_case": null,
+   "count": 1,
+   "decorative": false,
+   "decorative_reason": null,
+   "decorative_signal_reasons": {},
+   "diagnostic": true,
+   "dominant_dir": {
+    "dir": "src",
+    "holds_third": true,
+    "n": 1,
+    "placeable": false,
+    "population": 2,
+    "tied": false,
+    "tied_with": []
+   },
+   "extra_caveats": [],
+   "feature": "package_entry",
+   "name_implies_consequence": false,
+   "position_name": "declared package entry",
+   "predicate": "is_package_entry == 1",
+   "profile": "onboarding",
+   "rooms": [
+    "src/index.ts"
+   ],
+   "term_reach": {},
+   "term_ties": {},
+   "thresholds": {
+    "is_package_entry == 1": 1.0
+   },
+   "tie_touch_files": null,
+   "validation_status": "asserted"
+  }
+ ],
+ "gate": {
+  "bug_pressure_index": "unvalidated",
+  "centrality": "asserted",
+  "fan_in": "asserted",
+  "fan_out": "asserted",
+  "is_package_entry": "asserted",
+  "last_touched_days": "asserted",
+  "load_index": "asserted",
+  "reinforcement_index": "asserted"
+ },
+ "gate_fingerprint": "177c129be9b55da3a51422d263c4cbbeae133fee28523241a6aa8098fb4e33e8",
+ "geometry": "age",
+ "index_weights": {
+  "bug_pressure_index": {
+   "commit_count": 0.5,
+   "recency": 0.2,
+   "revert_count": 0.3
+  },
+  "load_index": {
+   "centrality": 0.3,
+   "fan_in_nonzero": 0.5,
+   "inv_fan_out": 0.1,
+   "size_loc": 0.1
+  }
+ },
+ "kind_conventions": {
+  "config_file_regex": "^(\\.?[A-Za-z0-9_-]+rc|[A-Za-z0-9_.-]+\\.(config|conf))\\.[cm]?[jt]sx?$",
+  "migration_dir_regex": "(^|/)migrations?/",
+  "placeholder_content_regex": "^\\s*(export\\s*\\{\\s*\\}\\s*;?\\s*|module\\.exports\\s*=\\s*\\{\\s*\\}\\s*;?\\s*)?$"
+ },
+ "most_marked_rooms": [
+  {
+   "features": [
+    "dark_room",
+    "flooded_basement",
+    "hub",
+    "leaf_utility",
+    "maintainability/foundation",
+    "onboarding/foundation",
+    "scaffolding"
+   ],
+   "listed_at_this_count": 1,
+   "marks": 7,
+   "room": "src/utils/singleton.ts",
+   "rooms_at_this_count": 1,
+   "sets": 6,
+   "unlisted": []
+  },
+  {
+   "features": [
+    "corridor",
+    "hub",
+    "lit_room",
+    "maintainability/foundation",
+    "onboarding/foundation",
+    "scaffolding"
+   ],
+   "listed_at_this_count": 2,
+   "marks": 6,
+   "room": "src/db/connection.ts",
+   "rooms_at_this_count": 2,
+   "sets": 5,
+   "unlisted": []
+  },
+  {
+   "features": [
+    "dark_room",
+    "flooded_basement",
+    "leaf_utility",
+    "maintainability/foundation",
+    "onboarding/foundation",
+    "scaffolding"
+   ],
+   "listed_at_this_count": 2,
+   "marks": 6,
+   "room": "src/utils/async-handler.ts",
+   "rooms_at_this_count": 2,
+   "sets": 5,
+   "unlisted": []
+  },
+  {
+   "features": [
+    "hub",
+    "leaf_utility",
+    "maintainability/foundation",
+    "onboarding/foundation",
+    "scaffolding"
+   ],
+   "listed_at_this_count": 2,
+   "marks": 5,
+   "room": "src/config/index.ts",
+   "rooms_at_this_count": 15,
+   "sets": 4,
+   "unlisted": [
+    "src/middleware/auth.ts",
+    "src/routes/v1/schemas.ts",
+    "src/schemas/definition/provenance.ts",
+    "src/schemas/enums.ts",
+    "src/schemas/user/schema.ts",
+    "src/services/safety/definition-scanner.ts",
+    "src/services/safety/types.ts",
+    "src/services/safety/yaml-walker.ts",
+    "src/terminal/styles.ts",
+    "src/utils/errors.ts",
+    "src/utils/format-definition-id.ts",
+    "src/utils/logger.ts",
+    "src/utils/uuid.ts"
+   ]
+  },
+  {
+   "features": [
+    "corridor",
+    "hub",
+    "maintainability/foundation",
+    "onboarding/foundation",
+    "scaffolding"
+   ],
+   "listed_at_this_count": 2,
+   "marks": 5,
+   "room": "src/db/repository/base-repository.ts",
+   "rooms_at_this_count": 15,
+   "sets": 4,
+   "unlisted": [
+    "src/middleware/auth.ts",
+    "src/routes/v1/schemas.ts",
+    "src/schemas/definition/provenance.ts",
+    "src/schemas/enums.ts",
+    "src/schemas/user/schema.ts",
+    "src/services/safety/definition-scanner.ts",
+    "src/services/safety/types.ts",
+    "src/services/safety/yaml-walker.ts",
+    "src/terminal/styles.ts",
+    "src/utils/errors.ts",
+    "src/utils/format-definition-id.ts",
+    "src/utils/logger.ts",
+    "src/utils/uuid.ts"
+   ]
+  }
+ ],
+ "node_count": 456,
+ "overlaps": [
+  {
+   "a": "maintainability/crack",
+   "b": "maintainability/scaffolding",
+   "by_predicate": false,
+   "diagnostic": false,
+   "n": 21,
+   "n_outside": 112,
+   "relation": "within",
+   "shared_signals": []
+  },
+  {
+   "a": "maintainability/flooded_basement",
+   "b": "maintainability/dark_room",
+   "by_predicate": true,
+   "diagnostic": true,
+   "n": 33,
+   "n_outside": 1,
+   "relation": "within",
+   "shared_signals": []
+  },
+  {
+   "a": "maintainability/foundation",
+   "b": "maintainability/scaffolding",
+   "by_predicate": false,
+   "diagnostic": true,
+   "n": 21,
+   "n_outside": 112,
+   "relation": "within",
+   "shared_signals": []
+  },
+  {
+   "a": "maintainability/foundation",
+   "b": "onboarding/foundation",
+   "diagnostic": true,
+   "inert_terms": [],
+   "n": 21,
+   "relation": "identical",
+   "shared_predicate": true
+  },
+  {
+   "a": "onboarding/corridor",
+   "b": "maintainability/hub",
+   "by_predicate": true,
+   "diagnostic": true,
+   "n": 8,
+   "n_outside": 13,
+   "relation": "within",
+   "shared_signals": []
+  },
+  {
+   "a": "onboarding/corridor",
+   "b": "maintainability/scaffolding",
+   "by_predicate": false,
+   "diagnostic": true,
+   "n": 8,
+   "n_outside": 125,
+   "relation": "within",
+   "shared_signals": []
+  },
+  {
+   "a": "onboarding/foundation",
+   "b": "maintainability/scaffolding",
+   "by_predicate": false,
+   "diagnostic": true,
+   "n": 21,
+   "n_outside": 112,
+   "relation": "within",
+   "shared_signals": []
+  }
+ ],
+ "overlays": [
+  "onboarding"
+ ],
+ "package_name_from_tests": 0,
+ "package_name_imports": 0,
+ "package_names": [
+  "uluops-registry-api"
+ ],
+ "packages": 1,
+ "population": 206,
+ "profile": "maintainability",
+ "profile_versions": {
+  "maintainability": "0.3.3",
+  "onboarding": "0.3.0"
+ },
+ "relation_counts": {
+  "identical": 1,
+  "total": 7,
+  "within": 6
+ },
+ "repo": {
+  "head_sha": "e947c5b67542e4bfaef11ac0aea00f6c1f0f44f2",
+  "name": "uluops-registry-api"
+ },
+ "rooms": {
+  "knexfile.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 59
+  },
+  "scripts/backfill-deep-analysis.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 71
+  },
+  "scripts/backfill-definition-tags.ts": {
+   "fan_in": 0,
+   "fan_out": 3,
+   "lines": 100
+  },
+  "scripts/backfill-fork-parents.ts": {
+   "fan_in": 0,
+   "fan_out": 5,
+   "lines": 110
+  },
+  "scripts/backfill-is-latest.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 118
+  },
+  "scripts/backfill-missing-risk-profiles.ts": {
+   "fan_in": 0,
+   "fan_out": 6,
+   "lines": 149
+  },
+  "scripts/backfill-normalize-hashes.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 130
+  },
+  "scripts/backfill-references.ts": {
+   "fan_in": 0,
+   "fan_out": 4,
+   "lines": 54
+  },
+  "scripts/backfill-risk-scalars.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 178
+  },
+  "scripts/backfill-stale-risk-profiles.ts": {
+   "fan_in": 0,
+   "fan_out": 8,
+   "lines": 215
+  },
+  "scripts/backfill-stale-runtime-md.ts": {
+   "fan_in": 0,
+   "fan_out": 7,
+   "lines": 245
+  },
+  "scripts/backfill-unique-execution-count.ts": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 117
+  },
+  "scripts/backfill-version-stamping.ts": {
+   "fan_in": 0,
+   "fan_out": 5,
+   "lines": 187
+  },
+  "scripts/backup-db.sh": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 112
+  },
+  "scripts/calibration-gate.ts": {
+   "fan_in": 0,
+   "fan_out": 5,
+   "lines": 258
+  },
+  "scripts/check-optionalauth-nonget.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 146
+  },
+  "scripts/cron/deep-analysis.sh": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 43
+  },
+  "scripts/cron/executions-retention.sh": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 45
+  },
+  "scripts/cron/models-sync.sh": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 33
+  },
+  "scripts/lineage-consistency-check.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 238
+  },
+  "scripts/list-pre-a1-versions.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 112
+  },
+  "scripts/measure-risk-profile-staleness.ts": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 127
+  },
+  "scripts/provision-test-db.sh": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 84
+  },
+  "scripts/requeue-deep-stale.ts": {
+   "fan_in": 0,
+   "fan_out": 3,
+   "lines": 120
+  },
+  "scripts/retranslate-corpus.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 323
+  },
+  "scripts/run-deep-analysis.ts": {
+   "fan_in": 0,
+   "fan_out": 5,
+   "lines": 122
+  },
+  "scripts/run-seed.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 22
+  },
+  "scripts/setup-test-auth-db.ts": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 122
+  },
+  "scripts/time-recompute-all.ts": {
+   "fan_in": 0,
+   "fan_out": 2,
+   "lines": 32
+  },
+  "scripts/undeclared-query-params.py": {
+   "fan_in": 0,
+   "fan_out": 0,
+   "lines": 111
+  },
+  "scripts/verify-hash-parity.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 175
+  },
+  "src/config/database.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 141
+  },
+  "src/config/index.ts": {
+   "fan_in": 15,
+   "fan_out": 0,
+   "lines": 157
+  },
+  "src/controllers/analytics-controller.ts": {
+   "fan_in": 3,
+   "fan_out": 6,
+   "lines": 68
+  },
+  "src/controllers/deep-analysis-controller.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 57
+  },
+  "src/controllers/definition-analytics-controller.ts": {
+   "fan_in": 3,
+   "fan_out": 6,
+   "lines": 110
+  },
+  "src/controllers/definition-controller.ts": {
+   "fan_in": 4,
+   "fan_out": 19,
+   "lines": 668
+  },
+  "src/controllers/definition-language-controller.ts": {
+   "fan_in": 2,
+   "fan_out": 4,
+   "lines": 45
+  },
+  "src/controllers/dependency-controller.ts": {
+   "fan_in": 3,
+   "fan_out": 4,
+   "lines": 100
+  },
+  "src/controllers/execution-controller.ts": {
+   "fan_in": 4,
+   "fan_out": 4,
+   "lines": 116
+  },
+  "src/controllers/fork-controller.ts": {
+   "fan_in": 3,
+   "fan_out": 9,
+   "lines": 253
+  },
+  "src/controllers/index.ts": {
+   "fan_in": 0,
+   "fan_out": 14,
+   "lines": 56
+  },
+  "src/controllers/model-controller.ts": {
+   "fan_in": 3,
+   "fan_out": 4,
+   "lines": 154
+  },
+  "src/controllers/org-controller.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 56
+  },
+  "src/controllers/org-profile-controller.ts": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 124
+  },
+  "src/controllers/star-controller.ts": {
+   "fan_in": 3,
+   "fan_out": 5,
+   "lines": 65
+  },
+  "src/controllers/translation-controller.ts": {
+   "fan_in": 3,
+   "fan_out": 9,
+   "lines": 114
+  },
+  "src/controllers/user-controller.ts": {
+   "fan_in": 3,
+   "fan_out": 6,
+   "lines": 60
+  },
+  "src/controllers/validation-controller.ts": {
+   "fan_in": 3,
+   "fan_out": 6,
+   "lines": 61
+  },
+  "src/controllers/version-controller.ts": {
+   "fan_in": 3,
+   "fan_out": 7,
+   "lines": 105
+  },
+  "src/controllers/webhook-controller.ts": {
+   "fan_in": 3,
+   "fan_out": 8,
+   "lines": 244
+  },
+  "src/db/connection.ts": {
+   "fan_in": 45,
+   "fan_out": 3,
+   "lines": 383
+  },
+  "src/db/repository/alias-repository.ts": {
+   "fan_in": 2,
+   "fan_out": 4,
+   "lines": 241
+  },
+  "src/db/repository/analytics-repository.ts": {
+   "fan_in": 7,
+   "fan_out": 2,
+   "lines": 306
+  },
+  "src/db/repository/base-repository.ts": {
+   "fan_in": 15,
+   "fan_out": 4,
+   "lines": 241
+  },
+  "src/db/repository/definition-repository.ts": {
+   "fan_in": 7,
+   "fan_out": 7,
+   "lines": 1349
+  },
+  "src/db/repository/execution-repository.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 241
+  },
+  "src/db/repository/fork-repository.ts": {
+   "fan_in": 3,
+   "fan_out": 3,
+   "lines": 140
+  },
+  "src/db/repository/index.ts": {
+   "fan_in": 20,
+   "fan_out": 11,
+   "lines": 87
+  },
+  "src/db/repository/lineage-repository.ts": {
+   "fan_in": 4,
+   "fan_out": 2,
+   "lines": 248
+  },
+  "src/db/repository/model-repository.ts": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 142
+  },
+  "src/db/repository/provider-repository.ts": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 48
+  },
+  "src/db/repository/reference-repository.ts": {
+   "fan_in": 4,
+   "fan_out": 4,
+   "lines": 258
+  },
+  "src/db/repository/star-repository.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 137
+  },
+  "src/db/repository/tracker-repository.ts": {
+   "fan_in": 8,
+   "fan_out": 4,
+   "lines": 484
+  },
+  "src/db/repository/user-repository.ts": {
+   "fan_in": 5,
+   "fan_out": 4,
+   "lines": 86
+  },
+  "src/db/repository/version-repository.ts": {
+   "fan_in": 9,
+   "fan_out": 6,
+   "lines": 449
+  },
+  "src/db/seeds/001_providers.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 51
+  },
+  "src/db/seeds/002_models.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 223
+  },
+  "src/db/seeds/003_aliases.ts": {
+   "fan_in": 0,
+   "fan_out": 1,
+   "lines": 48
+  },
+  "src/db/seeds/utils.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 27
+  },
+  "src/index.ts": {
+   "fan_in": 4,
+   "fan_out": 14,
+   "lines": 795
+  },
+  "src/middleware/auth.ts": {
+   "fan_in": 29,
+   "fan_out": 2,
+   "lines": 393
+  },
+  "src/middleware/correlation-id.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 66
+  },
+  "src/middleware/degradation-header.ts": {
+   "fan_in": 2,
+   "fan_out": 4,
+   "lines": 85
+  },
+  "src/middleware/error-handler.ts": {
+   "fan_in": 7,
+   "fan_out": 3,
+   "lines": 371
+  },
+  "src/middleware/index.ts": {
+   "fan_in": 2,
+   "fan_out": 10,
+   "lines": 57
+  },
+  "src/middleware/metrics.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 301
+  },
+  "src/middleware/parse-version.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 87
+  },
+  "src/middleware/pool-pressure.ts": {
+   "fan_in": 3,
+   "fan_out": 3,
+   "lines": 126
+  },
+  "src/middleware/rate-limit.ts": {
+   "fan_in": 13,
+   "fan_out": 2,
+   "lines": 277
+  },
+  "src/middleware/request-logger.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 57
+  },
+  "src/middleware/service-key.ts": {
+   "fan_in": 6,
+   "fan_out": 2,
+   "lines": 103
+  },
+  "src/middleware/tier-gate.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 24
+  },
+  "src/middleware/type-guard.ts": {
+   "fan_in": 5,
+   "fan_out": 2,
+   "lines": 43
+  },
+  "src/middleware/username-gate.ts": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 60
+  },
+  "src/middleware/validate.ts": {
+   "fan_in": 10,
+   "fan_out": 1,
+   "lines": 133
+  },
+  "src/routes/index.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 19
+  },
+  "src/routes/v1/analytics.ts": {
+   "fan_in": 1,
+   "fan_out": 7,
+   "lines": 62
+  },
+  "src/routes/v1/deep-analysis.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 22
+  },
+  "src/routes/v1/definitions.ts": {
+   "fan_in": 2,
+   "fan_out": 15,
+   "lines": 491
+  },
+  "src/routes/v1/index.ts": {
+   "fan_in": 2,
+   "fan_out": 11,
+   "lines": 102
+  },
+  "src/routes/v1/languages.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 41
+  },
+  "src/routes/v1/maintenance.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 34
+  },
+  "src/routes/v1/models.ts": {
+   "fan_in": 2,
+   "fan_out": 6,
+   "lines": 79
+  },
+  "src/routes/v1/org-profile.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 52
+  },
+  "src/routes/v1/render.ts": {
+   "fan_in": 3,
+   "fan_out": 6,
+   "lines": 33
+  },
+  "src/routes/v1/schemas.ts": {
+   "fan_in": 25,
+   "fan_out": 2,
+   "lines": 530
+  },
+  "src/routes/v1/users.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 43
+  },
+  "src/routes/v1/validation.ts": {
+   "fan_in": 1,
+   "fan_out": 6,
+   "lines": 40
+  },
+  "src/routes/v1/webhooks.ts": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 17
+  },
+  "src/schemas/cdl/index.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 47
+  },
+  "src/schemas/cdl/types.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 318
+  },
+  "src/schemas/definition/index.ts": {
+   "fan_in": 8,
+   "fan_out": 4,
+   "lines": 48
+  },
+  "src/schemas/definition/provenance.ts": {
+   "fan_in": 12,
+   "fan_out": 0,
+   "lines": 144
+  },
+  "src/schemas/definition/schema.ts": {
+   "fan_in": 6,
+   "fan_out": 2,
+   "lines": 317
+  },
+  "src/schemas/definition/transforms.ts": {
+   "fan_in": 4,
+   "fan_out": 6,
+   "lines": 382
+  },
+  "src/schemas/definition/types.ts": {
+   "fan_in": 13,
+   "fan_out": 1,
+   "lines": 24
+  },
+  "src/schemas/enums.ts": {
+   "fan_in": 48,
+   "fan_out": 1,
+   "lines": 141
+  },
+  "src/schemas/fork/index.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 18
+  },
+  "src/schemas/fork/schema.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 92
+  },
+  "src/schemas/fork/transforms.ts": {
+   "fan_in": 3,
+   "fan_out": 2,
+   "lines": 59
+  },
+  "src/schemas/fork/types.ts": {
+   "fan_in": 6,
+   "fan_out": 1,
+   "lines": 18
+  },
+  "src/schemas/index.ts": {
+   "fan_in": 0,
+   "fan_out": 10,
+   "lines": 201
+  },
+  "src/schemas/model/index.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 28
+  },
+  "src/schemas/model/schema.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 169
+  },
+  "src/schemas/model/transforms.ts": {
+   "fan_in": 5,
+   "fan_out": 3,
+   "lines": 152
+  },
+  "src/schemas/model/types.ts": {
+   "fan_in": 7,
+   "fan_out": 1,
+   "lines": 30
+  },
+  "src/schemas/reference/index.ts": {
+   "fan_in": 1,
+   "fan_out": 3,
+   "lines": 24
+  },
+  "src/schemas/reference/schema.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 107
+  },
+  "src/schemas/reference/transforms.ts": {
+   "fan_in": 3,
+   "fan_out": 2,
+   "lines": 47
+  },
+  "src/schemas/reference/types.ts": {
+   "fan_in": 6,
+   "fan_out": 1,
+   "lines": 27
+  },
+  "src/schemas/user/index.ts": {
+   "fan_in": 4,
+   "fan_out": 2,
+   "lines": 17
+  },
+  "src/schemas/user/schema.ts": {
+   "fan_in": 8,
+   "fan_out": 0,
+   "lines": 88
+  },
+  "src/schemas/user/transforms.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 58
+  },
+  "src/schemas/validation/index.ts": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 17
+  },
+  "src/schemas/validation/schema.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 94
+  },
+  "src/schemas/validation/types.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 24
+  },
+  "src/schemas/version/index.ts": {
+   "fan_in": 2,
+   "fan_out": 3,
+   "lines": 19
+  },
+  "src/schemas/version/schema.ts": {
+   "fan_in": 4,
+   "fan_out": 2,
+   "lines": 124
+  },
+  "src/schemas/version/transforms.ts": {
+   "fan_in": 3,
+   "fan_out": 5,
+   "lines": 117
+  },
+  "src/schemas/version/types.ts": {
+   "fan_in": 4,
+   "fan_out": 1,
+   "lines": 18
+  },
+  "src/schemas/wdl/context.ts": {
+   "fan_in": 1,
+   "fan_out": 1,
+   "lines": 329
+  },
+  "src/schemas/wdl/index.ts": {
+   "fan_in": 1,
+   "fan_out": 2,
+   "lines": 98
+  },
+  "src/schemas/wdl/types.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 413
+  },
+  "src/services/analytics/analytics-service.ts": {
+   "fan_in": 11,
+   "fan_out": 11,
+   "lines": 1133
+  },
+  "src/services/analytics/composition-lift.ts": {
+   "fan_in": 2,
+   "fan_out": 5,
+   "lines": 203
+  },
+  "src/services/analytics/definition-analytics-service.ts": {
+   "fan_in": 3,
+   "fan_out": 12,
+   "lines": 506
+  },
+  "src/services/analytics/health.ts": {
+   "fan_in": 4,
+   "fan_out": 0,
+   "lines": 57
+  },
+  "src/services/analytics/recomputation-service.ts": {
+   "fan_in": 3,
+   "fan_out": 7,
+   "lines": 324
+  },
+  "src/services/analytics/types.ts": {
+   "fan_in": 6,
+   "fan_out": 1,
+   "lines": 48
+  },
+  "src/services/definition-language/index.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 125
+  },
+  "src/services/definition-renderer/index.ts": {
+   "fan_in": 11,
+   "fan_out": 1,
+   "lines": 265
+  },
+  "src/services/definition/index.ts": {
+   "fan_in": 11,
+   "fan_out": 6,
+   "lines": 76
+  },
+  "src/services/definition/lifecycle.ts": {
+   "fan_in": 3,
+   "fan_out": 19,
+   "lines": 456
+  },
+  "src/services/definition/mutations.ts": {
+   "fan_in": 2,
+   "fan_out": 15,
+   "lines": 514
+  },
+  "src/services/definition/queries.ts": {
+   "fan_in": 3,
+   "fan_out": 6,
+   "lines": 255
+  },
+  "src/services/definition/quota.ts": {
+   "fan_in": 4,
+   "fan_out": 4,
+   "lines": 114
+  },
+  "src/services/definition/status-machine.ts": {
+   "fan_in": 4,
+   "fan_out": 2,
+   "lines": 101
+  },
+  "src/services/definition/types.ts": {
+   "fan_in": 5,
+   "fan_out": 3,
+   "lines": 310
+  },
+  "src/services/dependency/index.ts": {
+   "fan_in": 7,
+   "fan_out": 10,
+   "lines": 457
+  },
+  "src/services/executions/index.ts": {
+   "fan_in": 5,
+   "fan_out": 10,
+   "lines": 334
+  },
+  "src/services/fork/index.ts": {
+   "fan_in": 5,
+   "fan_out": 19,
+   "lines": 596
+  },
+  "src/services/index.ts": {
+   "fan_in": 0,
+   "fan_out": 10,
+   "lines": 124
+  },
+  "src/services/model/index.ts": {
+   "fan_in": 6,
+   "fan_out": 9,
+   "lines": 1167
+  },
+  "src/services/safety/analyzer-version.ts": {
+   "fan_in": 10,
+   "fan_out": 0,
+   "lines": 99
+  },
+  "src/services/safety/capabilities.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 78
+  },
+  "src/services/safety/decode.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 163
+  },
+  "src/services/safety/deep-analysis-queue.ts": {
+   "fan_in": 12,
+   "fan_out": 5,
+   "lines": 537
+  },
+  "src/services/safety/deep-analysis-worker.ts": {
+   "fan_in": 5,
+   "fan_out": 10,
+   "lines": 701
+  },
+  "src/services/safety/definition-scanner.ts": {
+   "fan_in": 12,
+   "fan_out": 8,
+   "lines": 160
+  },
+  "src/services/safety/fork-diff.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 160
+  },
+  "src/services/safety/index.ts": {
+   "fan_in": 4,
+   "fan_out": 8,
+   "lines": 216
+  },
+  "src/services/safety/publish-gate.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 143
+  },
+  "src/services/safety/risk-calculator.ts": {
+   "fan_in": 7,
+   "fan_out": 1,
+   "lines": 82
+  },
+  "src/services/safety/section-classifier.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 63
+  },
+  "src/services/safety/signals.ts": {
+   "fan_in": 5,
+   "fan_out": 4,
+   "lines": 759
+  },
+  "src/services/safety/types.ts": {
+   "fan_in": 23,
+   "fan_out": 0,
+   "lines": 283
+  },
+  "src/services/safety/yaml-walker.ts": {
+   "fan_in": 8,
+   "fan_out": 0,
+   "lines": 134
+  },
+  "src/services/star/index.ts": {
+   "fan_in": 3,
+   "fan_out": 10,
+   "lines": 139
+  },
+  "src/services/translation/index.ts": {
+   "fan_in": 9,
+   "fan_out": 11,
+   "lines": 410
+  },
+  "src/services/translation/translator.ts": {
+   "fan_in": 7,
+   "fan_out": 3,
+   "lines": 240
+  },
+  "src/services/validation/index.ts": {
+   "fan_in": 9,
+   "fan_out": 3,
+   "lines": 260
+  },
+  "src/services/validation/reference-validator.ts": {
+   "fan_in": 3,
+   "fan_out": 4,
+   "lines": 504
+  },
+  "src/services/version-service.ts": {
+   "fan_in": 4,
+   "fan_out": 6,
+   "lines": 461
+  },
+  "src/shutdown.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 80
+  },
+  "src/terminal/banner.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 29
+  },
+  "src/terminal/index.ts": {
+   "fan_in": 1,
+   "fan_out": 6,
+   "lines": 32
+  },
+  "src/terminal/sections/database.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 37
+  },
+  "src/terminal/sections/environment.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 54
+  },
+  "src/terminal/sections/index.ts": {
+   "fan_in": 0,
+   "fan_out": 3,
+   "lines": 6
+  },
+  "src/terminal/sections/server.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 41
+  },
+  "src/terminal/startup.ts": {
+   "fan_in": 1,
+   "fan_out": 5,
+   "lines": 74
+  },
+  "src/terminal/styles.ts": {
+   "fan_in": 6,
+   "fan_out": 0,
+   "lines": 132
+  },
+  "src/utils/analytics-helpers.ts": {
+   "fan_in": 6,
+   "fan_out": 5,
+   "lines": 106
+  },
+  "src/utils/async-handler.ts": {
+   "fan_in": 16,
+   "fan_out": 0,
+   "lines": 36
+  },
+  "src/utils/circuit-breaker.ts": {
+   "fan_in": 3,
+   "fan_out": 2,
+   "lines": 283
+  },
+  "src/utils/cycle-detection.ts": {
+   "fan_in": 3,
+   "fan_out": 0,
+   "lines": 145
+  },
+  "src/utils/definition-metadata.ts": {
+   "fan_in": 3,
+   "fan_out": 3,
+   "lines": 144
+  },
+  "src/utils/definition-response.ts": {
+   "fan_in": 2,
+   "fan_out": 4,
+   "lines": 217
+  },
+  "src/utils/empty-envelopes.ts": {
+   "fan_in": 2,
+   "fan_out": 2,
+   "lines": 92
+  },
+  "src/utils/errors.ts": {
+   "fan_in": 56,
+   "fan_out": 0,
+   "lines": 254
+  },
+  "src/utils/fork-identity.ts": {
+   "fan_in": 2,
+   "fan_out": 1,
+   "lines": 68
+  },
+  "src/utils/format-definition-id.ts": {
+   "fan_in": 10,
+   "fan_out": 0,
+   "lines": 21
+  },
+  "src/utils/hash.ts": {
+   "fan_in": 11,
+   "fan_out": 0,
+   "lines": 20
+  },
+  "src/utils/index.ts": {
+   "fan_in": 1,
+   "fan_out": 8,
+   "lines": 57
+  },
+  "src/utils/json.ts": {
+   "fan_in": 5,
+   "fan_out": 0,
+   "lines": 119
+  },
+  "src/utils/logger.ts": {
+   "fan_in": 39,
+   "fan_out": 2,
+   "lines": 37
+  },
+  "src/utils/platform-version-gate.ts": {
+   "fan_in": 2,
+   "fan_out": 0,
+   "lines": 83
+  },
+  "src/utils/read-through-cache.ts": {
+   "fan_in": 8,
+   "fan_out": 1,
+   "lines": 210
+  },
+  "src/utils/request-context.ts": {
+   "fan_in": 5,
+   "fan_out": 0,
+   "lines": 62
+  },
+  "src/utils/resolve-author.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 15
+  },
+  "src/utils/retry.ts": {
+   "fan_in": 3,
+   "fan_out": 1,
+   "lines": 155
+  },
+  "src/utils/singleton.ts": {
+   "fan_in": 18,
+   "fan_out": 0,
+   "lines": 34
+  },
+  "src/utils/uuid.ts": {
+   "fan_in": 36,
+   "fan_out": 0,
+   "lines": 81
+  },
+  "src/utils/validated-request.ts": {
+   "fan_in": 15,
+   "fan_out": 0,
+   "lines": 86
+  }
+ },
+ "rooms_at_most_sets": 1,
+ "rooms_in_both_kinds": 0,
+ "rooms_marked_twice": 21,
+ "rooms_marked_twice_inert_conjunct": 0,
+ "rooms_marked_twice_shared_predicate": 21,
+ "scopes_by_wing": {
+  "(root)": 1,
+  "scripts": 1,
+  "src": 1
+ },
+ "shared_rooms": [
+  {
+   "a": "maintainability/dark_room",
+   "b": "maintainability/flooded_basement",
+   "shared": 33
+  },
+  {
+   "a": "maintainability/dark_room",
+   "b": "maintainability/foundation",
+   "shared": 2
+  },
+  {
+   "a": "maintainability/dark_room",
+   "b": "maintainability/hub",
+   "shared": 2
+  },
+  {
+   "a": "maintainability/dark_room",
+   "b": "maintainability/lit_room",
+   "shared": 0
+  },
+  {
+   "a": "maintainability/dark_room",
+   "b": "maintainability/scaffolding",
+   "shared": 16
+  },
+  {
+   "a": "maintainability/dark_room",
+   "b": "onboarding/corridor",
+   "shared": 0
+  },
+  {
+   "a": "maintainability/dark_room",
+   "b": "onboarding/foundation",
+   "shared": 2
+  },
+  {
+   "a": "maintainability/dark_room",
+   "b": "onboarding/import_root",
+   "shared": 0
+  },
+  {
+   "a": "maintainability/dark_room",
+   "b": "onboarding/leaf_utility",
+   "shared": 4
+  },
+  {
+   "a": "maintainability/dark_room",
+   "b": "onboarding/package_entry",
+   "shared": 0
+  },
+  {
+   "a": "maintainability/flooded_basement",
+   "b": "maintainability/foundation",
+   "shared": 2
+  },
+  {
+   "a": "maintainability/flooded_basement",
+   "b": "maintainability/hub",
+   "shared": 2
+  },
+  {
+   "a": "maintainability/flooded_basement",
+   "b": "maintainability/lit_room",
+   "shared": 0
+  },
+  {
+   "a": "maintainability/flooded_basement",
+   "b": "maintainability/scaffolding",
+   "shared": 16
+  },
+  {
+   "a": "maintainability/flooded_basement",
+   "b": "onboarding/corridor",
+   "shared": 0
+  },
+  {
+   "a": "maintainability/flooded_basement",
+   "b": "onboarding/foundation",
+   "shared": 2
+  },
+  {
+   "a": "maintainability/flooded_basement",
+   "b": "onboarding/import_root",
+   "shared": 0
+  },
+  {
+   "a": "maintainability/flooded_basement",
+   "b": "onboarding/leaf_utility",
+   "shared": 4
+  },
+  {
+   "a": "maintainability/flooded_basement",
+   "b": "onboarding/package_entry",
+   "shared": 0
+  },
+  {
+   "a": "maintainability/foundation",
+   "b": "maintainability/hub",
+   "shared": 15
+  },
+  {
+   "a": "maintainability/foundation",
+   "b": "maintainability/lit_room",
+   "shared": 3
+  },
+  {
+   "a": "maintainability/foundation",
+   "b": "maintainability/scaffolding",
+   "shared": 21
+  },
+  {
+   "a": "maintainability/foundation",
+   "b": "onboarding/corridor",
+   "shared": 6
+  },
+  {
+   "a": "maintainability/foundation",
+   "b": "onboarding/foundation",
+   "shared": 21
+  },
+  {
+   "a": "maintainability/foundation",
+   "b": "onboarding/import_root",
+   "shared": 0
+  },
+  {
+   "a": "maintainability/foundation",
+   "b": "onboarding/leaf_utility",
+   "shared": 11
+  },
+  {
+   "a": "maintainability/foundation",
+   "b": "onboarding/package_entry",
+   "shared": 0
+  },
+  {
+   "a": "maintainability/hub",
+   "b": "maintainability/lit_room",
+   "shared": 2
+  },
+  {
+   "a": "maintainability/hub",
+   "b": "maintainability/scaffolding",
+   "shared": 20
+  },
+  {
+   "a": "maintainability/hub",
+   "b": "onboarding/corridor",
+   "shared": 8
+  },
+  {
+   "a": "maintainability/hub",
+   "b": "onboarding/foundation",
+   "shared": 15
+  },
+  {
+   "a": "maintainability/hub",
+   "b": "onboarding/import_root",
+   "shared": 0
+  },
+  {
+   "a": "maintainability/hub",
+   "b": "onboarding/leaf_utility",
+   "shared": 10
+  },
+  {
+   "a": "maintainability/hub",
+   "b": "onboarding/package_entry",
+   "shared": 0
+  },
+  {
+   "a": "maintainability/lit_room",
+   "b": "maintainability/scaffolding",
+   "shared": 20
+  },
+  {
+   "a": "maintainability/lit_room",
+   "b": "onboarding/corridor",
+   "shared": 1
+  },
+  {
+   "a": "maintainability/lit_room",
+   "b": "onboarding/foundation",
+   "shared": 3
+  },
+  {
+   "a": "maintainability/lit_room",
+   "b": "onboarding/import_root",
+   "shared": 0
+  },
+  {
+   "a": "maintainability/lit_room",
+   "b": "onboarding/leaf_utility",
+   "shared": 0
+  },
+  {
+   "a": "maintainability/lit_room",
+   "b": "onboarding/package_entry",
+   "shared": 1
+  },
+  {
+   "a": "maintainability/scaffolding",
+   "b": "onboarding/corridor",
+   "shared": 8
+  },
+  {
+   "a": "maintainability/scaffolding",
+   "b": "onboarding/foundation",
+   "shared": 21
+  },
+  {
+   "a": "maintainability/scaffolding",
+   "b": "onboarding/import_root",
+   "shared": 0
+  },
+  {
+   "a": "maintainability/scaffolding",
+   "b": "onboarding/leaf_utility",
+   "shared": 15
+  },
+  {
+   "a": "maintainability/scaffolding",
+   "b": "onboarding/package_entry",
+   "shared": 1
+  },
+  {
+   "a": "onboarding/corridor",
+   "b": "onboarding/foundation",
+   "shared": 6
+  },
+  {
+   "a": "onboarding/corridor",
+   "b": "onboarding/import_root",
+   "shared": 0
+  },
+  {
+   "a": "onboarding/corridor",
+   "b": "onboarding/leaf_utility",
+   "shared": 0
+  },
+  {
+   "a": "onboarding/corridor",
+   "b": "onboarding/package_entry",
+   "shared": 0
+  },
+  {
+   "a": "onboarding/foundation",
+   "b": "onboarding/import_root",
+   "shared": 0
+  },
+  {
+   "a": "onboarding/foundation",
+   "b": "onboarding/leaf_utility",
+   "shared": 11
+  },
+  {
+   "a": "onboarding/foundation",
+   "b": "onboarding/package_entry",
+   "shared": 0
+  },
+  {
+   "a": "onboarding/import_root",
+   "b": "onboarding/leaf_utility",
+   "shared": 0
+  },
+  {
+   "a": "onboarding/import_root",
+   "b": "onboarding/package_entry",
+   "shared": 0
+  },
+  {
+   "a": "onboarding/leaf_utility",
+   "b": "onboarding/package_entry",
+   "shared": 0
+  }
+ ],
+ "skeleton_hash": "e84c5ae2776fc161644179a59361017ddedfb6d32ba2e235065c6d389523f74d",
+ "stance": "The diagnosis presupposes a maintenance norm — that the positions it marks are worth a visit — which the reader may reject; it is stated as an ought, not a fact (system spec, stance disclosure).",
+ "stance_case": {
+  "loaded": "foundation",
+  "rooms": [
+   {
+    "fan_in": 16,
+    "lines": 36,
+    "room": "src/utils/async-handler.ts",
+    "test_fan_in": 1
+   },
+   {
+    "fan_in": 18,
+    "lines": 34,
+    "room": "src/utils/singleton.ts",
+    "test_fan_in": 1
+   }
+  ],
+  "untouched": "dark_room",
+  "untouched_count": 34
+ },
+ "test_globs": [
+  "**/*.test.*",
+  "**/*.spec.*",
+  "**/*_test.*",
+  "**/test_*.py",
+  "**/test/**",
+  "**/tests/**",
+  "**/__tests__/**",
+  "**/spec/**",
+  "**/__mocks__/**"
+ ],
+ "test_nodes": 189,
+ "top_tier": {
+  "rooms": [
+   {
+    "fan_in": 18,
+    "features": [
+     "dark_room",
+     "flooded_basement",
+     "foundation (2 profiles)",
+     "hub",
+     "leaf_utility",
+     "scaffolding"
+    ],
+    "lines": 34,
+    "room": "src/utils/singleton.ts",
+    "test_fan_in": 1
+   }
+  ],
+  "sets": 6
+ },
+ "tsconfig_aliases": 0,
+ "tsconfig_malformed": null,
+ "unindexed_nodes": 0,
+ "units": {
+  "by_package": "rooms of the population per package scope, each named by its manifest path (the nearest package.json above the room; package.json is the repository's own), an ordered list, largest first",
+  "co_located_rooms": "rooms carrying two or more distinct diagnostic sets, across all profiles (a predicate under two profiles is one set)",
+  "decorative.count": "marks",
+  "diagnostic_count": "marks",
+  "diagnostic_count_base": "marks",
+  "diagnostic_features": "diagnostic features that fired (features, not marks or rooms)",
+  "distinct_room_sets": "sets of rooms the diagnostic features name — the room sets themselves, so identical sets are one whatever their size; a nesting is two",
+  "dominant_dir": "the immediate parent directory (non-recursive) holding the most of a feature's rooms, with holds_third saying whether it holds a third or more (D-070: shown either way); tied_with names every other directory holding as many",
+  "feature.count": "rooms (one mark per room)",
+  "most_marked_rooms": "the rooms carrying the most distinct diagnostic sets (at most 5; ordered by sets (a feature under two profiles, or two features drawing one set, is one set), then by path — marks (one per feature per profile) are shown and order nothing, since within a tier they differ only by the double count the register discounts), each with every diagnostic feature that marks it, profile-qualified where a feature is under two profiles; sets counts distinct room sets; marks counts one per feature per profile; rooms_at_this_count is the rooms under two or more sets carrying the row's sets count, and listed_at_this_count how many of them the list carries, the first by path",
+  "population": "rooms",
+  "relation_counts": "relations the register draws, by kind, over every feature with enough rooms, decorative included, and containments the predicates guarantee at any count",
+  "rooms_at_most_sets": "rooms carrying that most; when it exceeds the rooms listed at it, the list is the first of them by path",
+  "rooms_in_both_kinds": "rooms counted under both causes (the two counts overlap by this many)",
+  "rooms_marked_twice": "rooms an identical pair of diagnostic features marks twice (each such room carries two marks)",
+  "rooms_marked_twice_inert_conjunct": "of those, rooms where two predicates draw one set because a conjunct excludes nothing",
+  "rooms_marked_twice_shared_predicate": "of those, rooms where two profiles carry one predicate",
+  "shared_rooms": "rooms both features of a pair mark, for every pair of diagnostic features; identity and containment are the relation column's",
+  "wings": "rooms"
+ },
+ "unresolved_by_kind": {
+  "alias_shaped": 0,
+  "from_test_files": 0,
+  "sampled": 0
+ },
+ "unresolved_imports": 0,
+ "wing_count": 3,
+ "wing_depth": 1,
+ "wings": {
+  "(root)": 1,
+  "scripts": 30,
+  "src": 175
+ }
+}

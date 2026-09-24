@@ -2318,7 +2318,7 @@ def test_the_seventh_round_legend_counts_split_scopes_are_named_and_the_illustra
     assert _b._case_label("no placeholder here") == ""
     fb = next(x for x in f["features"] if x["feature"] == "flooded_basement")
     if fb["count"]:
-        assert f"| {fb['count']}" in _row(reg, "flooded_basement") and (fb["caveat_case_count"] == 0 or f"({fb['caveat_case_count']} have no importer)" in _row(reg, "flooded_basement"))  # D-069: a zero case stays in the predicate cell
+        assert f"| {fb['count']}" in _row(reg, "flooded_basement") and (fb["caveat_case_count"] == 0 or f"({fb['caveat_case_count']} {_b._agree(fb['caveat_case_count'], 'have no importer')})" in _row(reg, "flooded_basement"))  # D-069: a zero case stays in the predicate cell
     # the reinforcement caveats name the run-time mechanism
     sc = next(x for x in f["features"] if x["feature"] == "scaffolding")
     assert "load by a path computed at run time" in sc["caveat"]
@@ -2421,12 +2421,12 @@ def test_d070_the_ninth_round(sub):
     both = set(dr["rooms"]) & set(next(x for x in f["features"] if x["feature"] == "foundation" and x["profile"] == "maintainability")["rooms"])
     assert [r["room"] for r in sc["rooms"]] == sorted(both)
     txt = _b._stance_case_text(f)
-    assert "long-untouched and high-load at once, here dark_room and foundation" in txt
+    assert "here dark_room" in txt and "also high-load (foundation)" in txt  # D-072 reworded the head: the spec's case, then the page's narrowing
     if both:
         r0 = sc["rooms"][0]
         assert f"{r0['room']} ({r0['lines']} lines, {r0['fan_in']} importers, {r0['test_fan_in']} from test files)" in txt and "places and does not judge" in txt
     else:
-        assert "no room on this page is in both" in txt
+        assert "no long-untouched room is also high-load" in txt
     assert _b._stance_case_text({"stance_case": None}) == ""
     # 4. the largest parent is named with its count under a third (the test above covers the cell text)
     for x in f["features"]:
@@ -2541,3 +2541,63 @@ def test_d071_the_tenth_round(sub):
     assert "a/b 1 of its 8 (tied with c/d0 1 of its 3, c/d1 1 of its 3) (under a third of the feature's rooms)" in row
     # 3. the sheet's unit text no longer says the cell is withheld under a third
     assert "shown only" not in f["units"]["dominant_dir"] and "shown either way" in f["units"]["dominant_dir"]
+
+
+def test_d072_the_eleventh_round(sub):
+    """D-072 (the eleventh unpointed round: the src/error maintainer on typeorm 0.37.0; the plain
+    skimmer on eslint 0.37.0). Control: the stance credited to the system spec a case it does not
+    state — "long-untouched and high-load at once" is D-070's narrowing; the spec's case is one
+    condition, and on typeorm the narrowing named 6 of the 70 long-untouched rooms. Skimmer: 11 of
+    eslint's 12 most-positions rooms are the stance's case and the two sections never met; column one
+    said "upper quartile" where p75 on fan_out resolves to 1 and 270 of 467 rooms reach it."""
+    import repo_substrate.brief as _b
+
+    sk = _skeleton(sub)
+    f = facts(sk, sub)
+    # 1. a ranked term's reach: the rooms that satisfy the term alone, single or conjunctive
+    nodes = {r: {"metrics": {"x": v, "y": 1}} for r, v in {"a": 1, "b": 1, "c": 1, "d": 5, "e": 0, "f": 0, "g": 0, "h": 0}.items()}
+    e = {"predicate": "x >= p75 and y == 1", "rooms": [], "thresholds": {"x >= p75": 1.0}}
+    assert _b._term_reach(e, nodes, set(nodes)) == {"x >= p75": 4}
+    assert _b._term_reach({"predicate": "x <= p10", "rooms": [], "thresholds": {"x <= p10": 0.0}}, nodes, set(nodes)) == {"x <= p10": 4}
+    # the position cell says what a quantile word resolved to when the reach is over twice its nominal share
+    assert _b._quantile_reach_text("x >= p75 and y == 1", {"x >= p75": 1.0}, {"x >= p75": 4}, 7) == " — here p75 on x resolves to 1, which 4 of 7 rooms reach (57%)"
+    assert _b._quantile_reach_text("x >= p75 and y == 1", {"x >= p75": 1.0}, {"x >= p75": 4}, 8) == ""  # exactly twice is not over it
+    assert _b._quantile_reach_text("x >= p75 and y == 1", {"x >= p75": 1.0}, {"x >= p75": 4}, 10) == ""  # 40% is not over twice 25%
+    assert _b._quantile_reach_text("x <= p10", {"x <= p10": 0.0}, {"x <= p10": 4}, 8) == " — here p10 on x resolves to 0, which 4 of 8 rooms reach (50%)"
+    assert _b._quantile_reach_text("x >= p75", {"x >= p75": 1.0}, {}, 8) == ""  # an older sheet carries no reach
+    # on the fixture sheet: every ranked term carries its reach, and a row's cell carries the clause exactly when it fires
+    reg = _b.render_register(f)
+    for x in f["features"]:
+        for term, n in (x.get("term_reach") or {}).items():
+            assert 0 <= n <= f["population"]
+        clause = _b._quantile_reach_text(x["predicate"], x.get("thresholds"), x.get("term_reach"), f["population"])
+        if clause:
+            assert clause in _row(reg, x["feature"], x["decorative"], profile=x["profile"]).split("|")[1]
+    # 2. the stance states the spec's case in the spec's words, and the narrowing as the page's own
+    sc = f["stance_case"]
+    dr = next(x for x in f["features"] if x["feature"] == "dark_room")
+    assert sc["untouched_count"] == dr["count"]
+    txt = _b._stance_case_text(f)
+    assert "in the system spec's words (stance disclosure): a finished, correct, stable utility that nobody has touched in three years" in txt
+    assert f"here dark_room, {dr['count']} room{'s' if dr['count'] != 1 else ''}." in txt
+    assert "A narrowing that is this page's, not the spec's (D-070)" in txt and "also high-load (foundation)" in txt
+    assert "long-untouched and high-load at once" not in txt  # the paraphrase credited to the spec is gone
+    two = {"stance_case": {"untouched": "dark_room", "loaded": "foundation", "untouched_count": 70, "rooms": []}}
+    assert "no long-untouched room is also high-load" in _b._stance_case_text(two)
+    # 3. the most-positions table says how many of its rooms sit at the stance's case
+    tier = {"sets": 6, "rooms": [
+        {"room": "a.js", "lines": 5, "fan_in": 9, "test_fan_in": 1, "features": ["dark_room", "foundation (2 profiles)", "hub"]},
+        {"room": "b.js", "lines": 5, "fan_in": 9, "test_fan_in": 1, "features": ["corridor", "foundation (2 profiles)", "hub"]},
+    ]}
+    doc = {"top_tier": tier, "co_located_rooms": 3, "stance_case": two["stance_case"]}
+    out = _b.render_most_marked(doc)
+    assert "**1 of these 2 rooms is long-untouched (dark_room) — the position at which the stance places the norm's known false positive (see Stance).**" in out
+    assert "**The one room here is long-untouched" in _b.render_most_marked({**doc, "top_tier": {"sets": 6, "rooms": tier["rooms"][:1]}})
+    both_u = [{**m, "features": ["dark_room"]} for m in tier["rooms"]]
+    assert "**All 2 rooms here are long-untouched" in _b.render_most_marked({**doc, "top_tier": {"sets": 6, "rooms": both_u}})
+    # a case label's verb agrees with its count (the control's R5: "(1 have no importer)")
+    assert _b._agree(1, "have no importer") == "has no importer" and _b._agree(1, "are declared package entries") == "is declared package entries"
+    assert _b._agree(2, "have no importer") == "have no importer"
+    doc["top_tier"] = {"sets": 6, "rooms": tier["rooms"][1:]}
+    assert "known false positive" not in _b.render_most_marked(doc)
+    assert "known false positive" not in _b.render_most_marked({"top_tier": tier, "co_located_rooms": 3})  # no case, no sentence
