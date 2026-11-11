@@ -1590,7 +1590,7 @@ Three things the replay puts on the record that the October text does not:
 2. *The three affected features keep their size while unedited rooms leave them.*
    foundation 7 → 7, hub 7 → 7, corridor 3 → 3. foundation: `content/patterns/injection.ts`
    (touched, load 0.7953 → 0.8616) enters and `src/types/index.ts` (untouched,
-   0.8434 → 0.8429) leaves, still above the before-cutoff: a threshold-only crossing.
+   0.8434 → 0.8429) leaves, still above the before-cutoff and below the after-cutoff.
    hub: `injection.ts` and `src/types/server.ts` (both touched) enter, `src/index.ts`
    (untouched) and `error-sanitizer.ts` (touched) leave; corridor: `types/server.ts` in,
    `src/index.ts` out. `src/index.ts` (centrality 0.0134 → 0.0128) falls below the

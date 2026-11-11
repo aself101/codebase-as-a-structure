@@ -77,8 +77,11 @@ the pinned set changes under a per-predicate, per-crossing or per-room count
 
 **F4. Two mechanisms, both inside what D-018 set out to bound.** From
 `transition_evidence`: `src/types/index.ts` moved 0.8434 → 0.8429 on load and stayed
-above the before-cutoff (0.84085); it left because the cutoff rose to 0.84876 when a
-touched room entered — a threshold-only crossing. `src/index.ts` moved 0.0134 → 0.0128
+above the before-cutoff (0.84085), and its earlier value is below the later cutoff
+(0.84876): the later value clears the earlier cutoff and the earlier value does not
+clear the later one. *(Run 74: this read "it left because the cutoff rose … when a
+touched room entered" — a cause the diff cannot support, since it holds evidence only
+for rooms that changed membership. The fourth cause written from these four numbers.)* `src/index.ts` moved 0.0134 → 0.0128
 on centrality, below the before-cutoff (0.01285); it leaves with the cutoff held. Its earlier
 value (0.0134) is also below the later cutoff (0.01426), so it leaves with the value held
 too: either move alone suffices, and neither is "the" cause (D-080). *(Run 71 corrected

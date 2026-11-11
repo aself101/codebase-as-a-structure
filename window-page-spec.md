@@ -1,6 +1,6 @@
 # The window page — what differed between two commits, on a page of its own
 
-Status: **built 2026-11-11 (§12); re-checked (run 72, §11); the first seat failed the page (run 73, §13) and it was reworked as 0.2.0; open until a second seat has run.** D-083.
+Status: **built 2026-11-11 (§12); re-checked (run 72, §11); two seats (runs 73, 74; §13, §14); 0.2.0 holds as a statement about two commits and still fails the skimmer on the gate's token; whether the token stays on the page is put to Alex (§14).** D-083.
 Supersedes the form in `event-statement-spec.md`, whose §10 (tracker run 71) lists what
 fell and why. Alex chose the separate page the same day. Parent: `stability-budget-spec.md`
 (D-082). §11 holds the re-check before any code.
@@ -379,3 +379,61 @@ was too wide and means "no line of events is"; the population in the under-table
 sentence is the commit's room count, not the count of rooms with a value.
 
 A second seat with fresh readers decides whether D-083 closes.
+
+## 14. The second seat (tracker run 74) and what is left
+
+Fresh readers on 0.2.0. Every number recounted by the hostile reader matched again.
+
+- **Hostile reader** (the `src/types` maintainer, HATER_EXPOSED 86): to "does the page
+  stay a statement about two commits" — **yes** (run 73: no, narrowly). Six weaknesses,
+  five of them rulings the log had already made that a new page did not inherit: flagged
+  names printed without their position names in the line built to be pasted (D-074,
+  D-075 item 4); the two 35s (D-080 replay item 1); the clock gloss stating the value
+  half of a two-sided mechanism (§11.1 — "so" is not in the word list); the brief's
+  pointer still claiming "what differed". One new layer, made by 0.2.0's own fix: the
+  sentence saying what the budget bounds is wider than the operand, since the page lists
+  six unedited membership changes on clock and excluded rows that the budget does not
+  count. And it found the parent spec reading "it left because the cutoff rose … when a
+  touched room entered" off the same four numbers; corrected there.
+- **Pasted line**: value, cutoff and both comparisons read correctly with no header; no
+  property word; nothing to fix. It said "the cutoff moving is what flipped it, not the
+  score" and marked why the cutoff rose as its own inference.
+- **Skimmer** (ALIGNED 76 by its own scale): "something's over budget and probably needs
+  looking at"; "its entry point quietly stopped being a hub". Rule (iii) and rule (ii),
+  again. The subject paragraph was skipped: it is not in the token line or in the cell.
+
+**Two readings of the rule itself.**
+
+Rule (i), "attributes a cause to a line", was drawn too wide. For a line whose two
+comparisons are yes and no, "the cutoff's move alone suffices" is what the arithmetic
+says, and run 72's reviewer wrote the same table. What the page must not support is
+naming *which room or edit* moved a value or a cutoff. The pasted-line reader did the
+first and declined the second. The rule is restated so.
+
+Rule (iii) has now failed twice on the same object and may not be satisfiable while the
+page prints a token named `over_budget`: a reader asked "is anything a problem?" who
+sees the words "over" and "budget" in code font answers yes, whatever sits above them.
+
+**Fixes that do not depend on the open question** (to build): the D-074 pairing in the
+rows cell and the excluded line (the diff carries each feature's position name and
+flag); "the map's … row" in the cell; the row bracket counts the line's own room; the
+35-assignment union is said to be held by N rooms; the subject sentence is narrowed to
+the operand (rank and mixed rows, and bands); the clock gloss is replaced by a
+definition with the same "neither names a cause" line under the clock table; "band" is
+defined once; the brief's pointer says what the window page reports, not "what
+differed".
+
+**The open question, for Alex.** D-082's option D promised the verdict "shown with its
+K, its floors and its denominators". Three forms:
+
+- **Keep the token**, with its subject inside the token line. Two seats say a skimmer
+  will still read it as a repository's status.
+- **Take the token off this page.** Print the counts and the gate's arithmetic ("4 of
+  35 assignments; the gate's ceiling on the map is 0.05"), and leave the token where its
+  subject is native: the diff, `skeleton-budget.md`, the change sheet. The page's own
+  grammar is counts with denominators and no grades; a quoted grade is still a grade.
+- **Rename the token** (`over_budget` → a name with the map as its subject). A contract
+  change across the diff, the time-lapse, the change sheet and every saved report.
+
+Recommended: take it off this page. It is the only form the seat rule can pass, it costs
+no reader a number, and it leaves the token's name for a later decision made on its own.
