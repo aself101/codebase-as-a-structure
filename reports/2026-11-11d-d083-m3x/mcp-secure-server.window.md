@@ -1,0 +1,62 @@
+# mcp-secure-server — one window: `4c99da71468c` → `5348b3ef614d`
+
+**One pair of commits. Each event below is between them. Another pair of commits reads differently.**
+
+The window: `4c99da71468c` (2026-01-28T07:44:41-10:00) → `5348b3ef614d` (2026-09-10T18:57:42-10:00); the pair the gate perturbs: the commit the gate was run at and the commit 25 timeline commits before it; chosen for the gate's test, not for this page. 25 commits in the window, the earliest at 2026-01-28T07:57:31-10:00 and the latest at 2026-09-10T18:57:42-10:00. 64 rooms are in both commits, 1 only in the later and 0 only in the earlier; 29 of the 64 rooms in both are in some commit's recorded changes (45% of rooms in both), 35 are in none.
+
+## Crossings
+
+2 crossings: one line per room and predicate term whose outcome differs between the two commits, among rooms in no commit's recorded changes that exited or entered a row the gate's reading counts.
+
+| window | room | term | value, earlier → later | cutoff, earlier → later | later value against the earlier cutoff (arithmetic only) | earlier value against the later cutoff (arithmetic only) | rows (counts only) |
+|---|---|---|---|---|---|---|---|
+| 4c99da71→5348b3ef | src/index.ts (in no commit's recorded changes in the window) | `centrality >= p90` | value 0.0134 → 0.0128 | cutoff 0.01285 → 0.01426 | `0.0128 >= 0.01285`: no | `0.0134 >= 0.01426`: no | exited hub (maintainability) (7 → 7 rooms: 2 edited rooms entered, 1 edited room exited); exited corridor (onboarding) (3 → 3 rooms: 1 edited room entered) |
+| 4c99da71→5348b3ef | src/types/index.ts (in no commit's recorded changes in the window) | `load_index >= p90` | value 0.8434 → 0.8429 | cutoff 0.84085 → 0.84876 | `0.8429 >= 0.84085`: yes | `0.8434 >= 0.84876`: no | exited foundation (maintainability, onboarding) (7 → 7 rooms: 1 edited room entered) |
+
+Each side's cutoff is computed over that commit's rooms that have a value, of 64 rooms earlier and 65 later, this room's included. The two comparisons are arithmetic on the four numbers beside them; neither names a cause. The rows column counts the rooms that entered and exited each row; it does not say which of them, if any, bears on the line it sits in.
+
+Only rooms that exited or entered a row are listed: a term that changed outcome while the room stayed in or out of its row is not on this page (the diff carries no evidence for it).
+
+## Clock rows
+
+A clock row's term is measured from the date of the snapshot, so every room's value on it differs between two commits made on different dates.
+
+- **lit_room (maintainability)** — 9 → 10 rooms. Rooms in no commit's recorded changes in the window: 4 exited (src/security/layers/layer-utils/content/utils/structural-analysis.ts; src/security/layers/layer-utils/content/utils/text-decoding.ts; src/security/layers/layer3-behavior.ts; and 1 more), 0 entered (none); edited rooms: 6 entered, 1 exited; not counted in the gate's reading.
+
+Their crossings, not counted in the gate's reading:
+
+| window | room | term | value, earlier → later | cutoff, earlier → later | later value against the earlier cutoff (arithmetic only) | earlier value against the later cutoff (arithmetic only) | rows (counts only) |
+|---|---|---|---|---|---|---|---|
+| 4c99da71→5348b3ef | src/security/layers/layer-utils/content/utils/structural-analysis.ts (in no commit's recorded changes in the window) | `last_touched_days <= p10` | value 16.6122 → 242.08 days | cutoff 16.643 → 0.0188 days | `242.08 <= 16.643`: no | `16.6122 <= 0.0188`: no | exited lit_room (maintainability) (9 → 10 rooms: 6 edited rooms entered, 1 edited room exited) |
+| 4c99da71→5348b3ef | src/security/layers/layer-utils/content/utils/text-decoding.ts (in no commit's recorded changes in the window) | `last_touched_days <= p10` | value 16.6122 → 242.08 days | cutoff 16.643 → 0.0188 days | `242.08 <= 16.643`: no | `16.6122 <= 0.0188`: no | exited lit_room (maintainability) (9 → 10 rooms: 6 edited rooms entered, 1 edited room exited) |
+| 4c99da71→5348b3ef | src/security/layers/layer3-behavior.ts (in no commit's recorded changes in the window) | `last_touched_days <= p10` | value 16.643 → 242.11 days | cutoff 16.643 → 0.0188 days | `242.11 <= 16.643`: no | `16.643 <= 0.0188`: no | exited lit_room (maintainability) (9 → 10 rooms: 6 edited rooms entered, 1 edited room exited) |
+| 4c99da71→5348b3ef | src/security/layers/layer5-contextual-types.ts (in no commit's recorded changes in the window) | `last_touched_days <= p10` | value 16.6351 → 242.102 days | cutoff 16.643 → 0.0188 days | `242.102 <= 16.643`: no | `16.6351 <= 0.0188`: no | exited lit_room (maintainability) (9 → 10 rooms: 6 edited rooms entered, 1 edited room exited) |
+
+## Excluded rows (◌)
+
+- **◌ crack (maintainability)** — 7 → 7 rooms. Rooms in no commit's recorded changes in the window: 2 exited, 0 entered; edited rooms: 2 entered, 0 exited; excluded from the diagnosis; not counted in the gate's reading. An excluded row's rooms are counted, not named, and no values or cutoffs are printed for it.
+
+## Bands
+
+- Under the age geometry, none of the 35 rooms in no commit's recorded changes in the window changed band.
+- Under the layer geometry, 4 of the 35 rooms in no commit's recorded changes in the window changed band: 2 with the same raw depth on both sides (src/security/config/index.ts: band 1 → 2, raw depth 2 → 2; src/security/layers/layer-utils/content/helper-utils.ts: band 1 → 2, raw depth 2 → 2); 2 with a different raw depth (src/security/layers/layer-utils/semantics/semantic-policies.ts: band 3 → 2, raw depth 6 → 5; src/security/transport/http-transport-manager.ts: band 3 → 4, raw depth 7 → 8).
+
+## The gate's budget reading on this window
+
+What the gate's budget bounds: how far this tool's map differs between two commits for rooms that are in no commit's recorded changes. It is a check on the map. It is not a reading of the code, of the repository, or of any room named on this page.
+
+- features (the same under each geometry: rows do not depend on it) — 2 of the 35 rooms in no commit's recorded changes in the window, 2 crossings; in the gate's unit, 4 of 35 `(profile, feature, room)` assignments (2 or more of 35 assignments is over 0.05 by the gate's rule).
+- bands, age geometry — 0 of 35 rooms in no commit's recorded changes in the window (2 or more of 35 rooms is over 0.05 by the gate's rule).
+- bands, layer geometry — 4 of 35 rooms in no commit's recorded changes in the window (2 or more of 35 rooms is over 0.05 by the gate's rule).
+- the gate's token, age geometry — `over_budget`, on features.
+- the gate's token, layer geometry — `over_budget`, on features and bands.
+
+A reading of this one window (mapper spec §7 Q3). This page does not read whether another window of this repository reads the same. The same number of crossings reads differently on a different number of rooms, so the token does not rank repositories.
+
+## What this page does not report
+
+Marks that are neither diagnostic nor excluded (0 in the earlier commit, 0 in the later); what differs for edited rooms beyond the counts beside each row; a term that changed outcome without the room exiting or entering its row; any pair of commits but this one.
+
+## Provenance
+
+`mcp-secure-server.age.diff.json` (age: skeleton `700b0ee35700…` → `38d867b47977…`); `mcp-secure-server.layer.diff.json` (layer: skeleton `2b03539d7171…` → `6f9eccea15e0…`). Ruleset maintainability 0.3.4 + onboarding 0.3.1, mapper 0.11.1, substrate config `298696064105`, gate `942d86e90cfe`. Window page 0.2.0, facts `1c84a210e973…`.

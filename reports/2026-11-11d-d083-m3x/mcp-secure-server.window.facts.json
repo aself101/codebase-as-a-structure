@@ -1,0 +1,371 @@
+{
+ "bands": [
+  {
+   "geometry": "age",
+   "groups": {},
+   "moved": 0,
+   "of": 35
+  },
+  {
+   "geometry": "layer",
+   "groups": {
+    "band_only": [
+     {
+      "band_after": 2,
+      "band_before": 1,
+      "raw_after": 2,
+      "raw_before": 2,
+      "room": "src/security/config/index.ts"
+     },
+     {
+      "band_after": 2,
+      "band_before": 1,
+      "raw_after": 2,
+      "raw_before": 2,
+      "room": "src/security/layers/layer-utils/content/helper-utils.ts"
+     }
+    ],
+    "raw_depth_changed": [
+     {
+      "band_after": 2,
+      "band_before": 3,
+      "raw_after": 5,
+      "raw_before": 6,
+      "room": "src/security/layers/layer-utils/semantics/semantic-policies.ts"
+     },
+     {
+      "band_after": 4,
+      "band_before": 3,
+      "raw_after": 8,
+      "raw_before": 7,
+      "room": "src/security/transport/http-transport-manager.ts"
+     }
+    ]
+   },
+   "moved": 4,
+   "of": 35
+  }
+ ],
+ "clock_crossings": [
+  {
+   "cutoff_after": 0.0188,
+   "cutoff_before": 16.643,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/security/layers/layer-utils/content/utils/structural-analysis.ts",
+   "rows": [
+    {
+     "direction": "exited",
+     "label": "lit_room (maintainability)",
+     "words": "exited lit_room (maintainability) (9 → 10 rooms: 6 edited rooms entered, 1 edited room exited)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 242.0796,
+   "value_before": 16.6122
+  },
+  {
+   "cutoff_after": 0.0188,
+   "cutoff_before": 16.643,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/security/layers/layer-utils/content/utils/text-decoding.ts",
+   "rows": [
+    {
+     "direction": "exited",
+     "label": "lit_room (maintainability)",
+     "words": "exited lit_room (maintainability) (9 → 10 rooms: 6 edited rooms entered, 1 edited room exited)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 242.0796,
+   "value_before": 16.6122
+  },
+  {
+   "cutoff_after": 0.0188,
+   "cutoff_before": 16.643,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/security/layers/layer3-behavior.ts",
+   "rows": [
+    {
+     "direction": "exited",
+     "label": "lit_room (maintainability)",
+     "words": "exited lit_room (maintainability) (9 → 10 rooms: 6 edited rooms entered, 1 edited room exited)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 242.1104,
+   "value_before": 16.643
+  },
+  {
+   "cutoff_after": 0.0188,
+   "cutoff_before": 16.643,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/security/layers/layer5-contextual-types.ts",
+   "rows": [
+    {
+     "direction": "exited",
+     "label": "lit_room (maintainability)",
+     "words": "exited lit_room (maintainability) (9 → 10 rooms: 6 edited rooms entered, 1 edited room exited)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 242.1025,
+   "value_before": 16.6351
+  }
+ ],
+ "clock_rows": [
+  {
+   "born_entered": [],
+   "deleted_left": [],
+   "edited_entered": 6,
+   "edited_left": 1,
+   "kind": "clock",
+   "label": "lit_room (maintainability)",
+   "members": [
+    {
+     "feature": "lit_room",
+     "profile": "maintainability"
+    }
+   ],
+   "predicate": "last_touched_days <= p10",
+   "rooms_after": 10,
+   "rooms_before": 9,
+   "unedited_entered": [],
+   "unedited_left": [
+    "src/security/layers/layer-utils/content/utils/structural-analysis.ts",
+    "src/security/layers/layer-utils/content/utils/text-decoding.ts",
+    "src/security/layers/layer3-behavior.ts",
+    "src/security/layers/layer5-contextual-types.ts"
+   ]
+  }
+ ],
+ "crossings": [
+  {
+   "cutoff_after": 0.014260000000000002,
+   "cutoff_before": 0.012850000000000002,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": ">=",
+   "room": "src/index.ts",
+   "rows": [
+    {
+     "direction": "exited",
+     "label": "hub (maintainability)",
+     "words": "exited hub (maintainability) (7 → 7 rooms: 2 edited rooms entered, 1 edited room exited)"
+    },
+    {
+     "direction": "exited",
+     "label": "corridor (onboarding)",
+     "words": "exited corridor (onboarding) (3 → 3 rooms: 1 edited room entered)"
+    }
+   ],
+   "signal": "centrality",
+   "state": "compared",
+   "term": "centrality >= p90",
+   "term_kind": "rank",
+   "value_after": 0.0128,
+   "value_before": 0.0134
+  },
+  {
+   "cutoff_after": 0.84876,
+   "cutoff_before": 0.8408500000000001,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": true,
+   "operator": ">=",
+   "room": "src/types/index.ts",
+   "rows": [
+    {
+     "direction": "exited",
+     "label": "foundation (maintainability, onboarding)",
+     "words": "exited foundation (maintainability, onboarding) (7 → 7 rooms: 1 edited room entered)"
+    }
+   ],
+   "signal": "load_index",
+   "state": "compared",
+   "term": "load_index >= p90",
+   "term_kind": "rank",
+   "value_after": 0.8429,
+   "value_before": 0.8434
+  }
+ ],
+ "crossings_limit_text": "Only rooms that exited or entered a row are listed: a term that changed outcome while the room stayed in or out of its row is not on this page (the diff carries no evidence for it).",
+ "excluded_rows": [
+  {
+   "edited_entered": 2,
+   "edited_left": 0,
+   "label": "crack (maintainability)",
+   "predicate": "bug_pressure_index >= p90",
+   "rooms_after": 7,
+   "rooms_before": 7,
+   "unedited_entered": 0,
+   "unedited_left": 2
+  }
+ ],
+ "facts_hash": "1c84a210e973cbffb338752328abf6d27274c83e4c3efd3986090165bce2c53e",
+ "gate_reading": [
+  {
+   "fired": [
+    "features"
+   ],
+   "geometry": "age",
+   "operands": {
+    "features": {
+     "ceiling": 0.05,
+     "changes": 4,
+     "denominator": 35,
+     "distinct_crossings": 2,
+     "distinct_crossings_reason": null,
+     "distinct_rooms": 2,
+     "exceeds_ceiling": true,
+     "fires_at": 2,
+     "unit": "(profile, feature, room) assignments of rank and mixed features held by untouched rooms",
+     "value": 0.11428571428571428
+    },
+    "floors": {
+     "ceiling": 0.05,
+     "changes": 0,
+     "denominator": 35,
+     "exceeds_ceiling": false,
+     "fires_at": 2,
+     "unit": "untouched rooms",
+     "value": 0.0
+    }
+   },
+   "reason": null,
+   "token": "over_budget"
+  },
+  {
+   "fired": [
+    "features",
+    "bands"
+   ],
+   "geometry": "layer",
+   "operands": {
+    "features": {
+     "ceiling": 0.05,
+     "changes": 4,
+     "denominator": 35,
+     "distinct_crossings": 2,
+     "distinct_crossings_reason": null,
+     "distinct_rooms": 2,
+     "exceeds_ceiling": true,
+     "fires_at": 2,
+     "unit": "(profile, feature, room) assignments of rank and mixed features held by untouched rooms",
+     "value": 0.11428571428571428
+    },
+    "floors": {
+     "ceiling": 0.05,
+     "changes": 4,
+     "denominator": 35,
+     "exceeds_ceiling": true,
+     "fires_at": 2,
+     "unit": "untouched rooms",
+     "value": 0.11428571428571428
+    }
+   },
+   "reason": null,
+   "token": "over_budget"
+  }
+ ],
+ "identity": {
+  "mapper_version": "0.11.1",
+  "overlays": [
+   {
+    "name": "onboarding",
+    "version": "0.3.1"
+   }
+  ],
+  "profiles": [
+   "maintainability",
+   "onboarding"
+  ],
+  "ruleset": {
+   "name": "maintainability",
+   "version": "0.3.4"
+  },
+  "substrate_config_fingerprint": "29869606410592d12647680378424be20750656ce654d0aae4e8678dbc546bfe",
+  "validation_config_fingerprint": "942d86e90cfed95516e7e979e8255a0c2c539bf1a3342f9468ae374fe63a8a9f"
+ },
+ "not_reported": {
+  "degraded_marks": {
+   "after": 0,
+   "before": 0
+  }
+ },
+ "origin": "gate",
+ "origin_text": "the pair the gate perturbs: the commit the gate was run at and the commit 25 timeline commits before it; chosen for the gate's test, not for this page",
+ "page_file": "mcp-secure-server.window.md",
+ "qualifier_text": "A reading of this one window (mapper spec §7 Q3). This page does not read whether another window of this repository reads the same. The same number of crossings reads differently on a different number of rooms, so the token does not rank repositories.",
+ "repo": "mcp-secure-server",
+ "rooms": {
+  "common": 64,
+  "earlier": 64,
+  "edited": 29,
+  "edited_share": 0.453125,
+  "later": 65,
+  "only_earlier": [],
+  "only_later": [
+   "src/security/layers/layer-utils/content/patterns/linear-matchers.ts"
+  ],
+  "unedited": 35
+ },
+ "scope": "one window",
+ "scope_text": "One pair of commits. Each event below is between them. Another pair of commits reads differently.",
+ "sources": [
+  {
+   "after_skeleton_hash": "38d867b479778e6dd7ef9ce4c6891707acfd198cc1f0e540ed14c0d0d6ff2c96",
+   "before_skeleton_hash": "700b0ee35700f1635d0d577f9a85ed596c0020acd27b9e8e1f1782d9e6ddd850",
+   "file": "mcp-secure-server.age.diff.json",
+   "geometry": "age"
+  },
+  {
+   "after_skeleton_hash": "6f9eccea15e0106cac46ef01d04a6fabb709bd9d5aeac259cf28a53273c8b37d",
+   "before_skeleton_hash": "2b03539d7171d931f47397c105a652a75da24c21cc4c3fbeceebc0b6c39dd4e3",
+   "file": "mcp-secure-server.layer.diff.json",
+   "geometry": "layer"
+  }
+ ],
+ "subject_text": "What the gate's budget bounds: how far this tool's map differs between two commits for rooms that are in no commit's recorded changes. It is a check on the map. It is not a reading of the code, of the repository, or of any room named on this page.",
+ "units": {
+  "crossings": "(room, predicate term) pairs whose outcome differs between the two commits, among rooms in no commit's recorded changes that exited or entered a row; a term that changed outcome without a membership change is not enumerated",
+  "gate_reading.operands.features": "(profile, feature, room) assignments of rank and mixed features",
+  "gate_reading.operands.floors": "rooms (printed as bands)",
+  "rooms.edited_share": "edited rooms / rooms in both commits"
+ },
+ "window": {
+  "after_sha": "5348b3ef614d0da5912a56ee11f86fc5888a916b",
+  "after_ts": "2026-09-10T18:57:42-10:00",
+  "before_sha": "4c99da71468c29bb285a3f0d3ad644ef8b4abe7d",
+  "before_ts": "2026-01-28T07:44:41-10:00",
+  "commit_count": 25,
+  "commits_between": 25,
+  "first_ts": "2026-01-28T07:57:31-10:00",
+  "last_ts": "2026-09-10T18:57:42-10:00"
+ },
+ "window_page_version": "0.2.0"
+}

@@ -1,6 +1,6 @@
 # The window page — what differed between two commits, on a page of its own
 
-Status: **built 2026-11-11 (§12); re-checked (run 72, §11); open until the seat has run.** D-083.
+Status: **built 2026-11-11 (§12); re-checked (run 72, §11); the first seat failed the page (run 73, §13) and it was reworked as 0.2.0; open until a second seat has run.** D-083.
 Supersedes the form in `event-statement-spec.md`, whose §10 (tracker run 71) lists what
 fell and why. Alex chose the separate page the same day. Parent: `stability-budget-spec.md`
 (D-082). §11 holds the re-check before any code.
@@ -325,3 +325,57 @@ registry and typeorm); "not available" and "none changed outcome" are reached by
 fixture only. typeorm's clock table is 48 lines, the longest thing on any of the pages.
 
 Open until the seat (§11.12) has run.
+
+## 13. The first seat (tracker run 73) and window page 0.2.0
+
+By the rule of §11.12 the page **failed**. The skimmer (adoption-drift-detector, page
+only; its own decision ALIGNED 83, nothing CERTAIN) answered, before analysing:
+"Someone should find out why it's over budget" (rule iii), "mcp-secure-server's
+structure drifted enough … that the gate flags it" (rule ii), and "four security-layer
+files haven't been touched in about 242 days". The reader given one pasted line used no
+property word and would change nothing, but inferred "edits elsewhere" as the cause
+(rule i) and could not interpret `fails | fails` without the headers — it read the two
+cells as failing at both commits. The hostile reader (the `src/security/transport`
+maintainer, HATER_EXPOSED 85, every number recounted and matched) answered the closing
+question "no, narrowly": the undated "HEAD" in the origin sentence lets the token be
+cited as a reading of the repository's tip.
+
+All three found one thing from different seats: **the token had no subject.** §5's ban on
+the word "stability" had removed the only word on the page that said what the budget is
+a budget of, and nothing replaced it. A page that quotes `over_budget` beside named
+files and does not say whose behaviour the budget bounds will be read as grading the
+files.
+
+What 0.2.0 changes, each from a quoted misreading:
+
+- a fixed paragraph before the token: "What the gate's budget bounds: how far this
+  tool's map differs between two commits for rooms that are in no commit's recorded
+  changes. It is a check on the map. It is not a reading of the code, of the
+  repository, or of any room named on this page.";
+- no "HEAD": "the commit the gate was run at and the commit K timeline commits before
+  it", K from the budget block;
+- comparison cells are the arithmetic (`` `0.0128 >= 0.01285`: no ``), value and cutoff
+  cells say which they are, headers say "(arithmetic only)" and "(counts only)";
+  "passes" and "fails" are gone, held by a test;
+- "exited", not "left";
+- the features reading once, rooms first with their own denominator ("2 of the 35
+  rooms …; in the gate's unit, 4 of 35 assignments"), then bands per geometry, then the
+  token per geometry;
+- band lines carry each named room's band and raw value on both sides;
+- a clock row's term is glossed by what it is measured from, its values carry "days",
+  and a row's edited and unedited counts sit in one sentence;
+- the crossings sentence says it lists rooms that exited or entered a row, and a fixed
+  line says a term that changed outcome without a membership change is not on the page
+  (the hostile reader's new layer: the page had defined an enumeration the diff cannot
+  supply);
+- the under-table sentence extends to the rows column: "it does not say which of them,
+  if any, bears on the line it sits in";
+- the brief's pointer (0.45.1) says whose differences the window page holds: "for rooms
+  no commit between them records as changed".
+
+Not changed: row kinds ("clock rows", "excluded rows") are properties of rows under the
+ruleset and the page says them as such — §1's "nothing on it is a property of a row"
+was too wide and means "no line of events is"; the population in the under-table
+sentence is the commit's room count, not the count of rooms with a value.
+
+A second seat with fresh readers decides whether D-083 closes.
