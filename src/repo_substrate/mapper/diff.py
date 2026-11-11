@@ -142,6 +142,80 @@ def touched_since(
     return touched, len(tl) - idx - 1
 
 
+def window_commits_since(substrate: dict[str, Any], before_sha: str) -> list[dict[str, Any]] | None:
+    """The timeline entries `touched_since` counts — the same slice, so a window's dates are
+    read over exactly the commits its touched set was (D-083). None as `touched_since`."""
+    tl = substrate.get("timeline") or []
+    idx = next((i for i, e in enumerate(tl) if e.get("sha") == before_sha), None)
+    if idx is None:
+        return None
+    return [{"sha": e.get("sha"), "ts": e.get("ts")} for e in tl[idx + 1 :]]
+
+
+def window_commits_between(before_sub: dict[str, Any], after_sub: dict[str, Any]) -> list[dict[str, Any]]:
+    """The timeline entries `touched_between` counts (reachability, not timestamp order)."""
+    before = {e.get("sha") for e in before_sub.get("timeline") or []}
+    return [
+        {"sha": e.get("sha"), "ts": e.get("ts")}
+        for e in after_sub.get("timeline") or []
+        if e.get("sha") not in before
+    ]
+
+
+def _window_times(a_sha: str | None, b_sha: str | None, commits: list[dict[str, Any]] | None,
+                  after_substrate: dict[str, Any] | None) -> dict[str, Any]:
+    """Timestamps of a window, as recorded (D-083). `first_ts`/`last_ts` are the earliest and
+    latest INSTANT over the commits the caller counted — timeline order is by reachability, so
+    the endpoints do not bound it. Null, never guessed, when the list or a timestamp is missing."""
+    from datetime import datetime
+
+    out: dict[str, Any] = {"before_ts": None, "after_ts": None, "first_ts": None, "last_ts": None,
+                           "commit_count": len(commits) if commits is not None else None}
+    by_sha = {e.get("sha"): e.get("ts") for e in (after_substrate or {}).get("timeline") or []}
+    out["before_ts"], out["after_ts"] = by_sha.get(a_sha), by_sha.get(b_sha)
+    if not commits or any(not c.get("ts") for c in commits):
+        return out
+    try:
+        keyed = sorted(commits, key=lambda c: datetime.fromisoformat(c["ts"]))
+    except (TypeError, ValueError):
+        return out
+    out["first_ts"], out["last_ts"] = keyed[0]["ts"], keyed[-1]["ts"]
+    return out
+
+
+def _side_identity(sk: dict[str, Any]) -> dict[str, Any]:
+    rs = sk.get("ruleset") or {}
+    return {
+        "ruleset": {"name": rs.get("name"), "version": rs.get("version")},
+        "overlays": [
+            {"name": (o.get("ruleset") or {}).get("name"), "version": (o.get("ruleset") or {}).get("version")}
+            for o in sk.get("overlays") or []
+        ],
+        # base profile first, then overlays in their order: the page names a row's profiles so
+        "profiles": [(sk.get("profile") or {}).get("name")] + [o.get("profile") for o in sk.get("overlays") or []],
+        "mapper_version": sk.get("mapper_version"),
+        "substrate_config_fingerprint": sk.get("substrate_config_fingerprint"),
+        "validation_config_fingerprint": sk.get("validation_config_fingerprint"),
+    }
+
+
+def _predicates(*skeletons: dict[str, Any]) -> dict[tuple[str, str], str]:
+    """(profile, feature) → predicate text, from the roster where there is one and from the
+    fired records otherwise."""
+    out: dict[tuple[str, str], str] = {}
+    for sk in skeletons:
+        groups = [(sk.get("profile", {}).get("name"), sk.get("profile", {}).get("roster", []))]
+        groups += [(o.get("profile"), o.get("roster", [])) for o in sk.get("overlays", [])]
+        for prof, roster in groups:
+            for f in roster or []:
+                out.setdefault((prof, f["feature"]), f["predicate"])
+        for feats in [sk.get("features") or []] + [o["features"] for o in sk.get("overlays") or []]:
+            for f in feats:
+                if f.get("predicate"):
+                    out.setdefault((f["profile"], f["feature"]), f["predicate"])
+    return out
+
+
 def _feature_sets(
     skeleton: dict[str, Any], decorative: bool = False
 ) -> dict[tuple[str, str], set[str]]:
@@ -305,6 +379,7 @@ def skeleton_diff(
     unavailable_reason: str = "touched_set_unavailable",
     before_substrate: dict[str, Any] | None = None,
     after_substrate: dict[str, Any] | None = None,
+    window_commits: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Compare skeleton `a` (earlier) with `b` (later). `renames` maps a-names to b-names.
     `touched` (b-names) is the set of nodes the intervening commits edited; when given,
@@ -346,8 +421,14 @@ def skeleton_diff(
     a_nodes = {canon(n) for n in a["strata"]["by_node"]}
     b_nodes = set(b["strata"]["by_node"])
     common = a_nodes & b_nodes
-    fa = {k: {canon(n) for n in v} & common for k, v in _feature_sets(a).items()}
-    fb = {k: v & common for k, v in _feature_sets(b).items()}
+    # D-083: the row's own size and the rooms only one commit has, beside the common-room
+    # sets the operand is computed over. Additive; nothing below reads these for a verdict.
+    full_a = {k: {canon(n) for n in v} for k, v in _feature_sets(a).items()}
+    full_b = dict(_feature_sets(b).items())
+    born_nodes, deleted_nodes = b_nodes - a_nodes, a_nodes - b_nodes
+    predicates = _predicates(a, b)
+    fa = {k: v & common for k, v in full_a.items()}
+    fb = {k: v & common for k, v in full_b.items()}
     touched = (touched or set()) & common
     untouched = common - touched
     per_feature = {}
@@ -393,6 +474,12 @@ def skeleton_diff(
             "evidence": evidence,
             "transition_evidence": transition_evidence,
             "untouched_affected_rooms": sorted((sa ^ sb) & untouched),
+            # D-083 (additive)
+            "predicate": predicates.get(key),
+            "rooms_before": len(full_a.get(key, set())),
+            "rooms_after": len(full_b.get(key, set())),
+            "born_entered": sorted(full_b.get(key, set()) & born_nodes),
+            "deleted_left": sorted(a_original.get(n, n) for n in full_a.get(key, set()) & deleted_nodes),
         }
 
     def moved(pop: set[str]) -> list[str]:
@@ -413,6 +500,30 @@ def skeleton_diff(
     dec_union = sum(
         len((db.get(k, set()) | da.get(k, set())) & untouched) for k in set(da) | set(db)
     )
+    full_da = {k: {canon(n) for n in v} for k, v in _feature_sets(a, True).items()}
+    full_db = dict(_feature_sets(b, True).items())
+    per_decorative = {}
+    for key in sorted(set(da) | set(db) | set(full_da) | set(full_db)):
+        sa, sb = da.get(key, set()), db.get(key, set())
+        name = f"{key[0]}/{key[1]}"
+        per_decorative[name] = {
+            "kind": kinds.get(name, "rank"),
+            "predicate": predicates.get(key),
+            "before": len(sa),
+            "after": len(sb),
+            "added": sorted(sb - sa),
+            "removed": sorted(sa - sb),
+            "untouched_affected_rooms": sorted((sa ^ sb) & untouched),
+            "rooms_before": len(full_da.get(key, set())),
+            "rooms_after": len(full_db.get(key, set())),
+            "born_entered": sorted(full_db.get(key, set()) & born_nodes),
+            "deleted_left": sorted(a_original.get(n, n) for n in full_da.get(key, set()) & deleted_nodes),
+        }
+
+    def _degraded(sk: dict[str, Any]) -> int:
+        groups = [sk.get("features") or []] + [od["features"] for od in sk.get("overlays") or []]
+        return sum(1 for feats in groups for f in feats if not f["decorative"] and not f["diagnostic"])
+
     strata_moved = moved(common)
     u_moved = moved(untouched)
     strata_evidence = {}
@@ -495,6 +606,14 @@ def skeleton_diff(
             "geometry": b["geometry"]["name"],
         },
         "churn_units": "(profile, feature, room) assignments; summed symmetric differences / summed unions",
+        # D-083 (additive): what the window page reads
+        "identity": {"before": _side_identity(a), "after": _side_identity(b)},
+        "rooms": {
+            "born": sorted(born_nodes),
+            "deleted": sorted(a_original.get(n, n) for n in deleted_nodes),
+        },
+        "per_decorative_feature": per_decorative,
+        "degraded_marks": {"before": _degraded(a), "after": _degraded(b)},
         "strata_evidence": strata_evidence,
         "common_nodes": len(common),
         "born": len(b_nodes - a_nodes),
@@ -537,6 +656,8 @@ def skeleton_diff(
                 "before_sha": a["repo"].get("head_sha"),
                 "after_sha": b["repo"].get("head_sha"),
                 "commits_between": commits_between,
+                **_window_times(a["repo"].get("head_sha"), b["repo"].get("head_sha"),
+                                window_commits, after_substrate),
             },
             "operands": operands,
             "fired": fired,

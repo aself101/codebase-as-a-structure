@@ -130,11 +130,26 @@ def main(argv: list[str] | None = None) -> int:
         help="lint this hand-written reading and append it to the page",
     )
     br.add_argument(
+        "--window",
+        type=Path,
+        default=None,
+        help="the window page's facts sheet (substrate window --facts): the header names that page",
+    )
+    br.add_argument(
         "--relint",
         type=Path,
         default=None,
         help="re-judge an existing brief.md under the current lint, keeping its provenance",
     )
+    wn = sub.add_parser(
+        "window",
+        help="what differed between two commits, as a page of its own (D-083): one or two skeleton diffs of one pair, one per geometry",
+    )
+    wn.add_argument("diffs", type=Path, nargs="+")
+    wn.add_argument("--origin", choices=["gate", "caller"], default="caller",
+                    help="who chose the pair: the gate's perturbation, or whoever ran this")
+    wn.add_argument("-o", "--output", type=Path, required=True, help="window.md")
+    wn.add_argument("--facts", type=Path, default=None, help="also write the facts sheet JSON")
     args = ap.parse_args(argv)
     try:
         return _dispatch(args)
@@ -162,11 +177,12 @@ def _dispatch(args: argparse.Namespace) -> int:
 
         skel = _load_json(args.skeleton, "skeleton")
         sub_doc = _load_json(args.substrate, "substrate") if args.substrate else None
+        win_doc = _load_json(args.window, "window sheet") if args.window else None
         if args.relint:
-            r = relint(args.relint.read_text(encoding="utf-8"), skel, sub_doc)
+            r = relint(args.relint.read_text(encoding="utf-8"), skel, sub_doc, win_doc)
         else:
             draft = args.draft.read_text(encoding="utf-8") if args.draft else None
-            r = run_brief(skel, sub_doc, draft)
+            r = run_brief(skel, sub_doc, draft, win_doc)
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(r["markdown"], encoding="utf-8")
         if args.facts:
@@ -179,6 +195,24 @@ def _dispatch(args: argparse.Namespace) -> int:
         for v in r["violations"][:12]:
             print(f"  {v['rule']} ¶{v['paragraph']}: {v['detail']}", file=sys.stderr)
         return 0 if r["passed"] else 1
+    if args.cmd == "window":
+        from .window import run_window
+
+        diffs = [_load_json(p, "skeleton diff") for p in args.diffs]
+        r = run_window(diffs, [p.name for p in args.diffs], args.origin, args.output.name)
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(r["markdown"], encoding="utf-8")
+        if args.facts:
+            args.facts.parent.mkdir(parents=True, exist_ok=True)
+            args.facts.write_text(
+                json.dumps(r["facts"], indent=1, sort_keys=True, ensure_ascii=False, allow_nan=False) + "\n",
+                encoding="utf-8",
+            )
+        f = r["facts"]
+        print(f"window {f['window']['before_sha'][:10]} → {f['window']['after_sha'][:10]}: "
+              f"{len(f['crossings'])} crossings, {len(f['clock_rows'])} clock rows, {len(f['excluded_rows'])} excluded rows",
+              file=sys.stderr)
+        return 0
     if args.cmd == "timelapse":
         from .mapper import load_ruleset
         from .timelapse import run_timelapse
@@ -222,7 +256,7 @@ def _dispatch(args: argparse.Namespace) -> int:
         return 0
 
     if args.cmd == "skeleton-diff":
-        from .mapper.diff import skeleton_diff, touched_since
+        from .mapper.diff import skeleton_diff, touched_since, window_commits_since
 
         a = _load_json(args.before, "before skeleton")
         b = _load_json(args.after, "after skeleton")
@@ -230,6 +264,7 @@ def _dispatch(args: argparse.Namespace) -> int:
         touched: set[str] | None = None
         between: int | None = None
         after_sub = None
+        window_commits = None
         before_sub = _load_json(args.before_substrate, "before substrate") if args.before_substrate else None
         reason = "renames_not_given"  # no --renames: the budget has no timeline to read
         if args.renames:
@@ -238,10 +273,12 @@ def _dispatch(args: argparse.Namespace) -> int:
             ts = touched_since(after_sub, a["repo"]["head_sha"], ren)
             if ts is not None:
                 touched, between = ts
+                window_commits = window_commits_since(after_sub, a["repo"]["head_sha"])
             else:
                 reason = "touched_set_unavailable"  # the before sha is not in the after timeline
         d = skeleton_diff(a, b, ren, touched, between, unavailable_reason=reason,
-                          before_substrate=before_sub, after_substrate=after_sub)
+                          before_substrate=before_sub, after_substrate=after_sub,
+                          window_commits=window_commits)
         text = json.dumps(d, indent=1, sort_keys=True, ensure_ascii=False, allow_nan=False) + "\n"
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)

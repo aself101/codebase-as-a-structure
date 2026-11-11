@@ -1920,7 +1920,9 @@ def test_the_defence_sits_in_the_cell_it_defends_and_the_page_carries_its_snapsh
     # the snapshot and the tier names, in the header
     assert f["as_of"] == sub["repo"]["as_of"] and f"As of {str(f['as_of'])[:10]}, commit `{f['repo']['head_sha'][:12]}`." in page
     assert "asserted is a description that held under the stability budget and the corroboration its grounding class requires (validation spec §2.4), validated a forecast confirmed by a temporal holdout (validation spec §3)" in reg  # D-061: the gloss no longer claims a cross-modal check
-    assert "stability is the `substrate timelapse` run under gate" in page and "not this page" in page  # D-062: said once
+    # D-083: the clause pointed at a run that judges nothing; it names the window page or says none was rendered
+    assert "stability" not in page.split("## Provenance")[0].split("Calibration:")[1].split(".")[0]
+    assert f["window_ref"] is None and "no window page was rendered with this brief; it says nothing about how its rows differ between commits" in page
     # a single-pNN row states its share by construction; a conjunction does not
     # D-061: the sentence states the realized share and the cutoff, not "10% by construction" (eslint: 83 of 473, 80 tied at the cutoff)
     assert _b._share_by_construction("last_touched_days >= p90", 83, 473, {"last_touched_days >= p90": 533.966}, 80) == " — rooms at or above this repository's p90 on last_touched_days (here 533.966 days): 83 of 473, 17.5%"

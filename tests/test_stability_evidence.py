@@ -207,9 +207,12 @@ def test_pinned_mcp_budget_block_states_operand_resolution_and_window(geometry):
     assert s["changes"] == (4 if geometry == "layer" else 0)
     assert b["fired"] == (["features", "floors"] if geometry == "layer" else ["features"])
     assert b["scope"] == "one window"
-    assert b["window"] == {"before_sha": fixture["before"]["repo"]["head_sha"],
-                           "after_sha": fixture["after"]["repo"]["head_sha"],
-                           "commits_between": fixture["commits_between"]}
+    assert {k: b["window"][k] for k in ("before_sha", "after_sha", "commits_between")} == {
+        "before_sha": fixture["before"]["repo"]["head_sha"],
+        "after_sha": fixture["after"]["repo"]["head_sha"],
+        "commits_between": fixture["commits_between"]}
+    # D-083: no commit list was passed, so the window's times are unknown, not guessed
+    assert b["window"]["first_ts"] is None and b["window"]["commit_count"] is None
     # no substrates supplied: the crossing count is unknown, never zero
     assert f["distinct_crossings"] is None
     assert f["distinct_crossings_reason"] == "transition_evidence_unavailable"

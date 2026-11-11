@@ -1,0 +1,787 @@
+{
+ "bands": [
+  {
+   "geometry": "age",
+   "groups": {
+    "raw_value_changed": [
+     "scripts/list-pre-a1-versions.ts"
+    ]
+   },
+   "moved": 1,
+   "of": 168
+  },
+  {
+   "geometry": "layer",
+   "groups": {},
+   "moved": 0,
+   "of": 168
+  }
+ ],
+ "clock_crossings": [
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "scripts/backfill-is-latest.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 28.1588,
+   "value_before": 6.0092
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "scripts/backfill-missing-risk-profiles.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 28.1588,
+   "value_before": 6.0092
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "scripts/backfill-risk-scalars.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 28.1588,
+   "value_before": 6.0092
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "scripts/backfill-stale-risk-profiles.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 25.1276,
+   "value_before": 2.978
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "scripts/calibration-gate.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 28.1588,
+   "value_before": 6.0092
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "scripts/check-optionalauth-nonget.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 23.0509,
+   "value_before": 0.9013
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "scripts/cron/deep-analysis.sh",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 28.1588,
+   "value_before": 6.0092
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "scripts/cron/executions-retention.sh",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 28.1588,
+   "value_before": 6.0092
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "scripts/cron/models-sync.sh",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 28.1588,
+   "value_before": 6.0092
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "scripts/lineage-consistency-check.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 23.0052,
+   "value_before": 0.8556
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "scripts/list-pre-a1-versions.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 28.1588,
+   "value_before": 6.0092
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "scripts/requeue-deep-stale.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 25.1244,
+   "value_before": 2.9748
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/config/index.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 28.1588,
+   "value_before": 6.0092
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/middleware/index.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 28.1588,
+   "value_before": 6.0092
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/middleware/rate-limit.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 28.1588,
+   "value_before": 6.0092
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/routes/v1/analytics.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 28.116,
+   "value_before": 5.9664
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/schemas/index.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 28.1588,
+   "value_before": 6.0092
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/services/definition/mutations.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 22.9663,
+   "value_before": 0.8167
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/services/safety/analyzer-version.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 25.1276,
+   "value_before": 2.978
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/services/safety/deep-analysis-worker.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 25.1276,
+   "value_before": 2.978
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/services/safety/definition-scanner.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 25.1276,
+   "value_before": 2.978
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/services/safety/risk-calculator.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 25.1276,
+   "value_before": 2.978
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/services/safety/types.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 25.8565,
+   "value_before": 3.7069
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/services/validation/reference-validator.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 28.1588,
+   "value_before": 6.0092
+  },
+  {
+   "cutoff_after": 20.12605,
+   "cutoff_before": 6.0092,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/utils/errors.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (36 → 21 rooms: 15 edited rooms entered, 5 edited rooms left)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 22.9663,
+   "value_before": 0.8167
+  }
+ ],
+ "clock_rows": [
+  {
+   "born_entered": [],
+   "deleted_left": [],
+   "edited_entered": 15,
+   "edited_left": 5,
+   "kind": "clock",
+   "label": "lit_room (maintainability)",
+   "members": [
+    {
+     "feature": "lit_room",
+     "profile": "maintainability"
+    }
+   ],
+   "predicate": "last_touched_days <= p10",
+   "rooms_after": 21,
+   "rooms_before": 36,
+   "unedited_entered": [],
+   "unedited_left": [
+    "scripts/backfill-is-latest.ts",
+    "scripts/backfill-missing-risk-profiles.ts",
+    "scripts/backfill-risk-scalars.ts",
+    "scripts/backfill-stale-risk-profiles.ts",
+    "scripts/calibration-gate.ts",
+    "scripts/check-optionalauth-nonget.ts",
+    "scripts/cron/deep-analysis.sh",
+    "scripts/cron/executions-retention.sh",
+    "scripts/cron/models-sync.sh",
+    "scripts/lineage-consistency-check.ts",
+    "scripts/list-pre-a1-versions.ts",
+    "scripts/requeue-deep-stale.ts",
+    "src/config/index.ts",
+    "src/middleware/index.ts",
+    "src/middleware/rate-limit.ts",
+    "src/routes/v1/analytics.ts",
+    "src/schemas/index.ts",
+    "src/services/definition/mutations.ts",
+    "src/services/safety/analyzer-version.ts",
+    "src/services/safety/deep-analysis-worker.ts",
+    "src/services/safety/definition-scanner.ts",
+    "src/services/safety/risk-calculator.ts",
+    "src/services/safety/types.ts",
+    "src/services/validation/reference-validator.ts",
+    "src/utils/errors.ts"
+   ]
+  }
+ ],
+ "crossings": [
+  {
+   "cutoff_after": 0.5,
+   "cutoff_before": 0.5,
+   "earlier_value_vs_later_cutoff": null,
+   "fixed_threshold": true,
+   "later_value_vs_earlier_cutoff": null,
+   "operator": ">=",
+   "room": "src/schemas/validation/types.ts",
+   "rows": [
+    {
+     "direction": "entered",
+     "label": "scaffolding (maintainability)",
+     "words": "entered scaffolding (maintainability) (130 → 133 rooms: 2 edited rooms entered)"
+    }
+   ],
+   "signal": "reinforcement_index",
+   "state": "compared",
+   "term": "reinforcement_index >= 0.5",
+   "term_kind": "rank",
+   "value_after": 0.6504,
+   "value_before": 0.0
+  }
+ ],
+ "excluded_rows": [
+  {
+   "label": "crack (maintainability)",
+   "predicate": "bug_pressure_index >= p90",
+   "rooms_after": 21,
+   "rooms_before": 21,
+   "unedited_entered": 0,
+   "unedited_left": 6
+  }
+ ],
+ "facts_hash": "92d226e890996bba3b1b72a14c119de1e0aee6cad973c9d51dd99e90684928a9",
+ "gate_reading": [
+  {
+   "fired": [],
+   "geometry": "age",
+   "operands": {
+    "features": {
+     "ceiling": 0.05,
+     "changes": 1,
+     "denominator": 215,
+     "distinct_crossings": 1,
+     "distinct_crossings_reason": null,
+     "distinct_rooms": 1,
+     "exceeds_ceiling": false,
+     "fires_at": 11,
+     "unit": "(profile, feature, room) assignments of rank and mixed features held by untouched rooms",
+     "value": 0.004651162790697674
+    },
+    "floors": {
+     "ceiling": 0.05,
+     "changes": 1,
+     "denominator": 168,
+     "exceeds_ceiling": false,
+     "fires_at": 9,
+     "unit": "untouched rooms",
+     "value": 0.005952380952380952
+    }
+   },
+   "reason": null,
+   "token": "within_budget"
+  },
+  {
+   "fired": [],
+   "geometry": "layer",
+   "operands": {
+    "features": {
+     "ceiling": 0.05,
+     "changes": 1,
+     "denominator": 215,
+     "distinct_crossings": 1,
+     "distinct_crossings_reason": null,
+     "distinct_rooms": 1,
+     "exceeds_ceiling": false,
+     "fires_at": 11,
+     "unit": "(profile, feature, room) assignments of rank and mixed features held by untouched rooms",
+     "value": 0.004651162790697674
+    },
+    "floors": {
+     "ceiling": 0.05,
+     "changes": 0,
+     "denominator": 168,
+     "exceeds_ceiling": false,
+     "fires_at": 9,
+     "unit": "untouched rooms",
+     "value": 0.0
+    }
+   },
+   "reason": null,
+   "token": "within_budget"
+  }
+ ],
+ "identity": {
+  "mapper_version": "0.11.1",
+  "overlays": [
+   {
+    "name": "onboarding",
+    "version": "0.3.1"
+   }
+  ],
+  "profiles": [
+   "maintainability",
+   "onboarding"
+  ],
+  "ruleset": {
+   "name": "maintainability",
+   "version": "0.3.4"
+  },
+  "substrate_config_fingerprint": "29869606410592d12647680378424be20750656ce654d0aae4e8678dbc546bfe",
+  "validation_config_fingerprint": "942d86e90cfed95516e7e979e8255a0c2c539bf1a3342f9468ae374fe63a8a9f"
+ },
+ "not_reported": {
+  "degraded_marks": {
+   "after": 0,
+   "before": 0
+  }
+ },
+ "origin": "gate",
+ "origin_text": "the pair the gate perturbs: HEAD and the commit 25 timeline commits before it; chosen for the gate's test, not for this page",
+ "page_file": "registry.window.md",
+ "qualifier_text": "A reading of this one window (mapper spec §7 Q3). This page does not read whether it is usual for this repository. The same number of crossings reads differently on a different number of rooms, so the token does not rank repositories.",
+ "repo": "uluops-registry-api",
+ "rooms": {
+  "common": 206,
+  "earlier": 206,
+  "edited": 38,
+  "edited_share": 0.18446601941747573,
+  "later": 206,
+  "only_earlier": [],
+  "only_later": [],
+  "unedited": 168
+ },
+ "scope": "one window",
+ "scope_text": "One pair of commits. Each event below is between them. Another pair of commits reads differently.",
+ "sources": [
+  {
+   "after_skeleton_hash": "589718518a356ade307a8e07a22ba4a3ddee8332791c0694d03c5a01403f4de1",
+   "before_skeleton_hash": "fe26fad6aa94f655470978ed7edf39e65980b739d0cccd53beef92f8cfd0baa9",
+   "file": "registry.age.diff.json",
+   "geometry": "age"
+  },
+  {
+   "after_skeleton_hash": "f3a67ba39b13039361c6cbf15c96f3896c7993e7f27dee48890356675d909b8f",
+   "before_skeleton_hash": "a07687dbe79e6b9ad4ae132d29f028642dcc6d2889698004cd16968653f685db",
+   "file": "registry.layer.diff.json",
+   "geometry": "layer"
+  }
+ ],
+ "units": {
+  "crossings": "(room, predicate term) pairs whose outcome differs between the two commits, among rooms in no commit's recorded changes",
+  "gate_reading.operands.features": "(profile, feature, room) assignments of rank and mixed features",
+  "gate_reading.operands.floors": "rooms (printed as bands)",
+  "rooms.edited_share": "edited rooms / rooms in both commits"
+ },
+ "window": {
+  "after_sha": "e947c5b67542e4bfaef11ac0aea00f6c1f0f44f2",
+  "after_ts": "2026-09-13T12:47:53-10:00",
+  "before_sha": "368c016733604b4261748ea5bcfdef89d8addc52",
+  "before_ts": "2026-08-22T09:12:27-10:00",
+  "commit_count": 25,
+  "commits_between": 25,
+  "first_ts": "2026-08-22T13:30:09-10:00",
+  "last_ts": "2026-09-13T12:47:53-10:00"
+ },
+ "window_page_version": "0.1.0"
+}

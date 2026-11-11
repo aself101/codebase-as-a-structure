@@ -1,6 +1,6 @@
 # The window page — what differed between two commits, on a page of its own
 
-Status: **draft for re-check, nothing implemented.** D-083. Written 2026-11-11.
+Status: **built 2026-11-11 (§12); re-checked (run 72, §11); open until the seat has run.** D-083.
 Supersedes the form in `event-statement-spec.md`, whose §10 (tracker run 71) lists what
 fell and why. Alex chose the separate page the same day. Parent: `stability-budget-spec.md`
 (D-082). §11 holds the re-check before any code.
@@ -227,3 +227,101 @@ time-lapse's scrubber.
 ## 11. Re-check
 
 *(appended; no code before it)*
+
+Tracker run 72. measurement-validity-analyst: **UNSUPPORTED** on two fixed sentences,
+with its nine run-71 findings resolved (13 claims: 8 supported, 2 qualified, 2
+unsupported, 1 undetermined pending the seat). software-architecture-expert-validator:
+**IMPRECISE 72** (from DIVERGENT 56): the contract collisions are gone, five of §3's
+seven fields are computable as written, every addition is outside the operand paths;
+four text defects. Where a section above and a line below disagree, the line below is
+the contract.
+
+1. **Clock terms are compared like every other term** (§5.1, §5.2). "Not compared: a
+   clock term moves with the checkpoint" and "a clock row's membership moves with the
+   checkpoint" are withdrawn: on mcp `lit_room`'s four unedited rooms went 16.61 → 242.08
+   days while the cutoff fell 16.643 → 0.0188 as edited rooms reset, and either move
+   alone evicts them. The sentences named half a cause — the third time in one day that
+   a mechanism was written from one side of a two-sided comparison (D-082 F4, the first
+   R4, this). §5.2 becomes: a count line per clock row, then the row's crossings in a
+   table with §5.1's columns, headed "not counted in the gate's reading". No fixed text
+   on the page names a mechanism; a test holds that against a word list ("because",
+   "due to", "moves with", "caused", "pushed", "evicted", "drift").
+2. **§5.5's qualifier** reads: "A reading of this one window (mapper spec §7 Q3). This
+   page does not read whether it is usual for this repository. The same number of
+   crossings reads differently on a different number of rooms, so the token does not
+   rank repositories." The arithmetic clause reads "2 or more of 35 assignments is over
+   0.05 by the gate's rule". §1's "nothing on it is graded" becomes "the page adds no
+   grade; the gate's token is quoted as the gate's".
+3. **The commit set is passed in, once.** `skeleton_diff` gains `window_commits`
+   (`[{sha, ts}]`), supplied by the same call that computes `touched` and
+   `commits_between` (`touched_since` on the CLI path, `touched_between` in the
+   time-lapse; each gains a sibling returning the entries it counted). First and last
+   are the minimum and maximum over parsed instants, printed as recorded. Null when the
+   caller passes none or an entry has no `ts`.
+4. **`identity`** records, for each side, the ruleset and each overlay as
+   `{name, version}` and `mapper_version`, and for the pair
+   `substrate_config_fingerprint` and `validation_config_fingerprint`. `substrate window`
+   refuses a diff whose two sides differ in any of them (the predicates may differ), and
+   two diffs whose identities differ.
+5. **Two diffs are one window when** the pair of commits, `identity`, `commits_between`,
+   `touched.nodes`, `rooms`, the whole of `per_feature` (evidence included) and
+   `per_decorative_feature`, and the budget's constants are equal. Anything else is
+   refused with the first differing field named.
+6. **Words.** `--origin gate` prints "the pair the gate perturbs: HEAD and the commit K
+   timeline commits before it; chosen for the gate's test, not for this page". The
+   operand named `floors` in the diff is printed as "bands"; the token (`over_budget`,
+   `within_budget`) is quoted. Rooms are "in no commit's recorded changes in the
+   window", not "not edited"; the bold sentence reads "**One pair of commits. Each event
+   below is between them. Another pair of commits reads differently.**" Born and
+   deleted print as "only in the later commit" and "only in the earlier commit" (a file
+   that changes kind leaves the room population without being deleted).
+7. **Crossing lines** exist only for rooms that left or entered a row (the diff carries
+   evidence for no others). Per room and row: if either side's evidence is unavailable,
+   or the two sides' term lists differ, one line with term "not available". Otherwise
+   one line per term whose two outcomes are both known and differ. If none differs: when
+   any outcome is null, one line "not available"; else one line "none changed outcome"
+   with each side's `diagnostic_eligible`, `graph_degraded` and `node_load_degraded`
+   (null printed as "not recorded"). Lines for the same (room, term) from several rows
+   are one line whose rows cell lists them.
+8. **The sentence under the table**: "Each side's cutoff is computed over that commit's
+   rooms that have a value (N earlier, M later), this room's included. The two
+   comparisons are arithmetic on the four numbers beside them; neither names a cause."
+9. **Rows merge** on predicate text: one entry naming every feature that has it, each
+   with its profile ("foundation (maintainability, onboarding)").
+10. **The brief's pointer** is also refused when the sheet's skeleton hash for the
+    brief's geometry is not the brief's.
+11. **Fixture case (j)** is a per-term null on one side, not an omitted substrate; an
+    unavailable side is a second, separate diff.
+12. **The seat's rule, written before it runs.** Readers: a plain skimmer on the whole
+    mcp window page; a hostile reader on the whole page; a third reader given one
+    crossing line pasted alone. The page fails if any reader (i) attributes a cause to a
+    line, (ii) uses a property word of a room, a row or the repository (unstable,
+    drifting, settling, degraded, fragile), or (iii) calls the gate's token a defect to
+    fix. The three readers share a model family: agreement among them is one
+    observation. Skimmer: "In two sentences, what does this page tell you about
+    `src/index.ts` and about the hub row?" then "Is anything on this page a problem
+    someone should fix?" Pasted line: "What does this line say?" Hostile reader: "Quote
+    the sentence someone could cite as a claim about this repository, or a row, beyond
+    these two commits."
+13. **Excluded rows are counted, never named** (found while building, not by a reviewer):
+    the brief spec's §1 cites excluded features "by count only — naming their rooms would
+    hand a reader the salience the exclusion withholds" (D-028). §5.3 above named up to
+    three rooms; the page and the sheet now carry the two counts and no path.
+
+## 12. As built (2026-11-11)
+
+`src/repo_substrate/window.py` (window page 0.1.0), `substrate window`, the diff's
+additive fields (`mapper/diff.py`), `substrate brief --window` (brief 0.45.0), and the
+window step in `scripts/regenerate_readings.py`. Tests: `tests/test_window.py` (21, on a
+two-snapshot fixture built in the test). All eight pinned diffs regenerated under tag
+`2026-11-11c-d083`: no pre-existing leaf differs from `2026-11-11b-d082`. The four briefs
+differ from the `2026-09-24h` pages in the header sentence, the version and the facts
+hash, and in nothing else.
+
+The pinned mcp window page reads as §8 predicted, with one difference: the excluded line
+gives counts (2 rooms left `crack`) and no names. Across the four pages every cell state
+but two is reached on real data (compared with both comparisons; fixed threshold on the
+registry and typeorm); "not available" and "none changed outcome" are reached by the
+fixture only. typeorm's clock table is 48 lines, the longest thing on any of the pages.
+
+Open until the seat (§11.12) has run.

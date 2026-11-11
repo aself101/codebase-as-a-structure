@@ -1712,3 +1712,65 @@ registry 1 (1). 189 tests.
 calibration that would say whether two is many. **Breaks if.** The resolution line is
 read as an excuse — "only two rooms" — on a population where two rooms is the
 calibrated tail; that is E's question and the line does not answer it.
+
+
+## D-083 · 2026-11-11 · What differs between two commits is a page of its own (Alex: the separate page); the brief points at it; brief 0.45.0, window page 0.1.0
+
+**Decision.** D-082's option D is built as `substrate window`: a page about one pair of
+commits, rendered from one or two skeleton diffs of that pair and from nothing else.
+The brief keeps its one-snapshot contract — "no count on this page compares across
+repositories, or across snapshots of this one" is untouched — and its header, which had
+sent the reader to a time-lapse that judges nothing, now names the window page (the
+pair, the earlier commit's date, the file) or says none was rendered. Specs:
+`event-statement-spec.md` (the first form, on the brief; rejected, kept as the record)
+and `window-page-spec.md` (the form built; §11 is the contract where it differs from
+§§1–10, §12 the as-built note).
+
+**How it got here.** The first form put a table on the brief. Three reviews (run 71:
+measurement-validity-analyst UNSUPPORTED, software-architecture-expert-validator
+DIVERGENT 56, adoption-drift-detector DRIFTED 44; 28 issues) found it classified a
+crossing by cause from one inequality of two, read row sizes from a diff that does not
+have them, counted layer bands as things an age-geometry page prints, and contradicted a
+rule the brief asserts by test. Alex was given the two forms and chose the page of its
+own. The second spec was re-checked (run 72: UNSUPPORTED on two fixed sentences with the
+nine earlier findings resolved; IMPRECISE 72): the clock line again named half a cause,
+and "has not been read" was false for mcp, whose four walks had read it that morning.
+
+**What the page prints** (mcp-secure-server, `4c99da71468c` → `5348b3ef614d`,
+`reports/2026-11-11c-d083-m3x/mcp-secure-server.window.md`): the window with its origin
+("the pair the gate perturbs … chosen for the gate's test, not for this page"), its
+endpoints and the earliest and latest commit in it (2026-01-28 to 2026-09-10), 64 rooms
+in both commits, 29 in some commit's recorded changes, 35 in none; two crossing lines,
+each with the window, the room, the term, value and cutoff on both sides and two
+comparisons (`src/index.ts` on `centrality >= p90`: fails / fails; `src/types/index.ts`
+on `load_index >= p90`: passes / fails) and the rows left in words; one clock row
+(lit_room, four rooms, with the same numbers and comparisons, not counted); one excluded
+row (◌ crack, two rooms, counted and not named — D-028); bands per geometry (none of 35
+under age, 4 of 35 under layer); the gate's reading per geometry beside its own numbers
+with the token quoted; a fixed qualifier that the page does not read whether the reading
+is usual and that the token does not rank repositories.
+
+**Rules the code holds by test.** No fixed text names a mechanism (a word list, with the
+withdrawn clock sentence as the negative control). No fixed text uses "stability",
+"stable", "unstable", "settled", "flicker", "verdict" or "floor". Every crossing line
+carries the window. Two diffs are one window only when the pair, the identity (ruleset,
+overlays, mapper, both fingerprints), K, the touched set, the rooms, every feature's
+membership and evidence, and the budget's constants are equal.
+
+**The diff gained** `identity`, `rooms`, `per_decorative_feature`, `degraded_marks`,
+per-feature `predicate` / `rooms_before` / `rooms_after` / `born_entered` /
+`deleted_left`, and the window's four timestamps over the commits the caller counted
+(`window_commits_since`, `window_commits_between`). All eight pinned diffs regenerated:
+no pre-existing leaf moved. The four briefs differ from the `2026-09-24h` pages in the
+header sentence, the version and the facts hash only. 210 tests.
+
+**Not closed.** The seat on the rendered mcp window page (three readers, with the rule
+for failing written in the spec before it runs) decides whether the page stays an event
+statement in a reader's hands. Runs 71 and 72's issues are statused after it.
+
+**Assumes.** A reader who needs to know how the page's rows differ between commits will
+follow one clause in the brief's header to a second file. **Breaks if.** The seat's
+readers, or a later reader, cite a window page's line as a property of a room or the
+token as a defect; or the pointer goes unfollowed the way the change sheet did, in which
+case the reading has a page and still no reader, and the question returns to whether one
+dated line belongs on the brief after all.

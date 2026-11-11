@@ -16,3 +16,16 @@ Tags: `[NOW]` required for M3; `[HOR]` anti-horoscope; `[PROV]` provenance; `[DE
 - [x] `[NOW][HOR]` Real briefs over the four reference skeletons pass the lint. *(§2)* `(fixture: reports/2026-09-06-m3/, 2026-09-06, second attempt on each)`
 - [ ] `[HOR]` Hostile-reader model pass. *(§5 Q1)*
 - [ ] `[HOR]` Per-signal lexicon widening when an index is validated. *(§5 Q3)*
+
+## D-083 the window page and the brief's pointer (window-page-spec.md)
+
+- [x] The brief's header names the window page (pair, earlier date, file) or says none was rendered; no count crosses (`test_the_brief_points_at_the_window_page_and_takes_no_count_from_it`, `test_register_*` clause assertion in `tests/test_brief.py`).
+- [x] A sheet about another commit or another skeleton is refused (`test_the_brief_refuses_a_sheet_about_another_commit_or_another_skeleton`).
+- [x] The diff carries true row sizes, rooms only one commit has, excluded rows without evidence, both sides' identity, and window times over the commits counted (`test_row_sizes_count_rooms_only_one_commit_has`, `test_excluded_rows_are_carried_outside_per_feature_and_without_evidence`, `test_identity_records_*`, `test_window_times_*`).
+- [x] A crossing prints four numbers and two comparisons and no cause, for leavers and entrants; one predicate under two profiles is one row; a shared term is one line (`test_cutoff_passed_it_and_own_value_fell_*`, `test_an_entrant_*`, `test_one_predicate_under_two_profiles_*`).
+- [x] Fixed-value terms, null outcomes, no-term-changed and a missing side each have a fixed form (`test_a_fixed_value_term_*`, `test_a_null_outcome_*`, `test_membership_change_with_no_term_change_and_a_missing_side`).
+- [x] Clock rows get the same numbers and comparisons; excluded rows are counted and not named (`test_clock_rows_*`, `test_excluded_rows_are_counted_and_their_rooms_not_named`).
+- [x] Two geometries are two readings; `floors` prints as bands; an unjudged window quotes the ladder's reason (`test_two_geometries_*`, `test_the_operand_named_floors_is_printed_as_bands`).
+- [x] The window is in every crossing line; no property word and no mechanism word in fixed text (`test_the_window_is_in_every_crossing_line_*`, `test_no_property_word_and_no_mechanism_word_in_the_fixed_text`).
+- [x] Refusals: same geometry twice, not one window, pre-D-083 diff, sides mapped differently, more than two (`test_refusals_each_with_its_reason`).
+- [ ] The seat on the rendered mcp window page (spec §11.12).

@@ -1,0 +1,1391 @@
+{
+ "bands": [
+  {
+   "geometry": "age",
+   "groups": {},
+   "moved": 0,
+   "of": 519
+  },
+  {
+   "geometry": "layer",
+   "groups": {},
+   "moved": 0,
+   "of": 519
+  }
+ ],
+ "clock_crossings": [
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": true,
+   "operator": "<=",
+   "room": "gulpfile.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 57.9833,
+   "value_before": 2.5082
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "packages/codemod/src/transforms/ast-helpers.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 130.4046,
+   "value_before": 74.9295
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "packages/codemod/src/transforms/v1/column-readonly.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 130.4046,
+   "value_before": 74.9295
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "packages/codemod/src/transforms/v1/column-width-zerofill.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 130.4046,
+   "value_before": 74.9295
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "packages/codemod/src/transforms/v1/connection-to-datasource.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 131.9776,
+   "value_before": 76.5025
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "packages/codemod/src/transforms/v1/datasource-sqlite-options.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 130.4046,
+   "value_before": 74.9295
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "packages/legacy-naming-strategies/src/index.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 120.1258,
+   "value_before": 64.6508
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "packages/legacy-naming-strategies/src/legacy-oracle-naming-strategy.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 120.1258,
+   "value_before": 64.6508
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "packages/legacy-naming-strategies/src/naming-strategy-v03.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 120.1258,
+   "value_before": 64.6508
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/driver/aurora-mysql/AuroraMysqlQueryRunner.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 132.0336,
+   "value_before": 76.5585
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/driver/aurora-postgres/AuroraPostgresQueryRunner.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 132.0336,
+   "value_before": 76.5585
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/driver/capacitor/CapacitorQueryRunner.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 132.0336,
+   "value_before": 76.5585
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/driver/cordova/CordovaQueryRunner.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 132.0336,
+   "value_before": 76.5585
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/driver/expo/ExpoQueryRunner.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 132.0336,
+   "value_before": 76.5585
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": true,
+   "operator": "<=",
+   "room": "src/driver/mongodb/typings.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 75.7136,
+   "value_before": 20.2385
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/driver/mysql/MysqlQueryRunner.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 130.8042,
+   "value_before": 75.3291
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/driver/nativescript/NativescriptQueryRunner.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 132.0336,
+   "value_before": 76.5585
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/driver/react-native/ReactNativeQueryRunner.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 132.0336,
+   "value_before": 76.5585
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/driver/sap/SapQueryRunner.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 130.8042,
+   "value_before": 75.3291
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/driver/spanner/SpannerQueryRunner.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 132.0336,
+   "value_before": 76.5585
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/driver/sqlserver/SqlServerQueryRunner.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 106.6362,
+   "value_before": 51.1611
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/driver/types/InvalidFindOptionsWhereBehavior.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 81.6448,
+   "value_before": 26.1697
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/error/AlreadyHasActiveConnectionError.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 83.5983,
+   "value_before": 28.1232
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/error/NamedPlaceholdersNotSupportedError.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 132.0336,
+   "value_before": 76.5585
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/error/QueryFailedError.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 132.0336,
+   "value_before": 76.5585
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/error/index.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 132.0336,
+   "value_before": 76.5585
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/find-options/operator/JsonContains.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 109.9503,
+   "value_before": 54.4752
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/logger/DebugLogger.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 132.0336,
+   "value_before": 76.5585
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": true,
+   "operator": "<=",
+   "room": "src/metadata-builder/ClosureJunctionEntityMetadataBuilder.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 69.5734,
+   "value_before": 14.0983
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": true,
+   "operator": "<=",
+   "room": "src/metadata/types/ClosureTreeOptions.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 69.5734,
+   "value_before": 14.0983
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/naming-strategy/DefaultNamingStrategy.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 120.1258,
+   "value_before": 64.6508
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/naming-strategy/NamingStrategyInterface.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 120.1258,
+   "value_before": 64.6508
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/persistence/EntityPersistExecutor.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 120.0398,
+   "value_before": 64.5648
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/persistence/SubjectChangedColumnsComputer.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 114.8046,
+   "value_before": 59.3295
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/persistence/SubjectDatabaseEntityLoader.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 120.0398,
+   "value_before": 64.5648
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/persistence/SubjectExecutor.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 90.6518,
+   "value_before": 35.1767
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": true,
+   "operator": "<=",
+   "room": "src/query-builder/JoinAttribute.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 75.6366,
+   "value_before": 20.1615
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/query-builder/QueryExpressionMap.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 109.9731,
+   "value_before": 54.498
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/query-builder/SoftDeleteQueryBuilder.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 113.603,
+   "value_before": 58.1279
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/query-builder/relation-id/RelationIdLoader.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 120.0398,
+   "value_before": 64.5648
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": true,
+   "operator": "<=",
+   "room": "src/query-builder/transformer/DocumentToEntityTransformer.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 75.7136,
+   "value_before": 20.2385
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/query-runner/BaseQueryRunner.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 130.8042,
+   "value_before": 75.3291
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/query-runner/QueryRunner.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 132.0336,
+   "value_before": 76.5585
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": true,
+   "operator": "<=",
+   "room": "src/repository/TreeRepository.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 69.5734,
+   "value_before": 14.0983
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/subscriber/Broadcaster.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 132.0336,
+   "value_before": 76.5585
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": "<=",
+   "room": "src/subscriber/event/QueryEvent.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 132.0336,
+   "value_before": 76.5585
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": true,
+   "operator": "<=",
+   "room": "src/util/RandomGenerator.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 57.9833,
+   "value_before": 2.5082
+  },
+  {
+   "cutoff_after": 57.5427,
+   "cutoff_before": 76.5585,
+   "earlier_value_vs_later_cutoff": true,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": true,
+   "operator": "<=",
+   "room": "src/util/StringUtils.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "lit_room (maintainability)",
+     "words": "left lit_room (maintainability) (74 → 58 rooms: 32 edited rooms entered)"
+    }
+   ],
+   "signal": "last_touched_days",
+   "state": "compared",
+   "term": "last_touched_days <= p10",
+   "term_kind": "clock",
+   "value_after": 57.9833,
+   "value_before": 2.5082
+  }
+ ],
+ "clock_rows": [
+  {
+   "born_entered": [],
+   "deleted_left": [],
+   "edited_entered": 32,
+   "edited_left": 0,
+   "kind": "clock",
+   "label": "lit_room (maintainability)",
+   "members": [
+    {
+     "feature": "lit_room",
+     "profile": "maintainability"
+    }
+   ],
+   "predicate": "last_touched_days <= p10",
+   "rooms_after": 58,
+   "rooms_before": 74,
+   "unedited_entered": [],
+   "unedited_left": [
+    "gulpfile.ts",
+    "packages/codemod/src/transforms/ast-helpers.ts",
+    "packages/codemod/src/transforms/v1/column-readonly.ts",
+    "packages/codemod/src/transforms/v1/column-width-zerofill.ts",
+    "packages/codemod/src/transforms/v1/connection-to-datasource.ts",
+    "packages/codemod/src/transforms/v1/datasource-sqlite-options.ts",
+    "packages/legacy-naming-strategies/src/index.ts",
+    "packages/legacy-naming-strategies/src/legacy-oracle-naming-strategy.ts",
+    "packages/legacy-naming-strategies/src/naming-strategy-v03.ts",
+    "src/driver/aurora-mysql/AuroraMysqlQueryRunner.ts",
+    "src/driver/aurora-postgres/AuroraPostgresQueryRunner.ts",
+    "src/driver/capacitor/CapacitorQueryRunner.ts",
+    "src/driver/cordova/CordovaQueryRunner.ts",
+    "src/driver/expo/ExpoQueryRunner.ts",
+    "src/driver/mongodb/typings.ts",
+    "src/driver/mysql/MysqlQueryRunner.ts",
+    "src/driver/nativescript/NativescriptQueryRunner.ts",
+    "src/driver/react-native/ReactNativeQueryRunner.ts",
+    "src/driver/sap/SapQueryRunner.ts",
+    "src/driver/spanner/SpannerQueryRunner.ts",
+    "src/driver/sqlserver/SqlServerQueryRunner.ts",
+    "src/driver/types/InvalidFindOptionsWhereBehavior.ts",
+    "src/error/AlreadyHasActiveConnectionError.ts",
+    "src/error/NamedPlaceholdersNotSupportedError.ts",
+    "src/error/QueryFailedError.ts",
+    "src/error/index.ts",
+    "src/find-options/operator/JsonContains.ts",
+    "src/logger/DebugLogger.ts",
+    "src/metadata-builder/ClosureJunctionEntityMetadataBuilder.ts",
+    "src/metadata/types/ClosureTreeOptions.ts",
+    "src/naming-strategy/DefaultNamingStrategy.ts",
+    "src/naming-strategy/NamingStrategyInterface.ts",
+    "src/persistence/EntityPersistExecutor.ts",
+    "src/persistence/SubjectChangedColumnsComputer.ts",
+    "src/persistence/SubjectDatabaseEntityLoader.ts",
+    "src/persistence/SubjectExecutor.ts",
+    "src/query-builder/JoinAttribute.ts",
+    "src/query-builder/QueryExpressionMap.ts",
+    "src/query-builder/SoftDeleteQueryBuilder.ts",
+    "src/query-builder/relation-id/RelationIdLoader.ts",
+    "src/query-builder/transformer/DocumentToEntityTransformer.ts",
+    "src/query-runner/BaseQueryRunner.ts",
+    "src/query-runner/QueryRunner.ts",
+    "src/repository/TreeRepository.ts",
+    "src/subscriber/Broadcaster.ts",
+    "src/subscriber/event/QueryEvent.ts",
+    "src/util/RandomGenerator.ts",
+    "src/util/StringUtils.ts"
+   ]
+  }
+ ],
+ "crossings": [
+  {
+   "cutoff_after": 0.5,
+   "cutoff_before": 0.5,
+   "earlier_value_vs_later_cutoff": null,
+   "fixed_threshold": true,
+   "later_value_vs_earlier_cutoff": null,
+   "operator": ">=",
+   "room": "src/driver/types/ReplicationMode.ts",
+   "rows": [
+    {
+     "direction": "entered",
+     "label": "scaffolding (maintainability)",
+     "words": "entered scaffolding (maintainability) (161 → 162 rooms)"
+    }
+   ],
+   "signal": "reinforcement_index",
+   "state": "compared",
+   "term": "reinforcement_index >= 0.5",
+   "term_kind": "rank",
+   "value_after": 0.6098,
+   "value_before": 0.0
+  },
+  {
+   "cutoff_after": 0.8049,
+   "cutoff_before": 0.7998,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": ">=",
+   "room": "src/metadata-args/EntityListenerMetadataArgs.ts",
+   "rows": [
+    {
+     "direction": "left",
+     "label": "foundation (maintainability, onboarding)",
+     "words": "left foundation (maintainability, onboarding) (58 → 58 rooms)"
+    }
+   ],
+   "signal": "load_index",
+   "state": "compared",
+   "term": "load_index >= p90",
+   "term_kind": "rank",
+   "value_after": 0.7994,
+   "value_before": 0.7998
+  },
+  {
+   "cutoff_after": 0.0023,
+   "cutoff_before": 0.0023,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": true,
+   "operator": ">=",
+   "room": "src/util/ApplyValueTransformers.ts",
+   "rows": [
+    {
+     "direction": "entered",
+     "label": "hub (maintainability)",
+     "words": "entered hub (maintainability) (58 → 59 rooms)"
+    },
+    {
+     "direction": "entered",
+     "label": "corridor (onboarding)",
+     "words": "entered corridor (onboarding) (36 → 37 rooms)"
+    }
+   ],
+   "signal": "centrality",
+   "state": "compared",
+   "term": "centrality >= p90",
+   "term_kind": "rank",
+   "value_after": 0.0023,
+   "value_before": 0.0022
+  },
+  {
+   "cutoff_after": 0.8049,
+   "cutoff_before": 0.7998,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": true,
+   "operator": ">=",
+   "room": "src/util/DateUtils.ts",
+   "rows": [
+    {
+     "direction": "entered",
+     "label": "foundation (maintainability, onboarding)",
+     "words": "entered foundation (maintainability, onboarding) (58 → 58 rooms)"
+    }
+   ],
+   "signal": "load_index",
+   "state": "compared",
+   "term": "load_index >= p90",
+   "term_kind": "rank",
+   "value_after": 0.8141,
+   "value_before": 0.7471
+  }
+ ],
+ "excluded_rows": [
+  {
+   "label": "crack (maintainability)",
+   "predicate": "bug_pressure_index >= p90",
+   "rooms_after": 58,
+   "rooms_before": 58,
+   "unedited_entered": 0,
+   "unedited_left": 6
+  },
+  {
+   "label": "toothpick_wing (maintainability)",
+   "predicate": "load_index >= p90 and bug_pressure_index >= p90 and reinforcement_index <= 0.0",
+   "rooms_after": 2,
+   "rooms_before": 4,
+   "unedited_entered": 0,
+   "unedited_left": 2
+  }
+ ],
+ "facts_hash": "2a6a93e51aaf4fd5b92628b3a591917462c4493f242cacf17ae2223602c1d241",
+ "gate_reading": [
+  {
+   "fired": [],
+   "geometry": "age",
+   "operands": {
+    "features": {
+     "ceiling": 0.05,
+     "changes": 7,
+     "denominator": 427,
+     "distinct_crossings": 4,
+     "distinct_crossings_reason": null,
+     "distinct_rooms": 4,
+     "exceeds_ceiling": false,
+     "fires_at": 22,
+     "unit": "(profile, feature, room) assignments of rank and mixed features held by untouched rooms",
+     "value": 0.01639344262295082
+    },
+    "floors": {
+     "ceiling": 0.05,
+     "changes": 0,
+     "denominator": 519,
+     "exceeds_ceiling": false,
+     "fires_at": 26,
+     "unit": "untouched rooms",
+     "value": 0.0
+    }
+   },
+   "reason": null,
+   "token": "within_budget"
+  },
+  {
+   "fired": [],
+   "geometry": "layer",
+   "operands": {
+    "features": {
+     "ceiling": 0.05,
+     "changes": 7,
+     "denominator": 427,
+     "distinct_crossings": 4,
+     "distinct_crossings_reason": null,
+     "distinct_rooms": 4,
+     "exceeds_ceiling": false,
+     "fires_at": 22,
+     "unit": "(profile, feature, room) assignments of rank and mixed features held by untouched rooms",
+     "value": 0.01639344262295082
+    },
+    "floors": {
+     "ceiling": 0.05,
+     "changes": 0,
+     "denominator": 519,
+     "exceeds_ceiling": false,
+     "fires_at": 26,
+     "unit": "untouched rooms",
+     "value": 0.0
+    }
+   },
+   "reason": null,
+   "token": "within_budget"
+  }
+ ],
+ "identity": {
+  "mapper_version": "0.11.1",
+  "overlays": [
+   {
+    "name": "onboarding",
+    "version": "0.3.1"
+   }
+  ],
+  "profiles": [
+   "maintainability",
+   "onboarding"
+  ],
+  "ruleset": {
+   "name": "maintainability",
+   "version": "0.3.4"
+  },
+  "substrate_config_fingerprint": "29869606410592d12647680378424be20750656ce654d0aae4e8678dbc546bfe",
+  "validation_config_fingerprint": "942d86e90cfed95516e7e979e8255a0c2c539bf1a3342f9468ae374fe63a8a9f"
+ },
+ "not_reported": {
+  "degraded_marks": {
+   "after": 0,
+   "before": 0
+  }
+ },
+ "origin": "gate",
+ "origin_text": "the pair the gate perturbs: HEAD and the commit 25 timeline commits before it; chosen for the gate's test, not for this page",
+ "page_file": "typeorm.window.md",
+ "qualifier_text": "A reading of this one window (mapper spec §7 Q3). This page does not read whether it is usual for this repository. The same number of crossings reads differently on a different number of rooms, so the token does not rank repositories.",
+ "repo": "typeorm",
+ "rooms": {
+  "common": 571,
+  "earlier": 571,
+  "edited": 52,
+  "edited_share": 0.09106830122591944,
+  "later": 571,
+  "only_earlier": [],
+  "only_later": [],
+  "unedited": 519
+ },
+ "scope": "one window",
+ "scope_text": "One pair of commits. Each event below is between them. Another pair of commits reads differently.",
+ "sources": [
+  {
+   "after_skeleton_hash": "e21ed35b9b2db0168e7bc71986044cb8eaa56a2be3a6bdcdd4b35331be9ecd03",
+   "before_skeleton_hash": "35dc6492c019657eb02dafcdbc367c39fe2ef6d35accb180bbbc3ac7903bd917",
+   "file": "typeorm.age.diff.json",
+   "geometry": "age"
+  },
+  {
+   "after_skeleton_hash": "15f55b0222fac1a382f40dfb29e5475f34c5b7d3a3f7cfbfc2468b10a7bd9121",
+   "before_skeleton_hash": "b8414f31cd8bba65dbe2624c4060b8ec509cd7ab47c43f56f41f3d0c70326537",
+   "file": "typeorm.layer.diff.json",
+   "geometry": "layer"
+  }
+ ],
+ "units": {
+  "crossings": "(room, predicate term) pairs whose outcome differs between the two commits, among rooms in no commit's recorded changes",
+  "gate_reading.operands.features": "(profile, feature, room) assignments of rank and mixed features",
+  "gate_reading.operands.floors": "rooms (printed as bands)",
+  "rooms.edited_share": "edited rooms / rooms in both commits"
+ },
+ "window": {
+  "after_sha": "ac41823b9e27e3a8079ce487c9772c5ef8f1e226",
+  "after_ts": "2026-09-02T12:07:18+03:00",
+  "before_sha": "f5c6aa3bfe9ca402e595cbced6e48cd65ec2bea5",
+  "before_ts": "2026-07-08T17:43:11-04:00",
+  "commit_count": 25,
+  "commits_between": 25,
+  "first_ts": "2026-07-09T18:22:01+02:00",
+  "last_ts": "2026-09-02T12:07:18+03:00"
+ },
+ "window_page_version": "0.1.0"
+}

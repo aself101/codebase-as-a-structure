@@ -229,6 +229,17 @@ def main() -> int:
             short = SHORT.get(name, name)
             skel = work / f"{short}.age.head.skeleton.json"
             sub = ROOT / "out" / "cache" / f"{name}-{tip}-tip-{fp}.substrate.json"
+            # D-083: the window page for the gate's pair, beside the brief that points at it
+            wsheet = m3 / f"{short}.window.facts.json"
+            wr = run(
+                ["uv", "run", "substrate", "window",
+                 *[str(m2 / f"{short}.{g}.diff.json") for g in geoms],
+                 "--origin", "gate", "-o", str(m3 / f"{short}.window.md"), "--facts", str(wsheet)]
+            )
+            if wr.returncode:
+                print(wr.stderr[-1200:], file=sys.stderr)
+                failed = True
+                continue
             r = run(
                 [
                     "uv",
@@ -241,6 +252,8 @@ def main() -> int:
                     str(m3 / f"{short}.brief.md"),
                     "--facts",
                     str(m3 / f"{short}.facts.json"),
+                    "--window",
+                    str(wsheet),
                     *(
                         ["--relint", str(args.relint_from / f"{short}.brief.md")]
                         if args.relint_from

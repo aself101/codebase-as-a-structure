@@ -23,6 +23,7 @@ from .mapper.diff import (
     classify_signals,
     skeleton_diff,
     touched_between,
+    window_commits_between,
 )
 from .validation.substrates import SubstrateCache
 
@@ -208,7 +209,8 @@ def run_timelapse(
             ren = sub.get("renames", {})
             touched, between = touched_between(psub, sub, ren)
             d = skeleton_diff(pskel, skel, ren, touched, between, kinds=kinds,
-                              before_substrate=psub, after_substrate=sub)
+                              before_substrate=psub, after_substrate=sub,
+                              window_commits=window_commits_between(psub, sub))
             (out_dir / f"{stem}.diff.json").write_text(
                 json.dumps(d, indent=1, sort_keys=True, ensure_ascii=False, allow_nan=False) + "\n",
                 encoding="utf-8",
