@@ -1,0 +1,16 @@
+== out-k25
+f001-dfcaf252 K 25 untouched 25 touched 18 | current 9/48=0.188 rooms 5 | untouched-cutoffs 2/49=0.041 rooms 2
+f002-96933e1b K 25 untouched 35 touched 11 | current 0/58=0.000 rooms 0 | untouched-cutoffs 0/56=0.000 rooms 0
+f003-99d792bd K 25 untouched 28 touched 17 | current 1/41=0.024 rooms 1 | untouched-cutoffs 0/44=0.000 rooms 0
+f004-8ca52ec6 K 25 untouched 35 touched 22 | current 1/34=0.029 rooms 1 | untouched-cutoffs 0/41=0.000 rooms 0
+f005-5348b3ef K 33 untouched 31 touched 32 | current 4/33=0.121 rooms 2 | untouched-cutoffs 1/42=0.024 rooms 1
+== out-k15
+f001-5b8ffbdb K 16 untouched 0 touched 13 | current 0/0 rooms 0 | untouched-cutoffs 0/0 rooms 0
+f002-b36053eb K 15 untouched 28 touched 15 | current 7/55=0.127 rooms 3 | untouched-cutoffs 3/53=0.057 rooms 2
+f003-83e06122 K 15 untouched 35 touched 9 | current 7/56=0.125 rooms 6 | untouched-cutoffs 10/63=0.159 rooms 5
+f004-96933e1b K 15 untouched 35 touched 11 | current 3/58=0.052 rooms 1 | untouched-cutoffs 5/58=0.086 rooms 2
+f005-2b227ee1 K 15 untouched 31 touched 15 | current 3/46=0.065 rooms 2 | untouched-cutoffs 0/51=0.000 rooms 0
+f006-906f93ef K 15 untouched 38 touched 12 | current 1/45=0.022 rooms 1 | untouched-cutoffs 4/52=0.077 rooms 2
+f007-b08255e1 K 15 untouched 41 touched 17 | current 1/45=0.022 rooms 1 | untouched-cutoffs 4/53=0.075 rooms 2
+f008-0ad173e9 K 15 untouched 43 touched 19 | current 2/40=0.050 rooms 1 | untouched-cutoffs 0/43=0.000 rooms 0
+f009-5348b3ef K 23 untouched 35 touched 29 | current 4/35=0.114 rooms 2 | untouched-cutoffs 0/44=0.000 rooms 0

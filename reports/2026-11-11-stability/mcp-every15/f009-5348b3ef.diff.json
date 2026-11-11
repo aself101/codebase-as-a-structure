@@ -1,0 +1,2173 @@
+{
+ "after": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "5348b3ef614d0da5912a56ee11f86fc5888a916b",
+   "name": "mcp-secure-server"
+  },
+  "skeleton_hash": "6f9eccea15e0106cac46ef01d04a6fabb709bd9d5aeac259cf28a53273c8b37d"
+ },
+ "before": {
+  "geometry": "layer",
+  "repo": {
+   "head_sha": "0ad173e90af211e9ded79101e224e4e57fb35ef0",
+   "name": "mcp-secure-server"
+  },
+  "skeleton_hash": "d36f7cefe94c278cc2efab494b5ec35ef9069d346cb5054e6d0ff5f712023ee7"
+ },
+ "born": 1,
+ "budget": {
+  "feature_churn_max": 0.05,
+  "k": 23,
+  "max_k": 50,
+  "max_touched_frac": 0.5,
+  "min_jitter_union": 20,
+  "min_untouched_n": 30,
+  "operand": "jitter: rank + mixed feature churn, and strata moves, over untouched rooms",
+  "pinned_k": 25,
+  "reason": "below_pinned_k",
+  "strata_moved_max": 0.05,
+  "verdict": "untested"
+ },
+ "churn_units": "(profile, feature, room) assignments; summed symmetric differences / summed unions",
+ "commits_between": 23,
+ "common_nodes": 64,
+ "deleted": 0,
+ "feature_churn": 0.2604166666666667,
+ "kinds": {
+  "maintainability/crack": "rank",
+  "maintainability/dark_room": "clock",
+  "maintainability/flooded_basement": "mixed",
+  "maintainability/foundation": "rank",
+  "maintainability/hub": "rank",
+  "maintainability/lit_room": "clock",
+  "maintainability/scaffolding": "rank",
+  "maintainability/toothpick_wing": "rank",
+  "onboarding/corridor": "rank",
+  "onboarding/foundation": "rank",
+  "onboarding/import_root": "rank",
+  "onboarding/leaf_utility": "rank",
+  "onboarding/package_entry": "rank"
+ },
+ "per_feature": {
+  "maintainability/dark_room": {
+   "added": [],
+   "after": 7,
+   "before": 7,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "clock",
+   "removed": [],
+   "transition_evidence": {},
+   "untouched_affected_rooms": [],
+   "untouched_changes": 0
+  },
+  "maintainability/flooded_basement": {
+   "added": [],
+   "after": 7,
+   "before": 7,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "mixed",
+   "removed": [],
+   "transition_evidence": {},
+   "untouched_affected_rooms": [],
+   "untouched_changes": 0
+  },
+  "maintainability/foundation": {
+   "added": [
+    "src/security/layers/layer-utils/content/patterns/injection.ts"
+   ],
+   "after": 7,
+   "before": 7,
+   "evidence": {
+    "src/security/layers/layer-utils/content/patterns/injection.ts": {
+     "after": {
+      "load_index": 0.8616
+     },
+     "before": null
+    },
+    "src/types/index.ts": {
+     "after": null,
+     "before": {
+      "load_index": 0.8434
+     }
+    }
+   },
+   "jaccard": 0.75,
+   "kind": "rank",
+   "removed": [
+    "src/types/index.ts"
+   ],
+   "transition_evidence": {
+    "src/security/layers/layer-utils/content/patterns/injection.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "load_index >= p90",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "load_index": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "load_index",
+        "term": "load_index >= p90",
+        "threshold": 0.84876,
+        "value": 0.8616
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "load_index >= p90",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "load_index": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": false,
+        "reason": null,
+        "signal": "load_index",
+        "term": "load_index >= p90",
+        "threshold": 0.8408500000000001,
+        "value": 0.7953
+       }
+      ]
+     }
+    },
+    "src/types/index.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "load_index >= p90",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "load_index": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": false,
+        "reason": null,
+        "signal": "load_index",
+        "term": "load_index >= p90",
+        "threshold": 0.84876,
+        "value": 0.8429
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "load_index >= p90",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "load_index": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "load_index",
+        "term": "load_index >= p90",
+        "threshold": 0.8408500000000001,
+        "value": 0.8434
+       }
+      ]
+     }
+    }
+   },
+   "untouched_affected_rooms": [
+    "src/types/index.ts"
+   ],
+   "untouched_changes": 1
+  },
+  "maintainability/hub": {
+   "added": [
+    "src/security/layers/layer-utils/content/patterns/injection.ts",
+    "src/types/server.ts"
+   ],
+   "after": 7,
+   "before": 7,
+   "evidence": {
+    "src/index.ts": {
+     "after": null,
+     "before": {
+      "centrality": 0.0134
+     }
+    },
+    "src/security/layers/layer-utils/content/patterns/injection.ts": {
+     "after": {
+      "centrality": 0.0163
+     },
+     "before": null
+    },
+    "src/security/utils/error-sanitizer.ts": {
+     "after": null,
+     "before": {
+      "centrality": 0.013
+     }
+    },
+    "src/types/server.ts": {
+     "after": {
+      "centrality": 0.0159
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.5555555555555556,
+   "kind": "rank",
+   "removed": [
+    "src/index.ts",
+    "src/security/utils/error-sanitizer.ts"
+   ],
+   "transition_evidence": {
+    "src/index.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "centrality >= p90",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "centrality": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": false,
+        "reason": null,
+        "signal": "centrality",
+        "term": "centrality >= p90",
+        "threshold": 0.014260000000000002,
+        "value": 0.0128
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "centrality >= p90",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "centrality": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "centrality",
+        "term": "centrality >= p90",
+        "threshold": 0.012850000000000002,
+        "value": 0.0134
+       }
+      ]
+     }
+    },
+    "src/security/layers/layer-utils/content/patterns/injection.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "centrality >= p90",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "centrality": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "centrality",
+        "term": "centrality >= p90",
+        "threshold": 0.014260000000000002,
+        "value": 0.0163
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "centrality >= p90",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "centrality": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": false,
+        "reason": null,
+        "signal": "centrality",
+        "term": "centrality >= p90",
+        "threshold": 0.012850000000000002,
+        "value": 0.0096
+       }
+      ]
+     }
+    },
+    "src/security/utils/error-sanitizer.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "centrality >= p90",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "centrality": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": false,
+        "reason": null,
+        "signal": "centrality",
+        "term": "centrality >= p90",
+        "threshold": 0.014260000000000002,
+        "value": 0.0119
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "centrality >= p90",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "centrality": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "centrality",
+        "term": "centrality >= p90",
+        "threshold": 0.012850000000000002,
+        "value": 0.013
+       }
+      ]
+     }
+    },
+    "src/types/server.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "centrality >= p90",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "centrality": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "centrality",
+        "term": "centrality >= p90",
+        "threshold": 0.014260000000000002,
+        "value": 0.0159
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "centrality >= p90",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "centrality": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": false,
+        "reason": null,
+        "signal": "centrality",
+        "term": "centrality >= p90",
+        "threshold": 0.012850000000000002,
+        "value": 0.0116
+       }
+      ]
+     }
+    }
+   },
+   "untouched_affected_rooms": [
+    "src/index.ts"
+   ],
+   "untouched_changes": 1
+  },
+  "maintainability/lit_room": {
+   "added": [
+    "src/security/layers/layer-utils/content/patterns/overflow-validation.ts",
+    "src/security/mcp-secure-server.ts",
+    "src/security/transport/http-server-types.ts",
+    "src/security/transport/http-server.ts",
+    "src/security/transport/secure-transport.ts",
+    "src/security/transport/transport-validator.ts",
+    "src/security/utils/response-validator.ts"
+   ],
+   "after": 10,
+   "before": 7,
+   "evidence": {
+    "src/security/layers/layer-utils/content/patterns/overflow-validation.ts": {
+     "after": {
+      "last_touched_days": 0.0188
+     },
+     "before": null
+    },
+    "src/security/layers/layer-utils/content/utils/hash-utils.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 83.1523
+     }
+    },
+    "src/security/layers/layer-utils/content/utils/structural-analysis.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 83.1523
+     }
+    },
+    "src/security/layers/layer-utils/content/utils/text-decoding.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 83.1523
+     }
+    },
+    "src/security/layers/layer5-contextual-types.ts": {
+     "after": null,
+     "before": {
+      "last_touched_days": 83.1753
+     }
+    },
+    "src/security/mcp-secure-server.ts": {
+     "after": {
+      "last_touched_days": 0.0188
+     },
+     "before": null
+    },
+    "src/security/transport/http-server-types.ts": {
+     "after": {
+      "last_touched_days": 0.0188
+     },
+     "before": null
+    },
+    "src/security/transport/http-server.ts": {
+     "after": {
+      "last_touched_days": 0.0188
+     },
+     "before": null
+    },
+    "src/security/transport/secure-transport.ts": {
+     "after": {
+      "last_touched_days": 0.0188
+     },
+     "before": null
+    },
+    "src/security/transport/transport-validator.ts": {
+     "after": {
+      "last_touched_days": 0.0188
+     },
+     "before": null
+    },
+    "src/security/utils/response-validator.ts": {
+     "after": {
+      "last_touched_days": 0.0188
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.21428571428571427,
+   "kind": "clock",
+   "removed": [
+    "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+    "src/security/layers/layer-utils/content/utils/structural-analysis.ts",
+    "src/security/layers/layer-utils/content/utils/text-decoding.ts",
+    "src/security/layers/layer5-contextual-types.ts"
+   ],
+   "transition_evidence": {
+    "src/security/layers/layer-utils/content/patterns/overflow-validation.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": true,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 0.0188,
+        "value": 0.0188
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": false,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 83.17766999999999,
+        "value": 88.4968
+       }
+      ]
+     }
+    },
+    "src/security/layers/layer-utils/content/utils/hash-utils.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": false,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 0.0188,
+        "value": 0.0367
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": true,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 83.17766999999999,
+        "value": 83.1523
+       }
+      ]
+     }
+    },
+    "src/security/layers/layer-utils/content/utils/structural-analysis.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": false,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 0.0188,
+        "value": 242.0796
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": true,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 83.17766999999999,
+        "value": 83.1523
+       }
+      ]
+     }
+    },
+    "src/security/layers/layer-utils/content/utils/text-decoding.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": false,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 0.0188,
+        "value": 242.0796
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": true,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 83.17766999999999,
+        "value": 83.1523
+       }
+      ]
+     }
+    },
+    "src/security/layers/layer5-contextual-types.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": false,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 0.0188,
+        "value": 242.1025
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": true,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 83.17766999999999,
+        "value": 83.1753
+       }
+      ]
+     }
+    },
+    "src/security/mcp-secure-server.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": true,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 0.0188,
+        "value": 0.0188
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": false,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 83.17766999999999,
+        "value": 83.1832
+       }
+      ]
+     }
+    },
+    "src/security/transport/http-server-types.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": true,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 0.0188,
+        "value": 0.0188
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": false,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 83.17766999999999,
+        "value": 84.4682
+       }
+      ]
+     }
+    },
+    "src/security/transport/http-server.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": true,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 0.0188,
+        "value": 0.0188
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": false,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 83.17766999999999,
+        "value": 83.1832
+       }
+      ]
+     }
+    },
+    "src/security/transport/secure-transport.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": true,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 0.0188,
+        "value": 0.0188
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": false,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 83.17766999999999,
+        "value": 83.2645
+       }
+      ]
+     }
+    },
+    "src/security/transport/transport-validator.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": true,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 0.0188,
+        "value": 0.0188
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": false,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 83.17766999999999,
+        "value": 84.4874
+       }
+      ]
+     }
+    },
+    "src/security/utils/response-validator.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": true,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 0.0188,
+        "value": 0.0188
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "last_touched_days <= p10",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "last_touched_days": "asserted"
+      },
+      "terms": [
+       {
+        "operator": "<=",
+        "passed": false,
+        "reason": null,
+        "signal": "last_touched_days",
+        "term": "last_touched_days <= p10",
+        "threshold": 83.17766999999999,
+        "value": 107.2815
+       }
+      ]
+     }
+    }
+   },
+   "untouched_affected_rooms": [
+    "src/security/layers/layer-utils/content/utils/structural-analysis.ts",
+    "src/security/layers/layer-utils/content/utils/text-decoding.ts",
+    "src/security/layers/layer5-contextual-types.ts"
+   ],
+   "untouched_changes": 3
+  },
+  "maintainability/scaffolding": {
+   "added": [
+    "src/security/layers/layer-utils/content/patterns/overflow-validation.ts",
+    "src/security/layers/layer2-validators/pattern-detection.ts",
+    "src/security/transport/transport-validator.ts",
+    "src/security/utils/pipeline-factory.ts"
+   ],
+   "after": 35,
+   "before": 31,
+   "evidence": {
+    "src/security/layers/layer-utils/content/patterns/overflow-validation.ts": {
+     "after": {
+      "reinforcement_index": 0.6597
+     },
+     "before": null
+    },
+    "src/security/layers/layer2-validators/pattern-detection.ts": {
+     "after": {
+      "reinforcement_index": 0.6597
+     },
+     "before": null
+    },
+    "src/security/transport/transport-validator.ts": {
+     "after": {
+      "reinforcement_index": 0.6597
+     },
+     "before": null
+    },
+    "src/security/utils/pipeline-factory.ts": {
+     "after": {
+      "reinforcement_index": 0.6597
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.8857142857142857,
+   "kind": "rank",
+   "removed": [],
+   "transition_evidence": {
+    "src/security/layers/layer-utils/content/patterns/overflow-validation.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "reinforcement_index >= 0.5",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "reinforcement_index": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "reinforcement_index",
+        "term": "reinforcement_index >= 0.5",
+        "threshold": 0.5,
+        "value": 0.6597
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "reinforcement_index >= 0.5",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "reinforcement_index": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": false,
+        "reason": null,
+        "signal": "reinforcement_index",
+        "term": "reinforcement_index >= 0.5",
+        "threshold": 0.5,
+        "value": 0.0
+       }
+      ]
+     }
+    },
+    "src/security/layers/layer2-validators/pattern-detection.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "reinforcement_index >= 0.5",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "reinforcement_index": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "reinforcement_index",
+        "term": "reinforcement_index >= 0.5",
+        "threshold": 0.5,
+        "value": 0.6597
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "reinforcement_index >= 0.5",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "reinforcement_index": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": false,
+        "reason": null,
+        "signal": "reinforcement_index",
+        "term": "reinforcement_index >= 0.5",
+        "threshold": 0.5,
+        "value": 0.0
+       }
+      ]
+     }
+    },
+    "src/security/transport/transport-validator.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "reinforcement_index >= 0.5",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "reinforcement_index": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "reinforcement_index",
+        "term": "reinforcement_index >= 0.5",
+        "threshold": 0.5,
+        "value": 0.6597
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "reinforcement_index >= 0.5",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "reinforcement_index": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": false,
+        "reason": null,
+        "signal": "reinforcement_index",
+        "term": "reinforcement_index >= 0.5",
+        "threshold": 0.5,
+        "value": 0.0
+       }
+      ]
+     }
+    },
+    "src/security/utils/pipeline-factory.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "reinforcement_index >= 0.5",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "reinforcement_index": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "reinforcement_index",
+        "term": "reinforcement_index >= 0.5",
+        "threshold": 0.5,
+        "value": 0.6597
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "reinforcement_index >= 0.5",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "reinforcement_index": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": false,
+        "reason": null,
+        "signal": "reinforcement_index",
+        "term": "reinforcement_index >= 0.5",
+        "threshold": 0.5,
+        "value": 0.0
+       }
+      ]
+     }
+    }
+   },
+   "untouched_affected_rooms": [],
+   "untouched_changes": 0
+  },
+  "onboarding/corridor": {
+   "added": [
+    "src/types/server.ts"
+   ],
+   "after": 3,
+   "before": 3,
+   "evidence": {
+    "src/index.ts": {
+     "after": null,
+     "before": {
+      "centrality": 0.0134,
+      "fan_out": 2
+     }
+    },
+    "src/types/server.ts": {
+     "after": {
+      "centrality": 0.0159,
+      "fan_out": 6
+     },
+     "before": null
+    }
+   },
+   "jaccard": 0.5,
+   "kind": "rank",
+   "removed": [
+    "src/index.ts"
+   ],
+   "transition_evidence": {
+    "src/index.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "centrality >= p90 and fan_out >= p50",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "centrality": "asserted",
+       "fan_out": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": false,
+        "reason": null,
+        "signal": "centrality",
+        "term": "centrality >= p90",
+        "threshold": 0.014260000000000002,
+        "value": 0.0128
+       },
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "fan_out",
+        "term": "fan_out >= p50",
+        "threshold": 2.0,
+        "value": 2
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "centrality >= p90 and fan_out >= p50",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "centrality": "asserted",
+       "fan_out": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "centrality",
+        "term": "centrality >= p90",
+        "threshold": 0.012850000000000002,
+        "value": 0.0134
+       },
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "fan_out",
+        "term": "fan_out >= p50",
+        "threshold": 2.0,
+        "value": 2
+       }
+      ]
+     }
+    },
+    "src/types/server.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "centrality >= p90 and fan_out >= p50",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "centrality": "asserted",
+       "fan_out": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "centrality",
+        "term": "centrality >= p90",
+        "threshold": 0.014260000000000002,
+        "value": 0.0159
+       },
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "fan_out",
+        "term": "fan_out >= p50",
+        "threshold": 2.0,
+        "value": 6
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "centrality >= p90 and fan_out >= p50",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "centrality": "asserted",
+       "fan_out": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": false,
+        "reason": null,
+        "signal": "centrality",
+        "term": "centrality >= p90",
+        "threshold": 0.012850000000000002,
+        "value": 0.0116
+       },
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "fan_out",
+        "term": "fan_out >= p50",
+        "threshold": 2.0,
+        "value": 6
+       }
+      ]
+     }
+    }
+   },
+   "untouched_affected_rooms": [
+    "src/index.ts"
+   ],
+   "untouched_changes": 1
+  },
+  "onboarding/foundation": {
+   "added": [
+    "src/security/layers/layer-utils/content/patterns/injection.ts"
+   ],
+   "after": 7,
+   "before": 7,
+   "evidence": {
+    "src/security/layers/layer-utils/content/patterns/injection.ts": {
+     "after": {
+      "load_index": 0.8616
+     },
+     "before": null
+    },
+    "src/types/index.ts": {
+     "after": null,
+     "before": {
+      "load_index": 0.8434
+     }
+    }
+   },
+   "jaccard": 0.75,
+   "kind": "rank",
+   "removed": [
+    "src/types/index.ts"
+   ],
+   "transition_evidence": {
+    "src/security/layers/layer-utils/content/patterns/injection.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "load_index >= p90",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "load_index": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "load_index",
+        "term": "load_index >= p90",
+        "threshold": 0.84876,
+        "value": 0.8616
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "load_index >= p90",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "load_index": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": false,
+        "reason": null,
+        "signal": "load_index",
+        "term": "load_index >= p90",
+        "threshold": 0.8408500000000001,
+        "value": 0.7953
+       }
+      ]
+     }
+    },
+    "src/types/index.ts": {
+     "after": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 65
+      },
+      "population_n": 65,
+      "predicate": "load_index >= p90",
+      "predicate_passed": false,
+      "room_eligible": true,
+      "signals": {
+       "load_index": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": false,
+        "reason": null,
+        "signal": "load_index",
+        "term": "load_index >= p90",
+        "threshold": 0.84876,
+        "value": 0.8429
+       }
+      ]
+     },
+     "before": {
+      "availability": "available",
+      "diagnostic_eligible": true,
+      "eligibility_reason": null,
+      "graph_degraded": false,
+      "node_load_degraded": false,
+      "population_floor": {
+       "met": true,
+       "min": 30,
+       "n": 64
+      },
+      "population_n": 64,
+      "predicate": "load_index >= p90",
+      "predicate_passed": true,
+      "room_eligible": true,
+      "signals": {
+       "load_index": "asserted"
+      },
+      "terms": [
+       {
+        "operator": ">=",
+        "passed": true,
+        "reason": null,
+        "signal": "load_index",
+        "term": "load_index >= p90",
+        "threshold": 0.8408500000000001,
+        "value": 0.8434
+       }
+      ]
+     }
+    }
+   },
+   "untouched_affected_rooms": [
+    "src/types/index.ts"
+   ],
+   "untouched_changes": 1
+  },
+  "onboarding/leaf_utility": {
+   "added": [],
+   "after": 1,
+   "before": 1,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "transition_evidence": {},
+   "untouched_affected_rooms": [],
+   "untouched_changes": 0
+  },
+  "onboarding/package_entry": {
+   "added": [],
+   "after": 3,
+   "before": 3,
+   "evidence": {},
+   "jaccard": 1.0,
+   "kind": "rank",
+   "removed": [],
+   "transition_evidence": {},
+   "untouched_affected_rooms": [],
+   "untouched_changes": 0
+  }
+ },
+ "strata_evidence": {
+  "src/security/config/index.ts": {
+   "after": {
+    "band": 2,
+    "raw": 2
+   },
+   "attribution": "band_only",
+   "before": {
+    "band": 1,
+    "raw": 2
+   },
+   "untouched": true
+  },
+  "src/security/layers/layer-utils/content/helper-utils.ts": {
+   "after": {
+    "band": 2,
+    "raw": 2
+   },
+   "attribution": "band_only",
+   "before": {
+    "band": 1,
+    "raw": 2
+   },
+   "untouched": true
+  },
+  "src/security/layers/layer-utils/semantics/semantic-policies.ts": {
+   "after": {
+    "band": 2,
+    "raw": 5
+   },
+   "attribution": "raw_depth_changed",
+   "before": {
+    "band": 3,
+    "raw": 6
+   },
+   "untouched": true
+  },
+  "src/security/layers/layer5-contextual.ts": {
+   "after": {
+    "band": 4,
+    "raw": 8
+   },
+   "attribution": "raw_depth_changed",
+   "before": {
+    "band": 3,
+    "raw": 7
+   },
+   "untouched": false
+  },
+  "src/security/layers/validation-layer-base.ts": {
+   "after": {
+    "band": 3,
+    "raw": 6
+   },
+   "attribution": "raw_depth_changed",
+   "before": {
+    "band": 2,
+    "raw": 5
+   },
+   "untouched": false
+  },
+  "src/security/transport/http-transport-manager.ts": {
+   "after": {
+    "band": 4,
+    "raw": 8
+   },
+   "attribution": "raw_depth_changed",
+   "before": {
+    "band": 3,
+    "raw": 7
+   },
+   "untouched": true
+  },
+  "src/security/transport/secure-transport.ts": {
+   "after": {
+    "band": 3,
+    "raw": 6
+   },
+   "attribution": "raw_depth_changed",
+   "before": {
+    "band": 2,
+    "raw": 5
+   },
+   "untouched": false
+  },
+  "src/security/utils/security-logger.ts": {
+   "after": {
+    "band": 2,
+    "raw": 2
+   },
+   "attribution": "band_only",
+   "before": {
+    "band": 1,
+    "raw": 2
+   },
+   "untouched": false
+  },
+  "src/security/utils/validation-pipeline.ts": {
+   "after": {
+    "band": 3,
+    "raw": 6
+   },
+   "attribution": "raw_depth_changed",
+   "before": {
+    "band": 2,
+    "raw": 5
+   },
+   "untouched": false
+  }
+ },
+ "strata_moved": [
+  "src/security/config/index.ts",
+  "src/security/layers/layer-utils/content/helper-utils.ts",
+  "src/security/layers/layer-utils/semantics/semantic-policies.ts",
+  "src/security/layers/layer5-contextual.ts",
+  "src/security/layers/validation-layer-base.ts",
+  "src/security/transport/http-transport-manager.ts",
+  "src/security/transport/secure-transport.ts",
+  "src/security/utils/security-logger.ts",
+  "src/security/utils/validation-pipeline.ts"
+ ],
+ "strata_moved_frac": 0.140625,
+ "touched": {
+  "frac": 0.453125,
+  "n": 29,
+  "nodes": [
+   "src/security/config/tool-policies-config.ts",
+   "src/security/config/tool-policies.ts",
+   "src/security/constants.ts",
+   "src/security/layers/builtin-validators.ts",
+   "src/security/layers/layer-utils/content/patterns/injection.ts",
+   "src/security/layers/layer-utils/content/patterns/overflow-validation.ts",
+   "src/security/layers/layer-utils/content/patterns/path-traversal.ts",
+   "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+   "src/security/layers/layer1-structure.ts",
+   "src/security/layers/layer2-content.ts",
+   "src/security/layers/layer2-validators/data-semantics.ts",
+   "src/security/layers/layer2-validators/pattern-detection.ts",
+   "src/security/layers/layer5-contextual.ts",
+   "src/security/layers/validation-layer-base.ts",
+   "src/security/mcp-secure-server.ts",
+   "src/security/presets.ts",
+   "src/security/transport/http-server-types.ts",
+   "src/security/transport/http-server.ts",
+   "src/security/transport/secure-transport.ts",
+   "src/security/transport/transport-validator.ts",
+   "src/security/utils/error-sanitizer.ts",
+   "src/security/utils/log-formatters.ts",
+   "src/security/utils/pipeline-factory.ts",
+   "src/security/utils/response-validator.ts",
+   "src/security/utils/security-logger-types.ts",
+   "src/security/utils/security-logger.ts",
+   "src/security/utils/validation-pipeline.ts",
+   "src/types/layers.ts",
+   "src/types/server.ts"
+  ]
+ },
+ "untouched": {
+  "by_kind": {
+   "clock": {
+    "changes": 3,
+    "churn": 0.3,
+    "union": 10
+   },
+   "mixed": {
+    "changes": 0,
+    "churn": 0.0,
+    "union": 7
+   },
+   "rank": {
+    "changes": 4,
+    "churn": 0.14285714285714285,
+    "union": 28
+   }
+  },
+  "clock_churn": 0.3,
+  "decorative_changes": 2,
+  "decorative_churn": 1.0,
+  "feature_churn": 0.15555555555555556,
+  "jitter_affected_room_count": 2,
+  "jitter_affected_rooms": [
+   "src/index.ts",
+   "src/types/index.ts"
+  ],
+  "jitter_assignment_changes": 4,
+  "jitter_assignment_union": 35,
+  "jitter_churn": 0.11428571428571428,
+  "jitter_room_union": 23,
+  "n": 35,
+  "strata_moved": [
+   "src/security/config/index.ts",
+   "src/security/layers/layer-utils/content/helper-utils.ts",
+   "src/security/layers/layer-utils/semantics/semantic-policies.ts",
+   "src/security/transport/http-transport-manager.ts"
+  ],
+  "strata_moved_frac": 0.11428571428571428
+ }
+}

@@ -1587,17 +1587,19 @@ Three things the replay puts on the record that the October text does not:
    (profile, feature, room) assignments held by 23 rooms. They coincide on this
    snapshot. The 0.114 feature churn is 4 assignments of the 35-assignment union; the
    0.114 layer figure is 4 rooms of the 35 untouched rooms.
-2. *Every untouched loss is a displacement by a touched room.* The three affected
-   features keep their size (foundation 7 → 7, hub 7 → 7, corridor 3 → 3). foundation:
-   `content/patterns/injection.ts` (touched, load 0.7953 → 0.8616) enters and
-   `src/types/index.ts` (untouched, 0.8434 → 0.8429) leaves. hub: `injection.ts` and
-   `src/types/server.ts` (both touched) enter, `src/index.ts` (untouched) and
-   `error-sanitizer.ts` (touched) leave. corridor: `types/server.ts` in, `src/index.ts`
-   out. Under a fixed-share predicate (`>= p90`) a touched room that crosses in must
-   push a room out; when the room pushed out is untouched the operand counts it as
-   jitter. This is the quota arithmetic run 65's data-science review named at D-077,
-   now on the stability operand. It is an observation about the operand, not a remedy
-   and not a change to the verdict.
+2. *The three affected features keep their size while unedited rooms leave them.*
+   foundation 7 → 7, hub 7 → 7, corridor 3 → 3. foundation: `content/patterns/injection.ts`
+   (touched, load 0.7953 → 0.8616) enters and `src/types/index.ts` (untouched,
+   0.8434 → 0.8429) leaves, still above the before-cutoff: a threshold-only crossing.
+   hub: `injection.ts` and `src/types/server.ts` (both touched) enter, `src/index.ts`
+   (untouched) and `error-sanitizer.ts` (touched) leave; corridor: `types/server.ts` in,
+   `src/index.ts` out. `src/index.ts` (centrality 0.0134 → 0.0128) falls below the
+   *before*-cutoff 0.01285: it leaves with the cutoff held, on its own value.
+   *Corrected the same day after run 70:* this item first read "every untouched loss is
+   a displacement by a touched room … the quota arithmetic run 65 named". That was right
+   for one room of two, it asserted a cause D-080 forbids for a raw-value change, and it
+   read as "artefact" where D-018 names a shifted percentile threshold as the ripple the
+   budget exists to bound. See `stability-budget-spec.md` F4.
 3. *The verdict flipped at D-078 and was not logged there.* mcp's row read
    `common 186, jitter 0.006, within_budget` in every budget table through
    `2026-09-24e` and `common 64, jitter 0.114, over_budget` from `2026-09-24g`, the
@@ -1640,3 +1642,39 @@ reviewed D-080 change sheet, freeze first impressions before support/revision pr
 and score unsupported condition/denominator/causal claims separately. Prepared only:
 no reader selected, contacted or tested, and no external artifact sharing. One future
 reader would provide a case observation, not general validation.
+
+
+## D-082 proposal — the stability budget on a small population (2026-11-11); reviewed, awaiting Alex
+
+`stability-budget-spec.md` asks what mcp-secure-server's `over_budget` reading measures
+on 65 rooms and what the verdict does. Reviewed before any code by
+measurement-validity-analyst (UNSUPPORTED: of ten claims about the token, one supported,
+three qualified, five unsupported, one undetermined) and data-science-analyst
+(QUALIFIED 61), tracker run 70, twenty issues, six convergent pairs. The review
+overturned the draft's central reassurance (that one over-budget reading is common by
+the budget's own calibration) and its reason for refusing a resolution floor; §8 of the
+spec lists every draft statement that was wrong.
+
+**What stands after review.** The rule was applied correctly and the reading is true of
+the picture: 11 of 35 unedited rooms changed something the page prints in the pinned
+window. The verdict fires at two rooms; the same rooms read `over_budget`,
+`below_pinned_k` or a touched-fraction refusal by where the window starts; no judged
+verdict reaches a reader. Four walks of mcp at K = 25 (nine windows, two starts, both
+geometries; `reports/2026-11-11-stability/`) put the layer-floors median over the
+ceiling at both starts (0.114, 0.068) — **D-026's breaks-if is met for layer floors on
+this population** by the rule the reviewer stated before the second start was run. The
+features operand is under at one start (0.029) and over at the other (0.067). Age floors
+are still (median 0.000) where D-026 read them as the unstable element. Whether the
+pinned reading is a persistent property is undetermined.
+
+**Recommended, not decided:** restate the token's meaning and carry its resolution on
+the datum (A); then a reader on the page as a dated event statement with entrants, under
+its own spec (D); defer the K re-study D-026 prescribes (E) until something reads the
+verdict; no resolution floor (B); no operand change (C). A changes what a verdict is
+said to mean and E/B change what it is, so the choice is Alex's.
+
+**Assumes.** Nine windows on one repository, five of them under the untouched floor,
+are enough to say the calibration does not obviously hold and not enough to place a new
+K. **Breaks if.** A walk of the other three repositories at the current substrate shows
+their K = 25 medians over the ceiling as well: then the pin is uncalibrated everywhere
+and E is not deferrable.
