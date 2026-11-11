@@ -27,21 +27,39 @@ from typing import Any
 from .engine import _cmp, _node_value, _resolve_thresholds
 from .ruleset import parse_predicate
 
-# D-018, operand revised D-024, K re-pinned D-026. The budget bounds JITTER: movement of
-# untouched rooms through rank-only features, mixed features (a clock and a rank signal in
-# one predicate — the rank component cannot be separated, so the whole is counted as
-# jitter, the conservative side), and strata (a floor moves for an untouched room only
-# because the population re-ranked around it, D-022 having removed the clock's way of
-# moving it). Clock-only features are reported beside it, never judged.
-# The ceilings are 5% of feature assignments and 5% of untouched rooms for strata. The K: at K = 5 nothing fires the ceiling, not the
-# reference set and not a ruleset written to break it (D-024); the K study (D-025/D-026,
-# reports/2026-09-05-kstudy) read jitter churn per transition at K = 5…250 and found it
-# grows with K at a rate set by the repository's growth. At K = 25 the ceiling sits between
-# the reference set's median (0.02–0.05) and its 90th percentile (0.07–0.24) on every
-# repository where it was read — it separates typical from tail without being fitted — so
-# the budget is pinned at 25 and applied up to 50. Beyond that a comparison is
-# `untested: beyond_pinned_k`. A jitter union under `min_jitter_union` assignments is
-# `untested: insufficient_jitter_population` (two rooms flipping is not a rate).
+# D-018, operand revised D-024, K re-pinned D-026, meaning restated D-082. The budget
+# bounds JITTER: movement of untouched rooms through rank-only features, mixed features (a
+# clock and a rank signal in one predicate — the rank component cannot be separated, so
+# the whole is counted as jitter, the conservative side), and strata (a floor moves for an
+# untouched room only because the population re-ranked around it, D-022 having removed
+# the clock's way of moving it). Clock-only features are reported beside it, never judged.
+#
+# Two operands, either one over its ceiling is `over_budget`: 5% of the (profile, feature,
+# room) assignments of rank and mixed features held by untouched rooms, and 5% of untouched
+# rooms for strata. The units differ, and one threshold crossing can be several assignments
+# (one predicate under two profiles; two predicates sharing a term), so the budget block
+# states each operand's unit, the smallest count that exceeds its ceiling (`fires_at`),
+# and the distinct crossings (D-082).
+#
+# The K. At K = 5 nothing fires the ceiling, not the reference set and not a ruleset
+# written to break it (D-024). The K study (D-025/D-026, reports/2026-09-05-kstudy;
+# substrate 0.3.0) read jitter churn per transition and found it grows with K at a rate set
+# by the repository's growth. Its readings, each at the K named: registry K = 25 median
+# 0.034 / p90 0.143; mcp-secure-server K = 10 0.022 / 0.066; typeorm K = 50 0.027 / 0.235;
+# eslint K = 100 0.028 / 0.125. K = 25 was read on the registry only; 25 is pinned as the
+# smallest K at which the ceiling sat between median and p90 where it was read, applied up
+# to 50, `untested: beyond_pinned_k` past that. The calibration has not been read on a
+# population under about 200 rooms, and on the 65-room mcp-secure-server D-026's breaks-if
+# is met for layer strata (D-082; reports/2026-11-11-stability). A verdict is therefore a
+# statement about ONE WINDOW: whether it is typical or tail for the population is read
+# separately.
+#
+# Floors. A jitter union under `min_jitter_union` assignments is
+# `untested: insufficient_jitter_population`. The floors do not make the operand a rate at
+# every admitted size: at the minimum union (20) and the minimum untouched population (30)
+# each ceiling is exceeded by two units. D-026's comment here said "two rooms flipping is
+# not a rate"; the floors never enforced that and the sentence is withdrawn (D-082) — the
+# resolution travels on the datum instead of being asserted by a floor.
 SKELETON_BUDGET: dict[str, float | int] = {
     "feature_churn_max": 0.05,
     "strata_moved_max": 0.05,
@@ -161,6 +179,41 @@ def touched_between(
                 node = renames[node]
             touched.add(node)
     return touched, n
+
+
+def fires_at(ceiling: float, denominator: int) -> int | None:
+    """The smallest whole count whose share of `denominator` exceeds `ceiling` under the
+    verdict's own strict comparison (D-082). None when there is nothing to divide by."""
+    if denominator <= 0:
+        return None
+    n = max(0, int(ceiling * denominator) - 1)
+    while n / denominator <= ceiling:
+        n += 1
+    return n
+
+
+def _distinct_crossings(per_feature: dict[str, Any]) -> tuple[int | None, str | None]:
+    """Distinct (room, predicate term) pairs whose outcome differs between the two frames,
+    over the untouched rooms of rank and mixed features (D-082). One room leaving two
+    features that share a term is one crossing. Unknown — not zero — when either side's
+    evidence is unavailable for any changed assignment."""
+    seen: set[tuple[str, str]] = set()
+    for pf in per_feature.values():
+        if pf["kind"] not in ("rank", "mixed"):
+            continue
+        for room in pf["untouched_affected_rooms"]:
+            ev = pf["transition_evidence"].get(room) or {}
+            before, after = ev.get("before") or {}, ev.get("after") or {}
+            tb, ta = before.get("terms"), after.get("terms")
+            if (before.get("availability") != "available" or after.get("availability") != "available"
+                    or tb is None or ta is None or len(tb) != len(ta)):
+                return None, "transition_evidence_unavailable"
+            for x, y in zip(tb, ta):
+                if x["passed"] is None or y["passed"] is None:
+                    return None, "term_outcome_unknown"
+                if x["passed"] != y["passed"]:
+                    seen.add((room, x["term"]))
+    return len(seen), None
 
 
 def _verify_substrate(skeleton: dict[str, Any], substrate: dict[str, Any] | None) -> None:
@@ -398,6 +451,38 @@ def skeleton_diff(
     else:
         verdict, reason = "within_budget", None
 
+    crossings, crossings_reason = _distinct_crossings(per_feature)
+    f_ceiling, s_ceiling = budget["feature_churn_max"], budget["strata_moved_max"]
+    operands = {
+        "features": {
+            "unit": "(profile, feature, room) assignments of rank and mixed features held by untouched rooms",
+            "changes": jitter_changes,
+            "denominator": jitter_union,
+            "value": jitter_churn,
+            "ceiling": f_ceiling,
+            "fires_at": fires_at(f_ceiling, jitter_union),
+            "exceeds_ceiling": jitter_churn > f_ceiling,
+            "distinct_rooms": len(jitter_affected),
+            "distinct_crossings": crossings,
+            "distinct_crossings_reason": crossings_reason,
+        },
+        "floors": {
+            "unit": "untouched rooms",
+            "changes": len(u_moved),
+            "denominator": len(untouched),
+            "value": u_strata,
+            "ceiling": s_ceiling,
+            "fires_at": fires_at(s_ceiling, len(untouched)),
+            "exceeds_ceiling": u_strata > s_ceiling,
+        },
+    }
+    # which operand carried a judged verdict; None when the window was not judged
+    fired = (
+        None
+        if verdict == "untested"
+        else [k for k, v in operands.items() if v["exceeds_ceiling"]]
+    )
+
     return {
         "before": {
             "repo": a["repo"],
@@ -446,5 +531,14 @@ def skeleton_diff(
             "operand": "jitter: rank + mixed feature churn, and strata moves, over untouched rooms",
             "verdict": verdict,
             "reason": reason,
+            # D-082: the verdict's resolution and scope travel with it
+            "scope": "one window",
+            "window": {
+                "before_sha": a["repo"].get("head_sha"),
+                "after_sha": b["repo"].get("head_sha"),
+                "commits_between": commits_between,
+            },
+            "operands": operands,
+            "fired": fired,
         },
     }

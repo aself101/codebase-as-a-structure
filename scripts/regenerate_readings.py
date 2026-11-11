@@ -37,6 +37,35 @@ def run(cmd: list[str], **kw) -> subprocess.CompletedProcess:
     return subprocess.run(cmd, cwd=ROOT, text=True, capture_output=True, check=False, **kw)
 
 
+def _ruleset_versions(work: Path, repos: dict) -> str:
+    for name in repos:
+        for sk in sorted(work.glob(f"{SHORT.get(name, name)}.*.head.skeleton.json")):
+            h = json.loads(sk.read_text())
+            return ", ".join(
+                [f"{h['ruleset']['name']} {h['ruleset']['version']}"]
+                + [f"{o['ruleset']['name']} {o['ruleset']['version']}" for o in h.get("overlays", [])]
+            )
+    return "unknown"
+
+
+def _series_break(m2: Path, short: str, g: str, d: dict) -> str:
+    """D-082: the D-078 row and the row before it were two instruments printed as one series
+    (186 common rooms, then 64). Compare this row with the most recent earlier table's diff
+    for the same pair of commits and say so when the population differs."""
+    pair = (d["before"]["repo"].get("head_sha"), d["after"]["repo"].get("head_sha"))
+    for prev in sorted((p for p in m2.parent.glob("*-m2x") if p.name < m2.name), reverse=True):
+        f = prev / f"{short}.{g}.diff.json"
+        if not f.exists():
+            continue
+        o = json.loads(f.read_text())
+        if (o["before"]["repo"].get("head_sha"), o["after"]["repo"].get("head_sha")) != pair:
+            return f"new window (previous table {prev.name[:-4]} read other commits)"
+        if o["common_nodes"] != d["common_nodes"]:
+            return f"BREAK: common {o['common_nodes']} → {d['common_nodes']} against {prev.name[:-4]}"
+        return f"continues {prev.name[:-4]}"
+    return "first table"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--validation", type=Path, required=True)
@@ -121,14 +150,24 @@ def main() -> int:
                 return r.returncode
             d = json.loads(d_out.read_text())
             u = d["untouched"]
+            head = json.loads((work / f"{short}.{g}.head.skeleton.json").read_text())
+            excluded = ", ".join(
+                f"{k} {n}" for k, n in sorted(head["summary"].get("excluded_by_kind", {}).items()) if n
+            ) or "none"
+            ops = d["budget"]["operands"]
+            fired = d["budget"]["fired"]
             rows.append(
-                f"| {name} | {g} | {d['commits_between']} | {d['common_nodes']} | {d['born']}/{d['deleted']} | {d['touched']['n']} | "
-                f"{d['feature_churn']:.3f} | {d['strata_moved_frac']:.3f} | {u['jitter_churn']:.3f} | {u['clock_churn']:.3f} | {u['strata_moved_frac']:.3f} | {d['budget']['verdict']} |"
+                f"| {name} | {g} | {d['commits_between']} | {head['summary']['population']} | {excluded} | {d['common_nodes']} | {d['born']}/{d['deleted']} | {d['touched']['n']} | {u['n']} | "
+                f"{d['feature_churn']:.3f} | {d['strata_moved_frac']:.3f} | "
+                f"{ops['features']['changes']}/{ops['features']['denominator']} = {u['jitter_churn']:.3f} (over at {ops['features']['fires_at']}) | {u['clock_churn']:.3f} | "
+                f"{ops['floors']['changes']}/{ops['floors']['denominator']} = {u['strata_moved_frac']:.3f} (over at {ops['floors']['fires_at']}) | "
+                f"{d['budget']['verdict']}{' (' + ', '.join(fired) + ')' if fired else ''} | {_series_break(m2, short, g, d)} |"
             )
     (m2 / "skeleton-budget.md").write_text(
         f"# Skeleton-level stability budget — re-read under `{fp}` ({args.tag})\n\n"
         f"*Procedure of D-018 with the D-024/D-026 operand: before = the gate's stability-perturbation substrate (HEAD minus the last K = {k} timeline commits), after = HEAD; maintainability + onboarding; gate `{args.validation}`.*\n\n"
-        "| repo | geometry | K | common | born/del | touched | churn (all) | strata (all) | jitter churn | clock churn | strata (untouched) | verdict |\n|---|---|---|---|---|---|---|---|---|---|---|---|\n"
+        f"*Reading a row (mapper spec §7 Q3, D-082): the verdict is a statement about one window — more than 5% of the rank and mixed assignments held by unedited rooms, or of the unedited rooms' floors, changed. \"over at n\" is the smallest count that exceeds the ceiling on that denominator. Rows are one series with another tag's table only where the gate, the ruleset versions ({_ruleset_versions(work, repos)}) and the rooms column all match; the last column marks a row whose population differs from the most recent earlier table for the same pair of commits.*\n\n"
+        "| repo | geometry | K | rooms | excluded kinds | common | born/del | touched | untouched | churn (all) | strata (all) | jitter: assignments | clock churn | floors: untouched rooms | verdict (operand over) | series |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n"
         + "\n".join(rows)
         + "\n",
         encoding="utf-8",

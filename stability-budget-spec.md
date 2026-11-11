@@ -1,6 +1,6 @@
 # The skeleton stability budget on a small population — what the verdict measures, and who reads it
 
-Status: **reviewed, awaiting Alex's decision; nothing implemented.** Proposed D-082.
+Status: **decided 2026-11-11 (D-082): Alex agreed A now, D next, E deferred, no B, no C. A is implemented; D is `event-statement-spec.md`, in draft.**
 Drafted 2026-11-11 after the D-080 replay (tracker run 69); reviewed the same day by
 measurement-validity-analyst (UNSUPPORTED) and data-science-analyst (QUALIFIED 61),
 tracker run 70. This is the second text. §8 lists what the review changed, including

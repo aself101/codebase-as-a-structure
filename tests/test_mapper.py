@@ -489,7 +489,9 @@ def test_register_hook_has_a_grammar(sub, tmp_path):
 
 
 def test_budget_refuses_a_tiny_jitter_population(sub):
-    """D-026: two rooms flipping is not a rate."""
+    """D-026: a jitter union under the floor is refused. (The docstring here read "two rooms
+    flipping is not a rate"; D-082 withdrew it — at the floor itself two units exceed the
+    ceiling, see test_floors_admit_a_two_unit_ceiling.)"""
     from repo_substrate.mapper.diff import SKELETON_BUDGET, skeleton_diff
 
     base = load_ruleset(RULESET)

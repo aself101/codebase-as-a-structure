@@ -69,3 +69,13 @@
 - [x] Missing input/legacy eligibility is unknown; wrong-revision evidence is refused (`test_missing_substrate_is_unknown_not_a_failed_predicate`, `test_legacy_eligibility_and_missing_value_are_unknown`, `test_evidence_rejects_a_substrate_from_another_revision`).
 - [x] Raw SCC depth changes and quantile-only floor moves are distinct observations (`test_scc_depth_change_is_distinct_from_quantile_band_change`).
 - [x] The pinned mcp 4/35 assignment churn, 4/35 layer movement and over-budget verdict survive (`test_pinned_mcp_failure_stays_four_assignments_over_thirty_five`).
+
+## D-082 the verdict's meaning and resolution
+
+- [x] `fires_at` is the smallest count over the ceiling under the verdict's strict comparison (`test_fires_at_follows_the_verdicts_strict_comparison`).
+- [x] The floors admit a two-unit ceiling on both operands; the "not a rate" sentence is withdrawn (`test_floors_admit_a_two_unit_ceiling`).
+- [x] The budget block states each operand's unit, numerator, denominator, resolution, the window's revisions and which operand fired; the pinned mcp verdict is unchanged (`test_pinned_mcp_budget_block_states_operand_resolution_and_window`).
+- [x] One room leaving two features on one term is one crossing; unavailable evidence is unknown, not zero (`test_one_room_leaving_two_features_on_one_term_is_one_crossing`, the pinned test).
+- [x] An unjudged window names no fired operand (`test_an_unjudged_window_names_no_fired_operand`).
+- [x] The change sheet prints scope and resolution beside the verdict (`test_change_sheet_prints_the_verdicts_scope_and_resolution`).
+- [ ] `skeleton-budget.md`'s series column (`scripts/regenerate_readings.py::_series_break`) has no unit test; checked by hand against the D-078 pair of tables (2026-11-11).

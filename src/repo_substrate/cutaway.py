@@ -459,6 +459,15 @@ def render_change_sheet(
     verdict = bud["verdict"].replace("_", " ") + (
         f" ({bud['reason']})" if bud.get("reason") else ""
     )
+    # D-082: the verdict's scope and resolution beside it; absent on a diff written before it
+    ops = bud.get("operands")
+    if ops:
+        f, s_ = ops["features"], ops["floors"]
+        verdict += (
+            f" — one window; features {f['changes']} of {f['denominator']} assignments"
+            f" (ceiling exceeded at {f['fires_at']}), floors {s_['changes']} of {s_['denominator']} rooms"
+            f" (at {s_['fires_at']})"
+        )
     out.append(
         f'<text x="{MARGIN}" y="46">rooms: born {counts["born"]} · demolished {counts["demolished"]} · edited {counts["edit"]} · '
         f'<tspan fill="#c58b1e">clock {counts["clock"]}</tspan> · <tspan fill="#c8322b" font-weight="bold">rank {counts["rank"]}</tspan> · <tspan fill="#7a3e9d">mixed {counts["mixed"]}</tspan> · '

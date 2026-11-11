@@ -1644,7 +1644,7 @@ no reader selected, contacted or tested, and no external artifact sharing. One f
 reader would provide a case observation, not general validation.
 
 
-## D-082 proposal — the stability budget on a small population (2026-11-11); reviewed, awaiting Alex
+## D-082 · 2026-11-11 · The stability verdict is a statement about one window and carries its resolution; D-026's breaks-if met for layer floors on mcp (Alex: A now, D next, E deferred)
 
 `stability-budget-spec.md` asks what mcp-secure-server's `over_budget` reading measures
 on 65 rooms and what the verdict does. Reviewed before any code by
@@ -1678,3 +1678,35 @@ are enough to say the calibration does not obviously hold and not enough to plac
 K. **Breaks if.** A walk of the other three repositories at the current substrate shows
 their K = 25 medians over the ceiling as well: then the pin is uncalibrated everywhere
 and E is not deferrable.
+
+**Decision (Alex, 2026-11-11: "agree with the recos").** A now; D next under its own spec;
+E deferred until a page reads the verdict; no resolution floor; no operand change.
+
+**A as built.** `mapper/diff.py`: the budget block gains `scope` ("one window"),
+`window` (the two revisions and K), `operands` (features and floors, each with unit,
+changes, denominator, value, ceiling, `fires_at`, `exceeds_ceiling`; features also
+distinct rooms and distinct crossings, unknown with a reason when either side's evidence
+is unavailable) and `fired` (the operands over the ceiling on a judged window, null on
+an unjudged one). `fires_at` uses the verdict's own strict comparison (3 of 60 is the
+ceiling, not over it). The comment above `SKELETON_BUDGET` gives each K-study reading
+with the K it was read at, says K = 25 was read on the registry only, records the
+breaks-if, and withdraws "two rooms flipping is not a rate". `cutaway.py`'s change sheet
+prints scope and resolution beside the verdict. `regenerate_readings.py`'s table gains
+rooms, excluded kinds, untouched, numerators and denominators with "over at n", the
+operand that fired, and a series column that compares each row with the most recent
+earlier table for the same pair of commits. Run by hand on the D-078 pair it prints
+`BREAK: common 186 → 64 against 2026-09-24e` for mcp and `BREAK: common 574 → 571` for typeorm (its three example files; I had expected `continues` and wrote that here before reading the output).
+Mapper spec §7 Q3 restated; "twenty rooms" corrected to twenty assignments; the D-018
+"defect" sentence kept with its date.
+
+**Nothing moved.** All eight pinned diffs regenerated under tag `2026-11-11b-d082`: no
+pre-existing leaf differs from `2026-11-11-d080`, skeleton hashes included; four keys
+added to the budget block. mcp-secure-server: `over_budget (features)` under age,
+`over_budget (features, floors)` under layer, 2 distinct crossings, each ceiling
+exceeded at 2. Distinct crossings elsewhere: typeorm 4 (7 assignments), eslint 2 (4),
+registry 1 (1). 189 tests.
+
+**Assumes.** A reader of the change sheet or the table can use "over at 2" without the
+calibration that would say whether two is many. **Breaks if.** The resolution line is
+read as an excuse — "only two rooms" — on a population where two rooms is the
+calibrated tail; that is E's question and the line does not answer it.
