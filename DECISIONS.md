@@ -1594,7 +1594,9 @@ Three things the replay puts on the record that the October text does not:
    hub: `injection.ts` and `src/types/server.ts` (both touched) enter, `src/index.ts`
    (untouched) and `error-sanitizer.ts` (touched) leave; corridor: `types/server.ts` in,
    `src/index.ts` out. `src/index.ts` (centrality 0.0134 → 0.0128) falls below the
-   *before*-cutoff 0.01285: it leaves with the cutoff held, on its own value.
+   *before*-cutoff 0.01285: it leaves with the cutoff held. *(Run 71: its earlier value
+   is also below the later cutoff 0.01426, so it leaves with the value held too; "on its
+   own value", which stood here, was one inequality of two.)*
    *Corrected the same day after run 70:* this item first read "every untouched loss is
    a displacement by a touched room … the quota arithmetic run 65 named". That was right
    for one room of two, it asserted a cause D-080 forbids for a raw-value change, and it

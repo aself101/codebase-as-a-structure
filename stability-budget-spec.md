@@ -79,8 +79,10 @@ the pinned set changes under a per-predicate, per-crossing or per-room count
 `transition_evidence`: `src/types/index.ts` moved 0.8434 → 0.8429 on load and stayed
 above the before-cutoff (0.84085); it left because the cutoff rose to 0.84876 when a
 touched room entered — a threshold-only crossing. `src/index.ts` moved 0.0134 → 0.0128
-on centrality, below the before-cutoff (0.01285); it leaves with the cutoff held — a
-coupled signal's own value changed, with no cause claimed (D-080). D-018 names "a
+on centrality, below the before-cutoff (0.01285); it leaves with the cutoff held. Its earlier
+value (0.0134) is also below the later cutoff (0.01426), so it leaves with the value held
+too: either move alone suffices, and neither is "the" cause (D-080). *(Run 71 corrected
+this: the text first booked the room as a value case, which is one inequality of two.)* D-018 names "a
 percentile threshold shifted under it" as ripple the budget bounds, and a coupled
 signal's ripple is the same class (D-033). Under cutoffs resolved over the untouched
 rooms alone the pinned mcp comparison reads 0 / 44 (`operands_pinned.md` column O3):
@@ -135,7 +137,9 @@ row before it are two instruments printed as one series (186 common rooms under 
 reading changed at D-078 and stood unread.
 
 **F8. What the reader of the mcp page is not told.** In the pinned window 11 of the 35
-unedited rooms changed something the page prints: 2 left a rank row, 4 left `lit_room`,
+unedited rooms changed a mark or a floor — 7 on the age-geometry page the brief is
+rendered from, 4 more as layer floors, which the brief does not draw *(run 71: the text
+first said all 11 were "something the page prints")*: 2 left a rank row, 4 left `lit_room`,
 4 moved a layer floor, and the excluded `crack` row lost `src/security/index.ts` as well
 as `src/index.ts`.
 

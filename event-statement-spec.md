@@ -1,6 +1,6 @@
 # The stability window on the page — an event statement (D-082 option D)
 
-Status: **draft for review, nothing implemented.** Proposed D-083. Written 2026-11-11.
+Status: **reviewed (tracker run 71); the draft's form does not stand; where the statement lives is put to Alex (§10). Nothing implemented.** Proposed D-083. Written 2026-11-11.
 Parent: `stability-budget-spec.md` (D-082), whose option D Alex accepted as "next, under
 its own spec". The architect-brief spec §1 is the contract this changes. §9 holds the
 review before any code.
@@ -196,6 +196,80 @@ clock row and a ◌ row change, (g) evidence is missing on one side.
    earned — it was chosen as the gate's K = 25 cut, not as a reader's interval?
 5. Is anything in §2 wrong about the code?
 
-## 10. Review
+## 10. Review (tracker run 71) and the question it leaves
 
-*(appended after the specialist reviews; no code before it)*
+measurement-validity-analyst 1.0.0 (the run 70 instance, continued): **UNSUPPORTED** —
+of twelve claims two supported, six qualified, three unsupported, one undetermined.
+software-architecture-expert-validator 1.0.4: **DIVERGENT 56** (it notes its two scales
+disagree at 56 and chose the harsher). adoption-drift-detector 2.2.2: **DRIFTED 44**
+(it notes the verdict turns on rating five silent misreadings HIGH; at MEDIUM, 74).
+Twenty-eight issues, six convergent clusters.
+
+**What does not stand in §§1–9 above (kept as drafted; this list is the correction).**
+
+- *R4's two phrases.* All three reviewers. For `src/index.ts` on hub the later value
+  fails the earlier cutoff **and** the earlier value fails the later cutoff: either move
+  alone suffices, and "its value crossed the earlier cutoff" books a cause. The phrases
+  are also undefined for entrants, for `==` and fixed-value terms (no cutoff moves), for
+  conjunctions with more than one changed term, for a clock term inside a mixed row, and
+  for a membership change with no term changed. A reader takes the two phrases as real
+  versus benign and bisects. Replacement: the four numbers, and both comparisons stated
+  neutrally (later value against the earlier cutoff; earlier value against the later
+  cutoff), or the numbers alone.
+- *R2's inputs.* The diff's `per_feature` sets are over rooms present in both commits
+  (`diff.py:349-350`); born rooms are in neither `added` nor `touched.nodes`. mcp's
+  scaffolding is 31 → 35 in the diff and 31 → 36 in the skeletons. Row sizes and born or
+  deleted rooms come from the two skeletons, or the diff gains the lists.
+- *§1's "11 … the page prints".* 7 on the age page (2 rank, 4 clock, 1 excluded); the
+  other 4 are layer floors the brief does not draw.
+- *§5, "a page without a window keeps its facts hash", and §8, "bytes … equal
+  today's".* `brief_version` is inside the hashed sheet; the bump changes every page.
+- *One verdict clause.* Two geometries carry two tokens (age: features; layer: features
+  and floors).
+- *The row-major table.* Listing only rows that changed, with a count of the rest, is
+  how a list of unstable rows is built; R7's caption does not travel with a pasted row,
+  and the row carries no window. One line per crossing, the window in every line.
+- *"over the ceiling … (over at 2)" and the word "stability".* Read as a budget overrun
+  to fix, "2 over", and the one token on the page that looks comparable across
+  repositories (eslint and mcp both read 2 crossings; one is within, one over). The
+  clause must carry "has not been read for a repository this size" and lead with rooms
+  and crossings.
+- *Floors on the brief.* "Floor" already means a threshold on the page (six uses), and
+  the brief draws no floors.
+- *The heading.* "Moved without being edited" reads as renamed files.
+- *The sheet field.* `stability_window.verdict` reaches an agent without its scope.
+- *§2.* The stability clause is in the header sentence, not the Provenance section;
+  D-074 pairs only names flagged `name_implies_consequence`.
+
+**Where the reviewers differ.** Clock rows: the measurement reviewer supports listing
+them given the calendar span; the drift reviewer would collapse them to one count line,
+since an unedited room leaving `lit_room` is what unedited means.
+
+**The contract finding, and the question.** The register's bold rule, asserted by a
+test, says "no count on this page compares across repositories, or across snapshots of
+this one" (`brief.py:2996`). The brief spec says the page "may say what the skeleton
+says and nothing else" (§1), that its facts are "a pure function of the skeleton"
+(§2.1), and that excluded features are cited by count only. This spec named that
+contract and did not amend it. Two forms are open:
+
+- **On the brief, reformed.** One line per crossing with the window in each line; no
+  floors; the gate's reading renamed and qualified; the register's rule and three
+  contract sentences amended to admit one dated window; the relint path and `facts`
+  take a diff.
+- **A page of its own, per window.** `<short>.window.md`, rendered from the two
+  skeletons, the two substrates and the diffs: the crossings, both geometries' floors
+  and readings each beside its own numbers. The brief stays a one-snapshot page; its
+  header's stability clause names the window page and the pair of commits, or says no
+  window was read.
+
+Recommended: the page of its own. The one-snapshot rule is the brief's most-tested
+property (thirteen unpointed rounds were read against it); every finding above about
+floors, two verdicts, the relint path and the hash dissolves when the statement is not
+on the brief; and a statement about a window is the natural subject of a page about a
+window. What it costs: a pointer is weaker than a cell — D-082 argued "the number goes
+in the cell it qualifies" — and the change sheet is a precedent for a two-snapshot
+artifact nobody opened. The pointer therefore has to be specific (the pair, the dates,
+the file) and the window page has to be regenerated and committed beside the brief.
+
+Alex accepted D as "a reader on the page". Moving it off the page changes what was
+accepted, so the choice goes back to him.
