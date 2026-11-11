@@ -1567,6 +1567,53 @@ Final author suite: **182 passed in 79.38 s**; changed-file lint and diff checks
 All eight saved operands/verdicts remain fixed, including mcp's 4/35 over-budget
 comparisons. Full review and limits: `docs/d080-adversarial-review-2026-10-13.md`.
 
+**D-080 replay on this machine (2026-11-11, commit bea32ce).** The October diagnostics
+lived in the Codex session's workspace and did not survive it, so the eight comparisons
+were regenerated from the pinned k25k caches (`regenerate_readings.py --tag
+2026-11-11-d080 --skip-timelapse --skip-briefs`; outputs `reports/2026-11-11-d080-m2x/`,
+skeletons `out/m2x-2026-11-11-d080/`). Against the saved `reports/2026-09-24g-m2x/`
+diffs, every pre-existing leaf of all eight files is equal except the two
+`skeleton_hash` values per file (the additive roster metadata); the budget table is
+identical row for row. Added keys only: `churn_units`, `strata_evidence`,
+`per_feature.*.transition_evidence`, `per_feature.*.untouched_affected_rooms`, and five
+`untouched.jitter_*` counts. mcp-secure-server stays `over_budget` in both geometries.
+Checked independently of the diff code: the 35 untouched rooms have identical git blobs
+at `4c99da71468c` and `5348b3ef614d` (25 commits apart). Not replayed: the PageRank
+tolerance claim and the tooltip output (covered by tests only).
+
+Three things the replay puts on the record that the October text does not:
+
+1. *Two different 35s.* `untouched.n` is 35 rooms; `jitter_assignment_union` is 35
+   (profile, feature, room) assignments held by 23 rooms. They coincide on this
+   snapshot. The 0.114 feature churn is 4 assignments of the 35-assignment union; the
+   0.114 layer figure is 4 rooms of the 35 untouched rooms.
+2. *Every untouched loss is a displacement by a touched room.* The three affected
+   features keep their size (foundation 7 → 7, hub 7 → 7, corridor 3 → 3). foundation:
+   `content/patterns/injection.ts` (touched, load 0.7953 → 0.8616) enters and
+   `src/types/index.ts` (untouched, 0.8434 → 0.8429) leaves. hub: `injection.ts` and
+   `src/types/server.ts` (both touched) enter, `src/index.ts` (untouched) and
+   `error-sanitizer.ts` (touched) leave. corridor: `types/server.ts` in, `src/index.ts`
+   out. Under a fixed-share predicate (`>= p90`) a touched room that crosses in must
+   push a room out; when the room pushed out is untouched the operand counts it as
+   jitter. This is the quota arithmetic run 65's data-science review named at D-077,
+   now on the stability operand. It is an observation about the operand, not a remedy
+   and not a change to the verdict.
+3. *The verdict flipped at D-078 and was not logged there.* mcp's row read
+   `common 186, jitter 0.006, within_budget` in every budget table through
+   `2026-09-24e` and `common 64, jitter 0.114, over_budget` from `2026-09-24g`, the
+   regeneration committed with the D-078 addendum. That addendum's "no existing verdict
+   moved" was true of the gate's signal verdicts and silent on the skeleton budget; the
+   table was regenerated and not read (the 2026-09-24 lesson, "read the regenerated
+   page", applied to the briefs and not to this file). D-079 inherited the silence.
+
+**Tracker.** Saved as run 69 (`replication`, `326d2516-88e3-4a69-b9e7-919dfc0ce649`),
+decision REPRODUCED, no score (an inline replay, not a registry agent; no agent id or
+definition version exists for it and none was supplied). One issue opened: the
+displacement reading of the stability operand (item 2). The project now lives in the
+`ulu-labs` org (Alex moved it; runs 1–68 are there). The first attempt found no such
+project in the personal org and stopped rather than create a second one;
+`.mcp.json.example` now sets `ULUOPS_ORG_SLUG` on the tracker entry.
+
 
 ## D-081 proposal — computed-path evidence, spec only (2026-10-13)
 
