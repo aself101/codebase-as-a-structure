@@ -92,3 +92,7 @@
 - **Produces:** `substrate.json` consumed by C3 (signal-name join) and by validation (under `--truncate-at`); `seed` flows downstream to C4/C6.
 - **`--truncate-at` is the validation seam:** the same pipeline truncated at a split SHA is what makes the holdout a real holdout (validation §7).
 - **Deferred (on the page, not v0):** SZZ-style blame (truer defect label, validation §3.4.1); extractor mis-resolution fidelity (§12 Q8); `blast_radius_index` over `cochange_degree` (§5 Tier 2, validation §2.3).
+
+## D-080 exact provenance
+
+- [x] Serialized effective config preserves tiny tolerances and exact weights, and hashes back to the fingerprint (`test_effective_config_preserves_the_fingerprint_preimage`).

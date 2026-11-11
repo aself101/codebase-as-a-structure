@@ -85,6 +85,8 @@ def main(argv: list[str] | None = None) -> int:
         help="substrate.json of the AFTER revision: its renames map, and its timeline "
         "for the set of nodes the intervening commits touched (the budget population)",
     )
+    sd.add_argument("--before-substrate", type=Path, default=None,
+                    help="earlier substrate: values and thresholds for the unfired side of a transition")
     sd.add_argument("-o", "--output", type=Path, default=None)
     tl = sub.add_parser(
         "timelapse",
@@ -227,6 +229,8 @@ def _dispatch(args: argparse.Namespace) -> int:
         ren: dict[str, str] = {}
         touched: set[str] | None = None
         between: int | None = None
+        after_sub = None
+        before_sub = _load_json(args.before_substrate, "before substrate") if args.before_substrate else None
         reason = "renames_not_given"  # no --renames: the budget has no timeline to read
         if args.renames:
             after_sub = _load_json(args.renames, "after substrate")
@@ -236,7 +240,8 @@ def _dispatch(args: argparse.Namespace) -> int:
                 touched, between = ts
             else:
                 reason = "touched_set_unavailable"  # the before sha is not in the after timeline
-        d = skeleton_diff(a, b, ren, touched, between, unavailable_reason=reason)
+        d = skeleton_diff(a, b, ren, touched, between, unavailable_reason=reason,
+                          before_substrate=before_sub, after_substrate=after_sub)
         text = json.dumps(d, indent=1, sort_keys=True, ensure_ascii=False, allow_nan=False) + "\n"
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)

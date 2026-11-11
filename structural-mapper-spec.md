@@ -111,3 +111,44 @@ Running several profiles over one repo produces overlapping skeletons of the **s
 5. **Position names over consequence names (D-004 Q3).** The ontology in §4 should prefer names that denote structural *position* ("hub," "junction," "strata") over names that import a *consequence* ("load-bearing wall," "toothpick") wherever the consequence adds nothing the signal can back. Where a consequence name is kept for legibility, the feature carries `name_implies_consequence: true` and C5 must disclose that the name denotes position (the C5 register lint, an M3 requirement). To be settled when the ruleset is authored.
 7. **Per-package calibration (monorepo pooling).** *Open.* Assigned to the mapper by architect-brief spec §5 Q5 ("per-component calibration is a mapper question") and carried on every page since D-053; recorded here at D-054, when the fifteenth seating found the page citing this list for a question it did not hold. Every pNN ranks one repository's rooms as one population (system spec §5.3) across every `package.json` scope the population spans, pooled; the brief states the count and the rooms per scope so the pooling has a size (eslint: 435 of 473 rooms in the root scope, five scopes holding the other 38; mcp-secure-server: 66 of 202 in the root, fourteen scopes under `cookbook/` holding 136, the largest 17). Whether a scope of a dozen rooms should be ranked against a scope of four hundred is unanswered: a per-scope population would fall under the population floor (30 rooms, D-034) on every scope but the root on both, and a mixed rule (pool below the floor, split above it) is a calibration mode §5.3 does not have. *D-077 (`scope-calibration-spec.md`, two reviews): measured — immaterial on registry and eslint, moderate on typeorm, concentrated on mcp-secure-server (the library, 65 of 187 rooms, holds 17 of 19 foundation and all 27 lit rooms). The page states the pooling as composition (brief 0.42.0). The mixed rule is demoted (a floor cliff and a mode that changes across time-lapse frames) and per-scope substrate ranks dropped (at most two rooms a feature). The question is reframed as room definition: whether a scope with a declared example role is a room — open with Alex.*
 8. **Corpus-relative fields under D-004 Q3 (D-059).** *Decided in form, open in content.* A corpus-relative claim is a field with a corpus denominator — a position in the corpus's distribution (system spec §5.3, D-059 revision) — never a verdict. Open: which fields get a corpus column first (per-feature share of rooms is the obvious one; the most-marked count and the co-location share are candidates), what n the corpus must reach before a decile is printed (the population floor's analogue, D-034), and whether a corpus position on a decorative feature is printed at all.
+
+## D-080 — Stability transition evidence (2026-10-13)
+
+The budget and mapping semantics remain unchanged. Churn sums the symmetric differences
+over `(profile, feature, room)` assignments and divides by their summed unions; it is
+not a distinct-room rate. Diagnostic diffs additionally report assignment numerators and
+denominators, distinct affected rooms, and distinct rooms in the union. These counts
+are descriptive and never replace the budget operand.
+
+`skeleton-diff` accepts optional before/after substrates. A supplied substrate must match
+its skeleton's revision, seed, and configuration fingerprint. For each changed feature
+assignment, additive `transition_evidence` records each side's predicate terms, raw
+values (indices as themselves; percentile-only signals retain their declared meaning),
+resolved thresholds, per-term outcomes, predicate outcome, room population count,
+room membership, population-floor disclosure, and diagnostic eligibility. Thresholds
+are resolved over that side's skeleton population, never over the common or untouched
+subset. Missing substrates, legacy eligibility metadata, missing values, and non-finite
+thresholds are explicitly unavailable/unknown; they cannot become invented causes.
+The existing fired-side `evidence` field remains compatible. Timelapse and regeneration
+supply both substrates. The CLI's existing `--renames` substrate supplies the after side;
+`--before-substrate` supplies the earlier side.
+
+For moved strata, additive evidence records before/after raw strata values and bands.
+Layer geometry distinguishes `raw_depth_changed`, `band_only`, and `unknown`; these
+are observed differences, not claims about the particular edge or commit causing them.
+Age geometry uses `raw_value_changed`, since its raw field is an age percentile. Raw
+dependency ripple remains in the existing budget operand. No fixed bands, hysteresis,
+new population, relaxed floor, or changed ceiling is introduced.
+
+Acceptance: the attested mcp comparison `4c99da71468c` → `5348b3ef614d` remains
+4/35 assignment churn in both geometries and 4/35 untouched layer-band movement.
+Synthetic tests must distinguish a threshold-only crossing from a changed value,
+a band-only move from an SCC-induced raw-depth change, missing evidence from a
+negative predicate, and mismatched evidence from valid provenance. Four-repository
+diagnostics compare every existing verdict and operand to the saved readings.
+
+The change-sheet tooltip carries the same both-side transition terms and eligibility
+disclosures; it retains the original fired-side evidence. Floor tooltips identify observed
+raw-depth or band-only movement without naming an inferred causal edge. Timelapse
+summaries retain assignment units/counts, affected-room counts, and observed floor
+attribution beside the unchanged aggregate budget operands.

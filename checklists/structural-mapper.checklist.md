@@ -62,3 +62,10 @@
 - **Produces:** `skeleton.json` consumed by C4 (geometry seed = `substrate_seed`) and C5 (every brief claim → a feature id).
 - **Reads from validation:** `validation.json` signal statuses — the gate's lookup is `validation.signals[<name>].status`; a missing key = `untested` = hard error unless decorative.
 - **Skeleton-status note:** this spec is a DRAFT skeleton; `[RULESET]` items are real contracts whose tests land when the authored ruleset is built (system spec Phase 0). They are listed now so the ruleset build inherits its conformance bar rather than inventing one.
+
+## D-080 stability evidence
+
+- [x] Both sides include threshold outcomes for unchanged values crossing a moving cutoff (`test_threshold_crossing_records_the_unfired_side`).
+- [x] Missing input/legacy eligibility is unknown; wrong-revision evidence is refused (`test_missing_substrate_is_unknown_not_a_failed_predicate`, `test_legacy_eligibility_and_missing_value_are_unknown`, `test_evidence_rejects_a_substrate_from_another_revision`).
+- [x] Raw SCC depth changes and quantile-only floor moves are distinct observations (`test_scc_depth_change_is_distinct_from_quantile_band_change`).
+- [x] The pinned mcp 4/35 assignment churn, 4/35 layer movement and over-budget verdict survive (`test_pinned_mcp_failure_stays_four_assignments_over_thirty_five`).

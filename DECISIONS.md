@@ -1485,3 +1485,111 @@ Re-judged under the strengthened lint, all four D-027 briefs fail — on exactly
 **Recorded, not rebuilt.** The skimmer's high drifts land on layers this log has already ruled on — the register as the place a skimmer does not read (D-060 moved every defence it could into cells), ◌ and the paired names (D-070, D-074), the tier caption (D-061). Its override is recorded as the reader's; mechanically the page read ALIGNED 83, and the next re-seat is due on the next change of shape.
 
 **Assumes.** A closed cycle is a property of the import graph the page can count without judging the cycle. **Breaks if.** A repository's hubs are mostly one large cycle that is not closed (edges leave it) and the rank still concentrates there — then "closed" is too narrow a word for what PageRank keeps, and the count is of strongly connected sets with their out-degree beside it.
+
+## D-080 · 2026-10-13 · Explain the stability failure; preserve its verdict and exact configuration provenance
+
+**Evidence.** The attested k25k mcp snapshots reproduce both saved diffs exactly. All 35
+untouched rooms have identical git blobs. Four lost assignments belong to two rooms:
+`src/types/index.ts` loses foundation in both profiles (load 0.8434→0.8429, p90
+0.84085→0.84876); `src/index.ts` loses hub/corridor (centrality 0.0134→0.0128,
+p90 0.01285→0.01426). Layer floors move on four unchanged rooms: two retain raw
+depth 2; semantic-policies depth 6→5 follows expanded SCC context;
+http-transport-manager depth 7→8 follows a longer dependency path. The published
+4/35 churn counts feature assignments, not four distinct rooms. Restoring excluded
+examples dilutes it to 0.006; that would undo D-078, not remedy it. PageRank replays
+exactly with the fingerprint-matching config: its 1e-6 tolerance was rounded to 0.0
+in the saved effective-config disclosure.
+
+**Alex approved** the narrow diagnostic and serialization fixes. The mapper spec's
+D-080 addendum and substrate spec's exact-configuration addendum are the contract.
+Before implementation they were reviewed locally against the counterfactuals and code:
+raw-value changes cannot name their causal edge; band-only movement cannot be called
+a dependency-depth change; an unavailable non-fired side cannot be filled from the
+fired side; population floor and diagnostic eligibility are separate (the existing
+mapper discloses its floor); historical cache attestations must not be rewritten.
+This is a local contract review, not a new hostile-reader/model run or tracker record.
+
+**Decision.** Add both-side transition evidence and raw-depth/band attribution, expose
+assignment units and distinct affected-room counts, and preserve exact effective-config
+serialization. Existing marks, populations, churn operands, floors, 0.05 ceilings, and
+verdicts stay fixed. Legacy/missing evidence is unknown, not guessed. No claim that the
+pipeline has become stable: the mcp comparison remains over budget.
+
+**Assumes.** Additive evidence makes the existing failure investigable without supplying
+a causal claim. **Breaks if.** An evidence field implies a causal edge the snapshots do
+not establish, missing metadata is presented as a negative outcome, or any saved
+four-repository operand/verdict changes; then the evidence or its compatibility is wrong.
+
+Implementation and validation results will be appended after checks.
+
+**D-080 implementation and validation.** `mapper/diff.py` accepts provenance-matched
+before/after substrates, evaluates all predicate terms on each frame's original room
+population, reports missing evidence/legacy eligibility as unknown, retains the original
+fired-side evidence, and adds raw strata observations and explicit assignment/room counts.
+`mapper/engine.py` includes graph dependency in the roster so unfired-side eligibility
+is knowable. CLI `--before-substrate`, timelapse and regeneration pass the inputs;
+`cutaway.py` carries the new evidence into change-sheet tooltips, and timelapse summaries
+retain the new counts/attribution. `assemble.py` preserves `effective_config` after
+rounding measurements (and uses the equivalent `math.isnan` check to close an existing
+lint finding in that file). Tests: synthetic moving threshold, unknown/mismatched
+evidence, SCC versus band-only movement, the frozen mcp comparison, exact tolerance
+and weight serialization/fingerprint reconstruction. Checklists point to those tests.
+
+Final suite: **180 passed in 76.73 s**. Changed Python files pass ruff; `git diff --check`
+passes. Repository-wide ruff has 45 existing findings versus 46 at HEAD; mypy has the
+same 17 errors in five files at HEAD and after the change, with none introduced.
+All eight attested k25k repository/geometry comparisons preserve every pre-existing
+operand/verdict (only skeleton hashes change with the additive roster metadata).
+mcp remains **4/35 feature assignments** in both geometries and **4/35 untouched
+layer floors**, over budget. Its new attribution is two band-only moves and two raw
+depth changes, not an asserted causal edge. CLI and isolated change-sheet output
+confirmed both-side evidence. Diagnostic outputs are isolated in the Codex task
+workspace (`stability-fixed-diagnostics`), not historical reports. All 136 untracked
+reports are preserved; historical cache attestations were not rewritten. No tracker
+mutation, paid generation, push or publish. The contract review was local; no external
+hostile-reader run is claimed.
+
+**D-080 independent adversarial review (2026-10-13).** A fresh Codex reviewer, with
+no author history, read the contracts and implementation, ran 19 focused tests,
+checked compound missing-input outcomes, chained renames and seed/config refusal,
+and independently replayed all eight comparisons against HEAD's original diff.
+Two P2 implementation gaps reproduced: absent node `load_index_degraded` defaulted
+to false (graph-dependent eligibility asserted true), and change-sheet tooltips omitted
+population-floor and unknown-reason disclosures. Both are repaired within D-080:
+absence stays null/unknown when relevant; known global/node degradation still gives
+known false; tooltips expose the recorded floor and reasons. Added regressions.
+No semantic change, external paid API, or tracker run is claimed. The fresh reviewer
+found no new causal-edge overclaim and confirmed the original operands/verdicts.
+
+**D-080 post-review verification.** The reviewer independently confirmed both repairs
+and the precedence repair; no blocking defects remain within its stated coverage.
+Final author suite: **182 passed in 79.38 s**; changed-file lint and diff checks pass.
+All eight saved operands/verdicts remain fixed, including mcp's 4/35 over-budget
+comparisons. Full review and limits: `docs/d080-adversarial-review-2026-10-13.md`.
+
+
+## D-081 proposal — computed-path evidence, spec only (2026-10-13)
+
+User-authorized sequence: independent D-080 review/fixes, then a computed-path
+evidence spec beginning with ESLint messages, then an uncoached outside-reader
+exercise plan. D-080 review and final verification were completed first.
+
+`computed-path-evidence-spec.md` proposes a separate deterministic, provenance-bound
+side artifact: direct-file computed-load candidate envelopes, opaque/uncertain/refused
+records, explicit file/site denominators, and no graph edges or signal/gate promotion.
+The ESLint example is a runtime-computed require expression; 18 direct inventory
+messages are candidates, not proven runtime loads, and the shared helper remains
+in the set. The fresh independent reviewer verified pinned source facts and requested
+four contract repairs (coverage taxonomy, decoding/hash preimages, binding uncertainty,
+display provenance). All are specified; independent recheck found no remaining
+blocking ambiguity within its coverage. This proposal is not an implementation
+decision. Any later implementation requires selecting that scope; existing attested
+caches and metric/config fingerprints stay unchanged in the proposed evidence phase.
+
+The outside-reader handout and separate facilitator evaluation are in
+`docs/outside-reader-handout-2026-10-13.md` and
+`docs/outside-reader-evaluation-2026-10-13.md`. They pin the historical brief and fresh
+reviewed D-080 change sheet, freeze first impressions before support/revision prompts,
+and score unsupported condition/denominator/causal claims separately. Prepared only:
+no reader selected, contacted or tested, and no external artifact sharing. One future
+reader would provide a case observation, not general validation.

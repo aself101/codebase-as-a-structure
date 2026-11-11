@@ -21,7 +21,11 @@ what a reader of two adjacent pictures actually sees.
 
 from __future__ import annotations
 
+import math
 from typing import Any
+
+from .engine import _cmp, _node_value, _resolve_thresholds
+from .ruleset import parse_predicate
 
 # D-018, operand revised D-024, K re-pinned D-026. The budget bounds JITTER: movement of
 # untouched rooms through rank-only features, mixed features (a clock and a rank signal in
@@ -29,14 +33,14 @@ from typing import Any
 # jitter, the conservative side), and strata (a floor moves for an untouched room only
 # because the population re-ranked around it, D-022 having removed the clock's way of
 # moving it). Clock-only features are reported beside it, never judged.
-# The ceilings are one room in twenty. The K: at K = 5 nothing fires the ceiling, not the
+# The ceilings are 5% of feature assignments and 5% of untouched rooms for strata. The K: at K = 5 nothing fires the ceiling, not the
 # reference set and not a ruleset written to break it (D-024); the K study (D-025/D-026,
 # reports/2026-09-05-kstudy) read jitter churn per transition at K = 5…250 and found it
 # grows with K at a rate set by the repository's growth. At K = 25 the ceiling sits between
 # the reference set's median (0.02–0.05) and its 90th percentile (0.07–0.24) on every
 # repository where it was read — it separates typical from tail without being fitted — so
 # the budget is pinned at 25 and applied up to 50. Beyond that a comparison is
-# `untested: beyond_pinned_k`. A jitter union under `min_jitter_union` rooms is
+# `untested: beyond_pinned_k`. A jitter union under `min_jitter_union` assignments is
 # `untested: insufficient_jitter_population` (two rooms flipping is not a rate).
 SKELETON_BUDGET: dict[str, float | int] = {
     "feature_churn_max": 0.05,
@@ -159,6 +163,84 @@ def touched_between(
     return touched, n
 
 
+def _verify_substrate(skeleton: dict[str, Any], substrate: dict[str, Any] | None) -> None:
+    if substrate is None:
+        return
+    for label, actual, expected in (
+        ("revision", substrate["repo"]["head_sha"], skeleton["repo"]["head_sha"]),
+        ("config fingerprint", substrate["repo"]["config_fingerprint"], skeleton.get("substrate_config_fingerprint")),
+        ("seed", substrate.get("seed"), skeleton.get("substrate_seed")),
+    ):
+        if actual != expected:
+            raise ValueError(f"transition substrate {label} does not match its skeleton")
+
+
+def _transition_context(sk: dict[str, Any], sub: dict[str, Any] | None,
+                        profile: str, feature: str) -> dict[str, Any]:
+    population_ids = set(sk["strata"]["by_node"])
+    context: dict[str, Any] = {"population_n": len(population_ids),
+        "population_floor": sk.get("gate", {}).get("population_floor"),
+        "population_ids": population_ids}
+    if sub is None:
+        return {**context, "availability": "unavailable", "reason": "substrate_not_supplied"}
+    groups = [(sk.get("profile", {}).get("name"), sk.get("profile", {}).get("roster", []))]
+    groups += [(o["profile"], o.get("roster", [])) for o in sk.get("overlays", [])]
+    definition = next((f for p, roster in groups if p == profile for f in roster
+                       if f["feature"] == feature), None)
+    if definition is None:
+        return {**context, "availability": "unavailable", "reason": "feature_definition_missing"}
+    nodes = {n["id"]: n for n in sub["nodes"]}
+    if not population_ids <= nodes.keys():
+        raise ValueError("transition substrate is missing skeleton population nodes")
+    terms = parse_predicate(definition["predicate"])
+    return {**context, "availability": "available", "definition": definition,
+            "nodes": nodes, "terms": terms,
+            "thresholds": _resolve_thresholds(terms, [nodes[n] for n in population_ids]),
+            "gate": sk.get("gate", {})}
+
+
+def _transition_side(context: dict[str, Any], node: str) -> dict[str, Any]:
+    side: dict[str, Any] = {"availability": context["availability"],
+        "population_n": context["population_n"], "room_eligible": node in context["population_ids"],
+        "population_floor": context["population_floor"]}
+    if context["availability"] != "available":
+        return {**side, "reason": context["reason"], "predicate_passed": None,
+                "diagnostic_eligible": None}
+    nd = context["nodes"].get(node)
+    if nd is None:
+        return {**side, "availability": "unavailable", "reason": "node_missing",
+                "predicate_passed": None, "diagnostic_eligible": None}
+    terms = []
+    for t in context["terms"]:
+        value = _node_value(nd, t.signal)
+        threshold = context["thresholds"].get((t.signal, t.percentile)) if t.percentile is not None else t.value
+        finite = threshold is not None and math.isfinite(threshold)
+        passed = _cmp(float(value), t.op, float(threshold)) if value is not None and finite else None
+        terms.append({"term": t.render(), "signal": t.signal, "operator": t.op,
+                      "value": value, "threshold": threshold if finite else None, "passed": passed,
+                      "reason": "value_unavailable" if value is None else (None if finite else "threshold_unavailable")})
+    outcomes = [t["passed"] for t in terms]
+    predicate_passed = False if False in outcomes else (None if None in outcomes else True)
+    definition, gate = context["definition"], context["gate"]
+    graph_dependent = definition.get("graph_dependent")
+    graph_degraded = gate.get("graph_degraded")
+    node_degraded = (nd.get("derived", {}).get("indices") or {}).get("load_index_degraded")
+    statuses = {t.signal: gate.get("signals", {}).get(t.signal) for t in context["terms"]}
+    if (definition.get("decorative") or not side["room_eligible"]
+            or (graph_dependent and (graph_degraded is True or node_degraded is True))):
+        eligible, reason = False, None
+    elif (graph_dependent is None or any(v is None for v in statuses.values())
+            or (graph_dependent and (graph_degraded is None or node_degraded is None))):
+        eligible, reason = None, "eligibility_metadata_missing"
+    else:
+        eligible = all(v in ("asserted", "validated") for v in statuses.values())
+        reason = None
+    return {**side, "predicate": definition["predicate"], "terms": terms, "predicate_passed": predicate_passed,
+            "diagnostic_eligible": eligible, "eligibility_reason": reason,
+            "signals": statuses, "graph_degraded": graph_degraded,
+            "node_load_degraded": node_degraded}
+
+
 def skeleton_diff(
     a: dict[str, Any],
     b: dict[str, Any],
@@ -168,6 +250,8 @@ def skeleton_diff(
     budget: dict[str, float | int] = SKELETON_BUDGET,
     kinds: dict[str, str] | None = None,
     unavailable_reason: str = "touched_set_unavailable",
+    before_substrate: dict[str, Any] | None = None,
+    after_substrate: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Compare skeleton `a` (earlier) with `b` (later). `renames` maps a-names to b-names.
     `touched` (b-names) is the set of nodes the intervening commits edited; when given,
@@ -175,6 +259,8 @@ def skeleton_diff(
     `untested` with `unavailable_reason`. `kinds` (feature → clock|rank|mixed) defaults to
     what the two skeletons' evidence says. Refuses skeletons that are not comparable."""
     renames = renames or {}
+    _verify_substrate(a, before_substrate)
+    _verify_substrate(b, after_substrate)
     for field, get in (
         ("repo", lambda sk: sk["repo"]["name"]),
         ("geometry", lambda sk: sk["geometry"]["name"]),
@@ -212,6 +298,9 @@ def skeleton_diff(
     touched = (touched or set()) & common
     untouched = common - touched
     per_feature = {}
+    a_original = {canon(n): n for n in a["strata"]["by_node"]}
+    jitter_rooms: set[str] = set()
+    jitter_affected: set[str] = set()
     tot = {"all": [0, 0], "untouched": [0, 0]}  # [symmetric difference, union]
     by_kind = {k: [0, 0] for k in ("clock", "rank", "mixed")}  # untouched [changes, union]
     for key in sorted(set(fa) | set(fb)):
@@ -228,6 +317,14 @@ def skeleton_diff(
         tot["untouched"][1] += len((sa | sb) & untouched)
         by_kind[kind][0] += u_changes
         by_kind[kind][1] += len((sa | sb) & untouched)
+        if kind in ("rank", "mixed"):
+            jitter_rooms.update((sa | sb) & untouched)
+            jitter_affected.update((sa ^ sb) & untouched)
+        contexts = [_transition_context(sk, sub, *key) for sk, sub in
+                    ((a, before_substrate), (b, after_substrate))]
+        transition_evidence = {n: {"before": _transition_side(contexts[0], a_original.get(n, n)),
+                                   "after": _transition_side(contexts[1], n)}
+                               for n in added + removed}
         evidence = {
             **{n: {"before": None, "after": b_evidence.get(key, {}).get(n)} for n in added},
             **{n: {"before": a_evidence.get(key, {}).get(n), "after": None} for n in removed},
@@ -241,6 +338,8 @@ def skeleton_diff(
             "untouched_changes": u_changes,
             "kind": kind,
             "evidence": evidence,
+            "transition_evidence": transition_evidence,
+            "untouched_affected_rooms": sorted((sa ^ sb) & untouched),
         }
 
     def moved(pop: set[str]) -> list[str]:
@@ -263,6 +362,15 @@ def skeleton_diff(
     )
     strata_moved = moved(common)
     u_moved = moved(untouched)
+    strata_evidence = {}
+    for n in strata_moved:
+        raw_a = a["strata"].get("raw_by_node", {}).get(a_original.get(n, n))
+        raw_b = b["strata"].get("raw_by_node", {}).get(n)
+        attribution = "unknown" if raw_a is None or raw_b is None else (
+            "band_only" if raw_a == raw_b else ("raw_depth_changed" if b["geometry"]["name"] == "layer" else "raw_value_changed"))
+        strata_evidence[n] = {"before": {"raw": raw_a, "band": a_strata[n]},
+                              "after": {"raw": raw_b, "band": b["strata"]["by_node"][n]},
+                              "attribution": attribution, "untouched": n in untouched}
     u_churn = (tot["untouched"][0] / tot["untouched"][1]) if tot["untouched"][1] else 0.0
     u_strata = (len(u_moved) / len(untouched)) if untouched else 0.0
     touched_frac = (len(touched) / len(common)) if common else 0.0
@@ -301,6 +409,8 @@ def skeleton_diff(
             "skeleton_hash": b["skeleton_hash"],
             "geometry": b["geometry"]["name"],
         },
+        "churn_units": "(profile, feature, room) assignments; summed symmetric differences / summed unions",
+        "strata_evidence": strata_evidence,
         "common_nodes": len(common),
         "born": len(b_nodes - a_nodes),
         "deleted": len(a_nodes - b_nodes),
@@ -320,6 +430,11 @@ def skeleton_diff(
                 for k, v in by_kind.items()
             },
             "jitter_churn": jitter_churn,
+            "jitter_assignment_changes": jitter_changes,
+            "jitter_assignment_union": jitter_union,
+            "jitter_affected_rooms": sorted(jitter_affected),
+            "jitter_affected_room_count": len(jitter_affected),
+            "jitter_room_union": len(jitter_rooms),
             "clock_churn": clock_churn,
             "decorative_churn": (dec_changes / dec_union) if dec_union else 0.0,
             "decorative_changes": dec_changes,

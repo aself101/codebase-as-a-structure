@@ -324,3 +324,11 @@ The substrate claims only "deterministic structural signals derived from repo hi
 10. **Orphan nodes.** *Resolved (2026-09-04)* — defect signal, emitted with `history_missing: true`, excluded from the population, counted in `summary.orphan_nodes` (§5).
 11. **Cross-modal counterparts.** `cochange_degree` and `blame_age_median` are Tier 1 as of D-004 so the `asserted` bar can run. Whether their defaults (`cochange_min = 2`, `cochange_max_files = 30`, blame without `-M -C`) are right is answered by the first validation run; each is a config diff.
 12. **Dependency extractor backend.** *Resolved (D-006)* — `dependency-cruiser`, pinned, behind the `DependencyExtractor` protocol.
+
+## D-080 — Exact configuration provenance (2026-10-13)
+
+`rounding_dp` rounds measured outputs, never `repo.effective_config`. The configuration
+preimage, including `pagerank_tol = 1e-6` and exact weight values, is serialized without
+metric rounding and must reproduce the recorded fingerprint with the recorded toolchain.
+This corrects the prior output's lossy `0.0` tolerance disclosure; it changes no extraction
+parameter or metric. Existing attested cache bytes are preserved, not rewritten.

@@ -153,6 +153,7 @@ def _roster(ruleset: Ruleset) -> list[dict[str, Any]]:
         {
             "feature": f.name,
             "predicate": f.predicate,
+            "graph_dependent": f.graph_dependent,  # D-080: unfired-side eligibility
             "decorative": f.decorative,
             "decorative_reason": f.decorative_reason,
             "decorative_signal_reasons": dict(f.decorative_signal_reasons),

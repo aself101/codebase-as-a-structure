@@ -1,0 +1,4449 @@
+{
+ "age": {
+  "before": {
+   "repo": {
+    "head_sha": "4c99da71468c29bb285a3f0d3ad644ef8b4abe7d",
+    "name": "mcp-secure-server"
+   },
+   "geometry": {
+    "name": "age",
+    "wing_depth": 1
+   },
+   "ruleset": {
+    "name": "maintainability",
+    "source": "rulesets/maintainability.toml",
+    "version": "0.3.4"
+   },
+   "strata": {
+    "bands": 5,
+    "by_node": {
+     "src/index.ts": 0,
+     "src/security/config/index.ts": 4,
+     "src/security/config/pattern-categories.ts": 4,
+     "src/security/config/tool-policies-config.ts": 4,
+     "src/security/config/tool-policies.ts": 4,
+     "src/security/config/tool-policy-validation.ts": 4,
+     "src/security/constants.ts": 0,
+     "src/security/index.ts": 0,
+     "src/security/layers/builtin-validators.ts": 4,
+     "src/security/layers/contextual-config-builder.ts": 0,
+     "src/security/layers/layer-utils/content/canonicalize.ts": 0,
+     "src/security/layers/layer-utils/content/dangerous-patterns.ts": 0,
+     "src/security/layers/layer-utils/content/helper-utils.ts": 0,
+     "src/security/layers/layer-utils/content/patterns/index.ts": 0,
+     "src/security/layers/layer-utils/content/patterns/injection.ts": 0,
+     "src/security/layers/layer-utils/content/patterns/network.ts": 0,
+     "src/security/layers/layer-utils/content/patterns/overflow-validation.ts": 0,
+     "src/security/layers/layer-utils/content/patterns/path-traversal.ts": 0,
+     "src/security/layers/layer-utils/content/unicode.ts": 0,
+     "src/security/layers/layer-utils/content/utils/hash-utils.ts": 0,
+     "src/security/layers/layer-utils/content/utils/index.ts": 0,
+     "src/security/layers/layer-utils/content/utils/structural-analysis.ts": 0,
+     "src/security/layers/layer-utils/content/utils/text-decoding.ts": 0,
+     "src/security/layers/layer-utils/semantics/glob-utils.ts": 4,
+     "src/security/layers/layer-utils/semantics/semantic-policies-types.ts": 4,
+     "src/security/layers/layer-utils/semantics/semantic-policies.ts": 0,
+     "src/security/layers/layer-utils/semantics/semantic-quotas.ts": 0,
+     "src/security/layers/layer-utils/semantics/semantic-resource-validation.ts": 4,
+     "src/security/layers/layer1-structure.ts": 0,
+     "src/security/layers/layer2-content.ts": 0,
+     "src/security/layers/layer2-validators/base64-css.ts": 0,
+     "src/security/layers/layer2-validators/data-semantics.ts": 0,
+     "src/security/layers/layer2-validators/index.ts": 0,
+     "src/security/layers/layer2-validators/pattern-detection.ts": 0,
+     "src/security/layers/layer3-behavior.ts": 0,
+     "src/security/layers/layer4-semantics.ts": 0,
+     "src/security/layers/layer5-contextual-types.ts": 4,
+     "src/security/layers/layer5-contextual.ts": 0,
+     "src/security/layers/validation-layer-base.ts": 0,
+     "src/security/mcp-secure-server.ts": 0,
+     "src/security/presets.ts": 4,
+     "src/security/transport/error-rate-limiter.ts": 4,
+     "src/security/transport/http-body-parser.ts": 4,
+     "src/security/transport/http-server-types.ts": 4,
+     "src/security/transport/http-server.ts": 4,
+     "src/security/transport/http-transport-manager.ts": 4,
+     "src/security/transport/index.ts": 0,
+     "src/security/transport/secure-transport.ts": 0,
+     "src/security/transport/transport-validator.ts": 4,
+     "src/security/utils/error-sanitizer.ts": 0,
+     "src/security/utils/log-formatters.ts": 4,
+     "src/security/utils/pipeline-factory.ts": 4,
+     "src/security/utils/request-normalizer.ts": 0,
+     "src/security/utils/response-validator.ts": 4,
+     "src/security/utils/security-logger-types.ts": 4,
+     "src/security/utils/security-logger.ts": 0,
+     "src/security/utils/tool-registry.ts": 0,
+     "src/security/utils/validation-pipeline.ts": 0,
+     "src/types/index.ts": 0,
+     "src/types/layers.ts": 0,
+     "src/types/messages.ts": 0,
+     "src/types/policies.ts": 0,
+     "src/types/server.ts": 4,
+     "src/types/validation.ts": 0
+    },
+    "geometry": "age",
+    "raw_by_node": {
+     "src/index.ts": 0.8564,
+     "src/security/config/index.ts": 0.099,
+     "src/security/config/pattern-categories.ts": 0.099,
+     "src/security/config/tool-policies-config.ts": 0.0792,
+     "src/security/config/tool-policies.ts": 0.099,
+     "src/security/config/tool-policy-validation.ts": 0.0644,
+     "src/security/constants.ts": 0.8564,
+     "src/security/index.ts": 0.8564,
+     "src/security/layers/builtin-validators.ts": 0.0644,
+     "src/security/layers/contextual-config-builder.ts": 0.8564,
+     "src/security/layers/layer-utils/content/canonicalize.ts": 0.9678,
+     "src/security/layers/layer-utils/content/dangerous-patterns.ts": 0.8564,
+     "src/security/layers/layer-utils/content/helper-utils.ts": 0.8564,
+     "src/security/layers/layer-utils/content/patterns/index.ts": 0.9678,
+     "src/security/layers/layer-utils/content/patterns/injection.ts": 0.9678,
+     "src/security/layers/layer-utils/content/patterns/network.ts": 0.9678,
+     "src/security/layers/layer-utils/content/patterns/overflow-validation.ts": 0.9678,
+     "src/security/layers/layer-utils/content/patterns/path-traversal.ts": 0.9678,
+     "src/security/layers/layer-utils/content/unicode.ts": 0.8564,
+     "src/security/layers/layer-utils/content/utils/hash-utils.ts": 0.8564,
+     "src/security/layers/layer-utils/content/utils/index.ts": 0.9678,
+     "src/security/layers/layer-utils/content/utils/structural-analysis.ts": 0.8564,
+     "src/security/layers/layer-utils/content/utils/text-decoding.ts": 0.8564,
+     "src/security/layers/layer-utils/semantics/glob-utils.ts": 0.0644,
+     "src/security/layers/layer-utils/semantics/semantic-policies-types.ts": 0.0421,
+     "src/security/layers/layer-utils/semantics/semantic-policies.ts": 0.9678,
+     "src/security/layers/layer-utils/semantics/semantic-quotas.ts": 0.9678,
+     "src/security/layers/layer-utils/semantics/semantic-resource-validation.ts": 0.0421,
+     "src/security/layers/layer1-structure.ts": 0.8564,
+     "src/security/layers/layer2-content.ts": 0.8564,
+     "src/security/layers/layer2-validators/base64-css.ts": 0.8564,
+     "src/security/layers/layer2-validators/data-semantics.ts": 0.8564,
+     "src/security/layers/layer2-validators/index.ts": 0.8564,
+     "src/security/layers/layer2-validators/pattern-detection.ts": 0.8564,
+     "src/security/layers/layer3-behavior.ts": 0.8564,
+     "src/security/layers/layer4-semantics.ts": 0.8564,
+     "src/security/layers/layer5-contextual-types.ts": 0.005,
+     "src/security/layers/layer5-contextual.ts": 0.8564,
+     "src/security/layers/validation-layer-base.ts": 0.8564,
+     "src/security/mcp-secure-server.ts": 0.8564,
+     "src/security/presets.ts": 0.0743,
+     "src/security/transport/error-rate-limiter.ts": 0.0099,
+     "src/security/transport/http-body-parser.ts": 0.0198,
+     "src/security/transport/http-server-types.ts": 0.0198,
+     "src/security/transport/http-server.ts": 0.1535,
+     "src/security/transport/http-transport-manager.ts": 0.0198,
+     "src/security/transport/index.ts": 0.8564,
+     "src/security/transport/secure-transport.ts": 0.8564,
+     "src/security/transport/transport-validator.ts": 0.0347,
+     "src/security/utils/error-sanitizer.ts": 0.9678,
+     "src/security/utils/log-formatters.ts": 0.052,
+     "src/security/utils/pipeline-factory.ts": 0.0297,
+     "src/security/utils/request-normalizer.ts": 0.8564,
+     "src/security/utils/response-validator.ts": 0.1114,
+     "src/security/utils/security-logger-types.ts": 0.052,
+     "src/security/utils/security-logger.ts": 0.8564,
+     "src/security/utils/tool-registry.ts": 0.9678,
+     "src/security/utils/validation-pipeline.ts": 0.8564,
+     "src/types/index.ts": 0.8564,
+     "src/types/layers.ts": 0.8564,
+     "src/types/messages.ts": 0.8564,
+     "src/types/policies.ts": 0.8564,
+     "src/types/server.ts": 0.1114,
+     "src/types/validation.ts": 0.8564
+    }
+   },
+   "skeleton_hash": "a9fe3934534d86474794b09ade516bfd58d2f483392b8074fd24f370350d03f0",
+   "features": [
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8926
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/config/tool-policies-config.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8925
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/config/tool-policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8695
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/constants.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8568
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/layers/validation-layer-base.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8618
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/utils/error-sanitizer.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.9039
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/types/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8434
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0134
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/security/config/tool-policies-config.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0352
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/security/config/tool-policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0349
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/security/config/tool-policy-validation.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0164
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/security/utils/error-sanitizer.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.013
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/types/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0438
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/types/policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0212
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer-utils/content/helper-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626,
+      "load_index": 0.7085
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer-utils/content/unicode.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626,
+      "load_index": 0.6508
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer-utils/content/utils/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626,
+      "load_index": 0.3823
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626,
+      "load_index": 0.7936
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer2-validators/base64-css.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626,
+      "load_index": 0.5173
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/utils/tool-registry.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626,
+      "load_index": 0.2509
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/types/messages.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626,
+      "load_index": 0.5068
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9888
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/config/pattern-categories.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/config/tool-policies-config.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8806
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/config/tool-policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8806
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/canonicalize.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/helper-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/patterns/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/unicode.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/utils/text-decoding.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/semantics/glob-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/semantics/semantic-policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8806
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer1-structure.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9664
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer2-content.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 1.0
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer2-validators/base64-css.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer2-validators/data-semantics.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer3-behavior.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9664
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer4-semantics.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8806
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer5-contextual.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8806
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/validation-layer-base.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/mcp-secure-server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9888
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/error-rate-limiter.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/http-server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8806
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/http-transport-manager.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/secure-transport.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9664
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/error-sanitizer.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/request-normalizer.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/response-validator.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/security-logger.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/validation-pipeline.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9664
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer-utils/content/helper-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer-utils/content/unicode.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer-utils/content/utils/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer2-validators/base64-css.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/utils/tool-registry.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/types/messages.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.6122
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/layers/layer-utils/content/utils/structural-analysis.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.6122
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/layers/layer-utils/content/utils/text-decoding.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.6122
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/layers/layer3-behavior.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.643
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/layers/layer5-contextual-types.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.6351
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/layers/layer5-contextual.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.6351
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/mcp-secure-server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.643
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/transport/http-server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.643
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/utils/security-logger.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.6351
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/index.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8334
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/index.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8092
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/mcp-secure-server.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8423
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/transport/http-server.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8399
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/transport/secure-transport.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8092
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/utils/error-sanitizer.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.824
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/utils/security-logger.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8309
+     }
+    }
+   ],
+   "overlays": [
+    {
+     "profile": "onboarding",
+     "features": [
+      {
+       "profile": "onboarding",
+       "feature": "package_entry",
+       "node": "src/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "is_package_entry": 1.0
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "package_entry",
+       "node": "src/security/mcp-secure-server.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "is_package_entry": 1.0
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "package_entry",
+       "node": "src/security/transport/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "is_package_entry": 1.0
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "corridor",
+       "node": "src/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "centrality": 0.0134,
+        "fan_out": 2
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "corridor",
+       "node": "src/security/config/tool-policies-config.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "centrality": 0.0352,
+        "fan_out": 2
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "corridor",
+       "node": "src/types/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "centrality": 0.0438,
+        "fan_out": 5
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8926
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/config/tool-policies-config.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8925
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/config/tool-policies.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8695
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/constants.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8568
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/layers/validation-layer-base.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8618
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/utils/error-sanitizer.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.9039
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/types/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8434
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "leaf_utility",
+       "node": "src/security/constants.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "fan_in": 6,
+        "fan_out": 0
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "after": {
+   "repo": {
+    "head_sha": "5348b3ef614d0da5912a56ee11f86fc5888a916b",
+    "name": "mcp-secure-server"
+   },
+   "geometry": {
+    "name": "age",
+    "wing_depth": 1
+   },
+   "ruleset": {
+    "name": "maintainability",
+    "source": "rulesets/maintainability.toml",
+    "version": "0.3.4"
+   },
+   "strata": {
+    "bands": 5,
+    "by_node": {
+     "src/index.ts": 0,
+     "src/security/config/index.ts": 4,
+     "src/security/config/pattern-categories.ts": 4,
+     "src/security/config/tool-policies-config.ts": 4,
+     "src/security/config/tool-policies.ts": 4,
+     "src/security/config/tool-policy-validation.ts": 4,
+     "src/security/constants.ts": 0,
+     "src/security/index.ts": 0,
+     "src/security/layers/builtin-validators.ts": 4,
+     "src/security/layers/contextual-config-builder.ts": 0,
+     "src/security/layers/layer-utils/content/canonicalize.ts": 0,
+     "src/security/layers/layer-utils/content/dangerous-patterns.ts": 0,
+     "src/security/layers/layer-utils/content/helper-utils.ts": 0,
+     "src/security/layers/layer-utils/content/patterns/index.ts": 0,
+     "src/security/layers/layer-utils/content/patterns/injection.ts": 0,
+     "src/security/layers/layer-utils/content/patterns/linear-matchers.ts": 4,
+     "src/security/layers/layer-utils/content/patterns/network.ts": 0,
+     "src/security/layers/layer-utils/content/patterns/overflow-validation.ts": 0,
+     "src/security/layers/layer-utils/content/patterns/path-traversal.ts": 0,
+     "src/security/layers/layer-utils/content/unicode.ts": 0,
+     "src/security/layers/layer-utils/content/utils/hash-utils.ts": 0,
+     "src/security/layers/layer-utils/content/utils/index.ts": 0,
+     "src/security/layers/layer-utils/content/utils/structural-analysis.ts": 0,
+     "src/security/layers/layer-utils/content/utils/text-decoding.ts": 0,
+     "src/security/layers/layer-utils/semantics/glob-utils.ts": 4,
+     "src/security/layers/layer-utils/semantics/semantic-policies-types.ts": 4,
+     "src/security/layers/layer-utils/semantics/semantic-policies.ts": 0,
+     "src/security/layers/layer-utils/semantics/semantic-quotas.ts": 0,
+     "src/security/layers/layer-utils/semantics/semantic-resource-validation.ts": 4,
+     "src/security/layers/layer1-structure.ts": 0,
+     "src/security/layers/layer2-content.ts": 0,
+     "src/security/layers/layer2-validators/base64-css.ts": 0,
+     "src/security/layers/layer2-validators/data-semantics.ts": 0,
+     "src/security/layers/layer2-validators/index.ts": 0,
+     "src/security/layers/layer2-validators/pattern-detection.ts": 0,
+     "src/security/layers/layer3-behavior.ts": 0,
+     "src/security/layers/layer4-semantics.ts": 0,
+     "src/security/layers/layer5-contextual-types.ts": 4,
+     "src/security/layers/layer5-contextual.ts": 0,
+     "src/security/layers/validation-layer-base.ts": 0,
+     "src/security/mcp-secure-server.ts": 0,
+     "src/security/presets.ts": 4,
+     "src/security/transport/error-rate-limiter.ts": 4,
+     "src/security/transport/http-body-parser.ts": 4,
+     "src/security/transport/http-server-types.ts": 4,
+     "src/security/transport/http-server.ts": 4,
+     "src/security/transport/http-transport-manager.ts": 4,
+     "src/security/transport/index.ts": 0,
+     "src/security/transport/secure-transport.ts": 0,
+     "src/security/transport/transport-validator.ts": 4,
+     "src/security/utils/error-sanitizer.ts": 0,
+     "src/security/utils/log-formatters.ts": 4,
+     "src/security/utils/pipeline-factory.ts": 4,
+     "src/security/utils/request-normalizer.ts": 0,
+     "src/security/utils/response-validator.ts": 4,
+     "src/security/utils/security-logger-types.ts": 4,
+     "src/security/utils/security-logger.ts": 0,
+     "src/security/utils/tool-registry.ts": 0,
+     "src/security/utils/validation-pipeline.ts": 0,
+     "src/types/index.ts": 0,
+     "src/types/layers.ts": 0,
+     "src/types/messages.ts": 0,
+     "src/types/policies.ts": 0,
+     "src/types/server.ts": 4,
+     "src/types/validation.ts": 0
+    },
+    "geometry": "age",
+    "raw_by_node": {
+     "src/index.ts": 0.8571,
+     "src/security/config/index.ts": 0.1034,
+     "src/security/config/pattern-categories.ts": 0.1034,
+     "src/security/config/tool-policies-config.ts": 0.0837,
+     "src/security/config/tool-policies.ts": 0.1034,
+     "src/security/config/tool-policy-validation.ts": 0.069,
+     "src/security/constants.ts": 0.8571,
+     "src/security/index.ts": 0.8571,
+     "src/security/layers/builtin-validators.ts": 0.069,
+     "src/security/layers/contextual-config-builder.ts": 0.8571,
+     "src/security/layers/layer-utils/content/canonicalize.ts": 0.968,
+     "src/security/layers/layer-utils/content/dangerous-patterns.ts": 0.8571,
+     "src/security/layers/layer-utils/content/helper-utils.ts": 0.8571,
+     "src/security/layers/layer-utils/content/patterns/index.ts": 0.968,
+     "src/security/layers/layer-utils/content/patterns/injection.ts": 0.968,
+     "src/security/layers/layer-utils/content/patterns/linear-matchers.ts": 0.0049,
+     "src/security/layers/layer-utils/content/patterns/network.ts": 0.968,
+     "src/security/layers/layer-utils/content/patterns/overflow-validation.ts": 0.968,
+     "src/security/layers/layer-utils/content/patterns/path-traversal.ts": 0.968,
+     "src/security/layers/layer-utils/content/unicode.ts": 0.8571,
+     "src/security/layers/layer-utils/content/utils/hash-utils.ts": 0.8571,
+     "src/security/layers/layer-utils/content/utils/index.ts": 0.968,
+     "src/security/layers/layer-utils/content/utils/structural-analysis.ts": 0.8571,
+     "src/security/layers/layer-utils/content/utils/text-decoding.ts": 0.8571,
+     "src/security/layers/layer-utils/semantics/glob-utils.ts": 0.069,
+     "src/security/layers/layer-utils/semantics/semantic-policies-types.ts": 0.0468,
+     "src/security/layers/layer-utils/semantics/semantic-policies.ts": 0.968,
+     "src/security/layers/layer-utils/semantics/semantic-quotas.ts": 0.968,
+     "src/security/layers/layer-utils/semantics/semantic-resource-validation.ts": 0.0468,
+     "src/security/layers/layer1-structure.ts": 0.8571,
+     "src/security/layers/layer2-content.ts": 0.8571,
+     "src/security/layers/layer2-validators/base64-css.ts": 0.8571,
+     "src/security/layers/layer2-validators/data-semantics.ts": 0.8571,
+     "src/security/layers/layer2-validators/index.ts": 0.8571,
+     "src/security/layers/layer2-validators/pattern-detection.ts": 0.8571,
+     "src/security/layers/layer3-behavior.ts": 0.8571,
+     "src/security/layers/layer4-semantics.ts": 0.8571,
+     "src/security/layers/layer5-contextual-types.ts": 0.0099,
+     "src/security/layers/layer5-contextual.ts": 0.8571,
+     "src/security/layers/validation-layer-base.ts": 0.8571,
+     "src/security/mcp-secure-server.ts": 0.8571,
+     "src/security/presets.ts": 0.0788,
+     "src/security/transport/error-rate-limiter.ts": 0.0148,
+     "src/security/transport/http-body-parser.ts": 0.0246,
+     "src/security/transport/http-server-types.ts": 0.0246,
+     "src/security/transport/http-server.ts": 0.1576,
+     "src/security/transport/http-transport-manager.ts": 0.0246,
+     "src/security/transport/index.ts": 0.8571,
+     "src/security/transport/secure-transport.ts": 0.8571,
+     "src/security/transport/transport-validator.ts": 0.0394,
+     "src/security/utils/error-sanitizer.ts": 0.968,
+     "src/security/utils/log-formatters.ts": 0.0567,
+     "src/security/utils/pipeline-factory.ts": 0.0345,
+     "src/security/utils/request-normalizer.ts": 0.8571,
+     "src/security/utils/response-validator.ts": 0.1158,
+     "src/security/utils/security-logger-types.ts": 0.0567,
+     "src/security/utils/security-logger.ts": 0.8571,
+     "src/security/utils/tool-registry.ts": 0.968,
+     "src/security/utils/validation-pipeline.ts": 0.8571,
+     "src/types/index.ts": 0.8571,
+     "src/types/layers.ts": 0.8571,
+     "src/types/messages.ts": 0.8571,
+     "src/types/policies.ts": 0.8571,
+     "src/types/server.ts": 0.1158,
+     "src/types/validation.ts": 0.8571
+    }
+   },
+   "skeleton_hash": "cbc4c3e7c1af573a2f904d12769048d185b6eaf34d30d6d82cec7ffef9497c86",
+   "features": [
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8892
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/config/tool-policies-config.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8898
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/config/tool-policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8706
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/constants.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8522
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/layers/layer-utils/content/patterns/injection.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8616
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/layers/validation-layer-base.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8638
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/utils/error-sanitizer.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.88
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/security/config/tool-policies-config.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.036
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/security/config/tool-policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0353
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/security/config/tool-policy-validation.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0167
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/security/layers/layer-utils/content/patterns/injection.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0163
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/types/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.044
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/types/policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0149
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/types/server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0159
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer-utils/content/helper-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934,
+      "load_index": 0.7039
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer-utils/content/unicode.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934,
+      "load_index": 0.6419
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer-utils/content/utils/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934,
+      "load_index": 0.3744
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934,
+      "load_index": 0.799
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer2-validators/base64-css.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934,
+      "load_index": 0.5062
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/utils/tool-registry.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934,
+      "load_index": 0.2507
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/types/messages.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934,
+      "load_index": 0.5007
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9896
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/config/pattern-categories.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/config/tool-policies-config.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8819
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/config/tool-policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8819
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/canonicalize.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/helper-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/patterns/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9653
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/patterns/linear-matchers.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/patterns/overflow-validation.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/unicode.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/utils/text-decoding.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/semantics/glob-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/semantics/semantic-policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8819
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer1-structure.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9653
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer2-content.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 1.0
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer2-validators/base64-css.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer2-validators/data-semantics.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer2-validators/pattern-detection.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer3-behavior.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9653
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer4-semantics.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8819
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer5-contextual.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8819
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/validation-layer-base.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/mcp-secure-server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9896
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/error-rate-limiter.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/http-server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8819
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/http-transport-manager.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/secure-transport.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9653
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/transport-validator.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/error-sanitizer.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/pipeline-factory.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/request-normalizer.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/response-validator.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/security-logger.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/validation-pipeline.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9653
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer-utils/content/helper-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer-utils/content/unicode.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer-utils/content/utils/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer2-validators/base64-css.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/utils/tool-registry.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/types/messages.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/layers/layer-utils/content/patterns/overflow-validation.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/layers/layer5-contextual.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/mcp-secure-server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/transport/http-server-types.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/transport/http-server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/transport/secure-transport.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/transport/transport-validator.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/utils/error-sanitizer.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/utils/response-validator.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/utils/security-logger.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/layers/layer-utils/content/patterns/path-traversal.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8288
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/mcp-secure-server.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8453
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/transport/http-server.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8404
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/transport/secure-transport.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8232
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/utils/error-sanitizer.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8429
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/utils/security-logger.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8367
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/types/server.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8155
+     }
+    }
+   ],
+   "overlays": [
+    {
+     "profile": "onboarding",
+     "features": [
+      {
+       "profile": "onboarding",
+       "feature": "package_entry",
+       "node": "src/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "is_package_entry": 1.0
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "package_entry",
+       "node": "src/security/mcp-secure-server.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "is_package_entry": 1.0
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "package_entry",
+       "node": "src/security/transport/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "is_package_entry": 1.0
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "corridor",
+       "node": "src/security/config/tool-policies-config.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "centrality": 0.036,
+        "fan_out": 2
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "corridor",
+       "node": "src/types/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "centrality": 0.044,
+        "fan_out": 5
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "corridor",
+       "node": "src/types/server.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "centrality": 0.0159,
+        "fan_out": 6
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8892
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/config/tool-policies-config.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8898
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/config/tool-policies.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8706
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/constants.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8522
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/layers/layer-utils/content/patterns/injection.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8616
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/layers/validation-layer-base.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8638
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/utils/error-sanitizer.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.88
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "leaf_utility",
+       "node": "src/security/constants.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "fan_in": 6,
+        "fan_out": 0
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "touched": [
+   "src/security/config/tool-policies-config.ts",
+   "src/security/config/tool-policies.ts",
+   "src/security/constants.ts",
+   "src/security/layers/builtin-validators.ts",
+   "src/security/layers/layer-utils/content/patterns/injection.ts",
+   "src/security/layers/layer-utils/content/patterns/overflow-validation.ts",
+   "src/security/layers/layer-utils/content/patterns/path-traversal.ts",
+   "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+   "src/security/layers/layer1-structure.ts",
+   "src/security/layers/layer2-content.ts",
+   "src/security/layers/layer2-validators/data-semantics.ts",
+   "src/security/layers/layer2-validators/pattern-detection.ts",
+   "src/security/layers/layer5-contextual.ts",
+   "src/security/layers/validation-layer-base.ts",
+   "src/security/mcp-secure-server.ts",
+   "src/security/presets.ts",
+   "src/security/transport/http-server-types.ts",
+   "src/security/transport/http-server.ts",
+   "src/security/transport/secure-transport.ts",
+   "src/security/transport/transport-validator.ts",
+   "src/security/utils/error-sanitizer.ts",
+   "src/security/utils/log-formatters.ts",
+   "src/security/utils/pipeline-factory.ts",
+   "src/security/utils/response-validator.ts",
+   "src/security/utils/security-logger-types.ts",
+   "src/security/utils/security-logger.ts",
+   "src/security/utils/validation-pipeline.ts",
+   "src/types/layers.ts",
+   "src/types/server.ts"
+  ],
+  "commits_between": 25
+ },
+ "layer": {
+  "before": {
+   "repo": {
+    "head_sha": "4c99da71468c29bb285a3f0d3ad644ef8b4abe7d",
+    "name": "mcp-secure-server"
+   },
+   "geometry": {
+    "name": "layer",
+    "wing_depth": 1
+   },
+   "ruleset": {
+    "name": "maintainability",
+    "source": "rulesets/maintainability.toml",
+    "version": "0.3.4"
+   },
+   "strata": {
+    "bands": 5,
+    "by_node": {
+     "src/index.ts": 4,
+     "src/security/config/index.ts": 1,
+     "src/security/config/pattern-categories.ts": 1,
+     "src/security/config/tool-policies-config.ts": 0,
+     "src/security/config/tool-policies.ts": 0,
+     "src/security/config/tool-policy-validation.ts": 0,
+     "src/security/constants.ts": 0,
+     "src/security/index.ts": 4,
+     "src/security/layers/builtin-validators.ts": 3,
+     "src/security/layers/contextual-config-builder.ts": 0,
+     "src/security/layers/layer-utils/content/canonicalize.ts": 2,
+     "src/security/layers/layer-utils/content/dangerous-patterns.ts": 3,
+     "src/security/layers/layer-utils/content/helper-utils.ts": 1,
+     "src/security/layers/layer-utils/content/patterns/index.ts": 3,
+     "src/security/layers/layer-utils/content/patterns/injection.ts": 2,
+     "src/security/layers/layer-utils/content/patterns/network.ts": 2,
+     "src/security/layers/layer-utils/content/patterns/overflow-validation.ts": 2,
+     "src/security/layers/layer-utils/content/patterns/path-traversal.ts": 2,
+     "src/security/layers/layer-utils/content/unicode.ts": 0,
+     "src/security/layers/layer-utils/content/utils/hash-utils.ts": 0,
+     "src/security/layers/layer-utils/content/utils/index.ts": 1,
+     "src/security/layers/layer-utils/content/utils/structural-analysis.ts": 0,
+     "src/security/layers/layer-utils/content/utils/text-decoding.ts": 0,
+     "src/security/layers/layer-utils/semantics/glob-utils.ts": 0,
+     "src/security/layers/layer-utils/semantics/semantic-policies-types.ts": 2,
+     "src/security/layers/layer-utils/semantics/semantic-policies.ts": 3,
+     "src/security/layers/layer-utils/semantics/semantic-quotas.ts": 0,
+     "src/security/layers/layer-utils/semantics/semantic-resource-validation.ts": 2,
+     "src/security/layers/layer1-structure.ts": 3,
+     "src/security/layers/layer2-content.ts": 4,
+     "src/security/layers/layer2-validators/base64-css.ts": 4,
+     "src/security/layers/layer2-validators/data-semantics.ts": 4,
+     "src/security/layers/layer2-validators/index.ts": 4,
+     "src/security/layers/layer2-validators/pattern-detection.ts": 4,
+     "src/security/layers/layer3-behavior.ts": 3,
+     "src/security/layers/layer4-semantics.ts": 3,
+     "src/security/layers/layer5-contextual-types.ts": 3,
+     "src/security/layers/layer5-contextual.ts": 3,
+     "src/security/layers/validation-layer-base.ts": 2,
+     "src/security/mcp-secure-server.ts": 4,
+     "src/security/presets.ts": 1,
+     "src/security/transport/error-rate-limiter.ts": 1,
+     "src/security/transport/http-body-parser.ts": 0,
+     "src/security/transport/http-server-types.ts": 3,
+     "src/security/transport/http-server.ts": 4,
+     "src/security/transport/http-transport-manager.ts": 3,
+     "src/security/transport/index.ts": 4,
+     "src/security/transport/secure-transport.ts": 2,
+     "src/security/transport/transport-validator.ts": 3,
+     "src/security/utils/error-sanitizer.ts": 2,
+     "src/security/utils/log-formatters.ts": 1,
+     "src/security/utils/pipeline-factory.ts": 4,
+     "src/security/utils/request-normalizer.ts": 0,
+     "src/security/utils/response-validator.ts": 4,
+     "src/security/utils/security-logger-types.ts": 0,
+     "src/security/utils/security-logger.ts": 1,
+     "src/security/utils/tool-registry.ts": 3,
+     "src/security/utils/validation-pipeline.ts": 2,
+     "src/types/index.ts": 2,
+     "src/types/layers.ts": 1,
+     "src/types/messages.ts": 0,
+     "src/types/policies.ts": 0,
+     "src/types/server.ts": 1,
+     "src/types/validation.ts": 0
+    },
+    "geometry": "layer",
+    "raw_by_node": {
+     "src/index.ts": 15,
+     "src/security/config/index.ts": 2,
+     "src/security/config/pattern-categories.ts": 1,
+     "src/security/config/tool-policies-config.ts": 0,
+     "src/security/config/tool-policies.ts": 0,
+     "src/security/config/tool-policy-validation.ts": 0,
+     "src/security/constants.ts": 0,
+     "src/security/index.ts": 14,
+     "src/security/layers/builtin-validators.ts": 6,
+     "src/security/layers/contextual-config-builder.ts": 0,
+     "src/security/layers/layer-utils/content/canonicalize.ts": 3,
+     "src/security/layers/layer-utils/content/dangerous-patterns.ts": 7,
+     "src/security/layers/layer-utils/content/helper-utils.ts": 2,
+     "src/security/layers/layer-utils/content/patterns/index.ts": 6,
+     "src/security/layers/layer-utils/content/patterns/injection.ts": 4,
+     "src/security/layers/layer-utils/content/patterns/network.ts": 5,
+     "src/security/layers/layer-utils/content/patterns/overflow-validation.ts": 5,
+     "src/security/layers/layer-utils/content/patterns/path-traversal.ts": 5,
+     "src/security/layers/layer-utils/content/unicode.ts": 0,
+     "src/security/layers/layer-utils/content/utils/hash-utils.ts": 0,
+     "src/security/layers/layer-utils/content/utils/index.ts": 1,
+     "src/security/layers/layer-utils/content/utils/structural-analysis.ts": 0,
+     "src/security/layers/layer-utils/content/utils/text-decoding.ts": 0,
+     "src/security/layers/layer-utils/semantics/glob-utils.ts": 0,
+     "src/security/layers/layer-utils/semantics/semantic-policies-types.ts": 4,
+     "src/security/layers/layer-utils/semantics/semantic-policies.ts": 6,
+     "src/security/layers/layer-utils/semantics/semantic-quotas.ts": 0,
+     "src/security/layers/layer-utils/semantics/semantic-resource-validation.ts": 5,
+     "src/security/layers/layer1-structure.ts": 6,
+     "src/security/layers/layer2-content.ts": 11,
+     "src/security/layers/layer2-validators/base64-css.ts": 9,
+     "src/security/layers/layer2-validators/data-semantics.ts": 9,
+     "src/security/layers/layer2-validators/index.ts": 10,
+     "src/security/layers/layer2-validators/pattern-detection.ts": 8,
+     "src/security/layers/layer3-behavior.ts": 6,
+     "src/security/layers/layer4-semantics.ts": 7,
+     "src/security/layers/layer5-contextual-types.ts": 6,
+     "src/security/layers/layer5-contextual.ts": 7,
+     "src/security/layers/validation-layer-base.ts": 5,
+     "src/security/mcp-secure-server.ts": 13,
+     "src/security/presets.ts": 2,
+     "src/security/transport/error-rate-limiter.ts": 1,
+     "src/security/transport/http-body-parser.ts": 0,
+     "src/security/transport/http-server-types.ts": 6,
+     "src/security/transport/http-server.ts": 8,
+     "src/security/transport/http-transport-manager.ts": 7,
+     "src/security/transport/index.ts": 9,
+     "src/security/transport/secure-transport.ts": 5,
+     "src/security/transport/transport-validator.ts": 6,
+     "src/security/utils/error-sanitizer.ts": 4,
+     "src/security/utils/log-formatters.ts": 1,
+     "src/security/utils/pipeline-factory.ts": 12,
+     "src/security/utils/request-normalizer.ts": 0,
+     "src/security/utils/response-validator.ts": 8,
+     "src/security/utils/security-logger-types.ts": 0,
+     "src/security/utils/security-logger.ts": 2,
+     "src/security/utils/tool-registry.ts": 7,
+     "src/security/utils/validation-pipeline.ts": 5,
+     "src/types/index.ts": 3,
+     "src/types/layers.ts": 1,
+     "src/types/messages.ts": 0,
+     "src/types/policies.ts": 0,
+     "src/types/server.ts": 2,
+     "src/types/validation.ts": 0
+    }
+   },
+   "skeleton_hash": "11fd24c2bd8359917845ca0243bd5596bba44c4f8f41d07c99f133167e7306f7",
+   "features": [
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8926
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/config/tool-policies-config.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8925
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/config/tool-policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8695
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/constants.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8568
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/layers/validation-layer-base.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8618
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/utils/error-sanitizer.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.9039
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/types/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8434
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0134
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/security/config/tool-policies-config.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0352
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/security/config/tool-policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0349
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/security/config/tool-policy-validation.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0164
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/security/utils/error-sanitizer.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.013
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/types/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0438
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/types/policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0212
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer-utils/content/helper-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626,
+      "load_index": 0.7085
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer-utils/content/unicode.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626,
+      "load_index": 0.6508
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer-utils/content/utils/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626,
+      "load_index": 0.3823
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626,
+      "load_index": 0.7936
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer2-validators/base64-css.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626,
+      "load_index": 0.5173
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/utils/tool-registry.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626,
+      "load_index": 0.2509
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/types/messages.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626,
+      "load_index": 0.5068
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9888
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/config/pattern-categories.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/config/tool-policies-config.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8806
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/config/tool-policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8806
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/canonicalize.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/helper-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/patterns/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/unicode.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/utils/text-decoding.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/semantics/glob-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/semantics/semantic-policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8806
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer1-structure.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9664
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer2-content.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 1.0
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer2-validators/base64-css.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer2-validators/data-semantics.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer3-behavior.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9664
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer4-semantics.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8806
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer5-contextual.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8806
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/validation-layer-base.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/mcp-secure-server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9888
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/error-rate-limiter.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/http-server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8806
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/http-transport-manager.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/secure-transport.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9664
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/error-sanitizer.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/request-normalizer.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/response-validator.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/security-logger.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6567
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/validation-pipeline.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9664
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer-utils/content/helper-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer-utils/content/unicode.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer-utils/content/utils/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer2-validators/base64-css.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/utils/tool-registry.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/types/messages.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 48.626
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.6122
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/layers/layer-utils/content/utils/structural-analysis.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.6122
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/layers/layer-utils/content/utils/text-decoding.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.6122
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/layers/layer3-behavior.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.643
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/layers/layer5-contextual-types.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.6351
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/layers/layer5-contextual.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.6351
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/mcp-secure-server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.643
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/transport/http-server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.643
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/utils/security-logger.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 16.6351
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/index.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8334
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/index.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8092
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/mcp-secure-server.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8423
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/transport/http-server.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8399
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/transport/secure-transport.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8092
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/utils/error-sanitizer.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.824
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/utils/security-logger.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8309
+     }
+    }
+   ],
+   "overlays": [
+    {
+     "profile": "onboarding",
+     "features": [
+      {
+       "profile": "onboarding",
+       "feature": "package_entry",
+       "node": "src/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "is_package_entry": 1.0
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "package_entry",
+       "node": "src/security/mcp-secure-server.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "is_package_entry": 1.0
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "package_entry",
+       "node": "src/security/transport/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "is_package_entry": 1.0
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "corridor",
+       "node": "src/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "centrality": 0.0134,
+        "fan_out": 2
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "corridor",
+       "node": "src/security/config/tool-policies-config.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "centrality": 0.0352,
+        "fan_out": 2
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "corridor",
+       "node": "src/types/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "centrality": 0.0438,
+        "fan_out": 5
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8926
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/config/tool-policies-config.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8925
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/config/tool-policies.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8695
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/constants.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8568
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/layers/validation-layer-base.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8618
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/utils/error-sanitizer.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.9039
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/types/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8434
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "leaf_utility",
+       "node": "src/security/constants.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "fan_in": 6,
+        "fan_out": 0
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "after": {
+   "repo": {
+    "head_sha": "5348b3ef614d0da5912a56ee11f86fc5888a916b",
+    "name": "mcp-secure-server"
+   },
+   "geometry": {
+    "name": "layer",
+    "wing_depth": 1
+   },
+   "ruleset": {
+    "name": "maintainability",
+    "source": "rulesets/maintainability.toml",
+    "version": "0.3.4"
+   },
+   "strata": {
+    "bands": 5,
+    "by_node": {
+     "src/index.ts": 4,
+     "src/security/config/index.ts": 2,
+     "src/security/config/pattern-categories.ts": 1,
+     "src/security/config/tool-policies-config.ts": 0,
+     "src/security/config/tool-policies.ts": 0,
+     "src/security/config/tool-policy-validation.ts": 0,
+     "src/security/constants.ts": 0,
+     "src/security/index.ts": 4,
+     "src/security/layers/builtin-validators.ts": 3,
+     "src/security/layers/contextual-config-builder.ts": 0,
+     "src/security/layers/layer-utils/content/canonicalize.ts": 2,
+     "src/security/layers/layer-utils/content/dangerous-patterns.ts": 3,
+     "src/security/layers/layer-utils/content/helper-utils.ts": 2,
+     "src/security/layers/layer-utils/content/patterns/index.ts": 3,
+     "src/security/layers/layer-utils/content/patterns/injection.ts": 2,
+     "src/security/layers/layer-utils/content/patterns/linear-matchers.ts": 2,
+     "src/security/layers/layer-utils/content/patterns/network.ts": 2,
+     "src/security/layers/layer-utils/content/patterns/overflow-validation.ts": 2,
+     "src/security/layers/layer-utils/content/patterns/path-traversal.ts": 2,
+     "src/security/layers/layer-utils/content/unicode.ts": 0,
+     "src/security/layers/layer-utils/content/utils/hash-utils.ts": 0,
+     "src/security/layers/layer-utils/content/utils/index.ts": 1,
+     "src/security/layers/layer-utils/content/utils/structural-analysis.ts": 0,
+     "src/security/layers/layer-utils/content/utils/text-decoding.ts": 0,
+     "src/security/layers/layer-utils/semantics/glob-utils.ts": 0,
+     "src/security/layers/layer-utils/semantics/semantic-policies-types.ts": 2,
+     "src/security/layers/layer-utils/semantics/semantic-policies.ts": 2,
+     "src/security/layers/layer-utils/semantics/semantic-quotas.ts": 0,
+     "src/security/layers/layer-utils/semantics/semantic-resource-validation.ts": 2,
+     "src/security/layers/layer1-structure.ts": 3,
+     "src/security/layers/layer2-content.ts": 4,
+     "src/security/layers/layer2-validators/base64-css.ts": 4,
+     "src/security/layers/layer2-validators/data-semantics.ts": 4,
+     "src/security/layers/layer2-validators/index.ts": 4,
+     "src/security/layers/layer2-validators/pattern-detection.ts": 4,
+     "src/security/layers/layer3-behavior.ts": 3,
+     "src/security/layers/layer4-semantics.ts": 3,
+     "src/security/layers/layer5-contextual-types.ts": 3,
+     "src/security/layers/layer5-contextual.ts": 4,
+     "src/security/layers/validation-layer-base.ts": 3,
+     "src/security/mcp-secure-server.ts": 4,
+     "src/security/presets.ts": 1,
+     "src/security/transport/error-rate-limiter.ts": 1,
+     "src/security/transport/http-body-parser.ts": 0,
+     "src/security/transport/http-server-types.ts": 3,
+     "src/security/transport/http-server.ts": 4,
+     "src/security/transport/http-transport-manager.ts": 4,
+     "src/security/transport/index.ts": 4,
+     "src/security/transport/secure-transport.ts": 3,
+     "src/security/transport/transport-validator.ts": 3,
+     "src/security/utils/error-sanitizer.ts": 2,
+     "src/security/utils/log-formatters.ts": 1,
+     "src/security/utils/pipeline-factory.ts": 4,
+     "src/security/utils/request-normalizer.ts": 0,
+     "src/security/utils/response-validator.ts": 4,
+     "src/security/utils/security-logger-types.ts": 0,
+     "src/security/utils/security-logger.ts": 2,
+     "src/security/utils/tool-registry.ts": 3,
+     "src/security/utils/validation-pipeline.ts": 3,
+     "src/types/index.ts": 2,
+     "src/types/layers.ts": 1,
+     "src/types/messages.ts": 0,
+     "src/types/policies.ts": 0,
+     "src/types/server.ts": 1,
+     "src/types/validation.ts": 0
+    },
+    "geometry": "layer",
+    "raw_by_node": {
+     "src/index.ts": 15,
+     "src/security/config/index.ts": 2,
+     "src/security/config/pattern-categories.ts": 1,
+     "src/security/config/tool-policies-config.ts": 0,
+     "src/security/config/tool-policies.ts": 0,
+     "src/security/config/tool-policy-validation.ts": 0,
+     "src/security/constants.ts": 0,
+     "src/security/index.ts": 14,
+     "src/security/layers/builtin-validators.ts": 7,
+     "src/security/layers/contextual-config-builder.ts": 0,
+     "src/security/layers/layer-utils/content/canonicalize.ts": 3,
+     "src/security/layers/layer-utils/content/dangerous-patterns.ts": 7,
+     "src/security/layers/layer-utils/content/helper-utils.ts": 2,
+     "src/security/layers/layer-utils/content/patterns/index.ts": 6,
+     "src/security/layers/layer-utils/content/patterns/injection.ts": 3,
+     "src/security/layers/layer-utils/content/patterns/linear-matchers.ts": 4,
+     "src/security/layers/layer-utils/content/patterns/network.ts": 4,
+     "src/security/layers/layer-utils/content/patterns/overflow-validation.ts": 4,
+     "src/security/layers/layer-utils/content/patterns/path-traversal.ts": 5,
+     "src/security/layers/layer-utils/content/unicode.ts": 0,
+     "src/security/layers/layer-utils/content/utils/hash-utils.ts": 0,
+     "src/security/layers/layer-utils/content/utils/index.ts": 1,
+     "src/security/layers/layer-utils/content/utils/structural-analysis.ts": 0,
+     "src/security/layers/layer-utils/content/utils/text-decoding.ts": 0,
+     "src/security/layers/layer-utils/semantics/glob-utils.ts": 0,
+     "src/security/layers/layer-utils/semantics/semantic-policies-types.ts": 3,
+     "src/security/layers/layer-utils/semantics/semantic-policies.ts": 5,
+     "src/security/layers/layer-utils/semantics/semantic-quotas.ts": 0,
+     "src/security/layers/layer-utils/semantics/semantic-resource-validation.ts": 4,
+     "src/security/layers/layer1-structure.ts": 7,
+     "src/security/layers/layer2-content.ts": 11,
+     "src/security/layers/layer2-validators/base64-css.ts": 9,
+     "src/security/layers/layer2-validators/data-semantics.ts": 9,
+     "src/security/layers/layer2-validators/index.ts": 10,
+     "src/security/layers/layer2-validators/pattern-detection.ts": 8,
+     "src/security/layers/layer3-behavior.ts": 7,
+     "src/security/layers/layer4-semantics.ts": 7,
+     "src/security/layers/layer5-contextual-types.ts": 7,
+     "src/security/layers/layer5-contextual.ts": 8,
+     "src/security/layers/validation-layer-base.ts": 6,
+     "src/security/mcp-secure-server.ts": 13,
+     "src/security/presets.ts": 1,
+     "src/security/transport/error-rate-limiter.ts": 1,
+     "src/security/transport/http-body-parser.ts": 0,
+     "src/security/transport/http-server-types.ts": 7,
+     "src/security/transport/http-server.ts": 9,
+     "src/security/transport/http-transport-manager.ts": 8,
+     "src/security/transport/index.ts": 10,
+     "src/security/transport/secure-transport.ts": 6,
+     "src/security/transport/transport-validator.ts": 7,
+     "src/security/utils/error-sanitizer.ts": 5,
+     "src/security/utils/log-formatters.ts": 1,
+     "src/security/utils/pipeline-factory.ts": 12,
+     "src/security/utils/request-normalizer.ts": 0,
+     "src/security/utils/response-validator.ts": 9,
+     "src/security/utils/security-logger-types.ts": 0,
+     "src/security/utils/security-logger.ts": 2,
+     "src/security/utils/tool-registry.ts": 6,
+     "src/security/utils/validation-pipeline.ts": 6,
+     "src/types/index.ts": 2,
+     "src/types/layers.ts": 1,
+     "src/types/messages.ts": 0,
+     "src/types/policies.ts": 0,
+     "src/types/server.ts": 1,
+     "src/types/validation.ts": 0
+    }
+   },
+   "skeleton_hash": "94b3f5086b715e5b32e80e36aee2b75f8f2cad716c8043da2adcb7366de44cac",
+   "features": [
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8892
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/config/tool-policies-config.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8898
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/config/tool-policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8706
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/constants.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8522
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/layers/layer-utils/content/patterns/injection.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8616
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/layers/validation-layer-base.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.8638
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "foundation",
+     "node": "src/security/utils/error-sanitizer.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "load_index": 0.88
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/security/config/tool-policies-config.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.036
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/security/config/tool-policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0353
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/security/config/tool-policy-validation.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0167
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/security/layers/layer-utils/content/patterns/injection.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0163
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/types/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.044
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/types/policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0149
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "hub",
+     "node": "src/types/server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "centrality": 0.0159
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer-utils/content/helper-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934,
+      "load_index": 0.7039
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer-utils/content/unicode.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934,
+      "load_index": 0.6419
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer-utils/content/utils/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934,
+      "load_index": 0.3744
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934,
+      "load_index": 0.799
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/layers/layer2-validators/base64-css.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934,
+      "load_index": 0.5062
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/security/utils/tool-registry.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934,
+      "load_index": 0.2507
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "flooded_basement",
+     "node": "src/types/messages.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934,
+      "load_index": 0.5007
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9896
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/config/pattern-categories.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/config/tool-policies-config.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8819
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/config/tool-policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8819
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/canonicalize.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/helper-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/patterns/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9653
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/patterns/linear-matchers.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/patterns/overflow-validation.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/unicode.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/content/utils/text-decoding.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/semantics/glob-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/semantics/semantic-policies.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8819
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer1-structure.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9653
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer2-content.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 1.0
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer2-validators/base64-css.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer2-validators/data-semantics.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer2-validators/pattern-detection.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer3-behavior.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9653
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer4-semantics.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8819
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/layer5-contextual.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8819
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/layers/validation-layer-base.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/mcp-secure-server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9896
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/error-rate-limiter.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/http-server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.8819
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/http-transport-manager.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/secure-transport.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9653
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/transport/transport-validator.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/error-sanitizer.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/pipeline-factory.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/request-normalizer.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/response-validator.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/security-logger.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.6597
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "scaffolding",
+     "node": "src/security/utils/validation-pipeline.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "reinforcement_index": 0.9653
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer-utils/content/helper-utils.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer-utils/content/unicode.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer-utils/content/utils/index.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer-utils/semantics/semantic-quotas.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/layers/layer2-validators/base64-css.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/security/utils/tool-registry.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "dark_room",
+     "node": "src/types/messages.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 274.0934
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/layers/layer-utils/content/patterns/overflow-validation.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/layers/layer5-contextual.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/mcp-secure-server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/transport/http-server-types.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/transport/http-server.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/transport/secure-transport.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/transport/transport-validator.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/utils/error-sanitizer.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/utils/response-validator.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "lit_room",
+     "node": "src/security/utils/security-logger.ts",
+     "diagnostic": true,
+     "decorative": false,
+     "evidence": {
+      "last_touched_days": 0.0188
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/layers/layer-utils/content/patterns/path-traversal.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8288
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/mcp-secure-server.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8453
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/transport/http-server.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8404
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/transport/secure-transport.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8232
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/utils/error-sanitizer.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8429
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/security/utils/security-logger.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8367
+     }
+    },
+    {
+     "profile": "maintainability",
+     "feature": "crack",
+     "node": "src/types/server.ts",
+     "diagnostic": false,
+     "decorative": true,
+     "evidence": {
+      "bug_pressure_index": 0.8155
+     }
+    }
+   ],
+   "overlays": [
+    {
+     "profile": "onboarding",
+     "features": [
+      {
+       "profile": "onboarding",
+       "feature": "package_entry",
+       "node": "src/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "is_package_entry": 1.0
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "package_entry",
+       "node": "src/security/mcp-secure-server.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "is_package_entry": 1.0
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "package_entry",
+       "node": "src/security/transport/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "is_package_entry": 1.0
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "corridor",
+       "node": "src/security/config/tool-policies-config.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "centrality": 0.036,
+        "fan_out": 2
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "corridor",
+       "node": "src/types/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "centrality": 0.044,
+        "fan_out": 5
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "corridor",
+       "node": "src/types/server.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "centrality": 0.0159,
+        "fan_out": 6
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/index.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8892
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/config/tool-policies-config.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8898
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/config/tool-policies.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8706
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/constants.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8522
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/layers/layer-utils/content/patterns/injection.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8616
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/layers/validation-layer-base.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.8638
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "foundation",
+       "node": "src/security/utils/error-sanitizer.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "load_index": 0.88
+       }
+      },
+      {
+       "profile": "onboarding",
+       "feature": "leaf_utility",
+       "node": "src/security/constants.ts",
+       "diagnostic": true,
+       "decorative": false,
+       "evidence": {
+        "fan_in": 6,
+        "fan_out": 0
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "touched": [
+   "src/security/config/tool-policies-config.ts",
+   "src/security/config/tool-policies.ts",
+   "src/security/constants.ts",
+   "src/security/layers/builtin-validators.ts",
+   "src/security/layers/layer-utils/content/patterns/injection.ts",
+   "src/security/layers/layer-utils/content/patterns/overflow-validation.ts",
+   "src/security/layers/layer-utils/content/patterns/path-traversal.ts",
+   "src/security/layers/layer-utils/content/utils/hash-utils.ts",
+   "src/security/layers/layer1-structure.ts",
+   "src/security/layers/layer2-content.ts",
+   "src/security/layers/layer2-validators/data-semantics.ts",
+   "src/security/layers/layer2-validators/pattern-detection.ts",
+   "src/security/layers/layer5-contextual.ts",
+   "src/security/layers/validation-layer-base.ts",
+   "src/security/mcp-secure-server.ts",
+   "src/security/presets.ts",
+   "src/security/transport/http-server-types.ts",
+   "src/security/transport/http-server.ts",
+   "src/security/transport/secure-transport.ts",
+   "src/security/transport/transport-validator.ts",
+   "src/security/utils/error-sanitizer.ts",
+   "src/security/utils/log-formatters.ts",
+   "src/security/utils/pipeline-factory.ts",
+   "src/security/utils/response-validator.ts",
+   "src/security/utils/security-logger-types.ts",
+   "src/security/utils/security-logger.ts",
+   "src/security/utils/validation-pipeline.ts",
+   "src/types/layers.ts",
+   "src/types/server.ts"
+  ],
+  "commits_between": 25
+ },
+ "provenance": {
+  "source": "attested k25k snapshots; reports/2026-09-24h-m2x",
+  "fingerprint": "298696064105",
+  "before": "4c99da71468c",
+  "after": "5348b3ef614d",
+  "purpose": "frozen feature sets and geometry; no source content; existing budget operands must stay fixed"
+ }
+}

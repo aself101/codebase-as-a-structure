@@ -202,7 +202,7 @@ def extract(
         ]
         if len(pairs) >= 10:
             t = kendalltau([a for a, _ in pairs], [b for _, b in pairs], variant="b").statistic
-            instrument_tau = None if t != t else float(t)
+            instrument_tau = None if math.isnan(t) else float(t)
     instruments_disagree = instrument_tau is not None and instrument_tau < cfg.instrument_tau_min
     graph_degraded = (
         (not graph_available)
@@ -424,4 +424,7 @@ def extract(
             ],  # D-068: every package-name import, so the count splits by importer kind on the page
         },
     }
-    return _round(out, cfg.rounding_dp)
+    rounded = _round(out, cfg.rounding_dp)
+    # D-080: configuration is a fingerprint preimage, not a rounded measurement.
+    rounded["repo"]["effective_config"] = cfg.effective(tv)
+    return rounded

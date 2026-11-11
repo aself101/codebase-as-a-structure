@@ -110,6 +110,8 @@ def main() -> int:
                     str(work / f"{short}.{g}.head.skeleton.json"),
                     "--renames",
                     str(ROOT / "out" / "cache" / f"{name}-{tip}-tip-{fp}.substrate.json"),
+                    "--before-substrate",
+                    str(ROOT / "out" / "cache" / f"{name}-{pert}-trunc-{fp}.substrate.json"),
                     "-o",
                     str(d_out),
                 ]

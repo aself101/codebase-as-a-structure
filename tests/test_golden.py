@@ -165,3 +165,21 @@ def test_non_ascii_path_survives_c_locale(make_repo, small_cfg, tmp_path, monkey
     r.commit("feat: b")
     s = run_extract(r, small_cfg, tmp_path)
     assert "src/café.js" in {n["id"] for n in s["nodes"]}
+
+
+def test_effective_config_preserves_the_fingerprint_preimage(scripted_repo, tmp_path):
+    """D-080: tiny tolerance and exact weights survive output/JSON serialization."""
+    repo, _ = scripted_repo
+    weights = IndexWeights(load_index={"centrality": 0.30000001, "fan_in_nonzero": 0.49999999,
+                                      "inv_fan_out": 0.1, "size_loc": 0.1})
+    cfg = SubstrateConfig(n_min=2, pagerank_tol=1e-6, weights=weights)
+    doc = run_extract(repo, cfg, tmp_path)
+    saved = json.loads(json.dumps(doc))
+    effective = saved["repo"]["effective_config"]
+    assert effective == json.loads(json.dumps(cfg.effective(saved["repo"]["toolchain_versions"])))
+    import hashlib
+    preimage = json.dumps(effective, sort_keys=True, separators=(",", ":"))
+    assert hashlib.sha256(preimage.encode()).hexdigest() == saved["repo"]["config_fingerprint"]
+    assert effective["pagerank_tol"] == 1e-6
+    assert effective["weights"]["load_index"]["centrality"] == 0.30000001
+    assert cfg.fingerprint(saved["repo"]["toolchain_versions"]) == saved["repo"]["config_fingerprint"]

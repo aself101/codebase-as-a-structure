@@ -368,18 +368,51 @@ def render_change_sheet(
             return ""
         return " {" + ", ".join(f"{k}={v}" for k, v in sorted(e.items())) + "}"
 
+    def _transition(e: dict[str, Any]) -> str:
+        lines = []
+        for side in ("before", "after"):
+            record = e.get(side) or {}
+            if record.get("availability") != "available":
+                lines.append(f"{side}: unknown ({record.get('reason', 'evidence unavailable')})")
+                continue
+            terms = "; ".join(
+                f"{t['signal']}={t['value']} {t['operator']} threshold={t['threshold']}: "
+                + ("unknown" if t['passed'] is None else ("pass" if t['passed'] else "fail"))
+                + (f" ({t['reason']})" if t.get("reason") else "")
+                for t in record.get("terms", [])
+            )
+            floor = record.get("population_floor")
+            floor_text = (f"n={floor['n']}, min={floor['min']}, met={floor['met']}" if floor else "unknown")
+            eligibility = record.get("diagnostic_eligible")
+            eligibility_text = "unknown" if eligibility is None else str(eligibility)
+            if record.get("eligibility_reason"):
+                eligibility_text += f" ({record['eligibility_reason']})"
+            lines.append(f"{side}: {terms}; population={record['population_n']}; "
+                         f"population floor: {floor_text}; room eligible={record['room_eligible']}; "
+                         f"diagnostic eligible={eligibility_text}")
+        return "\n" + "\n".join(lines) if e else ""
+
     for key, v in diff["per_feature"].items():
         kind = v.get("kind") or kinds.get(key, "rank")
         ev = v.get("evidence") or {}
+        transitions = v.get("transition_evidence") or {}
         for n in v["added"]:
-            changes[n].append(f"+{key}{_ev((ev.get(n) or {}).get('after'))}")
+            changes[n].append(f"+{key}{_ev((ev.get(n) or {}).get('after'))}{_transition(transitions.get(n) or {})}")
             kind_of[n].add(kind)
         for n in v["removed"]:
-            changes[n].append(f"−{key}{_ev((ev.get(n) or {}).get('before'))}")
+            changes[n].append(f"−{key}{_ev((ev.get(n) or {}).get('before'))}{_transition(transitions.get(n) or {})}")
             kind_of[n].add(kind)
     for n in diff["strata_moved"]:
         changes[n].append(f"floor {a_by_node.get(n)}→{b_by_node.get(n)}")
-        kind_of[n].add("rank")  # a floor moves for an untouched room only by re-ranking
+        detail = (diff.get("strata_evidence") or {}).get(n)
+        if detail:
+            labels = {"raw_depth_changed": "dependency depth changed",
+                      "band_only": "band changed; raw value unchanged",
+                      "raw_value_changed": "raw strata value changed",
+                      "unknown": "raw attribution unknown"}
+            changes[n].append(f"raw strata {detail['before']['raw']}→{detail['after']['raw']}: "
+                              + labels[detail["attribution"]])
+        kind_of[n].add("rank")  # raw dependency ripple and band-only reassignment both count
 
     def classify(n: str) -> str:
         """A room takes its strongest mark: rank > mixed > clock (the table counts per

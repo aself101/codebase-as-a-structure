@@ -88,8 +88,8 @@ def _diff_summary(d: dict[str, Any]) -> dict[str, Any]:
     untouched_changes = sum(v["untouched_changes"] for v in d["per_feature"].values())
     bk = d["untouched"]["by_kind"]
     strata_untouched = len(d["untouched"]["strata_moved"])
-    # strata moves of untouched rooms are rank: a floor moves only because the population
-    # re-ranked around the room (D-022 removed the clock's way of moving it)
+    # Untouched strata moves remain rank in the budget; raw dependency context
+    # changes and quantile-only reassignment are disclosed separately (D-080).
     return {
         "ripple_clock": bk["clock"]["changes"],
         "ripple_rank": bk["rank"]["changes"] + strata_untouched,
@@ -106,6 +106,12 @@ def _diff_summary(d: dict[str, Any]) -> dict[str, Any]:
         "untouched_churn": d["untouched"]["feature_churn"],
         "untouched_strata_frac": d["untouched"]["strata_moved_frac"],
         "jitter_churn": d["untouched"]["jitter_churn"],
+        "churn_units": d.get("churn_units"),
+        "jitter_assignment_changes": d["untouched"].get("jitter_assignment_changes"),
+        "jitter_assignment_union": d["untouched"].get("jitter_assignment_union"),
+        "jitter_affected_room_count": d["untouched"].get("jitter_affected_room_count"),
+        "strata_attribution": {n: x["attribution"] for n, x in d.get("strata_evidence", {}).items()
+                               if x["untouched"]},
         "feature_changes_touched": touched_changes,
         "feature_changes_untouched": untouched_changes,
         "strata_moves_touched": len(d["strata_moved"]) - strata_untouched,
@@ -201,7 +207,8 @@ def run_timelapse(
             psub, pskel = prev
             ren = sub.get("renames", {})
             touched, between = touched_between(psub, sub, ren)
-            d = skeleton_diff(pskel, skel, ren, touched, between, kinds=kinds)
+            d = skeleton_diff(pskel, skel, ren, touched, between, kinds=kinds,
+                              before_substrate=psub, after_substrate=sub)
             (out_dir / f"{stem}.diff.json").write_text(
                 json.dumps(d, indent=1, sort_keys=True, ensure_ascii=False, allow_nan=False) + "\n",
                 encoding="utf-8",
