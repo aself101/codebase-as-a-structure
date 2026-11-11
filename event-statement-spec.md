@@ -1,6 +1,6 @@
 # The stability window on the page — an event statement (D-082 option D)
 
-Status: **reviewed (tracker run 71); the draft's form does not stand; where the statement lives is put to Alex (§10). Nothing implemented.** Proposed D-083. Written 2026-11-11.
+Status: **superseded. Reviewed (tracker run 71); the draft's form did not stand; Alex chose the page of its own (2026-11-11) and `window-page-spec.md` is the live spec. Kept as the record of the rejected form and of what the review found. Nothing here was implemented.** Proposed D-083. Written 2026-11-11.
 Parent: `stability-budget-spec.md` (D-082), whose option D Alex accepted as "next, under
 its own spec". The architect-brief spec §1 is the contract this changes. §9 holds the
 review before any code.
