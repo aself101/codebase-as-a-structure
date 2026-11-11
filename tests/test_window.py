@@ -16,15 +16,15 @@ from repo_substrate.mapper import load_ruleset, map_skeleton
 from repo_substrate.mapper.diff import skeleton_diff
 from repo_substrate.window import (
     BANNED_WORDS,
+    CLOCK_GLOSS,
+    CROSSINGS_LIMIT_TEXT,
     MECHANISM_WORDS,
     NOT_COUNTED_CLOCK,
     NOT_COUNTED_EXCLUDED,
-    CLOCK_GLOSS,
-    CROSSINGS_LIMIT_TEXT,
     QUALIFIER_TEXT,
-    SUBJECT_TEXT,
     ROOM_NOTE,
     SCOPE_TEXT,
+    SUBJECT_TEXT,
     UNDER_TABLE_TEXT,
     WindowError,
     render_window,
