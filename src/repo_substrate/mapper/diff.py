@@ -216,6 +216,24 @@ def _predicates(*skeletons: dict[str, Any]) -> dict[tuple[str, str], str]:
     return out
 
 
+def _position_names(*skeletons: dict[str, Any]) -> dict[tuple[str, str], dict[str, Any]]:
+    """(profile, feature) → the ruleset's position name and its name_implies_consequence flag
+    (D-074: a flagged name is paired with its position wherever it is read as a label). From
+    the roster where there is one, the fired records otherwise."""
+    out: dict[tuple[str, str], dict[str, Any]] = {}
+    for sk in skeletons:
+        groups = [(sk.get("profile", {}).get("name"), sk.get("profile", {}).get("roster", []))]
+        groups += [(o.get("profile"), o.get("roster", [])) for o in sk.get("overlays", [])]
+        fired = [(f["profile"], f) for feats in
+                 [sk.get("features") or []] + [o["features"] for o in sk.get("overlays") or []] for f in feats]
+        for prof, f in [(p, f) for p, roster in groups for f in roster or []] + fired:
+            out.setdefault((prof, f["feature"]), {
+                "position_name": f.get("position_name"),
+                "name_implies_consequence": bool(f.get("name_implies_consequence")),
+            })
+    return out
+
+
 def _feature_sets(
     skeleton: dict[str, Any], decorative: bool = False
 ) -> dict[tuple[str, str], set[str]]:
@@ -427,6 +445,7 @@ def skeleton_diff(
     full_b = dict(_feature_sets(b).items())
     born_nodes, deleted_nodes = b_nodes - a_nodes, a_nodes - b_nodes
     predicates = _predicates(a, b)
+    positions = _position_names(a, b)
     fa = {k: v & common for k, v in full_a.items()}
     fb = {k: v & common for k, v in full_b.items()}
     touched = (touched or set()) & common
@@ -476,6 +495,7 @@ def skeleton_diff(
             "untouched_affected_rooms": sorted((sa ^ sb) & untouched),
             # D-083 (additive)
             "predicate": predicates.get(key),
+            **positions.get(key, {"position_name": None, "name_implies_consequence": False}),
             "rooms_before": len(full_a.get(key, set())),
             "rooms_after": len(full_b.get(key, set())),
             "born_entered": sorted(full_b.get(key, set()) & born_nodes),
@@ -509,6 +529,7 @@ def skeleton_diff(
         per_decorative[name] = {
             "kind": kinds.get(name, "rank"),
             "predicate": predicates.get(key),
+            **positions.get(key, {"position_name": None, "name_implies_consequence": False}),
             "before": len(sa),
             "after": len(sb),
             "added": sorted(sb - sa),

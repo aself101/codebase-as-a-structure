@@ -7,6 +7,7 @@ state the renderer can print is reached by a case below.
 from __future__ import annotations
 
 import copy
+import json
 import re
 
 import pytest
@@ -15,6 +16,7 @@ from repo_substrate import brief as _b
 from repo_substrate.mapper import load_ruleset, map_skeleton
 from repo_substrate.mapper.diff import skeleton_diff
 from repo_substrate.window import (
+    BAND_GLOSS,
     BANNED_WORDS,
     CLOCK_GLOSS,
     CROSSINGS_LIMIT_TEXT,
@@ -194,7 +196,7 @@ def test_cutoff_passed_it_and_own_value_fell_print_two_comparisons_each(one):
     assert f"| `36 >= {a['cutoff_before']:.6g}`: yes | `36 >= {a['cutoff_after']:.6g}`: no |" in row_a
     assert f"| `30 >= {b['cutoff_before']:.6g}`: no | `38 >= {b['cutoff_after']:.6g}`: no |" in row_b
     assert "| value 36 → 36 | cutoff " in row_a
-    assert "passes" not in page and "fails" not in page  # read as a check's status
+    assert "passes" not in page and "fails" not in page  # read as a check's status (now in BANNED_WORDS)
     for row in (row_a, row_b):  # the same absence of a cause in both
         assert not any(w in row for w in MECHANISM_WORDS)
 
@@ -234,7 +236,9 @@ def test_a_null_outcome_is_not_available_not_a_crossing(one):
 def test_rows_column_counts_edited_rooms_and_rooms_only_one_commit_has(one):
     a = _line(one[3], "f36.ts", "size_loc >= p90")
     words = next(r["words"] for r in a["rows"] if r["label"].startswith("large"))
-    assert words.startswith("exited large (test) = big (onb) (")
+    assert words.startswith("exited the map's row large (test) = big (onb) (")
+    # the bracket is the row's whole ledger, this line's room first, so it adds up where it is read
+    assert ": this room exited, " in words and "other rooms in no commit's recorded changes in the window exited" in words
     assert "2 edited rooms entered" in words  # f1, f2; f0 at 100 is under the later cutoff
     assert "1 room only in the later commit entered" in words
     assert "1 room only in the earlier commit exited" in words
@@ -269,6 +273,7 @@ def test_clock_rows_get_the_same_numbers_and_comparisons_and_no_mechanism(one):
     assert not any(x["term"].startswith("last_touched_days") for x in f["crossings"])
     page = render_window(f)
     assert f"; {NOT_COUNTED_CLOCK}." in page and CLOCK_GLOSS in page
+    assert CLOCK_GLOSS == "A clock row's term is measured in days from the date of the snapshot."  # a definition, no "so"
     # a row's counts sit together, and a day-valued term carries its unit
     row = f["clock_rows"][0]
     assert (f"edited rooms: {row['edited_entered']} entered, {row['edited_left']} exited") in page
@@ -286,32 +291,52 @@ def test_excluded_rows_are_counted_and_their_rooms_not_named(one):
     assert f"{row['unedited_left']} exited, {row['unedited_entered']} entered; edited rooms: {row['edited_entered']} entered" in line
 
 
-def test_two_geometries_are_two_readings_each_beside_its_numbers(tmp_path):
+def test_two_geometries_state_rows_once_and_bands_each(tmp_path):
     age, _, _ = _diff(tmp_path, "age")
     layer, _, _ = _diff(tmp_path, "layer")
     f = window_facts([age, layer], ["age.json", "layer.json"], "gate")
-    assert [g["geometry"] for g in f["gate_reading"]] == ["age", "layer"]
+    assert [g["geometry"] for g in f["gate_count"]] == ["age", "layer"]
     assert [b["geometry"] for b in f["bands"]] == ["age", "layer"]
     page = render_window(f)
-    assert page.count("- bands, ") == 2 and page.count("- the gate's token, ") == 2 and page.count("Under the ") == 2
-    # the features reading is one window's and is stated once, rooms first with their own denominator
-    assert page.count("- features (the same under each geometry") == 1
-    ft = f["gate_reading"][0]["operands"]["features"]
-    assert (f"{ft['distinct_rooms']} of the {f['rooms']['unedited']} rooms {ROOM_NOTE}") in page
-    assert (f"in the gate's unit, {ft['changes']} of {ft['denominator']} `(profile, feature, room)` assignments "
-            f"({ft['fires_at']} or more of {ft['denominator']} assignments is over 0.05 by the gate's rule)") in page
-    for g in f["gate_reading"]:
-        assert f"`{g['reason'] if g['token'] == 'untested' else g['token']}`" in page
+    assert page.count("- bands, ") == 2 and page.count("Under the ") == 2
+    assert page.count("- rows (the same under each geometry") == 1
+    g = f["gate_count"][0]
+    ft = g["features"]
+    assert f"{ft['distinct_rooms']} of the {f['rooms']['unedited']} rooms {ROOM_NOTE}" in page
+    # the assignment union names the rooms that hold it: never a second bare denominator (the two 35s)
+    assert g["features_held_by_rooms"] == age["untouched"]["jitter_room_union"]
+    assert (f"In the gate's unit: {ft['changes']} of the {ft['denominator']} `(profile, feature, room)` assignments that "
+            f"{g['features_held_by_rooms']} of those rooms hold on rank and mixed rows. The gate's ceiling on the map is 0.05 of them.") in page
 
 
-def test_the_operand_named_floors_is_printed_as_bands(one):
+def test_the_gates_own_word_is_not_on_the_page_or_the_sheet(one):
+    """Run 74, Alex's call: two skimmers read a quoted `over_budget` as the repository's status
+    whatever sat above it. The page prints what the gate counts and its ceiling; the token,
+    its reason and what fired stay in the diff."""
     d = copy.deepcopy(one[0])
-    d["budget"]["verdict"], d["budget"]["fired"] = "over_budget", ["features", "floors"]
-    f = window_facts([d], ["x"], "caller")
-    assert f["gate_reading"][0]["fired"] == ["features", "bands"]
-    assert "- the gate's token, age geometry — `over_budget`, on features and bands." in render_window(f)
-    d["budget"]["verdict"], d["budget"]["fired"], d["budget"]["reason"] = "untested", None, "below_pinned_k"
-    assert "not judged by the gate: `below_pinned_k`." in render_window(window_facts([d], ["x"], "caller"))
+    for verdict, reason, fired in (("over_budget", None, ["features", "floors"]),
+                                   ("within_budget", None, []), ("untested", "below_pinned_k", None)):
+        d["budget"].update(verdict=verdict, reason=reason, fired=fired)
+        f = window_facts([d], ["x"], "caller")
+        text = render_window(f) + json.dumps(f)
+        for word in ("over_budget", "within_budget", "untested", "below_pinned_k", "fired", "verdict"):
+            assert word not in text, (verdict, word)
+    assert "are in each diff's `budget` block and are not on this page" in QUALIFIER_TEXT
+    # negative control: the diff still carries it
+    assert one[0]["budget"]["verdict"] in ("over_budget", "within_budget", "untested")
+
+
+def test_a_flagged_name_travels_with_its_position_and_an_unflagged_one_is_bare(one):
+    """D-074 (and D-075 item 4 for the excluded line): not inherited by the first two builds."""
+    d = copy.deepcopy(one[0])
+    for name in ("test/large", "onb/big"):
+        d["per_feature"][name].update(position_name="high-load node", name_implies_consequence=True)
+    d["per_decorative_feature"]["test/noisy"].update(position_name="high edit-pressure node", name_implies_consequence=True)
+    page = render_window(window_facts([d], ["x"], "caller"))
+    assert "exited the map's row large · high-load node (test) = big · high-load node (onb)" in page
+    assert "- **◌ noisy · high edit-pressure node (test)**" in page
+    assert "wide · " not in page  # unflagged: bare
+    assert one[0]["per_feature"]["test/large"]["name_implies_consequence"] is False  # the diff carries the flag
 
 
 # --- the page's fixed text ----------------------------------------------------------------
@@ -324,15 +349,17 @@ def test_every_fixed_text_is_on_the_page_and_agrees_with_the_sheet(one):
     assert f["origin_text"] in page and "chosen for the gate's test, not for this page" in f["origin_text"]
     assert "HEAD" not in page  # run 73: an undated "HEAD" tied the pair to the repository's tip
     assert "the commit 25 timeline commits before it" in f["origin_text"] and one[0]["budget"]["k"] == 25
-    # the token has a subject, stated before it: the map, not the code
-    assert SUBJECT_TEXT in page and page.index(SUBJECT_TEXT) < page.index("the gate's token")
-    assert "It is a check on the map." in SUBJECT_TEXT and "not a\n" not in SUBJECT_TEXT
+    # the count has a subject no wider than the operand: the map, not the code
+    assert SUBJECT_TEXT in page and page.index(SUBJECT_TEXT) < page.index("- rows (")
+    assert "It is a check on this tool's map." in SUBJECT_TEXT
+    assert "The clock rows and excluded rows above are not in its count." in SUBJECT_TEXT
     assert CROSSINGS_LIMIT_TEXT in page
     assert UNDER_TABLE_TEXT.format(earlier=f["rooms"]["earlier"], later=f["rooms"]["later"]) in page
     assert (f["rooms"]["earlier"], f["rooms"]["later"]) == (40, 40)  # 39 in both + 1 each side
     assert QUALIFIER_TEXT in page and f["qualifier_text"] == QUALIFIER_TEXT
+    assert BAND_GLOSS in page and page.count(UNDER_TABLE_TEXT.format(earlier=40, later=40)) == 2  # under both tables
     assert f"{len(f['crossings'])} crossings: one line per room and predicate term" in page
-    assert "that exited or entered a row the gate's reading counts" in page
+    assert "that exited or entered a row the gate counts" in page
     r = f["rooms"]
     assert (f"{r['common']} rooms are in both commits, 1 only in the later and 1 only in the earlier; "
             f"{r['edited']} of the {r['common']} rooms in both") in page
@@ -396,8 +423,9 @@ def test_the_brief_points_at_the_window_page_and_takes_no_count_from_it(one):
     assert ref == {"file": "synthetic.window.md", "before_sha": A_SHA, "after_sha": B_SHA,
                    "before_ts": "2026-03-01T12:00:00+00:00", "after_ts": "2026-03-27T12:00:00+00:00"}
     clause = _b._window_clause({"window_ref": ref})
-    assert clause == (f"what differed between `{A_SHA[:12]}` (2026-03-01) and this commit, for rooms no commit "
-                      "between them records as changed, is on the window page `synthetic.window.md`, not this page")
+    assert clause == (f"the rooms that entered or exited a row between `{A_SHA[:12]}` (2026-03-01) and this commit "
+                      "with no recorded change of their own, and the bands that differ for them, are on the window "
+                      "page `synthetic.window.md`, not this page")
     assert not re.search(r"\b\d+ (rooms?|crossings?)", clause)
     assert _b._window_clause({"window_ref": None}).startswith("no window page was rendered with this brief")
     assert _b._window_ref(skb, None) is None

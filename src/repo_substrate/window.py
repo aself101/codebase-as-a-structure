@@ -29,11 +29,19 @@ from .mapper.ruleset import parse_predicate
 # "exited", not "left"; the features reading is stated once, bands per geometry; band lines
 # carry their values; a clock term is glossed and its values carry their unit; a row's edited
 # and unedited counts sit together; the crossings sentence says what it does not enumerate.
-WINDOW_PAGE_VERSION = "0.2.0"
+# 0.3.0 (the second seat, run 74; Alex: take the token off this page): the gate's token, its
+# reason and the operands that fired are not on the page or the sheet — the page prints what
+# the gate counts and its ceiling, and says where the gate's own word is; a flagged name is
+# paired with its position (D-074); a row is "the map's … row" and its bracket counts the
+# line's own room; the assignment union says how many rooms hold it; the subject sentence is
+# no wider than the operand; the clock gloss is a definition and the clock table carries the
+# no-cause line; "band" is defined.
+WINDOW_PAGE_VERSION = "0.3.0"
 
 # words that turn an event into a property or a grade (spec §5); the gate's token and the
 # room paths are quoted data, not fixed text, and are not scanned
-BANNED_WORDS = ("stability", "stable", "unstable", "settled", "flicker", "verdict", "floor")
+BANNED_WORDS = ("stability", "stable", "unstable", "settled", "flicker", "verdict", "floor",
+                "budget", "passes", "fails", "token")
 # words that name a mechanism (spec §11.1)
 MECHANISM_WORDS = ("because", "due to", "moves with", "caused", "pushed", "evicted", "drift")
 
@@ -61,22 +69,25 @@ CROSSINGS_LIMIT_TEXT = (
     "the room stayed in or out of its row is not on this page (the diff carries no evidence for it)."
 )
 SUBJECT_TEXT = (
-    "What the gate's budget bounds: how far this tool's map differs between two commits for "
-    "rooms that are in no commit's recorded changes. It is a check on the map. It is not a "
-    "reading of the code, of the repository, or of any room named on this page."
+    "What the gate counts on a window: for rooms in no commit's recorded changes, the rank and "
+    "mixed rows they entered or exited, and the bands that differ. The clock rows and excluded "
+    "rows above are not in its count. It is a check on this tool's map. It is not a reading of "
+    "the code, of the repository, or of any room named on this page."
 )
-CLOCK_GLOSS = (
-    "A clock row's term is measured from the date of the snapshot, so every room's value on "
-    "it differs between two commits made on different dates."
+CLOCK_GLOSS = "A clock row's term is measured in days from the date of the snapshot."
+BAND_GLOSS = (
+    "A band is a depth band of the map's geometry: a position in this tool's drawing, not a "
+    "rating of a room."
 )
 QUALIFIER_TEXT = (
-    "A reading of this one window (mapper spec §7 Q3). This page does not read whether "
-    "another window of this repository reads the same. The same number of crossings reads "
-    "differently on a different number of rooms, so the token does not rank repositories."
+    "Counts of this one window (mapper spec §7 Q3). This page does not read whether another "
+    "window of this repository counts the same. The same number of crossings is a different "
+    "share of a different number of rooms, so these counts do not rank repositories. Whether "
+    "the gate judged this window, and its own word for it, are in each diff's `budget` block "
+    "and are not on this page."
 )
-NOT_COUNTED_CLOCK = "not counted in the gate's reading"
-NOT_COUNTED_EXCLUDED = "excluded from the diagnosis; not counted in the gate's reading"
-OPERAND_WORDS = {"features": "features", "floors": "bands"}
+NOT_COUNTED_CLOCK = "not in the gate's count"
+NOT_COUNTED_EXCLUDED = "excluded from the diagnosis; not in the gate's count"
 ATTRIBUTION_WORDS = {
     "band_only": "the same raw {raw} on both sides",
     "raw_depth_changed": "a different raw depth",
@@ -178,7 +189,7 @@ def _rows(per_feature: dict[str, Any], touched: set[str], untouched_only_kinds: 
         feats: dict[str, list[str]] = {}
         for m in row["members"]:
             feats.setdefault(m["feature"], []).append(m["profile"])
-        label = " = ".join(f"{f} ({', '.join(ps)})" for f, ps in feats.items())
+        label = " = ".join(f"{_paired(f, pf)} ({', '.join(ps)})" for f, ps in feats.items())
         added, removed = pf["added"], pf["removed"]
         out.append({
             **row,
@@ -196,8 +207,23 @@ def _rows(per_feature: dict[str, Any], touched: set[str], untouched_only_kinds: 
     return out
 
 
+def _paired(feature: str, pf: dict[str, Any]) -> str:
+    """D-074: a name the ruleset flags as implying a consequence travels with its position."""
+    if pf.get("name_implies_consequence") and pf.get("position_name"):
+        return f"{feature} · {pf['position_name']}"
+    return feature
+
+
 def _row_words(row: dict[str, Any], direction: str) -> str:
-    parts = []
+    """The row's whole ledger in one bracket, this line's room first, so the counts add up
+    where they are read (run 74)."""
+    same = len(row["unedited_left"] if direction == "exited" else row["unedited_entered"]) - 1
+    opposite = len(row["unedited_entered"] if direction == "exited" else row["unedited_left"])
+    parts = [f"this room {direction}"]
+    if same:
+        parts.append(f"{_plural(same, 'other room')} {ROOM_NOTE} {direction}")
+    if opposite:
+        parts.append(f"{_plural(opposite, 'room')} {ROOM_NOTE} {'entered' if direction == 'exited' else 'exited'}")
     if row["edited_entered"]:
         parts.append(f"{_plural(row['edited_entered'], 'edited room')} entered")
     if row["edited_left"]:
@@ -206,8 +232,8 @@ def _row_words(row: dict[str, Any], direction: str) -> str:
         parts.append(f"{_plural(len(row['born_entered']), 'room')} only in the later commit entered")
     if row["deleted_left"]:
         parts.append(f"{_plural(len(row['deleted_left']), 'room')} only in the earlier commit exited")
-    tail = f": {', '.join(parts)}" if parts else ""
-    return f"{direction} {row['label']} ({row['rooms_before']} → {row['rooms_after']} rooms{tail})"
+    return (f"{direction} the map's row {row['label']} "
+            f"({row['rooms_before']} → {row['rooms_after']} rooms: {', '.join(parts)})")
 
 
 def _lines(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -288,7 +314,7 @@ def window_facts(diffs: list[dict[str, Any]], names: list[str], origin: str = "c
             continue
         profile, feature = name.split("/", 1)
         excluded.append({
-            "label": f"{feature} ({profile})", "predicate": pf["predicate"],
+            "label": f"{_paired(feature, pf)} ({profile})", "predicate": pf["predicate"],
             "rooms_before": pf["rooms_before"], "rooms_after": pf["rooms_after"],
             # D-028 carried to this page: an excluded row's rooms are counted, never named —
             # naming them would hand a reader the salience the exclusion withholds
@@ -310,11 +336,14 @@ def window_facts(diffs: list[dict[str, Any]], names: list[str], origin: str = "c
                 })
         bands.append({"geometry": geom, "moved": sum(len(v) for v in groups.values()),
                       "of": x["untouched"]["n"], "groups": groups})
-        b = x["budget"]
+        # the gate's token, its reason and the operands that fired stay in the diff (run 74)
+        ops = x["budget"]["operands"]
         readings.append({
-            "geometry": geom, "token": b["verdict"], "reason": b["reason"],
-            "fired": None if b["fired"] is None else [OPERAND_WORDS[o] for o in b["fired"]],
-            "operands": b["operands"],
+            "geometry": geom,
+            "features": {k: ops["features"][k] for k in
+                         ("changes", "denominator", "ceiling", "distinct_rooms", "distinct_crossings")},
+            "features_held_by_rooms": x["untouched"]["jitter_room_union"],
+            "bands": {k: ops["floors"][k] for k in ("changes", "denominator", "ceiling")},
         })
     doc: dict[str, Any] = {
         "window_page_version": WINDOW_PAGE_VERSION,
@@ -340,7 +369,8 @@ def window_facts(diffs: list[dict[str, Any]], names: list[str], origin: str = "c
         "clock_crossings": _lines(clock_rows),
         "excluded_rows": excluded,
         "bands": bands,
-        "gate_reading": readings,
+        "gate_count": readings,
+        "band_gloss": BAND_GLOSS,
         "qualifier_text": QUALIFIER_TEXT,
         "subject_text": SUBJECT_TEXT,
         "crossings_limit_text": CROSSINGS_LIMIT_TEXT,
@@ -351,8 +381,8 @@ def window_facts(diffs: list[dict[str, Any]], names: list[str], origin: str = "c
                      "after_skeleton_hash": x["after"]["skeleton_hash"]} for x, n in zip(diffs, names)],
         "units": {
             "crossings": "(room, predicate term) pairs whose outcome differs between the two commits, among rooms in no commit's recorded changes that exited or entered a row; a term that changed outcome without a membership change is not enumerated",
-            "gate_reading.operands.features": "(profile, feature, room) assignments of rank and mixed features",
-            "gate_reading.operands.floors": "rooms (printed as bands)",
+            "gate_count.features": "(profile, feature, room) assignments of rank and mixed features held by rooms in no commit's recorded changes; features_held_by_rooms is how many such rooms hold them",
+            "gate_count.bands": "rooms in no commit's recorded changes",
             "rooms.edited_share": "edited rooms / rooms in both commits",
         },
     }
@@ -446,12 +476,12 @@ def render_window(f: dict[str, Any]) -> str:
     ]
     if f["crossings"]:
         intro = (f"{_plural(len(f['crossings']), 'crossing')}: one line per room and predicate term whose outcome differs between "
-                 "the two commits, among rooms in no commit's recorded changes that exited or entered a row the gate's reading counts.")
+                 "the two commits, among rooms in no commit's recorded changes that exited or entered a row the gate counts.")
         out += [intro, ""]
         out += _crossing_table(f["crossings"], pair)
         out += ["", UNDER_TABLE_TEXT.format(earlier=r["earlier"], later=r["later"]), "", f["crossings_limit_text"]]
     else:
-        out += ["No room in no commit's recorded changes exited or entered a row the gate's reading counts.", "",
+        out += ["No room in no commit's recorded changes exited or entered a row the gate counts.", "",
                 f["crossings_limit_text"]]
     out += ["", "## Clock rows", "", CLOCK_GLOSS, ""]
     if f["clock_rows"]:
@@ -459,6 +489,7 @@ def render_window(f: dict[str, Any]) -> str:
             out.append(f"- **{row['label']}** — {_membership(row)}; {NOT_COUNTED_CLOCK}.")
         out += ["", f"Their crossings, {NOT_COUNTED_CLOCK}:", ""]
         out += _crossing_table(f["clock_crossings"], pair)
+        out += ["", UNDER_TABLE_TEXT.format(earlier=r["earlier"], later=r["later"])]
     else:
         out.append("No clock row's membership differs among rooms in no commit's recorded changes.")
     out += ["", "## Excluded rows (◌)", ""]
@@ -471,7 +502,7 @@ def render_window(f: dict[str, Any]) -> str:
                 f"{NOT_COUNTED_EXCLUDED}. An excluded row's rooms are counted, not named, and no values or cutoffs are printed for it.")
     else:
         out.append("No excluded row's membership differs among rooms in no commit's recorded changes.")
-    out += ["", "## Bands", ""]
+    out += ["", "## Bands", "", f["band_gloss"], ""]
     for b in f["bands"]:
         raw = RAW_WORD.get(b["geometry"], "value")
         if not b["moved"]:
@@ -486,24 +517,21 @@ def render_window(f: dict[str, Any]) -> str:
                 parts.append(f"{len(rooms)} with {ATTRIBUTION_WORDS[attr].format(raw=raw)} ({named})")
         out.append(f"- Under the {b['geometry']} geometry, {b['moved']} of the {b['of']} rooms {ROOM_NOTE} changed band: "
                    + "; ".join(parts) + ".")
-    out += ["", "## The gate's budget reading on this window", "", f["subject_text"], ""]
-    ft = f["gate_reading"][0]["operands"]["features"]  # one window: the same under every geometry (SAME_WINDOW)
+    out += ["", "## What the gate counts on this window", "", f["subject_text"], ""]
+    g0 = f["gate_count"][0]  # one window: rows are the same under every geometry (SAME_WINDOW)
+    ft = g0["features"]
     cross = ("crossings not available" if ft["distinct_crossings"] is None
              else _plural(ft["distinct_crossings"], "crossing"))
-    same = "the same under each geometry: " if len(f["gate_reading"]) > 1 else ""
+    same = "the same under each geometry; " if len(f["gate_count"]) > 1 else ""
     out.append(
-        f"- features ({same}rows do not depend on it) — {ft['distinct_rooms']} of the {r['unedited']} rooms {ROOM_NOTE}, {cross}; "
-        f"in the gate's unit, {ft['changes']} of {ft['denominator']} `(profile, feature, room)` assignments ({_over(ft, 'assignments')})."
+        f"- rows ({same}rows do not depend on it) — {ft['distinct_rooms']} of the {r['unedited']} rooms {ROOM_NOTE}, {cross}. "
+        f"In the gate's unit: {ft['changes']} of the {ft['denominator']} `(profile, feature, room)` assignments that "
+        f"{g0['features_held_by_rooms']} of those rooms hold on rank and mixed rows. The gate's ceiling on the map is {ft['ceiling']} of them."
     )
-    for g in f["gate_reading"]:
-        fl = g["operands"]["floors"]
-        out.append(f"- bands, {g['geometry']} geometry — {fl['changes']} of {fl['denominator']} rooms {ROOM_NOTE} ({_over(fl, 'rooms')}).")
-    for g in f["gate_reading"]:
-        if g["token"] == "untested":
-            out.append(f"- the gate's token, {g['geometry']} geometry — not judged by the gate: `{g['reason']}`.")
-        else:
-            on = f", on {' and '.join(g['fired'])}" if g["fired"] else ""
-            out.append(f"- the gate's token, {g['geometry']} geometry — `{g['token']}`{on}.")
+    for g in f["gate_count"]:
+        fl = g["bands"]
+        out.append(f"- bands, {g['geometry']} geometry — {fl['changes']} of the {fl['denominator']} rooms {ROOM_NOTE}. "
+                   f"The gate's ceiling on the map is {fl['ceiling']} of them.")
     out += ["", f["qualifier_text"], "", "## What this page does not report", ""]
     dm = f["not_reported"]["degraded_marks"]
     out.append(
@@ -523,12 +551,6 @@ def render_window(f: dict[str, Any]) -> str:
         f"facts `{f['facts_hash'][:12]}…`."
     )
     return "\n".join(out) + "\n"
-
-
-def _over(op: dict[str, Any], unit: str) -> str:
-    if op["fires_at"] is None:
-        return f"no {unit} to read"
-    return f"{op['fires_at']} or more of {op['denominator']} {unit} is over {op['ceiling']} by the gate's rule"
 
 
 def run_window(diffs: list[dict[str, Any]], names: list[str], origin: str = "caller",

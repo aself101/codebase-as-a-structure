@@ -1774,3 +1774,41 @@ readers, or a later reader, cite a window page's line as a property of a room or
 token as a defect; or the pointer goes unfollowed the way the change sheet did, in which
 case the reading has a page and still no reader, and the question returns to whether one
 dated line belongs on the brief after all.
+
+**D-083, the seats and the token (2026-11-11, runs 73 and 74; Alex: "drop the token off
+this page").** The page as first built (0.1.0) failed the seat by the rule written
+before it ran: a skimmer said "someone should find out why it's over budget" and that
+the structure "drifted"; a reader given one pasted line could not interpret
+`fails | fails`; the hostile reader answered "no, narrowly" on an undated "HEAD". All
+three found that the token had no subject — the ban on "stability" had removed the only
+word that said what the budget bounds. 0.2.0 gave it one, printed each comparison as its
+own arithmetic, and dropped "HEAD". On the second seat the hostile reader answered
+**yes**, the page stays a statement about two commits, and the pasted line read alone;
+the skimmer again read `over_budget` as the repository's status, the subject paragraph
+unread. Five of the hostile reader's six weaknesses were rulings this log had already
+made that a new page did not inherit (D-074's pairing, D-080's two 35s, half a mechanism
+in a gloss, the pointer's width), and it found the parent spec still reading "it left
+because the cutoff rose … when a touched room entered" off four numbers — the fourth
+cause written from one side of a two-sided comparison in one day.
+
+Alex was given three forms (keep the token with its subject in the line; take it off the
+page; rename it) and took it off the page. **Window page 0.3.0, brief 0.45.2:** the page
+prints what the gate counts and the gate's ceiling, says where the gate's own word is
+(each diff's `budget` block), and carries neither the token nor its reason nor what
+fired, on the page or the sheet; flagged names are paired with their positions; a row
+is "the map's row …" with a ledger that adds up in its bracket; the assignment union
+names the 23 rooms that hold it; the clock gloss is a definition. This supersedes the
+paragraph above where it says the token is quoted. Seat rule (i) is restated: what the
+page must not support is naming which room or edit moved a number, not reading what two
+printed comparisons entail. Pages under tag `2026-11-11e-d083`. 212 tests.
+
+**Standing lesson, written as a rule.** A new render surface inherits none of the page
+rulings by itself. Before a new page is seated it is checked against the list: counts
+with denominators and no grades (D-049); a flagged name with its position (D-074); an
+excluded row counted and not named (D-028); no cause for a raw-value change (D-080);
+every denominator's unit and population (D-080 replay); one predicate, one row (D-063).
+
+**Assumes.** A page with the count and the ceiling and without the gate's word will not
+be read as the gate's judgment of the repository. **Breaks if.** The third seat's
+skimmer does the arithmetic and says "over the ceiling, fix it" anyway: then the
+ceiling sentence goes too, and the page is events only.

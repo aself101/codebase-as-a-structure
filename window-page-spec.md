@@ -1,6 +1,6 @@
 # The window page — what differed between two commits, on a page of its own
 
-Status: **built 2026-11-11 (§12); re-checked (run 72, §11); two seats (runs 73, 74; §13, §14); 0.2.0 holds as a statement about two commits and still fails the skimmer on the gate's token; whether the token stays on the page is put to Alex (§14).** D-083.
+Status: **built; three specs' worth of review (runs 71–74); Alex took the gate's token off the page (2026-11-11) and 0.3.0 is the form built (§15); open until a third seat has run.** D-083.
 Supersedes the form in `event-statement-spec.md`, whose §10 (tracker run 71) lists what
 fell and why. Alex chose the separate page the same day. Parent: `stability-budget-spec.md`
 (D-082). §11 holds the re-check before any code.
@@ -437,3 +437,49 @@ K, its floors and its denominators". Three forms:
 
 Recommended: take it off this page. It is the only form the seat rule can pass, it costs
 no reader a number, and it leaves the token's name for a later decision made on its own.
+
+## 15. Window page 0.3.0 — the token is off the page (Alex, 2026-11-11)
+
+Alex chose the second form of §14. The page and its sheet no longer carry the gate's
+token, its reason for not judging, or which operands fired. §5.5 above, §11.2 and
+§11.6's "the token is quoted" are superseded by this section.
+
+- **"What the gate counts on this window"** replaces "the gate's budget reading". It
+  opens with the subject, no wider than the operand: "for rooms in no commit's recorded
+  changes, the rank and mixed rows they entered or exited, and the bands that differ.
+  The clock rows and excluded rows above are not in its count. It is a check on this
+  tool's map. It is not a reading of the code, of the repository, or of any room named
+  on this page."
+- Rows once: "2 of the 35 rooms …, 2 crossings. In the gate's unit: 4 of the 35
+  `(profile, feature, room)` assignments that 23 of those rooms hold on rank and mixed
+  rows. The gate's ceiling on the map is 0.05 of them." Bands per geometry, each with
+  the same ceiling sentence. The page states the count and the ceiling and does not
+  state the comparison between them.
+- The closing sentence says where the gate's word is: "Whether the gate judged this
+  window, and its own word for it, are in each diff's `budget` block and are not on this
+  page."
+- "budget", "token", "passes" and "fails" join the banned words; a test renders the page
+  under each of the gate's three outcomes and finds none of the token, the reason, or
+  "fired" on the page or the sheet, with the diff still carrying them as the control.
+- D-074's pairing: the diff carries each feature's position name and flag; the rows cell
+  and the excluded line print "foundation · high-load node" and "◌ crack · high
+  edit-pressure node"; an unflagged name stays bare ("hub").
+- A row is "the map's row …", and its bracket is the row's whole ledger with this line's
+  room first: "(7 → 7 rooms: this room exited, 2 edited rooms entered, 1 edited room
+  exited)".
+- The clock gloss is a definition ("measured in days from the date of the snapshot");
+  the no-cause sentence sits under the clock table as well as the first.
+- "A band is a depth band of the map's geometry: a position in this tool's drawing, not
+  a rating of a room."
+- The brief's pointer (0.45.2): "the rooms that entered or exited a row between `…` (…)
+  and this commit with no recorded change of their own, and the bands that differ for
+  them, are on the window page `…`, not this page".
+
+What this gives up: a reader of the window page who wants the gate's judgment has to open
+the diff or the budget table. D-082's option D said the verdict would be "shown with its
+K, its floors and its denominators"; the denominators and the ceiling are shown and the
+verdict is not, by Alex's decision after two seats read it as the repository's status.
+
+Not addressed here, recorded for a later decision: the token's name itself; and the
+brief's provenance calls the substrate config fingerprint "gate" where the window page
+gives that name to the validation fingerprint (run 74, outside the seat's surface).

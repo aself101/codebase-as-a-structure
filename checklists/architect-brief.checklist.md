@@ -28,4 +28,5 @@ Tags: `[NOW]` required for M3; `[HOR]` anti-horoscope; `[PROV]` provenance; `[DE
 - [x] Two geometries are two readings; `floors` prints as bands; an unjudged window quotes the ladder's reason (`test_two_geometries_*`, `test_the_operand_named_floors_is_printed_as_bands`).
 - [x] The window is in every crossing line; no property word and no mechanism word in fixed text (`test_the_window_is_in_every_crossing_line_*`, `test_no_property_word_and_no_mechanism_word_in_the_fixed_text`).
 - [x] Refusals: same geometry twice, not one window, pre-D-083 diff, sides mapped differently, more than two (`test_refusals_each_with_its_reason`).
-- [ ] The seat on the rendered mcp window page (spec §11.12).
+- [x] The gate's token, its reason and what fired are on neither the page nor the sheet (`test_the_gates_own_word_is_not_on_the_page_or_the_sheet`); a flagged name travels with its position (`test_a_flagged_name_travels_with_its_position_and_an_unflagged_one_is_bare`); band lines carry values (`test_band_lines_carry_the_band_and_raw_values_of_each_named_room`).
+- [ ] The seat on the rendered mcp window page (spec §11.12): two run, both failed in part (runs 73, 74); a third owed on 0.3.0.
