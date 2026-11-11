@@ -142,7 +142,7 @@ def _line(f, room, term, key="crossings"):
 def test_row_sizes_count_rooms_only_one_commit_has(one):
     d, ska, skb, _ = one
     pf = d["per_feature"]["test/large"]
-    fired = lambda sk: sum(1 for x in sk["features"] if x["feature"] == "large")  # noqa: E731
+    fired = lambda sk: sum(1 for x in sk["features"] if x["feature"] == "large")
     assert (pf["rooms_before"], pf["rooms_after"]) == (fired(ska), fired(skb))
     assert pf["born_entered"] == ["f40.ts"] and pf["deleted_left"] == ["f39.ts"]
     # negative control: the common-room counts the operand uses are smaller on both sides

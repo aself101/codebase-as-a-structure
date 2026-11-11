@@ -387,18 +387,19 @@ def render_window(f: dict[str, Any]) -> str:
         "",
         f"**{f['scope_text']}**",
         "",
-        f"The window: `{w['before_sha'][:12]}` ({_date(w['before_ts'])}) → `{w['after_sha'][:12]}` ({_date(w['after_ts'])}); "
+        (f"The window: `{w['before_sha'][:12]}` ({_date(w['before_ts'])}) → `{w['after_sha'][:12]}` ({_date(w['after_ts'])}); "
         f"{f['origin_text']}. {_plural(w['commits_between'], 'commit')} in the window, the earliest at {_date(w['first_ts'])} "
         f"and the latest at {_date(w['last_ts'])}. {r['common']} rooms are in both commits, {len(r['only_later'])} only in the later "
         f"and {len(r['only_earlier'])} only in the earlier; {r['edited']} of the {r['common']} rooms in both are in some commit's "
-        f"recorded changes ({r['edited_share']:.0%} of rooms in both), {r['unedited']} are in none.",
+        f"recorded changes ({r['edited_share']:.0%} of rooms in both), {r['unedited']} are in none."),
         "",
         "## Crossings",
         "",
     ]
     if f["crossings"]:
-        out += [f"{_plural(len(f['crossings']), 'crossing')}: one line per room and predicate term whose outcome differs between "
-                "the two commits, among rooms in no commit's recorded changes, on rows the gate's reading counts.", ""]
+        intro = (f"{_plural(len(f['crossings']), 'crossing')}: one line per room and predicate term whose outcome differs between "
+                 "the two commits, among rooms in no commit's recorded changes, on rows the gate's reading counts.")
+        out += [intro, ""]
         out += _crossing_table(f["crossings"], pair)
         out += ["", UNDER_TABLE_TEXT.format(earlier=r["earlier"], later=r["later"])]
     else:
