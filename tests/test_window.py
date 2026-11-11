@@ -25,6 +25,7 @@ from repo_substrate.window import (
     NOT_COUNTED_EXCLUDED,
     QUALIFIER_TEXT,
     ROOM_NOTE,
+    ROW_NAME_TEXT,
     SCOPE_TEXT,
     SUBJECT_TEXT,
     UNDER_TABLE_TEXT,
@@ -269,15 +270,23 @@ def test_clock_rows_get_the_same_numbers_and_comparisons_and_no_mechanism(one):
     f = one[3]
     assert [r["label"] for r in f["clock_rows"]] == ["fresh (test)"]
     assert f["clock_crossings"] and all(x["term_kind"] == "clock" for x in f["clock_crossings"])
-    assert all(x["later_value_vs_earlier_cutoff"] is not None for x in f["clock_crossings"])
+    # run 75: a clock term's sides are measured from two dates — no value from one is set against
+    # a cutoff from the other, on the sheet or the page; each side is compared with its own cutoff
+    assert all(x["later_value_vs_earlier_cutoff"] is None and x["earlier_value_vs_later_cutoff"] is None
+               for x in f["clock_crossings"])
+    assert all(x["outcome_before"] != x["outcome_after"] for x in f["clock_crossings"])
     assert not any(x["term"].startswith("last_touched_days") for x in f["crossings"])
     page = render_window(f)
     assert f"; {NOT_COUNTED_CLOCK}." in page and CLOCK_GLOSS in page
-    assert CLOCK_GLOSS == "A clock row's term is measured in days from the date of the snapshot."  # a definition, no "so"
+    assert CLOCK_GLOSS.startswith("A clock row's term is measured in days from the date of the snapshot")
     # a row's counts sit together, and a day-valued term carries its unit
     row = f["clock_rows"][0]
     assert (f"edited rooms: {row['edited_entered']} entered, {row['edited_left']} exited") in page
-    assert " days |" in next(ln for ln in page.splitlines() if "`last_touched_days <= p10`" in ln)
+    line = next(ln for ln in page.splitlines() if "`last_touched_days <= p10`" in ln)
+    assert " days |" in line and line.count("not compared across dates") == 2
+    assert "earlier side alone: `" in line and "later side alone: `" in line
+    # the interval is printed: 2026-03-01 → 2026-03-27 at noon UTC is 26 days
+    assert f["interval_days"] == 26.0 and "The two commits here are 26.00 days apart" in page
 
 
 def test_excluded_rows_are_counted_and_their_rooms_not_named(one):
@@ -305,8 +314,10 @@ def test_two_geometries_state_rows_once_and_bands_each(tmp_path):
     assert f"{ft['distinct_rooms']} of the {f['rooms']['unedited']} rooms {ROOM_NOTE}" in page
     # the assignment union names the rooms that hold it: never a second bare denominator (the two 35s)
     assert g["features_held_by_rooms"] == age["untouched"]["jitter_room_union"]
-    assert (f"In the gate's unit: {ft['changes']} of the {ft['denominator']} `(profile, feature, room)` assignments that "
-            f"{g['features_held_by_rooms']} of those rooms hold on rank and mixed rows. The gate's ceiling on the map is 0.05 of them.") in page
+    # … and says it is a union over both commits (run 75: "hold" was true of the earlier commit only)
+    assert (f"In the gate's unit: {g['features_held_by_rooms']} of those rooms hold, in one commit or the other, "
+            f"{ft['denominator']} `(profile, feature, room)` assignments on rank and mixed rows; {ft['changes']} of those "
+            f"{ft['denominator']} are in one commit and not the other.") in page
 
 
 def test_the_gates_own_word_is_not_on_the_page_or_the_sheet(one):
@@ -319,9 +330,10 @@ def test_the_gates_own_word_is_not_on_the_page_or_the_sheet(one):
         d["budget"].update(verdict=verdict, reason=reason, fired=fired)
         f = window_facts([d], ["x"], "caller")
         text = render_window(f) + json.dumps(f)
-        for word in ("over_budget", "within_budget", "untested", "below_pinned_k", "fired", "verdict"):
+        for word in ("over_budget", "within_budget", "untested", "below_pinned_k", "fired", "verdict",
+                     "ceiling", "0.05", "fires_at"):  # run 75: the ceiling too — a skimmer divided by it
             assert word not in text, (verdict, word)
-    assert "are in each diff's `budget` block and are not on this page" in QUALIFIER_TEXT
+    assert "the limit it judges against and its own word for it are in each diff's `budget` block and are not on this page" in QUALIFIER_TEXT
     # negative control: the diff still carries it
     assert one[0]["budget"]["verdict"] in ("over_budget", "within_budget", "untested")
 
@@ -346,6 +358,10 @@ def test_every_fixed_text_is_on_the_page_and_agrees_with_the_sheet(one):
     f = one[3]
     page = render_window(f)
     assert page.splitlines()[2] == f"**{SCOPE_TEXT}**" == f"**{f['scope_text']}**"
+    # run 75: the scope line asserted what the qualifier says the page has not read
+    assert "may read differently; this page does not compare them" in SCOPE_TEXT and "reads differently" not in page
+    assert page.splitlines()[0].startswith("# synthetic, as this tool maps it — one window: ")
+    assert ROW_NAME_TEXT in page
     assert f["origin_text"] in page and "chosen for the gate's test, not for this page" in f["origin_text"]
     assert "HEAD" not in page  # run 73: an undated "HEAD" tied the pair to the repository's tip
     assert "the commit 25 timeline commits before it" in f["origin_text"] and one[0]["budget"]["k"] == 25
@@ -423,9 +439,9 @@ def test_the_brief_points_at_the_window_page_and_takes_no_count_from_it(one):
     assert ref == {"file": "synthetic.window.md", "before_sha": A_SHA, "after_sha": B_SHA,
                    "before_ts": "2026-03-01T12:00:00+00:00", "after_ts": "2026-03-27T12:00:00+00:00"}
     clause = _b._window_clause({"window_ref": ref})
-    assert clause == (f"the rooms that entered or exited a row between `{A_SHA[:12]}` (2026-03-01) and this commit "
-                      "with no recorded change of their own, and the bands that differ for them, are on the window "
-                      "page `synthetic.window.md`, not this page")
+    # the pointer names the page and the pair and describes nothing (three wider wordings failed)
+    assert clause == (f"a window page for `{A_SHA[:12]}` (2026-03-01) → this commit was rendered beside this brief: "
+                      "`synthetic.window.md`; nothing on it is on this page")
     assert not re.search(r"\b\d+ (rooms?|crossings?)", clause)
     assert _b._window_clause({"window_ref": None}).startswith("no window page was rendered with this brief")
     assert _b._window_ref(skb, None) is None

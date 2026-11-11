@@ -36,19 +36,27 @@ from .mapper.ruleset import parse_predicate
 # line's own room; the assignment union says how many rooms hold it; the subject sentence is
 # no wider than the operand; the clock gloss is a definition and the clock table carries the
 # no-cause line; "band" is defined.
-WINDOW_PAGE_VERSION = "0.3.0"
+# 0.4.0 (the third seat, run 75; Alex: drop the ceiling, then close): the gate's ceiling is off
+# the page and the sheet — a skimmer divided the count by it and rebuilt the verdict; the scope
+# line no longer asserts what another pair of commits reads; a clock term's two sides are
+# measured from two dates and are not compared across them (for a room in no commit's changes
+# the value differs by exactly the interval), the interval is printed; the assignment count is
+# said to be a union over both commits; the title's subject is the map; a row's name is said to
+# be a label; the comparisons are "as recorded".
+WINDOW_PAGE_VERSION = "0.4.0"
 
 # words that turn an event into a property or a grade (spec §5); the gate's token and the
 # room paths are quoted data, not fixed text, and are not scanned
 BANNED_WORDS = ("stability", "stable", "unstable", "settled", "flicker", "verdict", "floor",
-                "budget", "passes", "fails", "token")
+                "budget", "passes", "fails", "token", "ceiling", "0.05")
 # words that name a mechanism (spec §11.1)
 MECHANISM_WORDS = ("because", "due to", "moves with", "caused", "pushed", "evicted", "drift")
 
 SCOPE_TEXT = (
-    "One pair of commits. Each event below is between them. "
-    "Another pair of commits reads differently."
+    "One pair of commits. Each event below is between them. Another pair of commits may "
+    "read differently; this page does not compare them."
 )
+ROW_NAME_TEXT = "A row's name is this tool's label for a position on its map, not a description of the code."
 ORIGIN_TEXT = {
     "gate": (
         "the pair the gate perturbs: the commit the gate was run at and the commit {k} timeline "
@@ -60,7 +68,7 @@ ROOM_NOTE = "in no commit's recorded changes in the window"
 UNDER_TABLE_TEXT = (
     "Each side's cutoff is computed over that commit's rooms that have a value, of "
     "{earlier} rooms earlier and {later} later, this room's included. The two comparisons "
-    "are arithmetic on the four numbers beside them; neither names a cause. The rows column "
+    "are arithmetic on the four numbers beside them, as recorded; neither names a cause. The rows column "
     "counts the rooms that entered and exited each row; it does not say which of them, if "
     "any, bears on the line it sits in."
 )
@@ -74,7 +82,11 @@ SUBJECT_TEXT = (
     "rows above are not in its count. It is a check on this tool's map. It is not a reading of "
     "the code, of the repository, or of any room named on this page."
 )
-CLOCK_GLOSS = "A clock row's term is measured in days from the date of the snapshot."
+CLOCK_GLOSS = (
+    "A clock row's term is measured in days from the date of the snapshot, so the earlier "
+    "side and the later side of a line are measured from two different dates and are not "
+    "compared with each other."
+)
 BAND_GLOSS = (
     "A band is a depth band of the map's geometry: a position in this tool's drawing, not a "
     "rating of a room."
@@ -83,8 +95,8 @@ QUALIFIER_TEXT = (
     "Counts of this one window (mapper spec §7 Q3). This page does not read whether another "
     "window of this repository counts the same. The same number of crossings is a different "
     "share of a different number of rooms, so these counts do not rank repositories. Whether "
-    "the gate judged this window, and its own word for it, are in each diff's `budget` block "
-    "and are not on this page."
+    "the gate judged this window, the limit it judges against and its own word for it are in "
+    "each diff's `budget` block and are not on this page."
 )
 NOT_COUNTED_CLOCK = "not in the gate's count"
 NOT_COUNTED_EXCLUDED = "excluded from the diagnosis; not in the gate's count"
@@ -269,14 +281,19 @@ def _lines(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                     continue
                 for x, y in changed:
                     fixed = _fixed_threshold(x["term"])
+                    clock = x["signal"] in CLOCK_SIGNALS
+                    # run 75: a clock term's two sides are measured from two dates; a value from one
+                    # set against a cutoff from the other is not one scale, so it is not computed
+                    cross = not fixed and not clock
                     put(room, x["term"], row, direction, state="compared",
                         signal=x["signal"], operator=x["operator"],
-                        term_kind="clock" if x["signal"] in CLOCK_SIGNALS else "rank",
+                        term_kind="clock" if clock else "rank",
                         fixed_threshold=fixed,
                         value_before=x["value"], value_after=y["value"],
                         cutoff_before=x["threshold"], cutoff_after=y["threshold"],
-                        later_value_vs_earlier_cutoff=None if fixed else _compare(y["value"], x["operator"], x["threshold"]),
-                        earlier_value_vs_later_cutoff=None if fixed else _compare(x["value"], x["operator"], y["threshold"]))
+                        outcome_before=x["passed"], outcome_after=y["passed"],
+                        later_value_vs_earlier_cutoff=_compare(y["value"], x["operator"], x["threshold"]) if cross else None,
+                        earlier_value_vs_later_cutoff=_compare(x["value"], x["operator"], y["threshold"]) if cross else None)
     return [lines[k] for k in sorted(lines)]
 
 
@@ -340,10 +357,11 @@ def window_facts(diffs: list[dict[str, Any]], names: list[str], origin: str = "c
         ops = x["budget"]["operands"]
         readings.append({
             "geometry": geom,
+            # the gate's ceiling stays in the diff with its token (run 75: a skimmer divided by it)
             "features": {k: ops["features"][k] for k in
-                         ("changes", "denominator", "ceiling", "distinct_rooms", "distinct_crossings")},
+                         ("changes", "denominator", "distinct_rooms", "distinct_crossings")},
             "features_held_by_rooms": x["untouched"]["jitter_room_union"],
-            "bands": {k: ops["floors"][k] for k in ("changes", "denominator", "ceiling")},
+            "bands": {k: ops["floors"][k] for k in ("changes", "denominator")},
         })
     doc: dict[str, Any] = {
         "window_page_version": WINDOW_PAGE_VERSION,
@@ -358,6 +376,8 @@ def window_facts(diffs: list[dict[str, Any]], names: list[str], origin: str = "c
             "commits_between": k,
             **{f: win.get(f) for f in ("before_ts", "after_ts", "first_ts", "last_ts", "commit_count")},
         },
+        "interval_days": _interval_days(win.get("before_ts"), win.get("after_ts")),
+        "row_name_text": ROW_NAME_TEXT,
         "rooms": {
             "common": d["common_nodes"], "only_later": born, "only_earlier": deleted,
             "edited": d["touched"]["n"], "unedited": d["untouched"]["n"],
@@ -381,7 +401,8 @@ def window_facts(diffs: list[dict[str, Any]], names: list[str], origin: str = "c
                      "after_skeleton_hash": x["after"]["skeleton_hash"]} for x, n in zip(diffs, names)],
         "units": {
             "crossings": "(room, predicate term) pairs whose outcome differs between the two commits, among rooms in no commit's recorded changes that exited or entered a row; a term that changed outcome without a membership change is not enumerated",
-            "gate_count.features": "(profile, feature, room) assignments of rank and mixed features held by rooms in no commit's recorded changes; features_held_by_rooms is how many such rooms hold them",
+            "gate_count.features": "(profile, feature, room) assignments of rank and mixed features held, in either commit, by rooms in no commit's recorded changes: denominator is the union over both commits, changes the assignments in one commit and not the other; features_held_by_rooms is how many such rooms hold any of them",
+            "interval_days": "days between the two endpoint commits' timestamps",
             "gate_count.bands": "rooms in no commit's recorded changes",
             "rooms.edited_share": "edited rooms / rooms in both commits",
         },
@@ -389,6 +410,15 @@ def window_facts(diffs: list[dict[str, Any]], names: list[str], origin: str = "c
     raw = json.dumps(doc, sort_keys=True, ensure_ascii=False, allow_nan=False).encode("utf-8")
     doc["facts_hash"] = hashlib.sha256(raw).hexdigest()
     return doc
+
+
+def _interval_days(before_ts: str | None, after_ts: str | None) -> float | None:
+    from datetime import datetime
+
+    try:
+        return (datetime.fromisoformat(after_ts) - datetime.fromisoformat(before_ts)).total_seconds() / 86400
+    except (TypeError, ValueError):
+        return None
 
 
 def _date(ts: str | None) -> str:
@@ -407,6 +437,11 @@ def _cell(line: dict[str, Any], value_key: str, cutoff_key: str, which: str) -> 
     `0.0128 >= 0.01285`: no. Never "passes"/"fails" (run 73: read as a check's status)."""
     if line.get("fixed_threshold"):
         return "fixed threshold"
+    if line.get("term_kind") == "clock":
+        # each side against its own cutoff, the only comparison that shares a date
+        side = "before" if value_key == "value_before" else "after"
+        own = f"`{_num(line[f'value_{side}'])} {line['operator']} {_num(line[f'cutoff_{side}'])}`: {'yes' if line[f'outcome_{side}'] else 'no'}"
+        return f"not compared across dates; {'earlier' if side == 'before' else 'later'} side alone: {own}"
     v = line.get(which)
     if v is None:
         return "not available"
@@ -461,7 +496,7 @@ def render_window(f: dict[str, Any]) -> str:
     w, r = f["window"], f["rooms"]
     pair = f"{w['before_sha'][:8]}→{w['after_sha'][:8]}"
     out = [
-        f"# {f['repo']} — one window: `{w['before_sha'][:12]}` → `{w['after_sha'][:12]}`",
+        f"# {f['repo']}, as this tool maps it — one window: `{w['before_sha'][:12]}` → `{w['after_sha'][:12]}`",
         "",
         f"**{f['scope_text']}**",
         "",
@@ -477,13 +512,16 @@ def render_window(f: dict[str, Any]) -> str:
     if f["crossings"]:
         intro = (f"{_plural(len(f['crossings']), 'crossing')}: one line per room and predicate term whose outcome differs between "
                  "the two commits, among rooms in no commit's recorded changes that exited or entered a row the gate counts.")
-        out += [intro, ""]
+        out += [intro, "", f["row_name_text"], ""]
         out += _crossing_table(f["crossings"], pair)
         out += ["", UNDER_TABLE_TEXT.format(earlier=r["earlier"], later=r["later"]), "", f["crossings_limit_text"]]
     else:
         out += ["No room in no commit's recorded changes exited or entered a row the gate counts.", "",
                 f["crossings_limit_text"]]
-    out += ["", "## Clock rows", "", CLOCK_GLOSS, ""]
+    days = f.get("interval_days")
+    apart = (f" The two commits here are {days:.2f} days apart, and a room in no commit's recorded changes "
+             "reads that many days more on the later side." if days is not None else "")
+    out += ["", "## Clock rows", "", CLOCK_GLOSS + apart, ""]
     if f["clock_rows"]:
         for row in f["clock_rows"]:
             out.append(f"- **{row['label']}** — {_membership(row)}; {NOT_COUNTED_CLOCK}.")
@@ -525,13 +563,13 @@ def render_window(f: dict[str, Any]) -> str:
     same = "the same under each geometry; " if len(f["gate_count"]) > 1 else ""
     out.append(
         f"- rows ({same}rows do not depend on it) — {ft['distinct_rooms']} of the {r['unedited']} rooms {ROOM_NOTE}, {cross}. "
-        f"In the gate's unit: {ft['changes']} of the {ft['denominator']} `(profile, feature, room)` assignments that "
-        f"{g0['features_held_by_rooms']} of those rooms hold on rank and mixed rows. The gate's ceiling on the map is {ft['ceiling']} of them."
+        f"In the gate's unit: {g0['features_held_by_rooms']} of those rooms hold, in one commit or the other, "
+        f"{ft['denominator']} `(profile, feature, room)` assignments on rank and mixed rows; {ft['changes']} of those "
+        f"{ft['denominator']} are in one commit and not the other."
     )
     for g in f["gate_count"]:
         fl = g["bands"]
-        out.append(f"- bands, {g['geometry']} geometry — {fl['changes']} of the {fl['denominator']} rooms {ROOM_NOTE}. "
-                   f"The gate's ceiling on the map is {fl['ceiling']} of them.")
+        out.append(f"- bands, {g['geometry']} geometry — {fl['changes']} of the {fl['denominator']} rooms {ROOM_NOTE}.")
     out += ["", f["qualifier_text"], "", "## What this page does not report", ""]
     dm = f["not_reported"]["degraded_marks"]
     out.append(
