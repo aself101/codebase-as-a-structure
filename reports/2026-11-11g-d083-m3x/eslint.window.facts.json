@@ -1,0 +1,214 @@
+{
+ "band_gloss": "A band is a depth band of the map's geometry: a position in this tool's drawing, not a rating of a room.",
+ "bands": [
+  {
+   "geometry": "age",
+   "groups": {
+    "raw_value_changed": [
+     {
+      "band_after": 1,
+      "band_before": 2,
+      "raw_after": 0.6004,
+      "raw_before": 0.5996,
+      "room": "lib/rules/no-useless-concat.js"
+     }
+    ]
+   },
+   "moved": 1,
+   "of": 445
+  },
+  {
+   "geometry": "layer",
+   "groups": {},
+   "moved": 0,
+   "of": 445
+  }
+ ],
+ "clock_rows": [
+  {
+   "edited_entered": 11,
+   "edited_left": 0,
+   "label": "`lit_room` (maintainability)",
+   "only_earlier_left": 0,
+   "only_later_entered": 1,
+   "predicate": "last_touched_days <= p10",
+   "rooms_after": 47,
+   "rooms_before": 50,
+   "unedited_entered": 0,
+   "unedited_left": 15
+  }
+ ],
+ "crossings": [
+  {
+   "cutoff_after": 0.7884699999999999,
+   "cutoff_before": 0.7851,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": true,
+   "operator": ">=",
+   "outcome_after": true,
+   "outcome_before": false,
+   "room": "lib/cli-engine/hash.js",
+   "rows": [
+    {
+     "direction": "entered",
+     "label": "`foundation` · high-load node (maintainability, onboarding)",
+     "words": "entered the map's row `foundation` · high-load node (maintainability, onboarding) (47 → 47 rooms: this room entered, 1 room in no commit's recorded changes in the window exited)"
+    }
+   ],
+   "signal": "load_index",
+   "state": "compared",
+   "term": "load_index >= p90",
+   "term_kind": "rank",
+   "value_after": 0.7889,
+   "value_before": 0.7817
+  },
+  {
+   "cutoff_after": 0.7884699999999999,
+   "cutoff_before": 0.7851,
+   "earlier_value_vs_later_cutoff": false,
+   "fixed_threshold": false,
+   "later_value_vs_earlier_cutoff": false,
+   "operator": ">=",
+   "outcome_after": false,
+   "outcome_before": true,
+   "room": "packages/js/src/index.js",
+   "rows": [
+    {
+     "direction": "exited",
+     "label": "`foundation` · high-load node (maintainability, onboarding)",
+     "words": "exited the map's row `foundation` · high-load node (maintainability, onboarding) (47 → 47 rooms: this room exited, 1 room in no commit's recorded changes in the window entered)"
+    }
+   ],
+   "signal": "load_index",
+   "state": "compared",
+   "term": "load_index >= p90",
+   "term_kind": "rank",
+   "value_after": 0.7846,
+   "value_before": 0.7851
+  }
+ ],
+ "crossings_limit_text": "Only rooms that exited or entered a row are listed: a term that changed outcome while the room stayed in or out of its row is not on this page (the diff carries no evidence for it).",
+ "excluded_rows": [
+  {
+   "edited_entered": 1,
+   "edited_left": 0,
+   "label": "`crack` · high edit-pressure node (maintainability)",
+   "predicate": "bug_pressure_index >= p90",
+   "rooms_after": 47,
+   "rooms_before": 47,
+   "unedited_entered": 0,
+   "unedited_left": 1
+  }
+ ],
+ "facts_hash": "303c4d3d4facdf87e2380495f0fc50d04df903160fc3b7ff7f5a16ff099fc39f",
+ "gate_count": [
+  {
+   "bands": {
+    "changes": 1,
+    "denominator": 445
+   },
+   "features": {
+    "changes": 4,
+    "denominator": 748,
+    "distinct_crossings": 2,
+    "distinct_rooms": 2
+   },
+   "features_held_by_rooms": 426,
+   "geometry": "age"
+  },
+  {
+   "bands": {
+    "changes": 0,
+    "denominator": 445
+   },
+   "features": {
+    "changes": 4,
+    "denominator": 748,
+    "distinct_crossings": 2,
+    "distinct_rooms": 2
+   },
+   "features_held_by_rooms": 426,
+   "geometry": "layer"
+  }
+ ],
+ "identity": {
+  "mapper_version": "0.11.1",
+  "overlays": [
+   {
+    "name": "onboarding",
+    "version": "0.3.1"
+   }
+  ],
+  "profiles": [
+   "maintainability",
+   "onboarding"
+  ],
+  "ruleset": {
+   "name": "maintainability",
+   "version": "0.3.4"
+  },
+  "substrate_config_fingerprint": "29869606410592d12647680378424be20750656ce654d0aae4e8678dbc546bfe",
+  "validation_config_fingerprint": "942d86e90cfed95516e7e979e8255a0c2c539bf1a3342f9468ae374fe63a8a9f"
+ },
+ "interval_days": 10.84119212962963,
+ "not_reported": {
+  "degraded_marks": {
+   "after": 0,
+   "before": 0
+  }
+ },
+ "origin": "gate",
+ "origin_text": "the pair the gate perturbs (the gate is a check on this tool's map, not on the repository): the commit the gate was run at and the commit 25 timeline commits before it; chosen for the gate's test, not for this page",
+ "page_file": "eslint.window.md",
+ "qualifier_text": "Counts of this one window (mapper spec §7 Q3). This page does not read whether another window of this repository counts the same. The same number of crossings is a different share of a different number of rooms, so these counts do not rank repositories. Whether the gate judged this window, the limit it judges against and its own word for it are in each diff's `budget` block and are not on this page.",
+ "repo": "eslint",
+ "rooms": {
+  "common": 461,
+  "earlier": 461,
+  "edited": 16,
+  "edited_share": 0.03470715835140998,
+  "later": 462,
+  "only_earlier": [],
+  "only_later": [
+   "tools/internal-rules/no-debug-template-literals.js"
+  ],
+  "unedited": 445
+ },
+ "row_name_text": "A row's name is this tool's label for a position on its map, not a description of the code.",
+ "scope": "one window",
+ "scope_text": "One pair of commits. Each event below is between them. Another pair of commits may read differently; this page does not compare them.",
+ "sources": [
+  {
+   "after_skeleton_hash": "dd889218caf949c33a7972eff8d29e7d16e59bb896bdada77e5d2574ac73405d",
+   "before_skeleton_hash": "ab915a9bcd609f17dc7a0646323a65a1c6b1108d53aefcf2dae67660dd36cb1a",
+   "file": "eslint.age.diff.json",
+   "geometry": "age"
+  },
+  {
+   "after_skeleton_hash": "49b05257c552ad2c959cd9bd2e7f945c1c2f9893f8ba7e640e14bdff9bbdc295",
+   "before_skeleton_hash": "da8d39a9600cb01dfec99a0da06586870303660018a7b3b96a4b1b4f92f9a828",
+   "file": "eslint.layer.diff.json",
+   "geometry": "layer"
+  }
+ ],
+ "subject_text": "What the gate counts on a window: for rooms in no commit's recorded changes, the rank and mixed rows they entered or exited, and the bands that differ. The clock rows and excluded rows above are not in its count. It is a check on this tool's map. It is not a reading of the code, of the repository, or of any room named on this page.",
+ "units": {
+  "crossings": "(room, predicate term) pairs whose outcome differs between the two commits, among rooms in no commit's recorded changes that exited or entered a row; a term that changed outcome without a membership change is not enumerated",
+  "gate_count.bands": "rooms in no commit's recorded changes",
+  "gate_count.features": "(profile, feature, room) assignments of rank and mixed features held, in either commit, by rooms in no commit's recorded changes: denominator is the union over both commits, changes the assignments in one commit and not the other; features_held_by_rooms is how many such rooms hold any of them",
+  "interval_days": "days between the two endpoint commits' timestamps",
+  "rooms.edited_share": "edited rooms / rooms in both commits"
+ },
+ "window": {
+  "after_sha": "3f20a57c6293371b6193d3fb6746c2b7b2ac2689",
+  "after_ts": "2026-09-04T14:29:08+00:00",
+  "before_sha": "5c8c2417b9ff462f2dc4e54a062c59135b45b845",
+  "before_ts": "2026-08-24T18:17:49+00:00",
+  "commit_count": 25,
+  "commits_between": 25,
+  "first_ts": "2026-08-24T18:17:49+00:00",
+  "last_ts": "2026-09-04T14:29:08+00:00"
+ },
+ "window_page_version": "0.5.0"
+}

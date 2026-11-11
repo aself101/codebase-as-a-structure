@@ -212,8 +212,8 @@ def test_an_entrant_is_compared_the_same_way_and_says_entered(one):
 def test_one_predicate_under_two_profiles_is_one_row_and_a_shared_term_is_one_line(one):
     a = _line(one[3], "f36.ts", "size_loc >= p90")
     labels = [r["label"] for r in a["rows"]]
-    assert "large (test) = big (onb)" in labels  # one predicate, two profiles: one entry
-    assert "wide (test)" in labels               # a second predicate sharing the term: same line
+    assert "`large` (test) = `big` (onb)" in labels  # one predicate, two profiles: one entry
+    assert "`wide` (test)" in labels                 # a second predicate sharing the term: same line
     assert len(labels) == 2
     assert sum(1 for x in one[3]["crossings"] if x["room"] == "f36.ts") == 1
 
@@ -236,8 +236,8 @@ def test_a_null_outcome_is_not_available_not_a_crossing(one):
 
 def test_rows_column_counts_edited_rooms_and_rooms_only_one_commit_has(one):
     a = _line(one[3], "f36.ts", "size_loc >= p90")
-    words = next(r["words"] for r in a["rows"] if r["label"].startswith("large"))
-    assert words.startswith("exited the map's row large (test) = big (onb) (")
+    words = next(r["words"] for r in a["rows"] if r["label"].startswith("`large`"))
+    assert words.startswith("exited the map's row `large` (test) = `big` (onb) (")
     # the bracket is the row's whole ledger, this line's room first, so it adds up where it is read
     assert ": this room exited, " in words and "other rooms in no commit's recorded changes in the window exited" in words
     assert "2 edited rooms entered" in words  # f1, f2; f0 at 100 is under the later cutoff
@@ -266,34 +266,29 @@ def test_membership_change_with_no_term_change_and_a_missing_side(tmp_path, one)
 # --- clock rows, excluded rows, bands, the gate's reading --------------------------------
 
 
-def test_clock_rows_get_the_same_numbers_and_comparisons_and_no_mechanism(one):
+def test_clock_rows_are_counted_and_their_rooms_not_named(one):
+    """Run 76: four skimmers read the clock table's named files and day counts as stale code,
+    and the rows are not in the gate's count. Counts only, on the page and the sheet."""
     f = one[3]
-    assert [r["label"] for r in f["clock_rows"]] == ["fresh (test)"]
-    assert f["clock_crossings"] and all(x["term_kind"] == "clock" for x in f["clock_crossings"])
-    # run 75: a clock term's sides are measured from two dates — no value from one is set against
-    # a cutoff from the other, on the sheet or the page; each side is compared with its own cutoff
-    assert all(x["later_value_vs_earlier_cutoff"] is None and x["earlier_value_vs_later_cutoff"] is None
-               for x in f["clock_crossings"])
-    assert all(x["outcome_before"] != x["outcome_after"] for x in f["clock_crossings"])
+    row = f["clock_rows"][0]
+    assert row["label"] == "`fresh` (test)" and isinstance(row["unedited_left"], int)
+    assert "clock_crossings" not in f and ".ts" not in str(f["clock_rows"])
     assert not any(x["term"].startswith("last_touched_days") for x in f["crossings"])
     page = render_window(f)
-    assert f"; {NOT_COUNTED_CLOCK}." in page and CLOCK_GLOSS in page
-    assert CLOCK_GLOSS.startswith("A clock row's term is measured in days from the date of the snapshot")
-    # a row's counts sit together, and a day-valued term carries its unit
-    row = f["clock_rows"][0]
-    assert (f"edited rooms: {row['edited_entered']} entered, {row['edited_left']} exited") in page
-    line = next(ln for ln in page.splitlines() if "`last_touched_days <= p10`" in ln)
-    assert " days |" in line and line.count("not compared across dates") == 2
-    assert "earlier side alone: `" in line and "later side alone: `" in line
-    # the interval is printed: 2026-03-01 → 2026-03-27 at noon UTC is 26 days
-    assert f["interval_days"] == 26.0 and "The two commits here are 26.00 days apart" in page
+    line = next(ln for ln in page.splitlines() if ln.startswith("- **`fresh`"))
+    assert ".ts" not in line and "days" not in line and f"; {NOT_COUNTED_CLOCK}." in line
+    assert (f"{row['unedited_left']} exited, {row['unedited_entered']} entered; edited rooms: "
+            f"{row['edited_entered']} entered, {row['edited_left']} exited") in line
+    assert CLOCK_GLOSS in page and "A clock row's rooms are counted, not named" in CLOCK_GLOSS
+    assert f["interval_days"] == 26.0 and "The two commits here are 26.00 days apart." in page
+    assert "`last_touched_days" not in page  # no clock term's values anywhere on this page
 
 
 def test_excluded_rows_are_counted_and_their_rooms_not_named(one):
     f = one[3]
     row = f["excluded_rows"][0]
-    assert row["label"] == "noisy (test)" and isinstance(row["unedited_left"], int) and row["unedited_left"] >= 1
-    line = next(ln for ln in render_window(f).splitlines() if ln.startswith("- **◌ noisy"))
+    assert row["label"] == "`noisy` (test)" and isinstance(row["unedited_left"], int) and row["unedited_left"] >= 1
+    line = next(ln for ln in render_window(f).splitlines() if ln.startswith("- **◌ `noisy`"))
     assert NOT_COUNTED_EXCLUDED in line and "→" in line
     # D-028: counted, never named — on the page and on the sheet
     assert ".ts" not in line and ".ts" not in str(f["excluded_rows"])
@@ -317,7 +312,7 @@ def test_two_geometries_state_rows_once_and_bands_each(tmp_path):
     # … and says it is a union over both commits (run 75: "hold" was true of the earlier commit only)
     assert (f"In the gate's unit: {g['features_held_by_rooms']} of those rooms hold, in one commit or the other, "
             f"{ft['denominator']} `(profile, feature, room)` assignments on rank and mixed rows; {ft['changes']} of those "
-            f"{ft['denominator']} are in one commit and not the other.") in page
+            f"{ft['denominator']} assignments are in one commit and not the other.") in page
 
 
 def test_the_gates_own_word_is_not_on_the_page_or_the_sheet(one):
@@ -345,9 +340,9 @@ def test_a_flagged_name_travels_with_its_position_and_an_unflagged_one_is_bare(o
         d["per_feature"][name].update(position_name="high-load node", name_implies_consequence=True)
     d["per_decorative_feature"]["test/noisy"].update(position_name="high edit-pressure node", name_implies_consequence=True)
     page = render_window(window_facts([d], ["x"], "caller"))
-    assert "exited the map's row large · high-load node (test) = big · high-load node (onb)" in page
-    assert "- **◌ noisy · high edit-pressure node (test)**" in page
-    assert "wide · " not in page  # unflagged: bare
+    assert "exited the map's row `large` · high-load node (test) = `big` · high-load node (onb)" in page
+    assert "- **◌ `noisy` · high edit-pressure node (test)**" in page
+    assert "`wide` · " not in page  # unflagged: bare
     assert one[0]["per_feature"]["test/large"]["name_implies_consequence"] is False  # the diff carries the flag
 
 
@@ -373,7 +368,11 @@ def test_every_fixed_text_is_on_the_page_and_agrees_with_the_sheet(one):
     assert UNDER_TABLE_TEXT.format(earlier=f["rooms"]["earlier"], later=f["rooms"]["later"]) in page
     assert (f["rooms"]["earlier"], f["rooms"]["later"]) == (40, 40)  # 39 in both + 1 each side
     assert QUALIFIER_TEXT in page and f["qualifier_text"] == QUALIFIER_TEXT
-    assert BAND_GLOSS in page and page.count(UNDER_TABLE_TEXT.format(earlier=40, later=40)) == 2  # under both tables
+    assert BAND_GLOSS in page and page.count(UNDER_TABLE_TEXT.format(earlier=40, later=40)) == 1
+    # the qualifier sits above the counts it qualifies (run 76: skimmers stop at the numbers)
+    assert page.index(QUALIFIER_TEXT) < page.index("- rows (")
+    assert "(arithmetic only, not a cause)" in page and "rows (the map's labels, not descriptions of the code; counts only)" in page
+    assert "the gate is a check on this tool's map, not on the repository" in f["origin_text"]
     assert f"{len(f['crossings'])} crossings: one line per room and predicate term" in page
     assert "that exited or entered a row the gate counts" in page
     r = f["rooms"]
