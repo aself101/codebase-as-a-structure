@@ -1812,3 +1812,76 @@ every denominator's unit and population (D-080 replay); one predicate, one row (
 be read as the gate's judgment of the repository. **Breaks if.** The third seat's
 skimmer does the arithmetic and says "over the ceiling, fix it" anyway: then the
 ceiling sentence goes too, and the page is events only.
+
+### D-083 addendum · 2026-11-11 · The third seat, the ceiling off the page, two closing skimmers, and the close (Alex: close)
+
+**The third seat (tracker run 75, on 0.3.0).** The pasted line read alone. The hostile
+reader answered "no, narrowly", on one clause: "Another pair of commits reads
+differently" asserted something about other windows that the page's own qualifier says
+it has not read. The skimmer rebuilt the gate's word from the printed count and the
+printed ceiling ("blew the gate's ceiling twice"), which is the breaks-if written above.
+Its subject was now right — it said the map, not the repository. Alex agreed to drop the
+ceiling and to a closing rule: apply the fixes, seat one last plain skimmer, close if it
+produces no gate verdict and no claim about the repository or a named file, and
+thereafter re-seat only on a change of shape (D-075's rule).
+
+**Window page 0.4.0, brief 0.45.3.** The ceiling is on neither the page nor the sheet
+("ceiling" and "0.05" join the banned words); the scope line reads "may read differently;
+this page does not compare them"; a clock term's two sides are not compared across
+snapshots (each has its own reference date, and for an unedited room the value differs by
+exactly the interval between the commits, 225.47 days on mcp), so each side prints its
+own outcome and the interval; the assignment denominator is stated as a union over both
+commits; the title is "`<repo>`, as this tool maps it"; the brief's pointer names the file
+and the pair and describes nothing.
+
+**The first closing skimmer (run 76, the agent's own ALIGNED 90).** No gate verdict. It
+read four named files in the clock table at 242 days as "neglected security code worth a
+look". The rule was not met. On my own judgment, without a further question to Alex, I
+extended D-028's form to clock rows on this page: **window page 0.5.0** counts clock rows
+and does not name their rooms; row names are in code font under a header that calls them
+the map's labels; "not a cause" is in the comparison header; the qualifier precedes the
+counts; "gate" is glossed at first use. That is a ruling made for one page from one
+reader; it is recorded here as mine and is open to reversal.
+
+**The second closing skimmer (run 77, the agent's own DRIFTED 67).** Its answers contain
+no gate verdict, no cause naming a room or an edit, no property word on a named file, and
+nothing to fix in the code. They do contain "mcp-secure-server barely moved", drawn from
+the 35 unedited rooms only, and a suspicion that a `yes` cell on an exited row is a
+contradiction in the tool.
+
+**The closing rule could not be met as I wrote it.** The skimmer's third question is
+"what would you say about this repository?"; a rule that forbids any claim about the
+repository fails every reader who answers the question. The error is in my drafting of
+the rule, the second unsatisfiable exit rule in this log (D-072 was the first). The
+agent's score moved from 90 to 67 between two pages of which the second only lost
+content; scores from this seat are not comparable across rounds, and the answers are
+what was read. I stopped and brought it to Alex, who closed.
+
+**D-083 is closed at window page 0.5.0, brief 0.45.3 (commit 93c6284, 212 tests, pages
+tag `2026-11-11g-d083`).** The page is re-seated only when its shape changes.
+
+**Recorded and not built.** Three fixes from run 77, owed without a seat unless they
+change the page's shape: (a) the churn before the size in the row bracket ("7 → 7
+rooms" is read first and reported as an unchanged row on the line that reports an exit);
+(b) the gate's assignment unit off the page (five readers have reported "4 of those 35
+assignments" as 4 of 35 rooms; the unit would follow the token and the ceiling into the
+diff); (c) each comparison labelled inside its cell.
+
+**Residual readings, not addressed.** A reader summarises two crossings as "barely
+moved"; guesses a gate outcome from small counts; reads "(maintainability)", a profile
+name, as a judgment of the code; reads an unedited room's value moving as noise. The
+token's name, and the brief calling the substrate fingerprint "gate" where the window
+page gives that name to the validation fingerprint, remain open from the section above.
+
+**Tracker.** The 81 issues open from runs 70–77 were statused at the close: 72
+completed, 6 deferred (the three fixes above and the time-lapse aggregate), 3
+observation. One of the observations (run 73, fixed sentences taking numbers from
+coinciding fields) was not re-verified against 0.5.0 and is not claimed fixed. Run 75 is
+recorded with all gates passed; the seat failed in part, the field was set on save and
+the tracker does not allow a recorded value to be rewritten.
+
+**Assumes.** A page of events and counts, with the gate's word, reason and limit in the
+diff, is not taken as the gate's judgment. Two skimmers support this; neither was a
+person. **Breaks if.** A reader outside this practice quotes the window page as a
+stability finding about a repository, or the three owed fixes turn out to change what a
+skimmer concludes — then the page is seated again.

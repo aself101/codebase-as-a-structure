@@ -483,3 +483,60 @@ verdict is not, by Alex's decision after two seats read it as the repository's s
 Not addressed here, recorded for a later decision: the token's name itself; and the
 brief's provenance calls the substrate config fingerprint "gate" where the window page
 gives that name to the validation fingerprint (run 74, outside the seat's surface).
+
+## 16. Window page 0.4.0 and 0.5.0, the closing skimmers, and the close (2026-11-11)
+
+§15's "the gate's ceiling on the map is 0.05 of them" and its ceiling sentences are
+superseded by this section. The record of why is DECISIONS.md, D-083's closing addendum.
+
+**The third seat (run 75, on 0.3.0).** Pasted line: passed. Hostile reader: "no,
+narrowly", on "Another pair of commits reads differently". Skimmer: rebuilt the gate's
+word from the count and the ceiling. §15 stated the count and the ceiling and withheld
+the comparison; a reader supplies the comparison.
+
+**0.4.0 (brief 0.45.3).**
+
+- No ceiling on the page or the sheet. `BANNED_WORDS` gains "ceiling" and "0.05". The
+  qualifier says the limit the gate judges against is in each diff's `budget` block.
+- `SCOPE_TEXT`: "Another pair of commits may read differently; this page does not compare
+  them."
+- Clock terms: no cross-snapshot comparison. Each side prints its own outcome; the
+  interval between the commits is printed in days. For an unedited room the value differs
+  between the sides by exactly that interval.
+- The assignment denominator is a union over both commits and is printed as one ("hold,
+  in one commit or the other").
+- Title: "`<repo>`, as this tool maps it — one window: a → b".
+- The brief's pointer names the window page's file and its pair of commits, and says
+  nothing on that page is on the brief.
+
+**0.5.0, after the first closing skimmer (run 76).** The skimmer read named rooms in the
+clock table as neglected code.
+
+- Clock rows are counted and not named, as excluded rows are (§5.3's form, D-028). The
+  sheet's `clock_rows` carries counts only.
+- Row names are in code font, under the header "the map's labels, not descriptions of the
+  code; counts only".
+- The comparison header carries "(arithmetic only, not a cause)".
+- The qualifier precedes the gate's counts; "gate" is glossed at first use in the origin
+  sentence.
+
+**The second closing skimmer (run 77, on 0.5.0).** No gate verdict, no cause naming a
+room or edit, no property word on a file. One repository sentence ("barely moved"), which
+the skimmer's third question asks for. D-083 closed on Alex's decision.
+
+**Owed, not built.**
+
+| | Change | From |
+|---|---|---|
+| a | Row bracket: the line's own event and the churn first, the row's size last | "7 → 7 rooms" read as an unchanged row (run 77) |
+| b | The gate's assignment unit off the page; keep "2 of the 35 rooms, 2 crossings" | "4 of those 35 assignments" reported as rooms (runs 73, 74, 76, 77) |
+| c | Each comparison labelled inside its cell | a `yes` on an exited row read as a contradiction; a pasted row loses the header (run 77) |
+
+None changes the page's sections; under the closing rule they are built without a seat.
+(b) removes `features.changes` and `features.denominator` from the sheet's `gate_count`
+and is a sheet contract change: it takes a version step and a test that the diff still
+carries the unit. `[VERIFY]` that no consumer reads those two sheet fields before
+removing them.
+
+**Re-seat rule.** A change of shape — a section added or removed, a new kind of line, a
+new source — is seated. A change of wording inside a line is not.
